@@ -1,6 +1,6 @@
 {
-  "name": "naze",
-  "version": "1.2.3",
+  "name": "nekobot",
+  "version": "7.0.1",
   "description": "WhatsApp Using Lib Baileys Multi Device",
   "main": "index.js",
   "type": "commonjs",

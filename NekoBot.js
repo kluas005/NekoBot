@@ -20,34 +20,38 @@ const { Primbon } = require('scrape-primbon')
 const primbon = new Primbon()
 const { smsg, formatp, tanggal, formatDate, getTime, isUrl, sleep, clockString, runtime, fetchJson, getBuffer, jsonformat, format, parseMention, getRandom, getGroupAdmins } = require('./lib/functions')
 
-const hariini = moment.tz('Asia/Jakarta').format('dddd, DD MMMM YYYY')
-const barat = moment.tz('Asia/Jakarta').format('HH:mm:ss')
-const tengah = moment.tz('Asia/Makassar').format('HH:mm:ss')
-const timur = moment.tz('Asia/Jayapura').format('HH:mm:ss')
-const nyoutube = ('© Naze\nYoutube/Sc :\nhttps://youtube.com/c/Nazedev')  //ubah di config biar ngk emror
+
+// Data e Hora
+const data = moment.tz('America/Sao_Paulo').format('DD/MM/YY')
+const barat = moment.tz('America/Sao_Paulo').format('HH:mm:ss')
+const tengah = moment.tz('America/Sao_Paulo').format('HH:mm:ss')
+const timur = moment.tz('America/Sao_Paulo').format('HH:mm:ss')
+const footerbot = ('© NekoBot')  //ubah di config biar ngk emror
 const ini_mark = `0@s.whatsapp.net`
 
-//TIME
-const time2 = moment().tz('Asia/Jakarta').format('HH:mm:ss')  
- if(time2 < "23:59:00"){
-var ucapanWaktu = 'Selamat Malam 🌌'
- }
- if(time2 < "19:00:00"){
-var ucapanWaktu = 'Selamat Sore 🌃'
- }
- if(time2 < "18:00:00"){
-var ucapanWaktu = 'Selamat Sore 🌅'
- }
- if(time2 < "15:00:00"){
-var ucapanWaktu = 'Selamat Siang 🏙'
- }
- if(time2 < "11:00:00"){
-var ucapanWaktu = 'Selamat Pagi 🌄'
- }
- if(time2 < "05:00:00"){
-var ucapanWaktu = 'Selamat Pagi 🌉'
- } 
 
+/////
+
+//TIME
+const time2 = moment().tz('America/Sao_Paulo').format('HH:mm:ss')  
+if(time2 < "23:59:00"){
+var timeday = 'Boa noite'
+}
+if(time2 < "19:00:00"){
+var timeday = 'Boa tarde'
+}
+if(time2 < "18:00:00"){
+var timeday = 'Boa tarde'
+}
+if(time2 < "15:00:00"){
+var timeday = 'Boa tarde'
+}
+if(time2 < "11:00:00"){
+var timeday = 'Bom dia'
+}
+if(time2 < "05:00:00"){
+var timeday = 'Bom dia'
+}
 // read database
 let tebaklagu = db.data.game.tebaklagu = []
 let _family100 = db.data.game.family100 = []
@@ -71,7 +75,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
         const args = body.trim().split(/ +/).slice(1)
         const pushname = m.pushName || "No Name"
         const botNumber = await client.decodeJid(client.user.id)
-        const isCreator = [botNumber, ...global.owner].map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
+        const isOwner = [botNumber, ...global.owner].map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
         const itsMe = m.sender == botNumber ? true : false
         const text = q = args.join(" ")
         const quoted = m.quoted ? m.quoted : m
@@ -87,7 +91,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
         const groupAdmins = m.isGroup ? await getGroupAdmins(participants) : ''
     	const isBotAdmins = m.isGroup ? groupAdmins.includes(botNumber) : false
     	const isAdmins = m.isGroup ? groupAdmins.includes(m.sender) : false
-    	const isPremium = isCreator || global.premium.map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender) || false
+    	const isPremium = isOwner || global.premium.map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender) || false
 	
 	
 	try {
@@ -177,13 +181,13 @@ module.exports = client = async (client, m, chatUpdate, store) => {
         let isgclink = isLinkThisGc.test(m.text)
         if (isgclink) return m.reply(`*maaf gak jadi, karena kamu ngirim link group ini*`)
         if (isAdmins) return m.reply(`*maaf kamu admin*`)
-        if (isCreator) return m.reply(`*maaf kamu owner bot ku*`)
+        if (isOwner) return m.reply(`*maaf kamu owner bot ku*`)
         client.groupParticipantsUpdate(m.chat, [m.sender], 'remove')
         }
         }
         
       // Mute Chat
-      if (db.data.chats[m.chat].mute && !isAdmins && !isCreator) {
+      if (db.data.chats[m.chat].mute && !isAdmins && !isOwner) {
       return
       }
 
@@ -566,16 +570,16 @@ Ketik *nyerah* untuk menyerah dan mengakui kekalahan`
             }
             }
             break
-	    case 'donasi': case 'sewabot': case 'sewa': case 'buypremium': case 'donate': {
-                client.sendMessage(m.chat, { image: { url: 'https://telegra.ph/file/74fd634010128be37972c.jpg' }, caption: `*${ucapanWaktu} Kak ${m.pushName}*\n\n *Jika ingin berdonasi silahkan scan gambar diatas*\n\n*Atau klik link dibawah ini*\n_https://saweria.co/naze_\n\n*Atau Transfer via*\n- *Gopay Dana Ovo Qris ShopeePay*\n Ke nomer berikut : 082113821188\n\n_Terima kasih bagi yang sudah donasi_` }, { quoted: m })
+	    case 'doação': case 'comprarpremium': case 'doar': {
+                client.sendMessage(m.chat, { image: { url: './Assets/images/donate.png' }, caption: `*${timeday}* \n*olá* *${m.pushName}*\n\n*quer fazer um donate? só ler o qrcode ai*` }, { quoted: m })
             }
             break
             case 'sc': {
-                m.reply('https://wa.me/6285822347348')
+                m.reply('https://wa.me/5524999304661')
             }
             break		 
             case 'chat': {
-                if (!isCreator) throw mess.owner
+                if (!isOwner) throw mess.owner
                 if (!q) throw 'Option : 1. mute\n2. unmute\n3. archive\n4. unarchive\n5. read\n6. unread\n7. delete'
                 if (args[0] === 'mute') {
                     client.chatModify({ mute: 'Infinity' }, m.chat, []).then((res) => m.reply(jsonformat(res))).catch((err) => m.reply(jsonformat(err)))
@@ -761,7 +765,7 @@ Ketik *nyerah* untuk menyerah dan mengakui kekalahan`
            
 //Pembatas
             case 'react': {
-                if (!isCreator) throw mess.owner
+                if (!isOwner) throw mess.owner
                 reactionMessage = {
                     react: {
                         text: args[0],
@@ -771,8 +775,8 @@ Ketik *nyerah* untuk menyerah dan mengakui kekalahan`
                 client.sendMessage(m.chat, reactionMessage)
             }
             break  
-            case 'join': {
-                if (!isCreator) throw mess.owner
+            case 'entrar': {
+                if (!isOwner) throw mess.owner
                 if (!text) throw 'Masukkan Link Group!'
                 if (!isUrl(args[0]) && !args[0].includes('whatsapp.com')) throw 'Link Invalid!'
                 m.reply(mess.wait)
@@ -780,20 +784,20 @@ Ketik *nyerah* untuk menyerah dan mengakui kekalahan`
                 await client.groupAcceptInvite(result).then((res) => m.reply(jsonformat(res))).catch((err) => m.reply(jsonformat(err)))
             }
             break
-            case 'leave': {
-                if (!isCreator) throw mess.owner
+            case 'sair': {
+                if (!isOwner) throw mess.owner
                 await client.groupLeave(m.chat).then((res) => m.reply(jsonformat(res))).catch((err) => m.reply(jsonformat(err)))
             }
             break
             case 'setexif': {
-               if (!isCreator) throw mess.owner
+               if (!isOwner) throw mess.owner
                if (!text) throw `Example : ${prefixo + comando} packname|author`
           global.packname = text.split("|")[0]
           global.author = text.split("|")[1]
           m.reply(`Exif berhasil diubah menjadi\n\n⭔ Packname : ${global.packname}\n⭔ Author : ${global.author}`)
             }
             break
-	case 'kick': {
+	case 'banir': {
 		if (!m.isGroup) throw mess.group
                 if (!isBotAdmins) throw mess.botAdmin
                 if (!isAdmins) throw mess.admin
@@ -809,7 +813,7 @@ Ketik *nyerah* untuk menyerah dan mengakui kekalahan`
 		await client.groupParticipantsUpdate(m.chat, [users], 'add').then((res) => m.reply(jsonformat(res))).catch((err) => m.reply(jsonformat(err)))
 	}
 	break
-	case 'promote': {
+	case 'promover': {
 		if (!m.isGroup) throw mess.group
                 if (!isBotAdmins) throw mess.botAdmin
                 if (!isAdmins) throw mess.admin
@@ -817,7 +821,7 @@ Ketik *nyerah* untuk menyerah dan mengakui kekalahan`
 		await client.groupParticipantsUpdate(m.chat, [users], 'promote').then((res) => m.reply(jsonformat(res))).catch((err) => m.reply(jsonformat(err)))
 	}
 	break
-	case 'demote': {
+	case 'rebaixar': {
 		if (!m.isGroup) throw mess.group
                 if (!isBotAdmins) throw mess.botAdmin
                 if (!isAdmins) throw mess.admin
@@ -826,13 +830,13 @@ Ketik *nyerah* untuk menyerah dan mengakui kekalahan`
 	}
 	break
         case 'block': {
-		if (!isCreator) throw mess.owner
+		if (!isOwner) throw mess.owner
 		let users = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
 		await client.updateBlockStatus(users, 'block').then((res) => m.reply(jsonformat(res))).catch((err) => m.reply(jsonformat(err)))
 	}
 	break
         case 'unblock': {
-		if (!isCreator) throw mess.owner
+		if (!isOwner) throw mess.owner
 		let users = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
 		await client.updateBlockStatus(users, 'unblock').then((res) => m.reply(jsonformat(res))).catch((err) => m.reply(jsonformat(err)))
 	}
@@ -854,7 +858,7 @@ Ketik *nyerah* untuk menyerah dan mengakui kekalahan`
             }
             break
           case 'setppbot': {
-                if (!isCreator) throw mess.owner
+                if (!isOwner) throw mess.owner
                 if (!quoted) throw `Kirim/Reply Image Dengan Caption ${prefixo + comando}`
                 if (!/image/.test(mime)) throw `Kirim/Reply Image Dengan Caption ${prefixo + comando}`
                 if (/webp/.test(mime)) throw `Kirim/Reply Image Dengan Caption ${prefixo + comando}`
@@ -1180,9 +1184,9 @@ break
                let pjtxt = `Pesan Dari : @${me.split('@')[0]} \nUntuk : @${ownernya.split('@')[0]}\n\n${text}`
                let ments = [ownernya, me]
                let buttons = [{ buttonId: 'hehehe', buttonText: { displayText: '🙏THANKS LAPORANNYA' }, type: 1 }]
-            await client.sendButtonText('6285875158363@s.whatsapp.net', buttons, pjtxt, nyoutube, m, {mentions: ments})
+            await client.sendButtonText('6285875158363@s.whatsapp.net', buttons, pjtxt, footerbot, m, {mentions: ments})
             let akhji = `Laporan Telah Terkirim\nKe Owner @${ownernya.split('@')[0]}\n*Terima Kasih Laporannya🙏*\n_Nomermu Akan Terblokir_\n_Jika Laporan Hanya Di Buat Buat_`
-            await client.sendButtonText(m.chat, buttons, akhji, nyoutube, m, {mentions: ments})
+            await client.sendButtonText(m.chat, buttons, akhji, footerbot, m, {mentions: ments})
             }
             break
             case 'hehehe': {
@@ -1197,7 +1201,7 @@ break
             break  
             break
             case 'bcgc': case 'bcgroup': {
-                if (!isCreator) throw mess.owner
+                if (!isOwner) throw mess.owner
                 if (!text) throw `Text mana?\n\nExample : ${prefixo + comando} fatih-san`
                 let getGroups = await client.groupFetchAllParticipating()
                 let groups = Object.entries(getGroups).slice(0).map(entry => entry[1])
@@ -1206,20 +1210,20 @@ break
                 for (let i of anu) {
                     await sleep(1500)
                     let txt = `「 *Broadcast Group* 」\n\n${text}`
-                    let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖List Menu' }, type: 1 },{ buttonId: 'donasi', buttonText: { displayText: '🙏Donasi' }, type: 1 }]
-            await client.sendButtonText(m.chat, buttons, txt, nyoutube, m)
+                    let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Voltar' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖Lista de Menus' }, type: 1 },{ buttonId: 'doação', buttonText: { displayText: '🙏Doação' }, type: 1 }]
+            await client.sendButtonText(m.chat, buttons, txt, footerbot, m)
 		}}
             break
             case 'bc': case 'broadcast': case 'bcall': {
-                if (!isCreator) throw mess.owner
+                if (!isOwner) throw mess.owner
                 if (!text) throw `Text mana?\n\nExample : ${prefixo + comando} fatih-san`
                 let anu = await store.chats.all().map(v => v.id)
                 m.reply(`Mengirim Broadcast Ke ${anu.length} Chat\nWaktu Selesai ${anu.length * 1.5} detik`)
 		for (let yoi of anu) {
 		    await sleep(3000)
                       let txt = `「 *Broadcast Naze Dev* 」\n\n${text}`
-                      let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖List Menu' }, type: 1 },{ buttonId: 'donasi', buttonText: { displayText: '🙏Donasi' }, type: 1 }]
-            await client.sendButtonText(m.chat, buttons, txt, nyoutube, m)
+                      let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Voltar' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖Lista de Menus' }, type: 1 },{ buttonId: 'doação', buttonText: { displayText: '🙏Doação' }, type: 1 }]
+            await client.sendButtonText(m.chat, buttons, txt, footerbot, m)
 		}}
             break
             case 'q': case 'quoted': {
@@ -1256,19 +1260,19 @@ break
              }
              break
             case 'sticker': case 's': case 'stickergif': case 'sgif': {
-            if (!quoted) throw `*Balas Video/Image Dengan Caption* ${prefixo + comando}`
+            if (!quoted) throw `*Responda um vídeo/imagem com legenda* ${prefixo + comando}`
             m.reply(mess.wait)
                     if (/image/.test(mime)) {
                 let media = await quoted.download()
                 let encmedia = await client.sendImageAsSticker(m.chat, media, m, { packname: global.packname, author: global.author })
                 await fs.unlinkSync(encmedia)
             } else if (/video/.test(mime)) {
-                if ((quoted.msg || quoted).seconds > 11) return m.reply('*Maksimal 10 detik!*')
+                if ((quoted.msg || quoted).seconds > 11) return m.reply('*Máximo de 10 segundos!*')
                 let media = await quoted.download()
                 let encmedia = await client.sendVideoAsSticker(m.chat, media, m, { packname: global.packname, author: global.author })
                 await fs.unlinkSync(encmedia)
             } else {
-                throw `*Kirim Gambar/Video Dengan Caption* ${prefixo + comando}\nDurasi *Video 1-9 Detik*`
+                throw `*Enviar imagem/vídeo com legenda* ${prefixo + comando}\nDuração *Vídeo 1-9 segundos*`
                 }
             }
             break
@@ -1438,7 +1442,7 @@ break
 	    await fs.unlinkSync(localFile)
 	    await fs.unlinkSync(outputFile)
 	    })
-	    }
+	    } 
 	    break
 	    case 'yts': case 'ytsearch': {
                 if (!text) throw `Example : ${prefixo + comando} story wa anime`
@@ -1447,7 +1451,7 @@ break
                 let teks = 'YouTube Search\n\n Result From '+text+'\n\n'
                 let no = 1
                 for (let i of search.all) {
-                    teks += `⭔ No : ${no++}\n⭔ Type : ${i.type}\n⭔ Video ID : ${i.videoId}\n⭔ Title : ${i.title}\n⭔ Views : ${i.views}\n⭔ Duration : ${i.timestamp}\n⭔ Upload At : ${i.ago}\n⭔ Author : ${i.author.name}\n⭔ Url : ${i.url}\n\n─────────────────\n\n`
+                    teks += `⭔ Não : ${no++}\n⭔ Tipo : ${i.type}\n⭔ Video ID : ${i.videoId}\n⭔ Titulo : ${i.title}\n⭔ Espectadores : ${i.views}\n⭔ Duração : ${i.timestamp}\n⭔ Enviado há : ${i.ago}\n⭔ Autor : ${i.author.name}\n⭔ Url : ${i.url}\n\n─────────────────\n\n`
                 }
                 client.sendMessage(m.chat, { image: { url: search.all[0].thumbnail },  caption: teks }, { quoted: m })
             }
@@ -1472,7 +1476,7 @@ break
         n = anu.result
         images = n[Math.floor(Math.random() * n.length)]
         let buttons = [
-                    {buttonId: `gimage ${text}`, buttonText: {displayText: 'Next Image'}, type: 1}
+                    {buttonId: `gimage ${text}`, buttonText: {displayText: 'Proxima Imagem'}, type: 1}
                 ]
                 let buttonMessage = {
                     image: { url: images },
@@ -1498,15 +1502,15 @@ break
                 let buttonMessage = {
                     image: { url: anu.thumbnail },
                     caption: `
-⭔ Title : ${anu.title}
-⭔ Ext : Search
+⭔ Titulo : ${anu.title}
+⭔ Ext : Procure
 ⭔ ID : ${anu.videoId}
-⭔ Duration : ${anu.timestamp}
-⭔ Viewers : ${anu.views}
-⭔ Upload At : ${anu.ago}
-⭔ Author : ${anu.author.name}
-⭔ Channel : ${anu.author.url}
-⭔ Description : ${anu.description}
+⭔ Duração: ${anu.timestamp}
+⭔ Espectadores : ${anu.views}
+⭔ Enviado há : ${anu.ago}
+⭔ Autor : ${anu.author.name}
+⭔ Canal : ${anu.author.url}
+⭔ Descrição : ${anu.description}
 ⭔ Url : ${anu.url}`,
                     footer: client.user.name,
                     buttons: buttons,
@@ -1521,7 +1525,7 @@ break
                 let quality = args[1] ? args[1] : '128kbps'
                 let media = await yta(text, quality)
                 if (media.filesize >= 100000) return m.reply('File Melebihi Batas '+util.format(media))
-                client.sendImage(m.chat, media.thumb, `⭔ Title : ${media.title}\n⭔ File Size : ${media.filesizeF}\n⭔ Url : ${isUrl(text)}\n⭔ Ext : MP3\n⭔ Resolusi : ${args[1] || '128kbps'}`, m)
+                client.sendImage(m.chat, media.thumb, `⭔ Titulo : ${media.title}\n⭔ Tamanho do Arquivo : ${media.filesizeF}\n⭔ Url : ${isUrl(text)}\n⭔ Ext : MP3\n⭔ Resolução : ${args[1] || '128kbps'}`, m)
                 client.sendMessage(m.chat, { audio: { url: media.dl_link }, mimetype: 'audio/mpeg', fileName: `${media.title}.mp3` }, { quoted: m })
             }
             break
@@ -1531,7 +1535,7 @@ break
                 let quality = args[1] ? args[1] : '360p'
                 let media = await ytv(text, quality)
                 if (media.filesize >= 100000) return m.reply('File Melebihi Batas '+util.format(media))
-                client.sendMessage(m.chat, { video: { url: media.dl_link }, mimetype: 'video/mp4', fileName: `${media.title}.mp4`, caption: `⭔ Title : ${media.title}\n⭔ File Size : ${media.filesizeF}\n⭔ Url : ${isUrl(text)}\n⭔ Ext : MP3\n⭔ Resolusi : ${args[1] || '360p'}` }, { quoted: m })
+                client.sendMessage(m.chat, { video: { url: media.dl_link }, mimetype: 'video/mp4', fileName: `${media.title}.mp4`, caption: `⭔ Titulo : ${media.title}\n⭔ Tamanho do Arquivo : ${media.filesizeF}\n⭔ Url : ${isUrl(text)}\n⭔ Ext : MP3\n⭔ Resolução : ${args[1] || '360p'}` }, { quoted: m })
             }
             break
 	    case 'getmusic': {
@@ -1544,7 +1548,7 @@ break
                 let quality = args[1] ? args[1] : '128kbps'
                 let media = await yta(urls[text - 1], quality)
                 if (media.filesize >= 100000) return m.reply('File Melebihi Batas '+util.format(media))
-                client.sendImage(m.chat, media.thumb, `⭔ Title : ${media.title}\n⭔ File Size : ${media.filesizeF}\n⭔ Url : ${urls[text - 1]}\n⭔ Ext : MP3\n⭔ Resolusi : ${args[1] || '128kbps'}`, m)
+                client.sendImage(m.chat, media.thumb, `⭔ Titulo : ${media.title}\n⭔ Tamanho do Arquivo : ${media.filesizeF}\n⭔ Url : ${urls[text - 1]}\n⭔ Ext : MP3\n⭔ Resolução : ${args[1] || '128kbps'}`, m)
                 client.sendMessage(m.chat, { audio: { url: media.dl_link }, mimetype: 'audio/mpeg', fileName: `${media.title}.mp3` }, { quoted: m })
             }
             break
@@ -1558,7 +1562,7 @@ break
                 let quality = args[1] ? args[1] : '360p'
                 let media = await ytv(urls[text - 1], quality)
                 if (media.filesize >= 100000) return m.reply('File Melebihi Batas '+util.format(media))
-                client.sendMessage(m.chat, { video: { url: media.dl_link }, mimetype: 'video/mp4', fileName: `${media.title}.mp4`, caption: `⭔ Title : ${media.title}\n⭔ File Size : ${media.filesizeF}\n⭔ Url : ${urls[text - 1]}\n⭔ Ext : MP3\n⭔ Resolusi : ${args[1] || '360p'}` }, { quoted: m })
+                client.sendMessage(m.chat, { video: { url: media.dl_link }, mimetype: 'video/mp4', fileName: `${media.title}.mp4`, caption: `⭔ Titulo : ${media.title}\n⭔ Tamanho do Arquivo : ${media.filesizeF}\n⭔ Url : ${urls[text - 1]}\n⭔ Ext : MP3\n⭔ Resolução : ${args[1] || '360p'}` }, { quoted: m })
             }
             break
             case 'pinterest': {
@@ -1573,11 +1577,11 @@ break
             	m.reply(mess.wait)
                 anu = await fetchJson(`https://waifu.pics/api/sfw/waifu`)
                 buffer = await getBuffer(anu.url)
-                let buttons = [{buttonId: `waifu`, buttonText: {displayText: 'Next Image'}, type: 1},{buttonId: `simplemenu`, buttonText: {displayText: '⬅️Back'}, type: 1}]
+                let buttons = [{buttonId: `waifu`, buttonText: {displayText: 'Proxima Imagem'}, type: 1},{buttonId: `simplemenu`, buttonText: {displayText: '⬅️Voltar'}, type: 1}]
                 let buttonMessage = {
                     image: buffer,
                     caption: `Random Waifu`,
-                    footer: nyoutube,
+                    footer: footerbot,
                     buttons: buttons,
                     headerType: 4
                 }
@@ -1594,12 +1598,12 @@ break
 	    break
             case 'coffe': case 'kopi': {
             let buttons = [
-                    {buttonId: `coffe`, buttonText: {displayText: 'Next Image'}, type: 1}
+                    {buttonId: `coffe`, buttonText: {displayText: 'Proxima Imagem'}, type: 1}
                 ]
                 let buttonMessage = {
                     image: { url: 'https://coffee.alexflipnote.dev/random' },
                     caption: `☕ Random Coffe`,
-                    footer: nyoutube,
+                    footer: footerbot,
                     buttons: buttons,
                     headerType: 4
                 }
@@ -1612,12 +1616,12 @@ break
                 anu = await wallpaper(text)
                 result = anu[Math.floor(Math.random() * anu.length)]
 		let buttons = [
-                    {buttonId: `wallpaper ${text}`, buttonText: {displayText: 'Next Image'}, type: 1}
+                    {buttonId: `wallpaper ${text}`, buttonText: {displayText: 'Proxima Imagem'}, type: 1}
                 ]
                 let buttonMessage = {
                     image: { url: result.image[0] },
-                    caption: `⭔ Title : ${result.title}\n⭔ Category : ${result.type}\n⭔ Detail : ${result.source}\n⭔ Media Url : ${result.image[2] || result.image[1] || result.image[0]}`,
-                    footer: nyoutube,
+                    caption: `⭔ Titulo : ${result.title}\n⭔ Category : ${result.type}\n⭔ Detail : ${result.source}\n⭔ Media Url : ${result.image[2] || result.image[1] || result.image[0]}`,
+                    footer: footerbot,
                     buttons: buttons,
                     headerType: 4
                 }
@@ -1630,8 +1634,8 @@ break
                 n = anu.result
                 result = n[Math.floor(Math.random() * n.length)]
                 let jwbn = `*Nama : ${result.nama}\n*Link : ${result.link}*`
-		let buttons = [{ buttonId: 'menu', buttonText: { displayText: '📖List Menu' }, type: 1 },{ buttonId: 'donasi', buttonText: { displayText: '🙏Donasi' }, type: 1 }]
-            await client.sendButtonText(m.chat, buttons, jwbn, nyoutube, m)
+		let buttons = [{ buttonId: 'menu', buttonText: { displayText: '📖Lista de Menus' }, type: 1 },{ buttonId: 'doação', buttonText: { displayText: '🙏Doação' }, type: 1 }]
+            await client.sendButtonText(m.chat, buttons, jwbn, footerbot, m)
             }
             break
             case 'wikimedia': {
@@ -1640,12 +1644,12 @@ break
                 anu = await wikimedia(text)
                 result = anu[Math.floor(Math.random() * anu.length)]
                 let buttons = [
-                    {buttonId: `wikimedia ${text}`, buttonText: {displayText: 'Next Image'}, type: 1}
+                    {buttonId: `wikimedia ${text}`, buttonText: {displayText: 'Proxima Imagem'}, type: 1}
                 ]
                 let buttonMessage = {
                     image: { url: result.image },
-                    caption: `⭔ Title : ${result.title}\n⭔ Source : ${result.source}\n⭔ Media Url : ${result.image}`,
-                    footer: nyoutube,
+                    caption: `⭔ Titulo : ${result.title}\n⭔ Source : ${result.source}\n⭔ Media Url : ${result.image}`,
+                    footer: footerbot,
                     buttons: buttons,
                     headerType: 4
                 }
@@ -1661,7 +1665,7 @@ break
                 ]
                 let buttonMessage = {
                     text: `~_${result.quotes}_\n\nBy '${result.karakter}' \n\nAnime : ${result.anime}\n\n- ${result.up_at}`,
-                    footer: nyoutube,
+                    footer: footerbot,
                     buttons: buttons,
                     headerType: 2
                 }
@@ -1675,7 +1679,7 @@ break
                 ]
                 let buttonMessage = {
                     text: anu.result.quote,
-                    footer: nyoutube,
+                    footer: footerbot,
                     buttons: buttons,
                     headerType: 2
                 }
@@ -2015,13 +2019,13 @@ break
                 m.reply(mess.wait)
                 let anu = await fetchJson(`https://anabotofc.herokuapp.com/api/download/tiktok2?url=${text}&apikey=AnaBot`)
                 let buttons = [
-                    {buttonId: `allmenu`, buttonText: {displayText: '📖List Menu'}, type: 1},
+                    {buttonId: `allmenu`, buttonText: {displayText: '📖Lista de Menus'}, type: 1},
                     {buttonId: `tiktokmp3 ${text}`, buttonText: {displayText: '♫ Audio'}, type: 1}
                 ]
                 let buttonMessage = {
                     video: { url: anu.result.nowm },
                     caption: `Download From ${text}`,
-                    footer: nyoutube,
+                    footer: footerbot,
                     buttons: buttons,
                     headerType: 5
                 }
@@ -2039,7 +2043,7 @@ break
                 let buttonMessage = {
                     video: { url: anu.result.video_original },
                     caption: `Download From ${text}`,
-                    footer: nyoutube,
+                    footer: footerbot,
                     buttons: buttons,
                     headerType: 5
                 }
@@ -2051,12 +2055,12 @@ break
                 m.reply(mess.wait)
                 let anu = await fetchJson(`https://anabotofc.herokuapp.com/api/download/tiktok2?url=${text}&apikey=AnaBot`)
                 let buttons = [
-                    {buttonId: `allmenu`, buttonText: {displayText: '📖List Menu'}, type: 1},
+                    {buttonId: `allmenu`, buttonText: {displayText: '📖Lista de Menus'}, type: 1},
                     {buttonId: `tiktoknowm ${text}`, buttonText: {displayText: '► No Watermark'}, type: 1}
                 ]
                 let buttonMessage = {
                     text: `Download From ${text}`,
-                    footer: nyoutube,
+                    footer: footerbot,
                     buttons: buttons,
                     headerType: 2
                 }
@@ -2080,7 +2084,7 @@ break
                 if (!text) throw 'No Query Title'
                 m.reply(mess.wait)
                 let anu = await fetchJson(api('zenz', '/downloader/joox', { query: text }, 'apikey'))
-                let msg = await client.sendImage(m.chat, anu.result.img, `⭔ Title : ${anu.result.lagu}\n⭔ Album : ${anu.result.album}\n⭔ Singer : ${anu.result.penyanyi}\n⭔ Publish : ${anu.result.publish}\n⭔ Lirik :\n${anu.result.lirik.result}`, m)
+                let msg = await client.sendImage(m.chat, anu.result.img, `⭔ Titulo : ${anu.result.lagu}\n⭔ Album : ${anu.result.album}\n⭔ Singer : ${anu.result.penyanyi}\n⭔ Publish : ${anu.result.publish}\n⭔ Lirik :\n${anu.result.lirik.result}`, m)
                 client.sendMessage(m.chat, { audio: { url: anu.result.mp4aLink }, mimetype: 'audio/mpeg', fileName: anu.result.lagu+'.m4a' }, { quoted: msg })
             }
             break
@@ -2088,7 +2092,7 @@ break
                 if (!text) throw 'No Query Title'
                 m.reply(mess.wait)
                 let anu = await fetchJson(api('zenz', '/downloader/soundcloud', { url: isUrl(text)[0] }, 'apikey'))
-                let msg = await client.sendImage(m.chat, anu.result.thumb, `⭔ Title : ${anu.result.title}\n⭔ Url : ${isUrl(text)[0]}`)
+                let msg = await client.sendImage(m.chat, anu.result.thumb, `⭔ Titulo : ${anu.result.title}\n⭔ Url : ${isUrl(text)[0]}`)
                 client.sendMessage(m.chat, { audio: { url: anu.result.url }, mimetype: 'audio/mpeg', fileName: anu.result.title+'.m4a' }, { quoted: msg })
             }
             break
@@ -2131,7 +2135,7 @@ break
                 if (!text) throw 'Masukkan Query Link!'
                 m.reply(mess.wait)
                 let anu = await fetchJson(api('zenz', '/api/downloader/facebook', { url: text }, 'apikey'))
-                client.sendMessage(m.chat, { video: { url: anu.result.url }, caption: `⭔ Title : ${anu.result.title}`}, { quoted: m })
+                client.sendMessage(m.chat, { video: { url: anu.result.url }, caption: `⭔ Titulo : ${anu.result.title}`}, { quoted: m })
             }
             break
 	        case 'pindl': case 'pinterestdl': {
@@ -2153,7 +2157,7 @@ break
 		    let buttonMessage = {
 		        image: { url: anu.author.profilePic },
 			caption: `
-⭔ Title : ${anu.title}
+⭔ Titulo : ${anu.title}
 ⭔ Author : ${anu.author.name}
 ⭔ Like : ${anu.like}
 ⭔ Caption : ${anu.caption}
@@ -2167,7 +2171,7 @@ Untuk Download Media Silahkan Klik salah satu Button dibawah ini atau masukkan c
 		    client.sendMessage(m.chat, buttonMessage, { quoted: m })
 		} else if (anu.type == 'image') {
 		    anu.media.map(async (url) => {
-		        client.sendMessage(m.chat, { image: { url }, caption: `⭔ Title : ${anu.title}\n⭔ Author : ${anu.author.name}\n⭔ Like : ${anu.like}\n⭔ Caption : ${anu.caption}` }, { quoted: m })
+		        client.sendMessage(m.chat, { image: { url }, caption: `⭔ Titulo : ${anu.title}\n⭔ Author : ${anu.author.name}\n⭔ Like : ${anu.like}\n⭔ Caption : ${anu.caption}` }, { quoted: m })
 		    })
 		}
 	    }
@@ -2335,7 +2339,7 @@ ${Object.entries(global.db.data.sticker).map(([key, value], index) => `${index +
             }
             break
             case 'lockcmd': {
-                if (!isCreator) throw mess.owner
+                if (!isOwner) throw mess.owner
                 if (!m.quoted) throw 'Reply Pesan!'
                 if (!m.quoted.fileSha256) throw 'SHA256 Hash Missing'
                 let hash = m.quoted.fileSha256.toString('base64')
@@ -2494,15 +2498,15 @@ Lihat list Pesan Dengan ${prefixo}listmsg`)
                 break
             }
             case 'public': {
-                if (!isCreator) throw mess.owner
+                if (!isOwner) throw mess.owner
                 client.public = true
-                m.reply('*Sukse Change To Public Usage*')
+                m.reply('*Mudança bem-sucedida para uso público*')
             }
             break
             case 'self': {
-                if (!isCreator) throw mess.owner
+                if (!isOwner) throw mess.owner
                 client.public = false
-                m.reply('*Sukses Change To Self Usage*')
+                m.reply('*Mudança bem-sucedida para uso próprio*')
             }
             break
             case 'ping': case 'botstatus': case 'statusbot': {
@@ -2536,17 +2540,17 @@ Lihat list Pesan Dengan ${prefixo}listmsg`)
                 neww = performance.now()
                 oldd = performance.now()
                 respon = `
-Kecepatan Respon ${latensi.toFixed(4)} _Second_ \n ${oldd - neww} _miliseconds_\n\nRuntime : ${runtime(process.uptime())}
+Velocidade de resposta ${latensi.toFixed(4)} Segundo \n ${oldd - neww} _milissegundos_\n\nTempo de execução : ${runtime(process.uptime())}
 
-💻 Info Server
+💻 Informação do Servidor
 RAM: ${formatp(os.totalmem() - os.freemem())} / ${formatp(os.totalmem())}
 
-_NodeJS Memory Usaage_
+_NodeJS Uso de Memória_
 ${Object.keys(used).map((key, _, arr) => `${key.padEnd(Math.max(...arr.map(v=>v.length)),' ')}: ${formatp(used[key])}`).join('\n')}
 
-${cpus[0] ? `_Total CPU Usage_
+${cpus[0] ? `_Uso Total da Cpu_
 ${cpus[0].model.trim()} (${cpu.speed} MHZ)\n${Object.keys(cpu.times).map(type => `- *${(type + '*').padEnd(6)}: ${(100 * cpu.times[type] / cpu.total).toFixed(2)}%`).join('\n')}
-_CPU Core(s) Usage (${cpus.length} Core CPU)_
+_Uso do(s) núcleo(s) da CPU (${cpus.length} Núcleos de CPU)_
 ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Object.keys(cpu.times).map(type => `- *${(type + '*').padEnd(6)}: ${(100 * cpu.times[type] / cpu.total).toFixed(2)}%`).join('\n')}`).join('\n\n')}` : ''}
                 `.trim()
                 m.reply(respon)
@@ -2590,7 +2594,7 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
             if (!text) throw `Example : ${prefixo + comando} samsung`
             let res = await fetchJson(api('zenz', '/webzone/gsmarena', { query: text }, 'apikey'))
             let { judul, rilis, thumb, ukuran, type, storage, display, inchi, pixel, videoPixel, ram, chipset, batrai, merek_batre, detail } = res.result
-let capt = `⭔ Title: ${judul}
+let capt = `⭔ Titulo: ${judul}
 ⭔ Realease: ${rilis}
 ⭔ Size: ${ukuran}
 ⭔ Type: ${type}
@@ -2612,7 +2616,7 @@ let capt = `⭔ Title: ${judul}
             let res = await fetchJson(api('zenz', '/webzone/jadwalbioskop', { kota: text }, 'apikey'))
             let capt = `Jadwal Bioskop From : ${text}\n\n`
             for (let i of res.result){
-            capt += `⭔ Title: ${i.title}\n`
+            capt += `⭔ Titulo: ${i.title}\n`
             capt += `⭔ Thumbnail: ${i.thumb}\n`
             capt += `⭔ Url: ${i.url}\n\n──────────────────────\n`
             }
@@ -2623,7 +2627,7 @@ let capt = `⭔ Title: ${judul}
             let res = await fetchJson(api('zenz', '/webzone/nowplayingbioskop', {}, 'apikey'))
             let capt = `Now Playing Bioskop\n\n`
             for (let i of res.result){
-            capt += `⭔ Title: ${i.title}\n`
+            capt += `⭔ Titulo: ${i.title}\n`
             capt += `⭔ Url: ${i.url}\n`
             capt += `⭔ Img Url: ${i.img}\n\n──────────────────────\n`
             }
@@ -2688,7 +2692,7 @@ let capt = `⭔ Title: ${judul}
             }
             break
             case 'setmenu': {
-            if (!isCreator) throw mess.owner
+            if (!isOwner) throw mess.owner
             let setbot = db.data.settings[botNumber]
                if (args[0] === 'templateImage'){
                 setbot.templateImage = true
@@ -2749,7 +2753,7 @@ let alfamart = `628111500959@s.whatsapp.net`
 -Creator :  @${ownernya.split('@')[0]}\n-Lu : @${me.split('@')[0]}\n-Powered  : @${ini_mark.split('@')[0]}\n- :  @${qontak.split('@')[0]}\n- :  @${dana.split('@')[0]}\n- :  @${shopeeotp.split('@')[0]}\n- :  @${shopee.split('@')[0]}\n- :  @${tokopedia.split('@')[0]}\n- :  @${smartfrend.split('@')[0]}\n- :  @${getcontact.split('@')[0]}\n- :  @${facebook.split('@')[0]}\n- :  @${pasarpolis.split('@')[0]}\n- :  @${getcontact.split('@')[0]}\n- :  @${kominfo.split('@')[0]}\n- :  @${alfamart.split('@')[0]}`
             let ments = [ownernya, me, ini_mark, qontak, dana, shopeeotp, shopee, tokopedia, smartfrend, getcontact, facebook, pasarpolis, kominfo, alfamart]
             let buttons = [
-                        { buttonId: 'allmenu', buttonText: { displayText: '📖List Menu' }, type: 1 }
+                        { buttonId: 'allmenu', buttonText: { displayText: '📖Lista de Menus' }, type: 1 }
                     ]
                     await client.sendButtonText(m.chat, buttons, jawab, client.user.name, m, {mentions: ments})
             }
@@ -2757,86 +2761,85 @@ let alfamart = `628111500959@s.whatsapp.net`
             case 'menu': {
             let ownernya = ownernomer + '@s.whatsapp.net'
             let me = m.sender
-            let jawab = `*${ucapanWaktu}*
+            let jawab = `*${timeday}*
 ╭──❍「 𝙄𝙉𝙁𝙊 𝙐𝙎𝙀𝙍 」❍
-├ *Nama* : ${pushname}
-├ *Number* : @${me.split('@')[0]}
+├ *nome* : ${pushname}
+├ *numero* : @${me.split('@')[0]}
 ├ *Premium* : ${isPremium ? '✅' : `❌`}
-├ *Limit* : ${isPremium ? '♾Infinity' : `〽️${db.data.users[m.sender].limit}`}
+├ *limite* : ${isPremium ? '♾Infinity' : `〽️${db.data.users[m.sender].limit}`}
 ╰──❍
 
 ╭──❍「 𝙄𝙉𝙁𝙊 𝘽𝙊𝙏 」❍
-├ *Nama Bot* : ${pushname}
+├ *Nome* : ${pushname}
 ├ *Powered* : @${ini_mark.split('@')[0]}
-├ *Owner* : @${ownernya.split('@')[0]}
-├ *Mode* : ${client.public ? 'Public' : `Self`}
+├ *Dono* : @${ownernya.split('@')[0]}
+├ *Modo* : ${client.public ? 'Public' : `Self`}
 ├ *Prefix* :「 MULTI-PREFIX 」
 ╰──❍
 
-╭──❍「 𝙄𝙉𝘿𝙊𝙉𝙀𝙎𝙄𝘼𝙉 𝙏𝙄𝙈𝙀 」❍
-├ *Hari Ini* : ${hariini}
+╭──❍「 Data e Hora 」❍
+├ *Data* : ${data}
 ├ *Wib* : ${barat} WIB
 ├ *Wita* : ${tengah} WITA
 ├ *Wit* : ${timur} WIT
 ╰──❍`
             let ments = [ownernya, me, ini_mark]
-            let buttons = [{ buttonId: 'allmenu', buttonText: { displayText: '📖List Menu' }, type: 1 },{ buttonId: 'rules', buttonText: { displayText: '❗Rules' }, type: 1 },{ buttonId: 'donasi', buttonText: { displayText: '🙏Donasi' }, type: 1 }]
-            await client.sendButtonText(m.chat, buttons, jawab, nyoutube, m, {mentions: ments})
+            let buttons = [{ buttonId: 'allmenu', buttonText: { displayText: '📖Lista de Menus' }, type: 1 },{ buttonId: 'rules', buttonText: { displayText: '❗Rules' }, type: 1 },{ buttonId: 'doação', buttonText: { displayText: '🙏Doação' }, type: 1 }]
+            await client.sendButtonText(m.chat, buttons, jawab, footerbot, m, {mentions: ments})
             }
             break
             case 'simplemenu': case 'list': case 'help': {
             let ownernya = ownernomer + '@s.whatsapp.net'
             let me = m.sender
             let ments = [ownernya, me, ini_mark]
-            let kukiw = `*${ucapanWaktu}*
+            let kukiw = `*${timeday}*
 ╭──❍「 𝙄𝙉𝙁𝙊 𝙐𝙎𝙀𝙍 」❍
-├ *Nama* : ${pushname}
-├ *Number* : ${me.split('@')[0]}
+├ *Nome* : ${pushname}
+├ *Numero* : ${me.split('@')[0]}
 ├ *Premium* : ${isPremium ? '✅' : `❌`}
 ├ *Limit* : ${isPremium ? '♾Infinity' : `〽️${db.data.users[m.sender].limit}`}
 ╰──❍
 
 ╭──❍「 𝙄𝙉𝙁𝙊 𝘽𝙊𝙏 」❍
-├ *Nama Bot* : ${pushname}
-├ *Mode* : ${client.public ? 'Public' : `Self`}
+├ *Nome* : ${pushname}
+├ *Modo* : ${client.public ? 'Public' : `Self`}
 ├ *Prefix* :「 MULTI-PREFIX 」
 ╰──❍
 
-╭──❍「 𝙄𝙉𝘿𝙊𝙉𝙀𝙎𝙄𝘼𝙉 𝙏𝙄𝙈𝙀 」❍
-├ *Hari Ini* : ${hariini}
+╭──❍「 Data e Hora 」❍
+├ *Hari Ini* : ${data} Data
 ├ *Wib* : ${barat} WIB
 ├ *Wita* : ${tengah} WITA
 ├ *Wit* : ${timur} WIT
 ╰──❍`
                 let sections = [
                 {
-                title: "CHANGE MENU BOT",
+                title: "Lista de Menus",
                 rows: [
-                {title: "Group", rowId: `mgroup`, description: `👥Group Menu`},
+                {title: "Grupo", rowId: `mgroup`, description: `👥Menu de Grupo`},
                 {title: "Webzone", rowId: `mwebzone`, description: `📹Webzone Menu`},
-                {title: "Downloader", rowId: `mdownloader`, description: `📥Downloader Menu`},
-                {title: "Search", rowId: `msearch`, description: `🔍Search Menu`},
+                {title: "Downloader", rowId: `mdownloader`, description: `📥Menu de Download`},
+                {title: "Search", rowId: `msearch`, description: `🔍Menu de Pesquisa`},
                 {title: "Random", rowId: `mrandom`, description: `❔Random Menu`},
                 {title: "Text Pro", rowId: `mtextpro`, description: `❇Text Pro Menu`},
                 {title: "Photo Oxy", rowId: `mphotooxy`, description: `♻️Photo Oxy Menu`},
                 {title: "Ephoto", rowId: `mephoto`, description: `🗳Ephoto Menu`},
                 {title: "Fun", rowId: `mfun`, description: `🔫Fun Menu`},
                 {title: "Primbon", rowId: `mprimbon`, description: `😂Primbon Menu`},
-                {title: "Convert", rowId: `mconvert`, description: `🛠Convert Menu`},
-                {title: "Main", rowId: `mmain`, description: `💾Main Menu`},
+                {title: "Convert", rowId: `mconvert`, description: `🛠Menu de Conversão`},
+                {title: "Main", rowId: `mmain`, description: `💾Menu Principal`},
                 {title: "Database", rowId: `mdatabase`, description: `📁Database Menu`},
                 {title: "Anonymous", rowId: `manonymous`, description: `🎭Anonymous Menu`},
-                {title: "Islamic", rowId: `mislamic`, description: `🕌Islamic Menu`},
-                {title: "Voice", rowId: `mvoice`, description: `🎶Voice Menu`},
-                {title: "Owner", rowId: `mowner`, description: `🎟Owner Menu`}
+                {title: "Voz", rowId: `mvoice`, description: `🎶Menu de Voz`},
+                {title: "Dono", rowId: `mowner`, description: `🎟Menu de Dono`}
                 ]
                 },
                 ]
-                client.sendListMsg(m.chat, kukiw, nyoutube, `*Hello Kak ${pushname}*!`, `Pilih Menu`, sections, m)
+                client.sendListMsg(m.chat, kukiw, footerbot, `*Olá ${pushname}*!`, `Selecione o menu`, sections, m)
             }
             break
             case 'mgroup': {
-goup = `┌──⭓ *Group Menu*
+goup = `┌──⭓ *Menu de Grupo*
 │
 │⭔ ${prefixo}linkgroup
 │⭔ ${prefixo}ephemeral [option]
@@ -2860,8 +2863,8 @@ goup = `┌──⭓ *Group Menu*
 │⭔ ${prefixo}hapusvote
 │
 └───────⭓`
-let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖List Menu' }, type: 1 },{ buttonId: 'donasi', buttonText: { displayText: '🙏Donasi' }, type: 1 }]
-            await client.sendButtonText(m.chat, buttons, goup, nyoutube, m)
+let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Voltar' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖Lista de Menus' }, type: 1 },{ buttonId: 'doação', buttonText: { displayText: '🙏Doação' }, type: 1 }]
+            await client.sendButtonText(m.chat, buttons, goup, footerbot, m)
             }
             break
       case 'mwebzone': {
@@ -2877,8 +2880,8 @@ wbzone = `┌──⭓ *Webzone Menu*
 │⭔ ${prefixo}drakor
 │
 └───────⭓`
-let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖List Menu' }, type: 1 },{ buttonId: 'donasi', buttonText: { displayText: '🙏Donasi' }, type: 1 }]
-            await client.sendButtonText(m.chat, buttons, wbzone, nyoutube, m)
+let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Voltar' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖Lista de Menus' }, type: 1 },{ buttonId: 'doação', buttonText: { displayText: '🙏Doação' }, type: 1 }]
+            await client.sendButtonText(m.chat, buttons, wbzone, footerbot, m)
             }
             break
             case 'mdownloader': {
@@ -2901,12 +2904,12 @@ dwnloader = `┌──⭓ *Downloader Menu*
 │⭔ ${prefixo}soundcloud [url]
 │
 └───────⭓`
-let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖List Menu' }, type: 1 },{ buttonId: 'donasi', buttonText: { displayText: '🙏Donasi' }, type: 1 }]
-            await client.sendButtonText(m.chat, buttons, dwnloader, nyoutube, m)
+let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Voltar' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖Lista de Menus' }, type: 1 },{ buttonId: 'doação', buttonText: { displayText: '🙏Doação' }, type: 1 }]
+            await client.sendButtonText(m.chat, buttons, dwnloader, footerbot, m)
             }
             break
             case 'msearch': {
-sarch = `┌──⭓ *Search Menu*
+sarch = `┌──⭓ *Menu de Pesquisa*
 │
 │⭔ ${prefixo}play [query]
 │⭔ ${prefixo}yts [query]
@@ -2920,8 +2923,8 @@ sarch = `┌──⭓ *Search Menu*
 │⭔ ${prefixo}stalk [option] [query]
 │
 └───────⭓`
-let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖List Menu' }, type: 1 },{ buttonId: 'donasi', buttonText: { displayText: '🙏Donasi' }, type: 1 }]
-            await client.sendButtonText(m.chat, buttons, sarch, nyoutube, m)
+let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Voltar' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖Lista de Menus' }, type: 1 },{ buttonId: 'doação', buttonText: { displayText: '🙏Doação' }, type: 1 }]
+            await client.sendButtonText(m.chat, buttons, sarch, footerbot, m)
             }
             break
             case 'mrandom': {
@@ -2939,8 +2942,8 @@ rndom = `┌──⭓ *Random Menu*
 │⭔ ${prefixo}waifu
 │
 └───────⭓`
-let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖List Menu' }, type: 1 },{ buttonId: 'donasi', buttonText: { displayText: '🙏Donasi' }, type: 1 }]
-            await client.sendButtonText(m.chat, buttons, rndom, nyoutube, m)
+let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Voltar' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖Lista de Menus' }, type: 1 },{ buttonId: 'doação', buttonText: { displayText: '🙏Doação' }, type: 1 }]
+            await client.sendButtonText(m.chat, buttons, rndom, footerbot, m)
             }
             break
             case 'mtextpro': {
@@ -2979,8 +2982,8 @@ txtpro = `┌──⭓ *Text Pro Menu*
 │⭔ ${prefixo}gluetext
 │
 └───────⭓`
-let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖List Menu' }, type: 1 },{ buttonId: 'donasi', buttonText: { displayText: '🙏Donasi' }, type: 1 }]
-            await client.sendButtonText(m.chat, buttons, txtpro, nyoutube, m)
+let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Voltar' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖Lista de Menus' }, type: 1 },{ buttonId: 'doação', buttonText: { displayText: '🙏Doação' }, type: 1 }]
+            await client.sendButtonText(m.chat, buttons, txtpro, footerbot, m)
             }
             break
             case 'mphotooxy': {
@@ -3000,8 +3003,8 @@ potooxy = `┌──⭓ *Photo Oxy Menu*
 │⭔ ${prefixo}retrolol
 │
 └───────⭓`
-let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖List Menu' }, type: 1 },{ buttonId: 'donasi', buttonText: { displayText: '🙏Donasi' }, type: 1 }]
-            await client.sendButtonText(m.chat, buttons, potooxy, nyoutube, m)
+let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Voltar' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖Lista de Menus' }, type: 1 },{ buttonId: 'doação', buttonText: { displayText: '🙏Doação' }, type: 1 }]
+            await client.sendButtonText(m.chat, buttons, potooxy, footerbot, m)
             }
             break
             case 'mephoto': {
@@ -3018,8 +3021,8 @@ ehoto = `┌──⭓ *Ephoto Menu*
 │⭔ ${prefixo}ytcertificate
 │
 └───────⭓`
-let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖List Menu' }, type: 1 },{ buttonId: 'donasi', buttonText: { displayText: '🙏Donasi' }, type: 1 }]
-            await client.sendButtonText(m.chat, buttons, ehoto, nyoutube, m)
+let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Voltar' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖Lista de Menus' }, type: 1 },{ buttonId: 'doação', buttonText: { displayText: '🙏Doação' }, type: 1 }]
+            await client.sendButtonText(m.chat, buttons, ehoto, footerbot, m)
             }
             break
            case 'mfun': {
@@ -3041,8 +3044,8 @@ mun = `┌──⭓ *Fun Menu*
 │⭔ ${prefixo}suitpvp [@tag]
 │
 └───────⭓`
-let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖List Menu' }, type: 1 },{ buttonId: 'donasi', buttonText: { displayText: '🙏Donasi' }, type: 1 }]
-            await client.sendButtonText(m.chat, buttons, mun, nyoutube, m)
+let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Voltar' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖Lista de Menus' }, type: 1 },{ buttonId: 'doação', buttonText: { displayText: '🙏Doação' }, type: 1 }]
+            await client.sendButtonText(m.chat, buttons, mun, footerbot, m)
             }
             break
             case 'mprimbon': {
@@ -3079,8 +3082,8 @@ pimbon = `┌──⭓ *Primbon Menu*
 │⭔ ${prefixo}zodiak
 │
 └───────⭓`
-let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖List Menu' }, type: 1 },{ buttonId: 'donasi', buttonText: { displayText: '🙏Donasi' }, type: 1 }]
-            await client.sendButtonText(m.chat, buttons, pimbon, nyoutube, m)
+let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Voltar' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖Lista de Menus' }, type: 1 },{ buttonId: 'doação', buttonText: { displayText: '🙏Doação' }, type: 1 }]
+            await client.sendButtonText(m.chat, buttons, pimbon, footerbot, m)
             }
             break
             case 'mconvert': {
@@ -3105,8 +3108,8 @@ cnvert = `┌──⭓ *Convert Menu*
 │⭔ ${prefixo}smeme
 │
 └───────⭓`
-let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖List Menu' }, type: 1 },{ buttonId: 'donasi', buttonText: { displayText: '🙏Donasi' }, type: 1 }]
-            await client.sendButtonText(m.chat, buttons, cnvert, nyoutube, m)
+let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Voltar' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖Lista de Menus' }, type: 1 },{ buttonId: 'doação', buttonText: { displayText: '🙏Doação' }, type: 1 }]
+            await client.sendButtonText(m.chat, buttons, cnvert, footerbot, m)
             }
             break
             case 'mmain': {
@@ -3124,8 +3127,8 @@ min = `┌──⭓ *Main Menu*
 │⭔ ${prefixo}speedtest
 │
 └───────⭓`
-let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖List Menu' }, type: 1 },{ buttonId: 'donasi', buttonText: { displayText: '🙏Donasi' }, type: 1 }]
-            await client.sendButtonText(m.chat, buttons, min, nyoutube, m)
+let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Voltar' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖Lista de Menus' }, type: 1 },{ buttonId: 'doação', buttonText: { displayText: '🙏Doação' }, type: 1 }]
+            await client.sendButtonText(m.chat, buttons, min, footerbot, m)
             }
             break
             case 'mdatabase': {
@@ -3141,8 +3144,8 @@ dtbase = `┌──⭓ *Database Menu*
 │⭔ ${prefixo}delmsg
 │
 └───────⭓`
-let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖List Menu' }, type: 1 },{ buttonId: 'donasi', buttonText: { displayText: '🙏Donasi' }, type: 1 }]
-            await client.sendButtonText(m.chat, buttons, dtbase, nyoutube, m)
+let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Voltar' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖Lista de Menus' }, type: 1 },{ buttonId: 'doação', buttonText: { displayText: '🙏Doação' }, type: 1 }]
+            await client.sendButtonText(m.chat, buttons, dtbase, footerbot, m)
             }
             break
             case 'manonymous': {
@@ -3154,24 +3157,11 @@ aonymous = `┌──⭓ *Anonymous Menu*
 │⭔ ${prefixo}keluar
 │
 └───────⭓`
-let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖List Menu' }, type: 1 },{ buttonId: 'donasi', buttonText: { displayText: '🙏Donasi' }, type: 1 }]
-            await client.sendButtonText(m.chat, buttons, aonymous, nyoutube, m)
+let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Voltar' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖Lista de Menus' }, type: 1 },{ buttonId: 'doação', buttonText: { displayText: '🙏Doação' }, type: 1 }]
+            await client.sendButtonText(m.chat, buttons, aonymous, footerbot, m)
             }
             break
-            case 'mislamic': {
-islmic = `┌──⭓ *Islamic Menu*
-│
-│⭔ ${prefixo}iqra
-│⭔ ${prefixo}hadist
-│⭔ ${prefixo}alquran
-│⭔ ${prefixo}juzamma
-│⭔ ${prefixo}tafsirsurah
-│
-└───────⭓`
-let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖List Menu' }, type: 1 },{ buttonId: 'donasi', buttonText: { displayText: '🙏Donasi' }, type: 1 }]
-            await client.sendButtonText(m.chat, buttons, islmic, nyoutube, m)
-            }
-            break
+            
 case 'mvoice': {
 vice = `┌──⭓ *Voice Changer*
 │
@@ -3188,8 +3178,8 @@ vice = `┌──⭓ *Voice Changer*
 │⭔ ${prefixo}tupai
 │
 └───────⭓`
-let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖List Menu' }, type: 1 },{ buttonId: 'donasi', buttonText: { displayText: '🙏Donasi' }, type: 1 }]
-            await client.sendButtonText(m.chat, buttons, vice, nyoutube, m)
+let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Voltar' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖Lista de Menus' }, type: 1 },{ buttonId: 'doação', buttonText: { displayText: '🙏Doação' }, type: 1 }]
+            await client.sendButtonText(m.chat, buttons, vice, footerbot, m)
             }
             break
             case 'mowner': {
@@ -3208,15 +3198,15 @@ oner = `┌──⭓ *Owner Menu*
 │⭔ ${prefixo}setmenu [option]
 │
 └───────⭓`
-let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖List Menu' }, type: 1 },{ buttonId: 'donasi', buttonText: { displayText: '🙏Donasi' }, type: 1 }]
-            await client.sendButtonText(m.chat, buttons, oner, nyoutube, m)
+let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Voltar' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖Lista de Menus' }, type: 1 },{ buttonId: 'doação', buttonText: { displayText: '🙏Doação' }, type: 1 }]
+            await client.sendButtonText(m.chat, buttons, oner, footerbot, m)
             }
             break
             case 'allmenu': {
             let ownernya = ownernomer + '@s.whatsapp.net'
             let me = m.sender
             let ments = [ownernya, me, ini_mark]
-                anu = `*${ucapanWaktu}* kak @${me.split('@')[0]}\n*Powered*  : @${ini_mark.split('@')[0]}\n*Creator* : @${ownernya.split('@')[0]}
+                anu = `*${timeday}* @${me.split('@')[0]}\n*Powered*  : @${ini_mark.split('@')[0]}\n*Creator* : @${ownernya.split('@')[0]}
 ┌──⭓ *Group Menu*
 │
 │⭔ ${prefixo}linkgroup
@@ -3510,8 +3500,8 @@ let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back'
 │
 └───────⭓
 _Donasi Ngab_\n_Jangan Ngarep Free Mulu_`
-                let buttons = [{ buttonId: 'donasi', buttonText: { displayText: '🙏Donasi' }, type: 1 },{ buttonId: 'rules', buttonText: { displayText: '❗Rules' }, type: 1 }]
-            await client.sendButtonText(m.chat, buttons, anu, nyoutube, m, {mentions: ments})
+                let buttons = [{ buttonId: 'doação', buttonText: { displayText: '🙏Doação' }, type: 1 },{ buttonId: 'rules', buttonText: { displayText: '❗Rules' }, type: 1 }]
+            await client.sendButtonText(m.chat, buttons, anu, footerbot, m, {mentions: ments})
             }
             break
             case 'sound1':
@@ -3680,7 +3670,7 @@ await client.sendMessage(m.chat, { audio: naze_dev, mimetype: 'audio/mp4', ptt: 
 break
             default:
                 if (budy.startsWith('=>')) {
-                    if (!isCreator) return m.reply(mess.owner)
+                    if (!isOwner) return m.reply(mess.owner)
                     function Return(sul) {
                         sat = JSON.stringify(sul, null, 2)
                         bang = util.format(sat)
@@ -3697,7 +3687,7 @@ break
                 }
 
                 if (budy.startsWith('>')) {
-                    if (!isCreator) return m.reply(mess.owner)
+                    if (!isOwner) return m.reply(mess.owner)
                     try {
                         let evaled = await eval(budy.slice(2))
                         if (typeof evaled !== 'string') evaled = require('util').inspect(evaled)
@@ -3708,7 +3698,7 @@ break
                 }
 
                 if (budy.startsWith('$')) {
-                    if (!isCreator) return m.reply(mess.owner)
+                    if (!isOwner) return m.reply(mess.owner)
                     exec(budy.slice(2), (err, stdout) => {
                         if(err) return m.reply(err)
                         if (stdout) return m.reply(stdout)

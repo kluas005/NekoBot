@@ -149,9 +149,9 @@ async function start() {
                 }
 
                 if (anu.action == 'add') {
-                    client.sendMessage(anu.id, { image: { url: ppuser }, contextInfo: { mentionedJid: [num] }, caption: `Welcome To ${metadata.subject} @${num.split("@")[0]}` })
+                    client.sendMessage(anu.id, { image: { url: ppuser }, contextInfo: { mentionedJid: [num] }, caption: `Entrando em: ${metadata.subject} @${num.split("@")[0]}` })
                 } else if (anu.action == 'remove') {
-                    client.sendMessage(anu.id, { image: { url: ppuser }, contextInfo: { mentionedJid: [num] }, caption: `@${num.split("@")[0]} Leaving To ${metadata.subject}` })
+                    client.sendMessage(anu.id, { image: { url: ppuser }, contextInfo: { mentionedJid: [num] }, caption: `@${num.split("@")[0]} Saindo de: ${metadata.subject}` })
                 }
             }
         } catch (err) {
@@ -229,16 +229,16 @@ async function start() {
         const { connection, lastDisconnect } = update	    
         if (connection === 'close') {
         let reason = new Boom(lastDisconnect?.error)?.output.statusCode
-            if (reason === DisconnectReason.badSession) { console.log(`Bad Session File, Please Delete Session and Scan Again`); client.logout(); }
-            else if (reason === DisconnectReason.connectionClosed) { console.log("Connection closed, reconnecting...."); start(); }
-            else if (reason === DisconnectReason.connectionLost) { console.log("Connection Lost from Server, reconnecting..."); start(); }
-            else if (reason === DisconnectReason.connectionReplaced) { console.log("Connection Replaced, Another New Session Opened, Please Close Current Session First"); client.logout(); }
-            else if (reason === DisconnectReason.loggedOut) { console.log(`Device Logged Out, Please Scan Again And Run.`); client.logout(); }
-            else if (reason === DisconnectReason.restartRequired) { console.log("Restart Required, Restarting..."); start(); }
-            else if (reason === DisconnectReason.timedOut) { console.log("Connection TimedOut, Reconnecting..."); start(); }
-            else client.end(`Unknown DisconnectReason: ${reason}|${connection}`)
+            if (reason === DisconnectReason.badSession) { console.log(`Arquivo de sessão inválido, exclua a sessão e verifique novamente`); client.logout(); }
+            else if (reason === DisconnectReason.connectionClosed) { console.log("Conexão fechada, reconectando...."); start(); }
+            else if (reason === DisconnectReason.connectionLost) { console.log("Conexão perdida do servidor, reconectando..."); start(); }
+            else if (reason === DisconnectReason.connectionReplaced) { console.log("Conexão substituída, outra nova sessão aberta, feche a sessão atual primeiro"); client.logout(); }
+            else if (reason === DisconnectReason.loggedOut) { console.log(`Dispositivo desconectado, verifique novamente e execute.`); client.logout(); }
+            else if (reason === DisconnectReason.restartRequired) { console.log("Reinicialização necessária, reiniciando..."); start(); }
+            else if (reason === DisconnectReason.timedOut) { console.log("Tempo limite de conexão esgotado, conectando..."); start(); }
+            else client.end(`Razão de Desconexão Desconhecida: ${reason}|${connection}`)
         }
-        console.log('Connected...', update)
+        console.log('Conectado mlk...', update)
     })
 
     client.ev.on('creds.update', saveState)

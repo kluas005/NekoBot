@@ -9,6 +9,31 @@
       "afkTime": -1,
       "afkReason": "",
       "limit": 25
+    },
+    "555197241362@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "limit": 25
+    },
+    "5511942426036@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "limit": 25
+    },
+    "555198629283@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "limit": 25
+    },
+    "556592388290@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "limit": 25
+    },
+    "5511981086116@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "limit": 25
     }
   },
   "chats": {
@@ -21,6 +46,10 @@
       "antilink": false
     },
     "120363045146164295@g.us": {
+      "mute": false,
+      "antilink": false
+    },
+    "120363042422815034@g.us": {
       "mute": false,
       "antilink": false
     }
