@@ -65,9 +65,9 @@ module.exports = client = async (client, m, chatUpdate, store) => {
     try {
         var body = (m.mtype === 'conversation') ? m.message.conversation : (m.mtype == 'imageMessage') ? m.message.imageMessage.caption : (m.mtype == 'videoMessage') ? m.message.videoMessage.caption : (m.mtype == 'extendedTextMessage') ? m.message.extendedTextMessage.text : (m.mtype == 'buttonsResponseMessage') ? m.message.buttonsResponseMessage.selectedButtonId : (m.mtype == 'listResponseMessage') ? m.message.listResponseMessage.singleSelectReply.selectedRowId : (m.mtype == 'templateButtonReplyMessage') ? m.message.templateButtonReplyMessage.selectedId : (m.mtype === 'messageContextInfo') ? (m.message.buttonsResponseMessage?.selectedButtonId || m.message.listResponseMessage?.singleSelectReply.selectedRowId || m.text) : ''
         var budy = (typeof m.text == 'string' ? m.text : '')
-        var prefix = prefa ? /^[°•π÷×¶∆£¢€¥®™+✓_=|~!?@#$%^&.©^]/gi.test(body) ? body.match(/^[°•π÷×¶∆£¢€¥®™+✓_=|~!?@#$%^&.©^]/gi)[0] : "" : prefa ?? global.prefix
-        const isCmd = body.startsWith(prefix)
-        const command = body.replace(prefix, '').trim().split(/ +/).shift().toLowerCase()
+        var prefixo = prefa ? /^[°•π÷×¶∆£¢€¥®™+✓_=|~!?@#$%^&.©^]/gi.test(body) ? body.match(/^[°•π÷×¶∆£¢€¥®™+✓_=|~!?@#$%^&.©^]/gi)[0] : "" : prefa ?? global.prefix
+        const isCmd = body.startsWith(prefixo)
+        const comando = body.replace(prefixo, '').trim().split(/ +/).shift().toLowerCase()
         const args = body.trim().split(/ +/).slice(1)
         const pushname = m.pushName || "No Name"
         const botNumber = await client.decodeJid(client.user.id)
@@ -242,7 +242,7 @@ ${Array.from(room.jawaban, (jawaban, index) => {
             kuis = true
             jawaban = kuismath[m.sender.split('@')[0]]
             if (budy.toLowerCase() == jawaban) {
-                await m.reply(`🎮 Kuis Matematika  🎮\n\nJawaban Benar 🎉\n\nIngin bermain lagi? kirim ${prefix}math mode`)
+                await m.reply(`🎮 Kuis Matematika  🎮\n\nJawaban Benar 🎉\n\nIngin bermain lagi? kirim ${prefixo}math mode`)
                 delete kuismath[m.sender.split('@')[0]]
             } else m.reply('*Jawaban Salah!*')
         }
@@ -465,7 +465,7 @@ Selama ${clockString(new Date - user.afkTime)}
             user.afkReason = ''
         }
 	    
-        switch(command) {
+        switch(comando) {
 	    case 'afk': {
                 let user = global.db.data.users[m.sender]
                 user.afkTime = + new Date
@@ -519,7 +519,7 @@ Ketik *nyerah* untuk menyerah dan mengakui kekalahan`
             state: 'WAITING'
             }
             if (text) room.name = text
-            m.reply('Menunggu partner' + (text ? ` mengetik command dibawah ini ${prefix}${command} ${text}` : ''))
+            m.reply('Menunggu partner' + (text ? ` mengetik command dibawah ini ${prefixo}${comando} ${text}` : ''))
             this.game[room.id] = room
             }
             }
@@ -545,7 +545,7 @@ Ketik *nyerah* untuk menyerah dan mengakui kekalahan`
             let timeout = 60000
             if (Object.values(this.suit).find(roof => roof.id.startsWith('suit') && [roof.p, roof.p2].includes(m.sender))) m.reply(`Selesaikan suit mu yang sebelumnya`)
 	    if (m.mentionedJid[0] === m.sender) return m.reply(`Tidak bisa bermain dengan diri sendiri !`)
-            if (!m.mentionedJid[0]) return m.reply(`_Siapa yang ingin kamu tantang?_\nTag orangnya..\n\nContoh : ${prefix}suit @${owner[1]}`, m.chat, { mentions: [owner[1] + '@s.whatsapp.net'] })
+            if (!m.mentionedJid[0]) return m.reply(`_Siapa yang ingin kamu tantang?_\nTag orangnya..\n\nContoh : ${prefixo}suit @${owner[1]}`, m.chat, { mentions: [owner[1] + '@s.whatsapp.net'] })
             if (Object.values(this.suit).find(roof => roof.id.startsWith('suit') && [roof.p, roof.p2].includes(m.mentionedJid[0]))) throw `Orang yang kamu tantang sedang bermain suit bersama orang lain :(`
             let id = 'suit_' + new Date() * 1
             let caption = `_*SUIT PvP*_
@@ -612,13 +612,13 @@ Ketik *nyerah* untuk menyerah dan mengakui kekalahan`
             }
             break
             case 'halah': case 'hilih': case 'huluh': case 'heleh': case 'holoh':
-            if (!m.quoted && !text) throw `Kirim/reply text dengan caption ${prefix + command}`
-            ter = command[1].toLowerCase()
+            if (!m.quoted && !text) throw `Kirim/reply text dengan caption ${prefixo + comando}`
+            ter = comando[1].toLowerCase()
             tex = m.quoted ? m.quoted.text ? m.quoted.text : q ? q : m.text : q ? q : m.text
             m.reply(tex.replace(/[aiueo]/g, ter).replace(/[AIUEO]/g, ter.toUpperCase()))
             break
             case 'tebak': {
-                if (!text) throw `Example : ${prefix + command} lagu\n\nOption : \n1. lagu\n2. gambar\n3. kata\n4. kalimat\n5. lirik\n6.lontong`
+                if (!text) throw `Example : ${prefixo + comando} lagu\n\nOption : \n1. lagu\n2. gambar\n3. kata\n4. kalimat\n5. lirik\n6.lontong`
                 if (args[0] === "lagu") {
                     if (tebaklagu.hasOwnProperty(m.sender.split('@')[0])) throw "Masih Ada Sesi Yang Belum Diselesaikan!"
                     let anu = await fetchJson('https://fatiharridho.github.io/tebaklagu.json')
@@ -706,7 +706,7 @@ Ketik *nyerah* untuk menyerah dan mengakui kekalahan`
             case 'kuismath': case 'math': {
                 if (kuismath.hasOwnProperty(m.sender.split('@')[0])) throw "Masih Ada Sesi Yang Belum Diselesaikan!"
                 let { genMath, modes } = require('./src/math')
-                if (!text) throw `Mode: ${Object.keys(modes).join(' | ')}\nContoh penggunaan: ${prefix}math medium`
+                if (!text) throw `Mode: ${Object.keys(modes).join(' | ')}\nContoh penggunaan: ${prefixo}math medium`
                 let result = await genMath(text.toLowerCase())
                 client.sendText(m.chat, `*Berapa hasil dari: ${result.soal.toLowerCase()}*?\n\nWaktu: ${(result.waktu / 1000).toFixed(2)} detik`, m).then(() => {
                     kuismath[m.sender.split('@')[0]] = result.jawaban
@@ -751,7 +751,7 @@ Ketik *nyerah* untuk menyerah dan mengakui kekalahan`
             break
             case 'gbtku': {
             if (!isPremium) throw mess.premime
-			if (!text) throw `Example : ${prefix + command} hai|halo`
+			if (!text) throw `Example : ${prefixo + comando} hai|halo`
             let jawab = `${text.split("|")[0]}`
             let buttons = [{ buttonId: 'menu', buttonText: { displayText: `` }, type: 1 }]
             await client.sendButtonText(m.chat, buttons, jawab, `${text.split("|")[1]}`, m)
@@ -787,7 +787,7 @@ Ketik *nyerah* untuk menyerah dan mengakui kekalahan`
             break
             case 'setexif': {
                if (!isCreator) throw mess.owner
-               if (!text) throw `Example : ${prefix + command} packname|author`
+               if (!text) throw `Example : ${prefixo + comando} packname|author`
           global.packname = text.split("|")[0]
           global.author = text.split("|")[1]
           m.reply(`Exif berhasil diubah menjadi\n\n⭔ Packname : ${global.packname}\n⭔ Author : ${global.author}`)
@@ -855,9 +855,9 @@ Ketik *nyerah* untuk menyerah dan mengakui kekalahan`
             break
           case 'setppbot': {
                 if (!isCreator) throw mess.owner
-                if (!quoted) throw `Kirim/Reply Image Dengan Caption ${prefix + command}`
-                if (!/image/.test(mime)) throw `Kirim/Reply Image Dengan Caption ${prefix + command}`
-                if (/webp/.test(mime)) throw `Kirim/Reply Image Dengan Caption ${prefix + command}`
+                if (!quoted) throw `Kirim/Reply Image Dengan Caption ${prefixo + comando}`
+                if (!/image/.test(mime)) throw `Kirim/Reply Image Dengan Caption ${prefixo + comando}`
+                if (/webp/.test(mime)) throw `Kirim/Reply Image Dengan Caption ${prefixo + comando}`
                 let media = await client.downloadAndSaveMediaMessage(quoted)
                 await client.updateProfilePicture(botNumber, { url: media }).catch((err) => fs.unlinkSync(media))
                 m.reply(mess.success)
@@ -866,9 +866,9 @@ Ketik *nyerah* untuk menyerah dan mengakui kekalahan`
            case 'setppgroup': case 'setppgrup': case 'setppgc': {
                 if (!m.isGroup) throw mess.group
                 if (!isAdmins) throw mess.admin
-                if (!quoted) throw `Kirim/Reply Image Dengan Caption ${prefix + command}`
-                if (!/image/.test(mime)) throw `Kirim/Reply Image Dengan Caption ${prefix + command}`
-                if (/webp/.test(mime)) throw `Kirim/Reply Image Dengan Caption ${prefix + command}`
+                if (!quoted) throw `Kirim/Reply Image Dengan Caption ${prefixo + comando}`
+                if (!/image/.test(mime)) throw `Kirim/Reply Image Dengan Caption ${prefixo + comando}`
+                if (/webp/.test(mime)) throw `Kirim/Reply Image Dengan Caption ${prefixo + comando}`
                 let media = await client.downloadAndSaveMediaMessage(quoted)
                 await client.updateProfilePicture(m.chat, { url: media }).catch((err) => fs.unlinkSync(media))
                 m.reply(mess.success)
@@ -909,9 +909,9 @@ let teks = `══✪〘 *👥 Tag All* 〙✪══
 	    break
                case 'vote': {
             if (!m.isGroup) throw mess.group
-            if (m.chat in vote) throw `_Masih ada vote di chat ini!_\n\n*${prefix}hapusvote* - untuk menghapus vote`
-            if (!text) throw `Masukkan Alasan Melakukan Vote, Example: *${prefix + command} Owner Ganteng*`
-            m.reply(`Vote dimulai!\n\n*${prefix}upvote* - untuk ya\n*${prefix}devote* - untuk tidak\n*${prefix}cekvote* - untuk mengecek vote\n*${prefix}hapusvote* - untuk menghapus vote`)
+            if (m.chat in vote) throw `_Masih ada vote di chat ini!_\n\n*${prefixo}hapusvote* - untuk menghapus vote`
+            if (!text) throw `Masukkan Alasan Melakukan Vote, Example: *${prefixo + comando} Owner Ganteng*`
+            m.reply(`Vote dimulai!\n\n*${prefixo}upvote* - untuk ya\n*${prefixo}devote* - untuk tidak\n*${prefixo}cekvote* - untuk mengecek vote\n*${prefixo}hapusvote* - untuk menghapus vote`)
             vote[m.chat] = [q, [], []]
             await sleep(1000)
             upvote = vote[m.chat][1]
@@ -934,10 +934,10 @@ let teks = `══✪〘 *👥 Tag All* 〙✪══
 │ 
 └────
 
-*${prefix}hapusvote* - untuk menghapus vote`
+*${prefixo}hapusvote* - untuk menghapus vote`
 let buttonsVote = [
-  {buttonId: `${prefix}upvote`, buttonText: {displayText: '𝚄𝙿𝚅𝙾𝚃𝙴'}, type: 1},
-  {buttonId: `${prefix}devote`, buttonText: {displayText: '𝙳𝙴𝚅𝙾𝚃𝙴'}, type: 1}
+  {buttonId: `${prefixo}upvote`, buttonText: {displayText: '𝚄𝙿𝚅𝙾𝚃𝙴'}, type: 1},
+  {buttonId: `${prefixo}devote`, buttonText: {displayText: '𝙳𝙴𝚅𝙾𝚃𝙴'}, type: 1}
 ]
 
             let buttonMessageVote = {
@@ -951,7 +951,7 @@ let buttonsVote = [
             break
                case 'upvote': {
             if (!m.isGroup) throw mess.group
-            if (!(m.chat in vote)) throw `_*tidak ada voting digrup ini!*_\n\n*${prefix}vote* - untuk memulai vote`
+            if (!(m.chat in vote)) throw `_*tidak ada voting digrup ini!*_\n\n*${prefixo}vote* - untuk memulai vote`
             isVote = vote[m.chat][1].concat(vote[m.chat][2])
             wasVote = isVote.includes(m.sender)
             if (wasVote) throw 'Kamu Sudah Vote'
@@ -975,10 +975,10 @@ ${vote[m.chat][2].map((v, i) => `├ ${i + 1}. @${v.split`@`[0]}`).join('\n')}
 │ 
 └────
 
-*${prefix}hapusvote* - untuk menghapus vote`
+*${prefixo}hapusvote* - untuk menghapus vote`
             let buttonsUpvote = [
-              {buttonId: `${prefix}upvote`, buttonText: {displayText: '𝚄𝙿??𝙾𝚃𝙴'}, type: 1},
-              {buttonId: `${prefix}devote`, buttonText: {displayText: '𝙳𝙴𝚅𝙾𝚃𝙴'}, type: 1}
+              {buttonId: `${prefixo}upvote`, buttonText: {displayText: '𝚄𝙿??𝙾𝚃𝙴'}, type: 1},
+              {buttonId: `${prefixo}devote`, buttonText: {displayText: '𝙳𝙴𝚅𝙾𝚃𝙴'}, type: 1}
             ]
 
             let buttonMessageUpvote = {
@@ -993,7 +993,7 @@ ${vote[m.chat][2].map((v, i) => `├ ${i + 1}. @${v.split`@`[0]}`).join('\n')}
              break
                 case 'devote': {
             if (!m.isGroup) throw mess.group
-            if (!(m.chat in vote)) throw `_*tidak ada voting digrup ini!*_\n\n*${prefix}vote* - untuk memulai vote`
+            if (!(m.chat in vote)) throw `_*tidak ada voting digrup ini!*_\n\n*${prefixo}vote* - untuk memulai vote`
             isVote = vote[m.chat][1].concat(vote[m.chat][2])
             wasVote = isVote.includes(m.sender)
             if (wasVote) throw 'Kamu Sudah Vote'
@@ -1017,10 +1017,10 @@ ${vote[m.chat][2].map((v, i) => `├ ${i + 1}. @${v.split`@`[0]}`).join('\n')}
 │ 
 └────
 
-*${prefix}hapusvote* - untuk menghapus vote`
+*${prefixo}hapusvote* - untuk menghapus vote`
             let buttonsDevote = [
-              {buttonId: `${prefix}upvote`, buttonText: {displayText: '𝚄𝙿𝚅𝙾𝚃𝙴'}, type: 1},
-              {buttonId: `${prefix}devote`, buttonText: {displayText: '𝙳𝙴𝚅𝙾𝚃𝙴'}, type: 1}
+              {buttonId: `${prefixo}upvote`, buttonText: {displayText: '𝚄𝙿𝚅𝙾𝚃𝙴'}, type: 1},
+              {buttonId: `${prefixo}devote`, buttonText: {displayText: '𝙳𝙴𝚅𝙾𝚃𝙴'}, type: 1}
             ]
 
             let buttonMessageDevote = {
@@ -1036,7 +1036,7 @@ ${vote[m.chat][2].map((v, i) => `├ ${i + 1}. @${v.split`@`[0]}`).join('\n')}
                  
 case 'cekvote':
 if (!m.isGroup) throw mess.group
-if (!(m.chat in vote)) throw `_*tidak ada voting digrup ini!*_\n\n*${prefix}vote* - untuk memulai vote`
+if (!(m.chat in vote)) throw `_*tidak ada voting digrup ini!*_\n\n*${prefixo}vote* - untuk memulai vote`
 teks_vote = `*「 VOTE 」*
 
 *Alasan:* ${vote[m.chat][0]}
@@ -1055,7 +1055,7 @@ ${vote[m.chat][2].map((v, i) => `├ ${i + 1}. @${v.split`@`[0]}`).join('\n')}
 │ 
 └────
 
-*${prefix}hapusvote* - untuk menghapus vote
+*${prefixo}hapusvote* - untuk menghapus vote
 
 
 ©${client.user.id}
@@ -1064,7 +1064,7 @@ client.sendTextWithMentions(m.chat, teks_vote, m)
 break
 		case 'deletevote': case'delvote': case 'hapusvote': {
             if (!m.isGroup) throw mess.group
-            if (!(m.chat in vote)) throw `_*tidak ada voting digrup ini!*_\n\n*${prefix}vote* - untuk memulai vote`
+            if (!(m.chat in vote)) throw `_*tidak ada voting digrup ini!*_\n\n*${prefixo}vote* - untuk memulai vote`
             delete vote[m.chat]
             m.reply('Berhasil Menghapus Sesi Vote Di Grup Ini')
 	    }
@@ -1174,7 +1174,7 @@ break
             }
             break
             case 'report': case 'lapor': {
-            	if (!text) throw `Example : ${prefix + command} Lapor Ada Fitur Yang error`
+            	if (!text) throw `Example : ${prefixo + comando} Lapor Ada Fitur Yang error`
                let ownernya = ownernomer + '@s.whatsapp.net'
                let me = m.sender
                let pjtxt = `Pesan Dari : @${me.split('@')[0]} \nUntuk : @${ownernya.split('@')[0]}\n\n${text}`
@@ -1198,7 +1198,7 @@ break
             break
             case 'bcgc': case 'bcgroup': {
                 if (!isCreator) throw mess.owner
-                if (!text) throw `Text mana?\n\nExample : ${prefix + command} fatih-san`
+                if (!text) throw `Text mana?\n\nExample : ${prefixo + comando} fatih-san`
                 let getGroups = await client.groupFetchAllParticipating()
                 let groups = Object.entries(getGroups).slice(0).map(entry => entry[1])
                 let anu = groups.map(v => v.id)
@@ -1212,7 +1212,7 @@ break
             break
             case 'bc': case 'broadcast': case 'bcall': {
                 if (!isCreator) throw mess.owner
-                if (!text) throw `Text mana?\n\nExample : ${prefix + command} fatih-san`
+                if (!text) throw `Text mana?\n\nExample : ${prefixo + comando} fatih-san`
                 let anu = await store.chats.all().map(v => v.id)
                 m.reply(`Mengirim Broadcast Ke ${anu.length} Chat\nWaktu Selesai ${anu.length * 1.5} detik`)
 		for (let yoi of anu) {
@@ -1256,7 +1256,7 @@ break
              }
              break
             case 'sticker': case 's': case 'stickergif': case 'sgif': {
-            if (!quoted) throw `*Balas Video/Image Dengan Caption* ${prefix + command}`
+            if (!quoted) throw `*Balas Video/Image Dengan Caption* ${prefixo + comando}`
             m.reply(mess.wait)
                     if (/image/.test(mime)) {
                 let media = await quoted.download()
@@ -1268,19 +1268,19 @@ break
                 let encmedia = await client.sendVideoAsSticker(m.chat, media, m, { packname: global.packname, author: global.author })
                 await fs.unlinkSync(encmedia)
             } else {
-                throw `*Kirim Gambar/Video Dengan Caption* ${prefix + command}\nDurasi *Video 1-9 Detik*`
+                throw `*Kirim Gambar/Video Dengan Caption* ${prefixo + comando}\nDurasi *Video 1-9 Detik*`
                 }
             }
             break
             case 'ebinary': {
-            if (!text) throw `Example : ${prefix + command} text`
+            if (!text) throw `Example : ${prefixo + comando} text`
             let { eBinary } = require('./lib/binary')
             let eb = await eBinary(text)
             m.reply(eb)
         }
         break
             case 'dbinary': {
-            if (!text) throw `Example : ${prefix + command} text`
+            if (!text) throw `Example : ${prefixo + comando} text`
             let { dBinary } = require('./lib/binary')
             let db = await dBinary(text)
             m.reply(db)
@@ -1288,8 +1288,8 @@ break
         break
             case 'emojimix': {
 		let [emoji1, emoji2] = text.split`+`
-		if (!emoji1) throw `Example : ${prefix + command} 😅+🤔`
-		if (!emoji2) throw `Example : ${prefix + command} 😅+🤔`
+		if (!emoji1) throw `Example : ${prefixo + comando} 😅+🤔`
+		if (!emoji2) throw `Example : ${prefixo + comando} 😅+🤔`
 		let anu = await fetchJson(`https://tenor.googleapis.com/v2/featured?key=AIzaSyAyimkuYQYF_FXVALexPuGQctUWRURdCYQ&contentfilter=high&media_filter=png_transparent&component=proactive&collection=emoji_kitchen_v5&q=${encodeURIComponent(emoji1)}_${encodeURIComponent(emoji2)}`)
 		for (let res of anu.results) {
 		    let encmedia = await client.sendImageAsSticker(m.chat, res.url, m, { packname: global.packname, author: global.author, categories: res.tags })
@@ -1298,7 +1298,7 @@ break
 	    }
 	    break
 	    case 'emojimix2': {
-	    if (!text) throw `Example : ${prefix + command} 😅`
+	    if (!text) throw `Example : ${prefixo + comando} 😅`
 		let anu = await fetchJson(`https://tenor.googleapis.com/v2/featured?key=AIzaSyAyimkuYQYF_FXVALexPuGQctUWRURdCYQ&contentfilter=high&media_filter=png_transparent&component=proactive&collection=emoji_kitchen_v5&q=${encodeURIComponent(text)}`)
 		for (let res of anu.results) {
 		    let encmedia = await client.sendImageAsSticker(m.chat, res.url, m, { packname: global.packname, author: global.author, categories: res.tags })
@@ -1307,13 +1307,13 @@ break
 	    }
 	    break
 	       case 'attp': case 'ttp': {
-           if (!text) throw `Example : ${prefix + command} text`
-           await client.sendMedia(m.chat, `https://xteam.xyz/${command}?file&text=${text}`, 'naze', 'morou', m, {asSticker: true})
+           if (!text) throw `Example : ${prefixo + comando} text`
+           await client.sendMedia(m.chat, `https://xteam.xyz/${comando}?file&text=${text}`, 'naze', 'morou', m, {asSticker: true})
 
          }
          break
 	       case 'smeme': case 'stickmeme': case 'stikmeme': case 'stickermeme': case 'stikermeme': {
-	        let respond = `Kirim/reply image/sticker dengan caption ${prefix + command} text1|text2`
+	        let respond = `Kirim/reply image/sticker dengan caption ${prefixo + comando} text1|text2`
 	        if (!/image/.test(mime)) throw respond
             if (!text) throw respond
 	        m.reply(mess.wait)
@@ -1328,14 +1328,14 @@ break
             }
 	       break     
 	        case 'simih': case 'simisimi': {
-            if (!text) throw `Example : ${prefix + command} text`
+            if (!text) throw `Example : ${prefixo + comando} text`
             hm = await fetchJson(api('zenz', '/api/simisimi', { text : text }, 'apikey'))
             m.reply(hm.result.message)
             }
             break
             case 'toimage': case 'toimg': {
                 if (!quoted) throw 'Reply Image'
-                if (!/webp/.test(mime)) throw `Balas sticker dengan caption *${prefix + command}*`
+                if (!/webp/.test(mime)) throw `Balas sticker dengan caption *${prefixo + comando}*`
                 m.reply(mess.wait)
                 let media = await client.downloadAndSaveMediaMessage(quoted)
                 let ran = await getRandom('.png')
@@ -1350,7 +1350,7 @@ break
             break
 	        case 'tomp4': case 'tovideo': {
                 if (!quoted) throw 'Reply Image'
-                if (!/webp/.test(mime)) throw `balas stiker dengan caption *${prefix + command}*`
+                if (!/webp/.test(mime)) throw `balas stiker dengan caption *${prefixo + comando}*`
                 m.reply(mess.wait)
 		let { webp2mp4File } = require('./lib/uploader')
                 let media = await client.downloadAndSaveMediaMessage(quoted)
@@ -1360,8 +1360,8 @@ break
             }
             break
             case 'toaud': case 'toaudio': {
-            if (!/video/.test(mime) && !/audio/.test(mime)) throw `Kirim/Reply Video/Audio Yang Ingin Dijadikan Audio Dengan Caption ${prefix + command}`
-            if (!quoted) throw `Kirim/Reply Video/Audio Yang Ingin Dijadikan Audio Dengan Caption ${prefix + command}`
+            if (!/video/.test(mime) && !/audio/.test(mime)) throw `Kirim/Reply Video/Audio Yang Ingin Dijadikan Audio Dengan Caption ${prefixo + comando}`
+            if (!quoted) throw `Kirim/Reply Video/Audio Yang Ingin Dijadikan Audio Dengan Caption ${prefixo + comando}`
             m.reply(mess.wait)
             let media = await quoted.download()
             let { toAudio } = require('./lib/converter')
@@ -1370,9 +1370,9 @@ break
             }
             break
             case 'tomp3': {
-            if (/document/.test(mime)) throw `Kirim/Reply Video/Audio Yang Ingin Dijadikan MP3 Dengan Caption ${prefix + command}`
-            if (!/video/.test(mime) && !/audio/.test(mime)) throw `Kirim/Reply Video/Audio Yang Ingin Dijadikan MP3 Dengan Caption ${prefix + command}`
-            if (!quoted) throw `Kirim/Reply Video/Audio Yang Ingin Dijadikan MP3 Dengan Caption ${prefix + command}`
+            if (/document/.test(mime)) throw `Kirim/Reply Video/Audio Yang Ingin Dijadikan MP3 Dengan Caption ${prefixo + comando}`
+            if (!/video/.test(mime) && !/audio/.test(mime)) throw `Kirim/Reply Video/Audio Yang Ingin Dijadikan MP3 Dengan Caption ${prefixo + comando}`
+            if (!quoted) throw `Kirim/Reply Video/Audio Yang Ingin Dijadikan MP3 Dengan Caption ${prefixo + comando}`
             m.reply(mess.wait)
             let media = await quoted.download()
             let { toAudio } = require('./lib/converter')
@@ -1381,8 +1381,8 @@ break
             }
             break
             case 'tovn': case 'toptt': {
-            if (!/video/.test(mime) && !/audio/.test(mime)) throw `Reply Video/Audio Yang Ingin Dijadikan VN Dengan Caption ${prefix + command}`
-            if (!quoted) throw `Reply Video/Audio Yang Ingin Dijadikan VN Dengan Caption ${prefix + command}`
+            if (!/video/.test(mime) && !/audio/.test(mime)) throw `Reply Video/Audio Yang Ingin Dijadikan VN Dengan Caption ${prefixo + comando}`
+            if (!quoted) throw `Reply Video/Audio Yang Ingin Dijadikan VN Dengan Caption ${prefixo + comando}`
             m.reply(mess.wait)
             let media = await quoted.download()
             let { toPTT } = require('./lib/converter')
@@ -1392,7 +1392,7 @@ break
             break
             case 'togif': {
                 if (!quoted) throw 'Reply Image'
-                if (!/webp/.test(mime)) throw `balas stiker dengan caption *${prefix + command}*`
+                if (!/webp/.test(mime)) throw `balas stiker dengan caption *${prefixo + comando}*`
                 m.reply(mess.wait)
 		let { webp2mp4File } = require('./lib/uploader')
                 let media = await client.downloadAndSaveMediaMessage(quoted)
@@ -1416,9 +1416,9 @@ break
             }
             break
             case 'imagenobg': case 'removebg': case 'remove-bg': {
-	    if (!quoted) throw `Kirim/Reply Image Dengan Caption ${prefix + command}`
-	    if (!/image/.test(mime)) throw `Kirim/Reply Image Dengan Caption ${prefix + command}`
-	    if (/webp/.test(mime)) throw `Kirim/Reply Image Dengan Caption ${prefix + command}`
+	    if (!quoted) throw `Kirim/Reply Image Dengan Caption ${prefixo + comando}`
+	    if (!/image/.test(mime)) throw `Kirim/Reply Image Dengan Caption ${prefixo + comando}`
+	    if (/webp/.test(mime)) throw `Kirim/Reply Image Dengan Caption ${prefixo + comando}`
 	    let remobg = require('remove.bg')
 	    let apirnobg = ['q61faXzzR5zNU6cvcrwtUkRU','S258diZhcuFJooAtHTaPEn4T','5LjfCVAp4vVNYiTjq9mXJWHF','aT7ibfUsGSwFyjaPZ9eoJc61','BY63t7Vx2tS68YZFY6AJ4HHF','5Gdq1sSWSeyZzPMHqz7ENfi8','86h6d6u4AXrst4BVMD9dzdGZ','xp8pSDavAgfE5XScqXo9UKHF','dWbCoCb3TacCP93imNEcPxcL']
 	    let apinobg = apirnobg[Math.floor(Math.random() * apirnobg.length)]
@@ -1441,7 +1441,7 @@ break
 	    }
 	    break
 	    case 'yts': case 'ytsearch': {
-                if (!text) throw `Example : ${prefix + command} story wa anime`
+                if (!text) throw `Example : ${prefixo + comando} story wa anime`
                 let yts = require("yt-search")
                 let search = await yts(text)
                 let teks = 'YouTube Search\n\n Result From '+text+'\n\n'
@@ -1453,7 +1453,7 @@ break
             }
             break
         case 'google': {
-                if (!text) throw `Example : ${prefix + command} fatih arridho`
+                if (!text) throw `Example : ${prefixo + comando} fatih arridho`
                 let google = require('google-it')
                 google({'query': text}).then(res => {
                 let teks = `Google Search From : ${text}\n\n`
@@ -1467,7 +1467,7 @@ break
                 }
                 break
         case 'gimage': {
-        if (!text) throw `Example : ${prefix + command} kaori cicak`
+        if (!text) throw `Example : ${prefixo + comando} kaori cicak`
         anu = await fetchJson(`https://api.akuari.my.id/search/googleimage?query=${text}`)
         n = anu.result
         images = n[Math.floor(Math.random() * n.length)]
@@ -1487,7 +1487,7 @@ break
         }
         break
 	    case 'play': case 'ytplay': {
-                if (!text) throw `Example : ${prefix + command} story wa anime`
+                if (!text) throw `Example : ${prefixo + comando} story wa anime`
                 let yts = require("yt-search")
                 let search = await yts(text)
                 let anu = search.videos[Math.floor(Math.random() * search.videos.length)]
@@ -1517,7 +1517,7 @@ break
             break
 	    case 'ytmp3': case 'ytaudio': {
                 let { yta } = require('./lib/y2mate')
-                if (!text) throw `Example : ${prefix + command} https://youtube.com/watch?v=PtFMh6Tccag%27 128kbps`
+                if (!text) throw `Example : ${prefixo + comando} https://youtube.com/watch?v=PtFMh6Tccag%27 128kbps`
                 let quality = args[1] ? args[1] : '128kbps'
                 let media = await yta(text, quality)
                 if (media.filesize >= 100000) return m.reply('File Melebihi Batas '+util.format(media))
@@ -1527,7 +1527,7 @@ break
             break
             case 'ytmp4': case 'ytvideo': {
                 let { ytv } = require('./lib/y2mate')
-                if (!text) throw `Example : ${prefix + command} https://youtube.com/watch?v=PtFMh6Tccag%27 360p`
+                if (!text) throw `Example : ${prefixo + comando} https://youtube.com/watch?v=PtFMh6Tccag%27 360p`
                 let quality = args[1] ? args[1] : '360p'
                 let media = await ytv(text, quality)
                 if (media.filesize >= 100000) return m.reply('File Melebihi Batas '+util.format(media))
@@ -1536,7 +1536,7 @@ break
             break
 	    case 'getmusic': {
                 let { yta } = require('./lib/y2mate')
-                if (!text) throw `Example : ${prefix + command} 1`
+                if (!text) throw `Example : ${prefixo + comando} 1`
                 if (!m.quoted) return m.reply('Reply Pesan')
                 if (!m.quoted.isBaileys) throw `Hanya Bisa Membalas Pesan Dari Bot`
 		let urls = quoted.text.match(new RegExp(/(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.|m\.)?youtube\.com\/(?:watch|v|embed|shorts)(?:\.php)?(?:\?.*v=|\/))([a-zA-Z0-9\_-]+)/, 'gi'))
@@ -1550,7 +1550,7 @@ break
             break
             case 'getvideo': {
                 let { ytv } = require('./lib/y2mate')
-                if (!text) throw `Example : ${prefix + command} 1`
+                if (!text) throw `Example : ${prefixo + comando} 1`
                 if (!m.quoted) return m.reply('Reply Pesan')
                 if (!m.quoted.isBaileys) throw `Hanya Bisa Membalas Pesan Dari Bot`
                 let urls = quoted.text.match(new RegExp(/(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.|m\.)?youtube\.com\/(?:watch|v|embed|shorts)(?:\.php)?(?:\?.*v=|\/))([a-zA-Z0-9\_-]+)/, 'gi'))
@@ -1683,39 +1683,39 @@ break
             }
             break
             case '3dchristmas': case '3ddeepsea': case 'americanflag': case '3dscifi': case '3drainbow': case '3dwaterpipe': case 'halloweenskeleton': case 'sketch': case 'bluecircuit': case 'space': case 'metallic': case 'fiction': case 'greenhorror': case 'transformer': case 'berry': case 'thunder': case 'magma': case '3dcrackedstone': case '3dneonlight': case 'impressiveglitch': case 'naturalleaves': case 'fireworksparkle': case 'matrix': case 'dropwater':  case 'harrypotter': case 'foggywindow': case 'neondevils': case 'christmasholiday': case '3dgradient': case 'blackpink': case 'gluetext': {
-                if (!text) throw `Example : ${prefix + command} text`
+                if (!text) throw `Example : ${prefixo + comando} text`
                 m.reply(mess.wait)
-                client.sendMessage(m.chat, { image: { url: api('zenz', '/textpro/' + command, { text: text }, 'apikey') }, caption: `Text Pro ${command}` }, { quoted: m})
+                client.sendMessage(m.chat, { image: { url: api('zenz', '/textpro/' + comando, { text: text }, 'apikey') }, caption: `Text Pro ${comando}` }, { quoted: m})
 	    }
             break
 	    case 'shadow': case 'romantic': case 'smoke': case 'burnpapper': case 'naruto': case 'lovemsg': case 'grassmsg': case 'lovetext': case 'coffecup': case 'butterfly': case 'harrypotter': case 'retrolol': {
                 if (!text) throw 'No Query Text'
                 m.reply(mess.wait)
-                client.sendMessage(m.chat, { image: { url: api('zenz', '/photooxy/' + command, { text: text }, 'apikey') }, caption: `Photo Oxy ${command}` }, { quoted: m })
+                client.sendMessage(m.chat, { image: { url: api('zenz', '/photooxy/' + comando, { text: text }, 'apikey') }, caption: `Photo Oxy ${comando}` }, { quoted: m })
             }
             break
             case 'ffcover': case 'crossfire': case 'galaxy': case 'glass': case 'neon': case 'beach': case 'blackpink': case 'igcertificate': case 'ytcertificate': {
                 if (!text) throw 'No Query Text'
                 m.reply(mess.wait)
-                client.sendMessage(m.chat, { image: { url: api('zenz', '/ephoto/' + command, { text: text }, 'apikey') }, caption: `Ephoto ${command}` }, { quoted: m })
+                client.sendMessage(m.chat, { image: { url: api('zenz', '/ephoto/' + comando, { text: text }, 'apikey') }, caption: `Ephoto ${comando}` }, { quoted: m })
             }
             break
 	    case 'nomerhoki': case 'nomorhoki': {
-                if (!Number(text)) throw `Example : ${prefix + command} 6285822347348`
+                if (!Number(text)) throw `Example : ${prefixo + comando} 6285822347348`
                 let anu = await primbon.nomer_hoki(Number(text))
                 if (anu.status == false) return m.reply(anu.message)
                 client.sendText(m.chat, `⭔ *Nomor HP :* ${anu.message.nomer_hp}\n⭔ *Angka Shuzi :* ${anu.message.angka_shuzi}\n⭔ *Energi Positif :*\n- Kekayaan : ${anu.message.energi_positif.kekayaan}\n- Kesehatan : ${anu.message.energi_positif.kesehatan}\n- Cinta : ${anu.message.energi_positif.cinta}\n- Kestabilan : ${anu.message.energi_positif.kestabilan}\n- Persentase : ${anu.message.energi_positif.persentase}\n⭔ *Energi Negatif :*\n- Perselisihan : ${anu.message.energi_negatif.perselisihan}\n- Kehilangan : ${anu.message.energi_negatif.kehilangan}\n- Malapetaka : ${anu.message.energi_negatif.malapetaka}\n- Kehancuran : ${anu.message.energi_negatif.kehancuran}\n- Persentase : ${anu.message.energi_negatif.persentase}`, m)
             }
             break
             case 'artimimpi': case 'tafsirmimpi': {
-                if (!text) throw `Example : ${prefix + command} belanja`
+                if (!text) throw `Example : ${prefixo + comando} belanja`
                 let anu = await primbon.tafsir_mimpi(text)
                 if (anu.status == false) return m.reply(anu.message)
                 client.sendText(m.chat, `⭔ *Mimpi :* ${anu.message.mimpi}\n⭔ *Arti :* ${anu.message.arti}\n⭔ *Solusi :* ${anu.message.solusi}`, m)
             }
             break
             case 'ramalanjodoh': case 'ramaljodoh': {
-                if (!text) throw `Example : ${prefix + command} Dika, 7, 7, 2005, Novia, 16, 11, 2004`
+                if (!text) throw `Example : ${prefixo + comando} Dika, 7, 7, 2005, Novia, 16, 11, 2004`
                 let [nama1, tgl1, bln1, thn1, nama2, tgl2, bln2, thn2] = text.split`,`
                 let anu = await primbon.ramalan_jodoh(nama1, tgl1, bln1, thn1, nama2, tgl2, bln2, thn2)
                 if (anu.status == false) return m.reply(anu.message)
@@ -1723,7 +1723,7 @@ break
             }
             break
             case 'ramalanjodohbali': case 'ramaljodohbali': {
-                if (!text) throw `Example : ${prefix + command} Dika, 7, 7, 2005, Novia, 16, 11, 2004`
+                if (!text) throw `Example : ${prefixo + comando} Dika, 7, 7, 2005, Novia, 16, 11, 2004`
                 let [nama1, tgl1, bln1, thn1, nama2, tgl2, bln2, thn2] = text.split`,`
                 let anu = await primbon.ramalan_jodoh_bali(nama1, tgl1, bln1, thn1, nama2, tgl2, bln2, thn2)
                 if (anu.status == false) return m.reply(anu.message)
@@ -1731,7 +1731,7 @@ break
             }
             break
             case 'suamiistri': {
-                if (!text) throw `Example : ${prefix + command} Dika, 7, 7, 2005, Novia, 16, 11, 2004`
+                if (!text) throw `Example : ${prefixo + comando} Dika, 7, 7, 2005, Novia, 16, 11, 2004`
                 let [nama1, tgl1, bln1, thn1, nama2, tgl2, bln2, thn2] = text.split`,`
                 let anu = await primbon.suami_istri(nama1, tgl1, bln1, thn1, nama2, tgl2, bln2, thn2)
                 if (anu.status == false) return m.reply(anu.message)
@@ -1739,7 +1739,7 @@ break
             }
             break
             case 'ramalancinta': case 'ramalcinta': {
-                if (!text) throw `Example : ${prefix + command} Dika, 7, 7, 2005, Novia, 16, 11, 2004`
+                if (!text) throw `Example : ${prefixo + comando} Dika, 7, 7, 2005, Novia, 16, 11, 2004`
                 let [nama1, tgl1, bln1, thn1, nama2, tgl2, bln2, thn2] = text.split`,`
                 let anu = await primbon.ramalan_cinta(nama1, tgl1, bln1, thn1, nama2, tgl2, bln2, thn2)
                 if (anu.status == false) return m.reply(anu.message)
@@ -1747,14 +1747,14 @@ break
             }
             break
             case 'artinama': {
-                if (!text) throw `Example : ${prefix + command} Dika Ardianta`
+                if (!text) throw `Example : ${prefixo + comando} Dika Ardianta`
                 let anu = await primbon.arti_nama(text)
                 if (anu.status == false) return m.reply(anu.message)
                 client.sendText(m.chat, `⭔ *Nama :* ${anu.message.nama}\n⭔ *Arti :* ${anu.message.arti}\n⭔ *Catatan :* ${anu.message.catatan}`, m)
             }
             break
             case 'kecocokannama': case 'cocoknama': {
-                if (!text) throw `Example : ${prefix + command} Dika, 7, 7, 2005`
+                if (!text) throw `Example : ${prefixo + comando} Dika, 7, 7, 2005`
                 let [nama, tgl, bln, thn] = text.split`,`
                 let anu = await primbon.kecocokan_nama(nama, tgl, bln, thn)
                 if (anu.status == false) return m.reply(anu.message)
@@ -1762,7 +1762,7 @@ break
             }
             break
             case 'kecocokanpasangan': case 'cocokpasangan': case 'pasangan': {
-                if (!text) throw `Example : ${prefix + command} Dika|Novia`
+                if (!text) throw `Example : ${prefixo + comando} Dika|Novia`
                 let [nama1, nama2] = text.split`|`
                 let anu = await primbon.kecocokan_nama_pasangan(nama1, nama2)
                 if (anu.status == false) return m.reply(anu.message)
@@ -1770,7 +1770,7 @@ break
             }
             break
             case 'jadianpernikahan': case 'jadiannikah': {
-                if (!text) throw `Example : ${prefix + command} 6, 12, 2020`
+                if (!text) throw `Example : ${prefixo + comando} 6, 12, 2020`
                 let [tgl, bln, thn] = text.split`,`
                 let anu = await primbon.tanggal_jadian_pernikahan(tgl, bln, thn)
                 if (anu.status == false) return m.reply(anu.message)
@@ -1778,7 +1778,7 @@ break
             }
             break
             case 'sifatusaha': {
-                if (!ext)throw `Example : ${prefix+ command} 28, 12, 2021`
+                if (!ext)throw `Example : ${prefixo+ comando} 28, 12, 2021`
                 let [tgl, bln, thn] = text.split`,`
                 let anu = await primbon.sifat_usaha_bisnis(tgl, bln, thn)
                 if (anu.status == false) return m.reply(anu.message)
@@ -1786,7 +1786,7 @@ break
             }
             break
             case 'rejeki': case 'rezeki': {
-                if (!text) throw `Example : ${prefix + command} 7, 7, 2005`
+                if (!text) throw `Example : ${prefixo + comando} 7, 7, 2005`
                 let [tgl, bln, thn] = text.split`,`
                 let anu = await primbon.rejeki_hoki_weton(tgl, bln, thn)
                 if (anu.status == false) return m.reply(anu.message)
@@ -1794,7 +1794,7 @@ break
             }
             break
             case 'pekerjaan': case 'kerja': {
-                if (!text) throw `Example : ${prefix + command} 7, 7, 2005`
+                if (!text) throw `Example : ${prefixo + comando} 7, 7, 2005`
                 let [tgl, bln, thn] = text.split`,`
                 let anu = await primbon.pekerjaan_weton_lahir(tgl, bln, thn)
                 if (anu.status == false) return m.reply(anu.message)
@@ -1802,7 +1802,7 @@ break
             }
             break
             case 'ramalannasib': case 'ramalnasib': case 'nasib': {
-                if (!text) throw `Example❗:\n${prefix + command} 7,7,2005`
+                if (!text) throw `Example❗:\n${prefixo + comando} 7,7,2005`
                 let [tgl, bln, thn] = text.split`,`
                 let anu = await primbon.ramalan_nasib(tgl, bln, thn)
                 if (anu.status == false) return m.reply(anu.message)
@@ -1810,7 +1810,7 @@ break
             }
             break
             case 'potensipenyakit': case 'penyakit': {
-                if (!text) throw `Example : ${prefix + command} 7,7,2005`
+                if (!text) throw `Example : ${prefixo + comando} 7,7,2005`
                 let [tgl, bln, thn] = text.split`,`
                 let anu = await primbon.cek_potensi_penyakit(tgl, bln, thn)
                 if (anu.status == false) return m.reply(anu.message)
@@ -1818,7 +1818,7 @@ break
             }
             break
             case 'artitarot': case 'tarot': {
-                if (!text) throw `Example : ${prefix + command} 7,7,2005`
+                if (!text) throw `Example : ${prefixo + comando} 7,7,2005`
                 let [tgl, bln, thn] = text.split`,`
                 let anu = await primbon.arti_kartu_tarot(tgl, bln, thn)
                 if (anu.status == false) return m.reply(anu.message)
@@ -1826,7 +1826,7 @@ break
             }
             break
             case 'fengshui': {
-                if (!text) throw `Example : ${prefix + command} Dika,1,2005\n\nNote : ${prefix + command} Nama, gender, tahun lahir\nGender : 1 untuk laki-laki & 2 untuk perempuan`
+                if (!text) throw `Example : ${prefixo + comando} Dika,1,2005\n\nNote : ${prefixo + comando} Nama, gender, tahun lahir\nGender : 1 untuk laki-laki & 2 untuk perempuan`
                 let [nama, gender, tahun] = text.split`,`
                 let anu = await primbon.perhitungan_feng_shui(nama, gender, tahun)
                 if (anu.status == false) return m.reply(anu.message)
@@ -1834,7 +1834,7 @@ break
             }
             break
             case 'haribaik': {
-                if (!text) throw `Example : ${prefix + command} 7,7,2005`
+                if (!text) throw `Example : ${prefixo + comando} 7,7,2005`
                 let [tgl, bln, thn] = text.split`,`
                 let anu = await primbon.petung_hari_baik(tgl, bln, thn)
                 if (anu.status == false) return m.reply(anu.message)
@@ -1842,7 +1842,7 @@ break
             }
             break
             case 'harisangar': case 'taliwangke': {
-                if (!text) throw `Example : ${prefix + command} 7,7,2005`
+                if (!text) throw `Example : ${prefixo + comando} 7,7,2005`
                 let [tgl, bln, thn] = text.split`,`
                 let anu = await primbon.hari_sangar_taliwangke(tgl, bln, thn)
                 if (anu.status == false) return m.reply(anu.message)
@@ -1850,7 +1850,7 @@ break
             }
             break
             case 'harinaas': case 'harisial': {
-                if (!text) throw `Example : ${prefix + command} 7,7,2005`
+                if (!text) throw `Example : ${prefixo + comando} 7,7,2005`
                 let [tgl, bln, thn] = text.split`,`
                 let anu = await primbon.primbon_hari_naas(tgl, bln, thn)
                 if (anu.status == false) return m.reply(anu.message)
@@ -1858,7 +1858,7 @@ break
             }
             break
             case 'nagahari': case 'harinaga': {
-                if (!text) throw `Example : ${prefix + command} 7,7,2005`
+                if (!text) throw `Example : ${prefixo + comando} 7,7,2005`
                 let [tgl, bln, thn] = text.split`,`
                 let anu = await primbon.rahasia_naga_hari(tgl, bln, thn)
                 if (anu.status == false) return m.reply(anu.message)
@@ -1866,7 +1866,7 @@ break
             }
             break
             case 'arahrejeki': case 'arahrezeki': {
-                if (!text) throw `Example : ${prefix + command} 7,7,2005`
+                if (!text) throw `Example : ${prefixo + comando} 7,7,2005`
                 let [tgl, bln, thn] = text.split`,`
                 let anu = await primbon.primbon_arah_rejeki(tgl, bln, thn)
                 if (anu.status == false) return m.reply(anu.message)
@@ -1874,7 +1874,7 @@ break
             }
             break
             case 'peruntungan': {
-                if (!text) throw `Example : ${prefix + command} DIka,7,7,2005,2022\n\nNote : ${prefix + command} Nama, tanggal lahir, bulan lahir, tahun lahir, untuk tahun`
+                if (!text) throw `Example : ${prefixo + comando} DIka,7,7,2005,2022\n\nNote : ${prefixo + comando} Nama, tanggal lahir, bulan lahir, tahun lahir, untuk tahun`
                 let [nama, tgl, bln, thn, untuk] = text.split`,`
                 let anu = await primbon.ramalan_peruntungan(nama, tgl, bln, thn, untuk)
                 if (anu.status == false) return m.reply(anu.message)
@@ -1882,7 +1882,7 @@ break
             }
             break
             case 'weton': case 'wetonjawa': {
-                if (!text) throw `Example : ${prefix + command} 7,7,2005`
+                if (!text) throw `Example : ${prefixo + comando} 7,7,2005`
                 let [tgl, bln, thn] = text.split`,`
                 let anu = await primbon.weton_jawa(tgl, bln, thn)
                 if (anu.status == false) return m.reply(anu.message)
@@ -1890,7 +1890,7 @@ break
             }
             break
             case 'sifat': case 'karakter': {
-                if (!text) throw `Example : ${prefix + command} Dika, 7,7,2005`
+                if (!text) throw `Example : ${prefixo + comando} Dika, 7,7,2005`
                 let [nama, tgl, bln, thn] = text.split`,`
                 let anu = await primbon.sifat_karakter_tanggal_lahir(nama, tgl, bln, thn)
                 if (anu.status == false) return m.reply(anu.message)
@@ -1898,7 +1898,7 @@ break
             }
             break
             case 'keberuntungan': {
-                if (!text) throw `Example : ${prefix + command} Dika, 7,7,2005`
+                if (!text) throw `Example : ${prefixo + comando} Dika, 7,7,2005`
                 let [nama, tgl, bln, thn] = text.split`,`
                 let anu = await primbon.potensi_keberuntungan(nama, tgl, bln, thn)
                 if (anu.status == false) return m.reply(anu.message)
@@ -1906,7 +1906,7 @@ break
             }
             break
             case 'memancing': {
-                if (!text) throw `Example : ${prefix + command} 12,1,2022`
+                if (!text) throw `Example : ${prefixo + comando} 12,1,2022`
                 let [tgl, bln, thn] = text.split`,`
                 let anu = await primbon.primbon_memancing_ikan(tgl, bln, thn)
                 if (anu.status == false) return m.reply(anu.message)
@@ -1914,7 +1914,7 @@ break
             }
             break
             case 'masasubur': {
-                if (!text) throw `Example : ${prefix + command} 12,1,2022,28\n\nNote : ${prefix + command} hari pertama menstruasi, siklus`
+                if (!text) throw `Example : ${prefixo + comando} 12,1,2022,28\n\nNote : ${prefixo + comando} hari pertama menstruasi, siklus`
                 let [tgl, bln, thn, siklus] = text.split`,`
                 let anu = await primbon.masa_subur(tgl, bln, thn, siklus)
                 if (anu.status == false) return m.reply(anu.message)
@@ -1922,7 +1922,7 @@ break
             }
             break
             case 'zodiak': case 'zodiac': {
-                if (!text) throw `Example : ${prefix+ command} 7 7 2005`
+                if (!text) throw `Example : ${prefixo+ comando} 7 7 2005`
                 let zodiak = [
                     ["capricorn", new Date(1970, 0, 1)],
                     ["aquarius", new Date(1970, 0, 20)],
@@ -1960,53 +1960,53 @@ break
 //PEMBATAS=======================================
 	    case 'stalker': case 'stalk': {
 		if (!isPremium && global.db.data.users[m.sender].limit < 1) return m.reply('Limit Harian Anda Telah Habis')
-                if (!text) return m.reply(`Example : ${prefix +command} type id\n\nList Type :\n1. ff (Free Fire)\n2. ml (Mobile Legends)\n3. aov (Arena Of Valor)\n4. cod (Call Of Duty)\n5. pb (point Blank)\n6. ig (Instagram)\n7. npm (https://npmjs.com)`)
+                if (!text) return m.reply(`Example : ${prefixo +comando} type id\n\nList Type :\n1. ff (Free Fire)\n2. ml (Mobile Legends)\n3. aov (Arena Of Valor)\n4. cod (Call Of Duty)\n5. pb (point Blank)\n6. ig (Instagram)\n7. npm (https://npmjs.com)`)
                 let [type, id, zone] = args
                 if (type.toLowerCase() == 'ff') {
-                    if (!id) throw `No Query id, Example ${prefix + command} ff 552992060`
+                    if (!id) throw `No Query id, Example ${prefixo + comando} ff 552992060`
                     let anu = await fetchJson(api('zenz', '/api/nickff', { apikey: global.APIKeys[global.APIs['zenz']], query: id }))
                     if (anu.status == false) return m.reply(anu.result.message)
                     m.reply(`ID : ${anu.result.gameId}\nUsername : ${anu.result.userName}`)
 		    db.data.users[m.sender].limit -= 1
                 } else if (type.toLowerCase() == 'ml') {
-                    if (!id) throw `No Query id, Example : ${prefix + command} ml 214885010 2253`
-                    if (!zone) throw `No Query id, Example : ${prefix + command} ml 214885010 2253`
+                    if (!id) throw `No Query id, Example : ${prefixo + comando} ml 214885010 2253`
+                    if (!zone) throw `No Query id, Example : ${prefixo + comando} ml 214885010 2253`
                     let anu = await fetchJson(api('zenz', '/api/nickml', { apikey: global.APIKeys[global.APIs['zenz']], query: id, query2: zone }))
                     if (anu.status == false) return m.reply(anu.result.message)
                     m.reply(`ID : ${anu.result.gameId}\nZone : ${anu.result.zoneId}\nUsername : ${anu.result.userName}`)
 		    db.data.users[m.sender].limit -= 1
                 } else if (type.toLowerCase() == 'aov') {
-                    if (!id) throw `No Query id, Example ${prefix + command} aov 293306941441181`
+                    if (!id) throw `No Query id, Example ${prefixo + comando} aov 293306941441181`
                     let anu = await fetchJson(api('zenz', '/api/nickaov', { apikey: global.APIKeys[global.APIs['zenz']], query: id }))
                     if (anu.status == false) return m.reply(anu.result.message)
                     m.reply(`ID : ${anu.result.gameId}\nUsername : ${anu.result.userName}`)
 		    db.data.users[m.sender].limit -= 1
                 } else if (type.toLowerCase() == 'cod') {
-                    if (!id) throw `No Query id, Example ${prefix + command} cod 6290150021186841472`
+                    if (!id) throw `No Query id, Example ${prefixo + comando} cod 6290150021186841472`
                     let anu = await fetchJson(api('zenz', '/api/nickcod', { apikey: global.APIKeys[global.APIs['zenz']], query: id }))
                     if (anu.status == false) return m.reply(anu.result.message)
                     m.reply(`ID : ${anu.result.gameId}\nUsername : ${anu.result.userName}`)
 		    db.data.users[m.sender].limit -= 1
                 } else if (type.toLowerCase() == 'pb') {
-                    if (!id) throw `No Query id, Example ${prefix + command} pb riio46`
+                    if (!id) throw `No Query id, Example ${prefixo + comando} pb riio46`
                     let anu = await fetchJson(api('zenz', '/api/nickpb', { apikey: global.APIKeys[global.APIs['zenz']], query: id }))
                     if (anu.status == false) return m.reply(anu.result.message)
                     m.reply(`ID : ${anu.result.gameId}\nUsername : ${anu.result.userName}`)
 		    db.data.users[m.sender].limit -= 1
                 } else if (type.toLowerCase() == 'ig') {
-                    if (!id) throw `No Query username, Example : ${prefix + command} ig cak_haho`
+                    if (!id) throw `No Query username, Example : ${prefixo + comando} ig cak_haho`
                     let { result: anu } = await fetchJson(api('zenz', '/api/stalker/ig', { username: id }, 'apikey'))
                     if (anu.status == false) return m.reply(anu.result.message)
                     client.sendMedia(m.chat, anu.caption.profile_hd, '', `⭔ Full Name : ${anu.caption.full_name}\n⭔ User Name : ${anu.caption.user_name}\n⭔ ID ${anu.caption.user_id}\n⭔ Followers : ${anu.caption.followers}\n⭔ Following : ${anu.caption.following}\n⭔ Bussines : ${anu.caption.bussines}\n⭔ Profesional : ${anu.caption.profesional}\n⭔ Verified : ${anu.caption.verified}\n⭔ Private : ${anu.caption.private}\n⭔ Bio : ${anu.caption.biography}\n⭔ Bio Url : ${anu.caption.bio_url}`, m)
 		    db.data.users[m.sender].limit -= 1
                 } else if (type.toLowerCase() == 'npm') {
-                    if (!id) throw `No Query username, Example : ${prefix + command} npm scrape-primbon`
+                    if (!id) throw `No Query username, Example : ${prefixo + comando} npm scrape-primbon`
                     let { result: anu } = await fetchJson(api('zenz', '/api/stalker/npm', { query: id }, 'apikey'))
                     if (anu.status == false) return m.reply(anu.result.message)
                     m.reply(`⭔ Name : ${anu.name}\n⭔ Version : ${Object.keys(anu.versions)}\n⭔ Created : ${tanggal(anu.time.created)}\n⭔ Modified : ${tanggal(anu.time.modified)}\n⭔ Maintainers :\n ${anu.maintainers.map(v => `- ${v.name} : ${v.email}`).join('\n')}\n\n⭔ Description : ${anu.description}\n⭔ Homepage : ${anu.homepage}\n⭔ Keywords : ${anu.keywords}\n⭔ Author : ${anu.author.name}\n⭔ License : ${anu.license}\n⭔ Readme : ${anu.readme}`)
 		    db.data.users[m.sender].limit -= 1
                 } else {
-                    m.reply(`Example : ${prefix +command} type id\n\nList Type :\n1. ff (Free Fire)\n2. ml (Mobile Legends)\n3. aov (Arena Of Valor)\n4. cod (Call Of Duty)\n5. pb (point Blank)\n6. ig (Instagram)\n7. npm (https://npmjs.com)`)
+                    m.reply(`Example : ${prefixo +comando} type id\n\nList Type :\n1. ff (Free Fire)\n2. ml (Mobile Legends)\n3. aov (Arena Of Valor)\n4. cod (Call Of Duty)\n5. pb (point Blank)\n6. ig (Instagram)\n7. npm (https://npmjs.com)`)
                 }
             }
             break
@@ -2142,7 +2142,7 @@ break
             }
             break
             case 'umma': case 'ummadl': {
-	        if (!text) throw `Example : ${prefix + command} https://umma.id/channel/video/post/gus-arafat-sumber-kecewa-84464612933698`
+	        if (!text) throw `Example : ${prefixo + comando} https://umma.id/channel/video/post/gus-arafat-sumber-kecewa-84464612933698`
                 let { umma } = require('./lib) scraper')
 		let anu = await umma(isUrl(text)[0])
 		if (anu.type == 'video') {
@@ -2173,7 +2173,7 @@ Untuk Download Media Silahkan Klik salah satu Button dibawah ini atau masukkan c
 	    }
 	    break
         case 'ringtone': {
-		if (!text) throw `Example : ${prefix + command} black rover`
+		if (!text) throw `Example : ${prefixo + comando} black rover`
         let { ringtone } = require('./lib/scraper')
 		let anu = await ringtone(text)
 		let result = anu[Math.floor(Math.random() * anu.length)]
@@ -2181,7 +2181,7 @@ Untuk Download Media Silahkan Klik salah satu Button dibawah ini atau masukkan c
 	    }
 	    break
 		case 'iqra': {
-		oh = `Example : ${prefix + command} 3\n\nIQRA Yang tersedia : 1,2,3,4,5,6`
+		oh = `Example : ${prefixo + comando} 3\n\nIQRA Yang tersedia : 1,2,3,4,5,6`
 		if (!text) throw oh
 		yy = await getBuffer(`https://islamic-api-indonesia.herokuapp.com/api/data/pdf/iqra${text}`)
 		client.sendMessage(m.chat, {document: yy, mimetype: 'application/pdf', fileName: `iqra${text}.pdf`}, {quoted:m}).catch ((err) => m.reply(oh))
@@ -2201,7 +2201,7 @@ Untuk Download Media Silahkan Klik salah satu Button dibawah ini atau masukkan c
 		m.reply(mess.wait)
 		client.sendMessage(m.chat, {document: {url: 'https://fatiharridho.my.id/database/islam/juz-amma-arab-latin-indonesia.xlsx'}, mimetype: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', fileName: 'juz-amma-arab-latin-indonesia.xlsx'}, {quoted:m})
 		} else {
-		m.reply(`Mau format apa ? Example : ${prefix + command} pdf
+		m.reply(`Mau format apa ? Example : ${prefixo + comando} pdf
 
 Format yang tersedia : pdf, docx, pptx, xlsx`)
 		}
@@ -2209,8 +2209,8 @@ Format yang tersedia : pdf, docx, pptx, xlsx`)
 		break**/
 		case 'hadis': case 'hadist': {
 		if (!args[0]) throw `Contoh:
-${prefix + command} bukhari 1
-${prefix + command} abu-daud 1
+${prefixo + comando} bukhari 1
+${prefixo + comando} abu-daud 1
 
 Pilihan tersedia:
 abu-daud
@@ -2229,7 +2229,7 @@ malik
 1 - 1594
 muslim
 1 - 5362`
-		if (!args[1]) throw `Hadis yang ke berapa?\n\ncontoh:\n${prefix + command} muslim 1`
+		if (!args[1]) throw `Hadis yang ke berapa?\n\ncontoh:\n${prefixo + comando} muslim 1`
 		try {
 		let res = await fetchJson(`https://islamic-api-indonesia.herokuapp.com/api/data/json/hadith/${args[0]}`)
 		let { number, arab, id } = res.find(v => v.number == args[1])
@@ -2244,8 +2244,8 @@ ${id}`)
 		}
 		break
 		case 'alquran': {
-		if (!args[0]) throw `Contoh penggunaan:\n${prefix + command} 1 2\n\nmaka hasilnya adalah surah Al-Fatihah ayat 2 beserta audionya, dan ayatnya 1 aja`
-		if (!args[1]) throw `Contoh penggunaan:\n${prefix + command} 1 2\n\nmaka hasilnya adalah surah Al-Fatihah ayat 2 beserta audionya, dan ayatnya 1 aja`
+		if (!args[0]) throw `Contoh penggunaan:\n${prefixo + comando} 1 2\n\nmaka hasilnya adalah surah Al-Fatihah ayat 2 beserta audionya, dan ayatnya 1 aja`
+		if (!args[1]) throw `Contoh penggunaan:\n${prefixo + comando} 1 2\n\nmaka hasilnya adalah surah Al-Fatihah ayat 2 beserta audionya, dan ayatnya 1 aja`
 		let res = await fetchJson(`https://islamic-api-indonesia.herokuapp.com/api/data/quran?surah=${args[0]}&ayat=${args[1]}`)
 		let txt = `*Arab* : ${res.result.data.text.arab}
 *English* : ${res.result.data.translation.en}
@@ -2257,8 +2257,8 @@ ${id}`)
 		}
 		break
 		case 'tafsirsurah': {
-		if (!args[0]) throw `Contoh penggunaan:\n${prefix + command} 1 2\n\nmaka hasilnya adalah tafsir surah Al-Fatihah ayat 2`
-		if (!args[1]) throw `Contoh penggunaan:\n${prefix + command} 1 2\n\nmaka hasilnya adalah tafsir surah Al-Fatihah ayat 2`
+		if (!args[0]) throw `Contoh penggunaan:\n${prefixo + comando} 1 2\n\nmaka hasilnya adalah tafsir surah Al-Fatihah ayat 2`
+		if (!args[1]) throw `Contoh penggunaan:\n${prefixo + comando} 1 2\n\nmaka hasilnya adalah tafsir surah Al-Fatihah ayat 2`
 		let res = await fetchJson(`https://islamic-api-indonesia.herokuapp.com/api/data/quran?surah=${args[0]}&ayat=${args[1]}`)
 		let txt = `「 *Tafsir Surah*  」
 
@@ -2273,18 +2273,18 @@ ${id}`)
 		   case 'bass': case 'blown': case 'deep': case 'earrape': case 'fast': case 'fat': case 'nightcore': case 'reverse': case 'robot': case 'slow': case 'smooth': case 'tupai':
                 try {
                 let set
-                if (/bass/.test(command)) set = '-af equalizer=f=54:width_type=o:width=2:g=20'
-                if (/blown/.test(command)) set = '-af acrusher=.1:1:64:0:log'
-                if (/deep/.test(command)) set = '-af atempo=4/4,asetrate=44500*2/3'
-                if (/earrape/.test(command)) set = '-af volume=12'
-                if (/fast/.test(command)) set = '-filter:a "atempo=1.63,asetrate=44100"'
-                if (/fat/.test(command)) set = '-filter:a "atempo=1.6,asetrate=22100"'
-                if (/nightcore/.test(command)) set = '-filter:a atempo=1.06,asetrate=44100*1.25'
-                if (/reverse/.test(command)) set = '-filter_complex "areverse"'
-                if (/robot/.test(command)) set = '-filter_complex "afftfilt=real=\'hypot(re,im)*sin(0)\':imag=\'hypot(re,im)*cos(0)\':win_size=512:overlap=0.75"'
-                if (/slow/.test(command)) set = '-filter:a "atempo=0.7,asetrate=44100"'
-                if (/smooth/.test(command)) set = '-filter:v "minterpolate=\'mi_mode=mci:mc_mode=aobmc:vsbmc=1:fps=120\'"'
-                if (/tupai/.test(command)) set = '-filter:a "atempo=0.5,asetrate=65100"'
+                if (/bass/.test(comando)) set = '-af equalizer=f=54:width_type=o:width=2:g=20'
+                if (/blown/.test(comando)) set = '-af acrusher=.1:1:64:0:log'
+                if (/deep/.test(comando)) set = '-af atempo=4/4,asetrate=44500*2/3'
+                if (/earrape/.test(comando)) set = '-af volume=12'
+                if (/fast/.test(comando)) set = '-filter:a "atempo=1.63,asetrate=44100"'
+                if (/fat/.test(comando)) set = '-filter:a "atempo=1.6,asetrate=22100"'
+                if (/nightcore/.test(comando)) set = '-filter:a atempo=1.06,asetrate=44100*1.25'
+                if (/reverse/.test(comando)) set = '-filter_complex "areverse"'
+                if (/robot/.test(comando)) set = '-filter_complex "afftfilt=real=\'hypot(re,im)*sin(0)\':imag=\'hypot(re,im)*cos(0)\':win_size=512:overlap=0.75"'
+                if (/slow/.test(comando)) set = '-filter:a "atempo=0.7,asetrate=44100"'
+                if (/smooth/.test(comando)) set = '-filter:v "minterpolate=\'mi_mode=mci:mc_mode=aobmc:vsbmc=1:fps=120\'"'
+                if (/tupai/.test(comando)) set = '-filter:a "atempo=0.5,asetrate=65100"'
                 if (/audio/.test(mime)) {
                 m.reply(mess.wait)
                 let media = await client.downloadAndSaveMediaMessage(quoted)
@@ -2296,7 +2296,7 @@ ${id}`)
                 client.sendMessage(m.chat, { audio: buff, mimetype: 'audio/mpeg' }, { quoted : m })
                 fs.unlinkSync(ran)
                 })
-                } else m.reply(`Balas audio yang ingin diubah dengan caption *${prefix + command}*`)
+                } else m.reply(`Balas audio yang ingin diubah dengan caption *${prefixo + comando}*`)
                 } catch (e) {
                 m.reply(e)
                 }
@@ -2340,25 +2340,25 @@ ${Object.entries(global.db.data.sticker).map(([key, value], index) => `${index +
                 if (!m.quoted.fileSha256) throw 'SHA256 Hash Missing'
                 let hash = m.quoted.fileSha256.toString('base64')
                 if (!(hash in global.db.data.sticker)) throw 'Hash not found in database'
-                global.db.data.sticker[hash].locked = !/^un/i.test(command)
+                global.db.data.sticker[hash].locked = !/^un/i.test(comando)
                 m.reply('Done!')
             }
             break
             case 'addmsg': {
                 if (!m.quoted) throw 'Reply Message Yang Ingin Disave Di Database'
-                if (!text) throw `Example : ${prefix + command} nama file`
+                if (!text) throw `Example : ${prefixo + comando} nama file`
                 let msgs = global.db.data.database
                 if (text.toLowerCase() in msgs) throw `'${text}' telah terdaftar di list pesan`
                 msgs[text.toLowerCase()] = quoted.fakeObj
 m.reply(`Berhasil menambahkan pesan di list pesan sebagai '${text}'
     
-Akses dengan ${prefix}getmsg ${text}
+Akses dengan ${prefixo}getmsg ${text}
 
-Lihat list Pesan Dengan ${prefix}listmsg`)
+Lihat list Pesan Dengan ${prefixo}listmsg`)
             }
             break
             case 'getmsg': {
-                if (!text) throw `Example : ${prefix + command} file name\n\nLihat list pesan dengan ${prefix}listmsg`
+                if (!text) throw `Example : ${prefixo + comando} file name\n\nLihat list pesan dengan ${prefixo}listmsg`
                 let msgs = global.db.data.database
                 if (!(text.toLowerCase() in msgs)) throw `'${text}' tidak terdaftar di list pesan`
                 client.copyNForward(m.chat, msgs[text.toLowerCase()], true)
@@ -2405,7 +2405,7 @@ Lihat list Pesan Dengan ${prefix}listmsg`)
                 let other = room.other(m.sender)
                 if (other) await client.sendText(other, `\`\`\`Partner Telah Meninggalkan Sesi Anonymous\`\`\``, m)
                 delete this.anonymous[room.id]
-                if (command === 'leave') break
+                if (comando === 'leave') break
             }
             case 'mulai': case 'start': {
                 if (m.isGroup) return m.reply('Fitur Tidak Dapat Digunakan Untuk Group!')
@@ -2574,7 +2574,7 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
             }
             break
             case 'playstore': {
-            if (!text) throw `Example : ${prefix + command} clash of clans`
+            if (!text) throw `Example : ${prefixo + comando} clash of clans`
             let res = await fetchJson(api('zenz', '/webzone/playstore', { query: text }, 'apikey'))
             let teks = `⭔ Playstore Search From : ${text}\n\n`
             for (let i of res.result) {
@@ -2587,7 +2587,7 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
             }
             break
             case 'gsmarena': {
-            if (!text) throw `Example : ${prefix + command} samsung`
+            if (!text) throw `Example : ${prefixo + comando} samsung`
             let res = await fetchJson(api('zenz', '/webzone/gsmarena', { query: text }, 'apikey'))
             let { judul, rilis, thumb, ukuran, type, storage, display, inchi, pixel, videoPixel, ram, chipset, batrai, merek_batre, detail } = res.result
 let capt = `⭔ Title: ${judul}
@@ -2608,7 +2608,7 @@ let capt = `⭔ Title: ${judul}
             }
             break
             case 'jadwalbioskop': {
-            if (!text) throw `Example: ${prefix + command} jakarta`
+            if (!text) throw `Example: ${prefixo + comando} jakarta`
             let res = await fetchJson(api('zenz', '/webzone/jadwalbioskop', { kota: text }, 'apikey'))
             let capt = `Jadwal Bioskop From : ${text}\n\n`
             for (let i of res.result){
@@ -2631,7 +2631,7 @@ let capt = `⭔ Title: ${judul}
             }
             break
             case 'aminio': {
-            if (!text) throw `Example: ${prefix + command} free fire`
+            if (!text) throw `Example: ${prefixo + comando} free fire`
             let res = await fetchJson(api('zenz', '/webzone/amino', { query: text }, 'apikey'))
             let capt = `Amino Search From : ${text}\n\n`
             for (let i of res.result){
@@ -2645,7 +2645,7 @@ let capt = `⭔ Title: ${judul}
             }
             break
             case 'wattpad': {
-            if (!text) throw `Example : ${prefix + command} love`
+            if (!text) throw `Example : ${prefixo + comando} love`
             let res = await fetchJson(api('zenz', '/webzone/wattpad', { query: text }, 'apikey'))
             let { judul, dibaca, divote, bab, waktu, url, thumb, description } = res.result[0]
             let capt = `Wattpad From ${text}\n\n`
@@ -2660,7 +2660,7 @@ let capt = `⭔ Title: ${judul}
             }
             break
             case 'webtoons': {
-            if (!text) throw `Example : ${prefix + command} love`
+            if (!text) throw `Example : ${prefixo + comando} love`
             let res = await fetchJson(api('zenz', '/webzone/webtoons', { query: text }, 'apikey'))
             let capt = `Webtoons Search From : ${text}\n\n`
             for (let i of res.result) {
@@ -2674,7 +2674,7 @@ let capt = `⭔ Title: ${judul}
             }
             break
             case 'drakor': {
-            if (!text) throw `Example : ${prefix + command} love`
+            if (!text) throw `Example : ${prefixo + comando} love`
             let res = await fetchJson(api('zenz', '/webzone/drakor', { query: text }, 'apikey'))
             let capt = `Drakor Search From : ${text}\n\n`
             for (let i of res.result) {
@@ -2838,26 +2838,26 @@ let alfamart = `628111500959@s.whatsapp.net`
             case 'mgroup': {
 goup = `┌──⭓ *Group Menu*
 │
-│⭔ ${prefix}linkgroup
-│⭔ ${prefix}ephemeral [option]
-│⭔ ${prefix}setppgc [image]
-│⭔ ${prefix}setname [text]
-│⭔ ${prefix}setdesc [text]
-│⭔ ${prefix}group [option]
-│⭔ ${prefix}editinfo [option]
-│⭔ ${prefix}add @user
-│⭔ ${prefix}kick @user
-│⭔ ${prefix}hidetag [text]
-│⭔ ${prefix}tagall [text]
-│⭔ ${prefix}antilink [on/off]
-│⭔ ${prefix}mute [on/off]
-│⭔ ${prefix}promote @user
-│⭔ ${prefix}demote @user
-│⭔ ${prefix}vote [text]
-│⭔ ${prefix}devote
-│⭔ ${prefix}upvote
-│⭔ ${prefix}cekvote
-│⭔ ${prefix}hapusvote
+│⭔ ${prefixo}linkgroup
+│⭔ ${prefixo}ephemeral [option]
+│⭔ ${prefixo}setppgc [image]
+│⭔ ${prefixo}setname [text]
+│⭔ ${prefixo}setdesc [text]
+│⭔ ${prefixo}group [option]
+│⭔ ${prefixo}editinfo [option]
+│⭔ ${prefixo}add @user
+│⭔ ${prefixo}kick @user
+│⭔ ${prefixo}hidetag [text]
+│⭔ ${prefixo}tagall [text]
+│⭔ ${prefixo}antilink [on/off]
+│⭔ ${prefixo}mute [on/off]
+│⭔ ${prefixo}promote @user
+│⭔ ${prefixo}demote @user
+│⭔ ${prefixo}vote [text]
+│⭔ ${prefixo}devote
+│⭔ ${prefixo}upvote
+│⭔ ${prefixo}cekvote
+│⭔ ${prefixo}hapusvote
 │
 └───────⭓`
 let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖List Menu' }, type: 1 },{ buttonId: 'donasi', buttonText: { displayText: '🙏Donasi' }, type: 1 }]
@@ -2867,14 +2867,14 @@ let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back'
       case 'mwebzone': {
 wbzone = `┌──⭓ *Webzone Menu*
 │
-│⭔ ${prefix}playstore
-│⭔ ${prefix}gsmarena
-│⭔ ${prefix}jadwalbioskop
-│⭔ ${prefix}nowplayingbioskop
-│⭔ ${prefix}aminio
-│⭔ ${prefix}wattpad
-│⭔ ${prefix}webtoons
-│⭔ ${prefix}drakor
+│⭔ ${prefixo}playstore
+│⭔ ${prefixo}gsmarena
+│⭔ ${prefixo}jadwalbioskop
+│⭔ ${prefixo}nowplayingbioskop
+│⭔ ${prefixo}aminio
+│⭔ ${prefixo}wattpad
+│⭔ ${prefixo}webtoons
+│⭔ ${prefixo}drakor
 │
 └───────⭓`
 let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖List Menu' }, type: 1 },{ buttonId: 'donasi', buttonText: { displayText: '🙏Donasi' }, type: 1 }]
@@ -2884,21 +2884,21 @@ let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back'
             case 'mdownloader': {
 dwnloader = `┌──⭓ *Downloader Menu*
 │
-│⭔ ${prefix}tiktoknowm [url]
-│⭔ ${prefix}tiktokwm [url]
-│⭔ ${prefix}tiktokmp3 [url]
-│⭔ ${prefix}instagram [url]
-│⭔ ${prefix}twitter [url]
-│⭔ ${prefix}twittermp3 [url]
-│⭔ ${prefix}facebook [url]
-│⭔ ${prefix}pinterestdl [url]
-│⭔ ${prefix}ytmp3 [url]
-│⭔ ${prefix}ytmp4 [url]
-│⭔ ${prefix}getmusic [query]
-│⭔ ${prefix}getvideo [query]
-│⭔ ${prefix}umma [url]
-│⭔ ${prefix}joox [query]
-│⭔ ${prefix}soundcloud [url]
+│⭔ ${prefixo}tiktoknowm [url]
+│⭔ ${prefixo}tiktokwm [url]
+│⭔ ${prefixo}tiktokmp3 [url]
+│⭔ ${prefixo}instagram [url]
+│⭔ ${prefixo}twitter [url]
+│⭔ ${prefixo}twittermp3 [url]
+│⭔ ${prefixo}facebook [url]
+│⭔ ${prefixo}pinterestdl [url]
+│⭔ ${prefixo}ytmp3 [url]
+│⭔ ${prefixo}ytmp4 [url]
+│⭔ ${prefixo}getmusic [query]
+│⭔ ${prefixo}getvideo [query]
+│⭔ ${prefixo}umma [url]
+│⭔ ${prefixo}joox [query]
+│⭔ ${prefixo}soundcloud [url]
 │
 └───────⭓`
 let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖List Menu' }, type: 1 },{ buttonId: 'donasi', buttonText: { displayText: '🙏Donasi' }, type: 1 }]
@@ -2908,16 +2908,16 @@ let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back'
             case 'msearch': {
 sarch = `┌──⭓ *Search Menu*
 │
-│⭔ ${prefix}play [query]
-│⭔ ${prefix}yts [query]
-│⭔ ${prefix}google [query]
-│⭔ ${prefix}gimage [query]
-│⭔ ${prefix}pinterest [query]
-│⭔ ${prefix}wallpaper [query]
-│⭔ ${prefix}wikimedia [query]
-│⭔ ${prefix}ytsearch [query]
-│⭔ ${prefix}ringtone [query]
-│⭔ ${prefix}stalk [option] [query]
+│⭔ ${prefixo}play [query]
+│⭔ ${prefixo}yts [query]
+│⭔ ${prefixo}google [query]
+│⭔ ${prefixo}gimage [query]
+│⭔ ${prefixo}pinterest [query]
+│⭔ ${prefixo}wallpaper [query]
+│⭔ ${prefixo}wikimedia [query]
+│⭔ ${prefixo}ytsearch [query]
+│⭔ ${prefixo}ringtone [query]
+│⭔ ${prefixo}stalk [option] [query]
 │
 └───────⭓`
 let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖List Menu' }, type: 1 },{ buttonId: 'donasi', buttonText: { displayText: '🙏Donasi' }, type: 1 }]
@@ -2927,16 +2927,16 @@ let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back'
             case 'mrandom': {
 rndom = `┌──⭓ *Random Menu*
 │
-│⭔ ${prefix}coffe
-│⭔ ${prefix}quotesanime
-│⭔ ${prefix}motivasi
-│⭔ ${prefix}dilanquote
-│⭔ ${prefix}bucinquote
-│⭔ ${prefix}katasenja
-│⭔ ${prefix}puisi
-│⭔ ${prefix}couple
-│⭔ ${prefix}anime
-│⭔ ${prefix}waifu
+│⭔ ${prefixo}coffe
+│⭔ ${prefixo}quotesanime
+│⭔ ${prefixo}motivasi
+│⭔ ${prefixo}dilanquote
+│⭔ ${prefixo}bucinquote
+│⭔ ${prefixo}katasenja
+│⭔ ${prefixo}puisi
+│⭔ ${prefixo}couple
+│⭔ ${prefixo}anime
+│⭔ ${prefixo}waifu
 │
 └───────⭓`
 let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖List Menu' }, type: 1 },{ buttonId: 'donasi', buttonText: { displayText: '🙏Donasi' }, type: 1 }]
@@ -2946,37 +2946,37 @@ let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back'
             case 'mtextpro': {
 txtpro = `┌──⭓ *Text Pro Menu*
 │
-│⭔ ${prefix}3dchristmas
-│⭔ ${prefix}3ddeepsea
-│⭔ ${prefix}americanflag
-│⭔ ${prefix}3dscifi
-│⭔ ${prefix}3drainbow
-│⭔ ${prefix}3dwaterpipe
-│⭔ ${prefix}halloweenskeleton
-│⭔ ${prefix}sketch
-│⭔ ${prefix}bluecircuit
-│⭔ ${prefix}space
-│⭔ ${prefix}metallic
-│⭔ ${prefix}fiction
-│⭔ ${prefix}greenhorror
-│⭔ ${prefix}transformer
-│⭔ ${prefix}berry
-│⭔ ${prefix}thunder
-│⭔ ${prefix}magma
-│⭔ ${prefix}3dcrackedstone
-│⭔ ${prefix}3dneonlight
-│⭔ ${prefix}impressiveglitch
-│⭔ ${prefix}naturalleaves
-│⭔ ${prefix}fireworksparkle
-│⭔ ${prefix}matrix
-│⭔ ${prefix}dropwater
-│⭔ ${prefix}harrypotter
-│⭔ ${prefix}foggywindow
-│⭔ ${prefix}neondevils
-│⭔ ${prefix}christmasholiday
-│⭔ ${prefix}3dgradient
-│⭔ ${prefix}blackpink
-│⭔ ${prefix}gluetext
+│⭔ ${prefixo}3dchristmas
+│⭔ ${prefixo}3ddeepsea
+│⭔ ${prefixo}americanflag
+│⭔ ${prefixo}3dscifi
+│⭔ ${prefixo}3drainbow
+│⭔ ${prefixo}3dwaterpipe
+│⭔ ${prefixo}halloweenskeleton
+│⭔ ${prefixo}sketch
+│⭔ ${prefixo}bluecircuit
+│⭔ ${prefixo}space
+│⭔ ${prefixo}metallic
+│⭔ ${prefixo}fiction
+│⭔ ${prefixo}greenhorror
+│⭔ ${prefixo}transformer
+│⭔ ${prefixo}berry
+│⭔ ${prefixo}thunder
+│⭔ ${prefixo}magma
+│⭔ ${prefixo}3dcrackedstone
+│⭔ ${prefixo}3dneonlight
+│⭔ ${prefixo}impressiveglitch
+│⭔ ${prefixo}naturalleaves
+│⭔ ${prefixo}fireworksparkle
+│⭔ ${prefixo}matrix
+│⭔ ${prefixo}dropwater
+│⭔ ${prefixo}harrypotter
+│⭔ ${prefixo}foggywindow
+│⭔ ${prefixo}neondevils
+│⭔ ${prefixo}christmasholiday
+│⭔ ${prefixo}3dgradient
+│⭔ ${prefixo}blackpink
+│⭔ ${prefixo}gluetext
 │
 └───────⭓`
 let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖List Menu' }, type: 1 },{ buttonId: 'donasi', buttonText: { displayText: '🙏Donasi' }, type: 1 }]
@@ -2986,18 +2986,18 @@ let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back'
             case 'mphotooxy': {
 potooxy = `┌──⭓ *Photo Oxy Menu*
 │
-│⭔ ${prefix}shadow
-│⭔ ${prefix}romantic
-│⭔ ${prefix}smoke
-│⭔ ${prefix}burnpapper
-│⭔ ${prefix}naruto
-│⭔ ${prefix}lovemsg
-│⭔ ${prefix}grassmsg
-│⭔ ${prefix}lovetext
-│⭔ ${prefix}coffecup
-│⭔ ${prefix}butterfly
-│⭔ ${prefix}harrypotter
-│⭔ ${prefix}retrolol
+│⭔ ${prefixo}shadow
+│⭔ ${prefixo}romantic
+│⭔ ${prefixo}smoke
+│⭔ ${prefixo}burnpapper
+│⭔ ${prefixo}naruto
+│⭔ ${prefixo}lovemsg
+│⭔ ${prefixo}grassmsg
+│⭔ ${prefixo}lovetext
+│⭔ ${prefixo}coffecup
+│⭔ ${prefixo}butterfly
+│⭔ ${prefixo}harrypotter
+│⭔ ${prefixo}retrolol
 │
 └───────⭓`
 let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖List Menu' }, type: 1 },{ buttonId: 'donasi', buttonText: { displayText: '🙏Donasi' }, type: 1 }]
@@ -3007,15 +3007,15 @@ let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back'
             case 'mephoto': {
 ehoto = `┌──⭓ *Ephoto Menu*
 │
-│⭔ ${prefix}ffcover
-│⭔ ${prefix}crossfire
-│⭔ ${prefix}galaxy
-│⭔ ${prefix}glass
-│⭔ ${prefix}neon
-│⭔ ${prefix}beach
-│⭔ ${prefix}blackpink
-│⭔ ${prefix}igcertificate
-│⭔ ${prefix}ytcertificate
+│⭔ ${prefixo}ffcover
+│⭔ ${prefixo}crossfire
+│⭔ ${prefixo}galaxy
+│⭔ ${prefixo}glass
+│⭔ ${prefixo}neon
+│⭔ ${prefixo}beach
+│⭔ ${prefixo}blackpink
+│⭔ ${prefixo}igcertificate
+│⭔ ${prefixo}ytcertificate
 │
 └───────⭓`
 let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖List Menu' }, type: 1 },{ buttonId: 'donasi', buttonText: { displayText: '🙏Donasi' }, type: 1 }]
@@ -3025,20 +3025,20 @@ let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back'
            case 'mfun': {
 mun = `┌──⭓ *Fun Menu*
 │
-│⭔ ${prefix}simih
-│⭔ ${prefix}halah
-│⭔ ${prefix}hilih
-│⭔ ${prefix}huluh
-│⭔ ${prefix}heleh
-│⭔ ${prefix}holoh
-│⭔ ${prefix}jadian
-│⭔ ${prefix}jodohku
-│⭔ ${prefix}delttt
-│⭔ ${prefix}tictactoe
-│⭔ ${prefix}family100
-│⭔ ${prefix}tebak [option]
-│⭔ ${prefix}math [mode]
-│⭔ ${prefix}suitpvp [@tag]
+│⭔ ${prefixo}simih
+│⭔ ${prefixo}halah
+│⭔ ${prefixo}hilih
+│⭔ ${prefixo}huluh
+│⭔ ${prefixo}heleh
+│⭔ ${prefixo}holoh
+│⭔ ${prefixo}jadian
+│⭔ ${prefixo}jodohku
+│⭔ ${prefixo}delttt
+│⭔ ${prefixo}tictactoe
+│⭔ ${prefixo}family100
+│⭔ ${prefixo}tebak [option]
+│⭔ ${prefixo}math [mode]
+│⭔ ${prefixo}suitpvp [@tag]
 │
 └───────⭓`
 let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖List Menu' }, type: 1 },{ buttonId: 'donasi', buttonText: { displayText: '🙏Donasi' }, type: 1 }]
@@ -3048,35 +3048,35 @@ let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back'
             case 'mprimbon': {
 pimbon = `┌──⭓ *Primbon Menu*
 │
-│⭔ ${prefix}nomorhoki
-│⭔ ${prefix}artimimpi
-│⭔ ${prefix}artinama
-│⭔ ${prefix}ramaljodoh
-│⭔ ${prefix}ramaljodohbali
-│⭔ ${prefix}suamiistri
-│⭔ ${prefix}ramalcinta
-│⭔ ${prefix}cocoknama
-│⭔ ${prefix}pasangan
-│⭔ ${prefix}jadiannikah
-│⭔ ${prefix}sifatusaha
-│⭔ ${prefix}rezeki
-│⭔ ${prefix}pekerjaan
-│⭔ ${prefix}nasib
-│⭔ ${prefix}penyakit
-│⭔ ${prefix}tarot
-│⭔ ${prefix}fengshui
-│⭔ ${prefix}haribaik
-│⭔ ${prefix}harisangar
-│⭔ ${prefix}harisial
-│⭔ ${prefix}nagahari
-│⭔ ${prefix}arahrezeki
-│⭔ ${prefix}peruntungan
-│⭔ ${prefix}weton
-│⭔ ${prefix}karakter
-│⭔ ${prefix}keberuntungan
-│⭔ ${prefix}memancing
-│⭔ ${prefix}masasubur
-│⭔ ${prefix}zodiak
+│⭔ ${prefixo}nomorhoki
+│⭔ ${prefixo}artimimpi
+│⭔ ${prefixo}artinama
+│⭔ ${prefixo}ramaljodoh
+│⭔ ${prefixo}ramaljodohbali
+│⭔ ${prefixo}suamiistri
+│⭔ ${prefixo}ramalcinta
+│⭔ ${prefixo}cocoknama
+│⭔ ${prefixo}pasangan
+│⭔ ${prefixo}jadiannikah
+│⭔ ${prefixo}sifatusaha
+│⭔ ${prefixo}rezeki
+│⭔ ${prefixo}pekerjaan
+│⭔ ${prefixo}nasib
+│⭔ ${prefixo}penyakit
+│⭔ ${prefixo}tarot
+│⭔ ${prefixo}fengshui
+│⭔ ${prefixo}haribaik
+│⭔ ${prefixo}harisangar
+│⭔ ${prefixo}harisial
+│⭔ ${prefixo}nagahari
+│⭔ ${prefixo}arahrezeki
+│⭔ ${prefixo}peruntungan
+│⭔ ${prefixo}weton
+│⭔ ${prefixo}karakter
+│⭔ ${prefixo}keberuntungan
+│⭔ ${prefixo}memancing
+│⭔ ${prefixo}masasubur
+│⭔ ${prefixo}zodiak
 │
 └───────⭓`
 let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖List Menu' }, type: 1 },{ buttonId: 'donasi', buttonText: { displayText: '🙏Donasi' }, type: 1 }]
@@ -3086,23 +3086,23 @@ let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back'
             case 'mconvert': {
 cnvert = `┌──⭓ *Convert Menu*
 │
-│⭔ ${prefix}attp
-│⭔ ${prefix}ttp
-│⭔ ${prefix}toimage
-│⭔ ${prefix}removebg
-│⭔ ${prefix}sticker
-│⭔ ${prefix}emojimix
-│⭔ ${prefix}emojimix2
-│⭔ ${prefix}tovideo
-│⭔ ${prefix}togif
-│⭔ ${prefix}tourl
-│⭔ ${prefix}tovn
-│⭔ ${prefix}tomp3
-│⭔ ${prefix}toaudio
-│⭔ ${prefix}ebinary
-│⭔ ${prefix}dbinary
-│⭔ ${prefix}styletext
-│⭔ ${prefix}smeme
+│⭔ ${prefixo}attp
+│⭔ ${prefixo}ttp
+│⭔ ${prefixo}toimage
+│⭔ ${prefixo}removebg
+│⭔ ${prefixo}sticker
+│⭔ ${prefixo}emojimix
+│⭔ ${prefixo}emojimix2
+│⭔ ${prefixo}tovideo
+│⭔ ${prefixo}togif
+│⭔ ${prefixo}tourl
+│⭔ ${prefixo}tovn
+│⭔ ${prefixo}tomp3
+│⭔ ${prefixo}toaudio
+│⭔ ${prefixo}ebinary
+│⭔ ${prefixo}dbinary
+│⭔ ${prefixo}styletext
+│⭔ ${prefixo}smeme
 │
 └───────⭓`
 let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖List Menu' }, type: 1 },{ buttonId: 'donasi', buttonText: { displayText: '🙏Donasi' }, type: 1 }]
@@ -3112,16 +3112,16 @@ let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back'
             case 'mmain': {
 min = `┌──⭓ *Main Menu*
 │
-│⭔ ${prefix}ping
-│⭔ ${prefix}owner
-│⭔ ${prefix}menu / ${prefix}help / ${prefix}?
-│⭔ ${prefix}delete
-│⭔ ${prefix}infochat
-│⭔ ${prefix}quoted
-│⭔ ${prefix}listpc
-│⭔ ${prefix}listgc
-│⭔ ${prefix}listonline
-│⭔ ${prefix}speedtest
+│⭔ ${prefixo}ping
+│⭔ ${prefixo}owner
+│⭔ ${prefixo}menu / ${prefixo}help / ${prefixo}?
+│⭔ ${prefixo}delete
+│⭔ ${prefixo}infochat
+│⭔ ${prefixo}quoted
+│⭔ ${prefixo}listpc
+│⭔ ${prefixo}listgc
+│⭔ ${prefixo}listonline
+│⭔ ${prefixo}speedtest
 │
 └───────⭓`
 let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖List Menu' }, type: 1 },{ buttonId: 'donasi', buttonText: { displayText: '🙏Donasi' }, type: 1 }]
@@ -3131,14 +3131,14 @@ let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back'
             case 'mdatabase': {
 dtbase = `┌──⭓ *Database Menu*
 │
-│⭔ ${prefix}setcmd
-│⭔ ${prefix}listcmd
-│⭔ ${prefix}delcmd
-│⭔ ${prefix}lockcmd
-│⭔ ${prefix}addmsg
-│⭔ ${prefix}listmsg
-│⭔ ${prefix}getmsg
-│⭔ ${prefix}delmsg
+│⭔ ${prefixo}setcmd
+│⭔ ${prefixo}listcmd
+│⭔ ${prefixo}delcmd
+│⭔ ${prefixo}lockcmd
+│⭔ ${prefixo}addmsg
+│⭔ ${prefixo}listmsg
+│⭔ ${prefixo}getmsg
+│⭔ ${prefixo}delmsg
 │
 └───────⭓`
 let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖List Menu' }, type: 1 },{ buttonId: 'donasi', buttonText: { displayText: '🙏Donasi' }, type: 1 }]
@@ -3148,10 +3148,10 @@ let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back'
             case 'manonymous': {
 aonymous = `┌──⭓ *Anonymous Menu*
 │
-│⭔ ${prefix}anonymous
-│⭔ ${prefix}start
-│⭔ ${prefix}next
-│⭔ ${prefix}keluar
+│⭔ ${prefixo}anonymous
+│⭔ ${prefixo}start
+│⭔ ${prefixo}next
+│⭔ ${prefixo}keluar
 │
 └───────⭓`
 let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖List Menu' }, type: 1 },{ buttonId: 'donasi', buttonText: { displayText: '🙏Donasi' }, type: 1 }]
@@ -3161,11 +3161,11 @@ let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back'
             case 'mislamic': {
 islmic = `┌──⭓ *Islamic Menu*
 │
-│⭔ ${prefix}iqra
-│⭔ ${prefix}hadist
-│⭔ ${prefix}alquran
-│⭔ ${prefix}juzamma
-│⭔ ${prefix}tafsirsurah
+│⭔ ${prefixo}iqra
+│⭔ ${prefixo}hadist
+│⭔ ${prefixo}alquran
+│⭔ ${prefixo}juzamma
+│⭔ ${prefixo}tafsirsurah
 │
 └───────⭓`
 let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖List Menu' }, type: 1 },{ buttonId: 'donasi', buttonText: { displayText: '🙏Donasi' }, type: 1 }]
@@ -3175,17 +3175,17 @@ let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back'
 case 'mvoice': {
 vice = `┌──⭓ *Voice Changer*
 │
-│⭔ ${prefix}bass
-│⭔ ${prefix}blown
-│⭔ ${prefix}deep
-│⭔ ${prefix}earrape
-│⭔ ${prefix}fast
-│⭔ ${prefix}fat
-│⭔ ${prefix}nightcore
-│⭔ ${prefix}reverse
-│⭔ ${prefix}robot
-│⭔ ${prefix}slow
-│⭔ ${prefix}tupai
+│⭔ ${prefixo}bass
+│⭔ ${prefixo}blown
+│⭔ ${prefixo}deep
+│⭔ ${prefixo}earrape
+│⭔ ${prefixo}fast
+│⭔ ${prefixo}fat
+│⭔ ${prefixo}nightcore
+│⭔ ${prefixo}reverse
+│⭔ ${prefixo}robot
+│⭔ ${prefixo}slow
+│⭔ ${prefixo}tupai
 │
 └───────⭓`
 let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖List Menu' }, type: 1 },{ buttonId: 'donasi', buttonText: { displayText: '🙏Donasi' }, type: 1 }]
@@ -3195,17 +3195,17 @@ let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back'
             case 'mowner': {
 oner = `┌──⭓ *Owner Menu*
 │
-│⭔ ${prefix}react [emoji]
-│⭔ ${prefix}chat [option]
-│⭔ ${prefix}join [link]
-│⭔ ${prefix}leave
-│⭔ ${prefix}block @user
-│⭔ ${prefix}unblock @user
-│⭔ ${prefix}bcgroup [text]
-│⭔ ${prefix}bcall [text]
-│⭔ ${prefix}setppbot [image]
-│⭔ ${prefix}setexif
-│⭔ ${prefix}setmenu [option]
+│⭔ ${prefixo}react [emoji]
+│⭔ ${prefixo}chat [option]
+│⭔ ${prefixo}join [link]
+│⭔ ${prefixo}leave
+│⭔ ${prefixo}block @user
+│⭔ ${prefixo}unblock @user
+│⭔ ${prefixo}bcgroup [text]
+│⭔ ${prefixo}bcall [text]
+│⭔ ${prefixo}setppbot [image]
+│⭔ ${prefixo}setexif
+│⭔ ${prefixo}setmenu [option]
 │
 └───────⭓`
 let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖List Menu' }, type: 1 },{ buttonId: 'donasi', buttonText: { displayText: '🙏Donasi' }, type: 1 }]
@@ -3219,294 +3219,294 @@ let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Back'
                 anu = `*${ucapanWaktu}* kak @${me.split('@')[0]}\n*Powered*  : @${ini_mark.split('@')[0]}\n*Creator* : @${ownernya.split('@')[0]}
 ┌──⭓ *Group Menu*
 │
-│⭔ ${prefix}linkgroup
-│⭔ ${prefix}ephemeral [option]
-│⭔ ${prefix}setppgc [image]
-│⭔ ${prefix}setname [text]
-│⭔ ${prefix}setdesc [text]
-│⭔ ${prefix}group [option]
-│⭔ ${prefix}editinfo [option]
-│⭔ ${prefix}add @user
-│⭔ ${prefix}kick @user
-│⭔ ${prefix}hidetag [text]
-│⭔ ${prefix}tagall [text]
-│⭔ ${prefix}antilink [on/off]
-│⭔ ${prefix}mute [on/off]
-│⭔ ${prefix}promote @user
-│⭔ ${prefix}demote @user
-│⭔ ${prefix}vote [text]
-│⭔ ${prefix}devote
-│⭔ ${prefix}upvote
-│⭔ ${prefix}cekvote
-│⭔ ${prefix}hapusvote
+│⭔ ${prefixo}linkgroup
+│⭔ ${prefixo}ephemeral [option]
+│⭔ ${prefixo}setppgc [image]
+│⭔ ${prefixo}setname [text]
+│⭔ ${prefixo}setdesc [text]
+│⭔ ${prefixo}group [option]
+│⭔ ${prefixo}editinfo [option]
+│⭔ ${prefixo}add @user
+│⭔ ${prefixo}kick @user
+│⭔ ${prefixo}hidetag [text]
+│⭔ ${prefixo}tagall [text]
+│⭔ ${prefixo}antilink [on/off]
+│⭔ ${prefixo}mute [on/off]
+│⭔ ${prefixo}promote @user
+│⭔ ${prefixo}demote @user
+│⭔ ${prefixo}vote [text]
+│⭔ ${prefixo}devote
+│⭔ ${prefixo}upvote
+│⭔ ${prefixo}cekvote
+│⭔ ${prefixo}hapusvote
 │
 └───────⭓
 ┌──⭓ *Webzone Menu*
 │
-│⭔ ${prefix}playstore
-│⭔ ${prefix}gsmarena
-│⭔ ${prefix}jadwalbioskop
-│⭔ ${prefix}nowplayingbioskop
-│⭔ ${prefix}aminio
-│⭔ ${prefix}wattpad
-│⭔ ${prefix}webtoons
-│⭔ ${prefix}drakor
+│⭔ ${prefixo}playstore
+│⭔ ${prefixo}gsmarena
+│⭔ ${prefixo}jadwalbioskop
+│⭔ ${prefixo}nowplayingbioskop
+│⭔ ${prefixo}aminio
+│⭔ ${prefixo}wattpad
+│⭔ ${prefixo}webtoons
+│⭔ ${prefixo}drakor
 │
 └───────⭓
 ┌──⭓ *Downloader Menu*
 │
-│⭔ ${prefix}tiktoknowm [url]
-│⭔ ${prefix}tiktokwm [url]
-│⭔ ${prefix}tiktokmp3 [url]
-│⭔ ${prefix}instagram [url]
-│⭔ ${prefix}twitter [url]
-│⭔ ${prefix}twittermp3 [url]
-│⭔ ${prefix}facebook [url]
-│⭔ ${prefix}pinterestdl [url]
-│⭔ ${prefix}ytmp3 [url]
-│⭔ ${prefix}ytmp4 [url]
-│⭔ ${prefix}getmusic [query]
-│⭔ ${prefix}getvideo [query]
-│⭔ ${prefix}umma [url]
-│⭔ ${prefix}joox [query]
-│⭔ ${prefix}soundcloud [url]
+│⭔ ${prefixo}tiktoknowm [url]
+│⭔ ${prefixo}tiktokwm [url]
+│⭔ ${prefixo}tiktokmp3 [url]
+│⭔ ${prefixo}instagram [url]
+│⭔ ${prefixo}twitter [url]
+│⭔ ${prefixo}twittermp3 [url]
+│⭔ ${prefixo}facebook [url]
+│⭔ ${prefixo}pinterestdl [url]
+│⭔ ${prefixo}ytmp3 [url]
+│⭔ ${prefixo}ytmp4 [url]
+│⭔ ${prefixo}getmusic [query]
+│⭔ ${prefixo}getvideo [query]
+│⭔ ${prefixo}umma [url]
+│⭔ ${prefixo}joox [query]
+│⭔ ${prefixo}soundcloud [url]
 │
 └───────⭓
 ┌──⭓ *Search Menu*
 │
-│⭔ ${prefix}play [query]
-│⭔ ${prefix}yts [query]
-│⭔ ${prefix}google [query]
-│⭔ ${prefix}gimage [query]
-│⭔ ${prefix}pinterest [query]
-│⭔ ${prefix}wallpaper [query]
-│⭔ ${prefix}wikimedia [query]
-│⭔ ${prefix}ytsearch [query]
-│⭔ ${prefix}ringtone [query]
-│⭔ ${prefix}stalk [option] [query]
+│⭔ ${prefixo}play [query]
+│⭔ ${prefixo}yts [query]
+│⭔ ${prefixo}google [query]
+│⭔ ${prefixo}gimage [query]
+│⭔ ${prefixo}pinterest [query]
+│⭔ ${prefixo}wallpaper [query]
+│⭔ ${prefixo}wikimedia [query]
+│⭔ ${prefixo}ytsearch [query]
+│⭔ ${prefixo}ringtone [query]
+│⭔ ${prefixo}stalk [option] [query]
 │
 └───────⭓
 ┌──⭓ *Random Menu*
 │
-│⭔ ${prefix}coffe
-│⭔ ${prefix}quotesanime
-│⭔ ${prefix}motivasi
-│⭔ ${prefix}dilanquote
-│⭔ ${prefix}bucinquote
-│⭔ ${prefix}katasenja
-│⭔ ${prefix}puisi
-│⭔ ${prefix}couple
-│⭔ ${prefix}anime
-│⭔ ${prefix}waifu
+│⭔ ${prefixo}coffe
+│⭔ ${prefixo}quotesanime
+│⭔ ${prefixo}motivasi
+│⭔ ${prefixo}dilanquote
+│⭔ ${prefixo}bucinquote
+│⭔ ${prefixo}katasenja
+│⭔ ${prefixo}puisi
+│⭔ ${prefixo}couple
+│⭔ ${prefixo}anime
+│⭔ ${prefixo}waifu
 │
 └───────⭓
 ┌──⭓ *Text Pro Menu*
 │
-│⭔ ${prefix}3dchristmas
-│⭔ ${prefix}3ddeepsea
-│⭔ ${prefix}americanflag
-│⭔ ${prefix}3dscifi
-│⭔ ${prefix}3drainbow
-│⭔ ${prefix}3dwaterpipe
-│⭔ ${prefix}halloweenskeleton
-│⭔ ${prefix}sketch
-│⭔ ${prefix}bluecircuit
-│⭔ ${prefix}space
-│⭔ ${prefix}metallic
-│⭔ ${prefix}fiction
-│⭔ ${prefix}greenhorror
-│⭔ ${prefix}transformer
-│⭔ ${prefix}berry
-│⭔ ${prefix}thunder
-│⭔ ${prefix}magma
-│⭔ ${prefix}3dcrackedstone
-│⭔ ${prefix}3dneonlight
-│⭔ ${prefix}impressiveglitch
-│⭔ ${prefix}naturalleaves
-│⭔ ${prefix}fireworksparkle
-│⭔ ${prefix}matrix
-│⭔ ${prefix}dropwater
-│⭔ ${prefix}harrypotter
-│⭔ ${prefix}foggywindow
-│⭔ ${prefix}neondevils
-│⭔ ${prefix}christmasholiday
-│⭔ ${prefix}3dgradient
-│⭔ ${prefix}blackpink
-│⭔ ${prefix}gluetext
+│⭔ ${prefixo}3dchristmas
+│⭔ ${prefixo}3ddeepsea
+│⭔ ${prefixo}americanflag
+│⭔ ${prefixo}3dscifi
+│⭔ ${prefixo}3drainbow
+│⭔ ${prefixo}3dwaterpipe
+│⭔ ${prefixo}halloweenskeleton
+│⭔ ${prefixo}sketch
+│⭔ ${prefixo}bluecircuit
+│⭔ ${prefixo}space
+│⭔ ${prefixo}metallic
+│⭔ ${prefixo}fiction
+│⭔ ${prefixo}greenhorror
+│⭔ ${prefixo}transformer
+│⭔ ${prefixo}berry
+│⭔ ${prefixo}thunder
+│⭔ ${prefixo}magma
+│⭔ ${prefixo}3dcrackedstone
+│⭔ ${prefixo}3dneonlight
+│⭔ ${prefixo}impressiveglitch
+│⭔ ${prefixo}naturalleaves
+│⭔ ${prefixo}fireworksparkle
+│⭔ ${prefixo}matrix
+│⭔ ${prefixo}dropwater
+│⭔ ${prefixo}harrypotter
+│⭔ ${prefixo}foggywindow
+│⭔ ${prefixo}neondevils
+│⭔ ${prefixo}christmasholiday
+│⭔ ${prefixo}3dgradient
+│⭔ ${prefixo}blackpink
+│⭔ ${prefixo}gluetext
 │
 └───────⭓
 ┌──⭓ *Photo Oxy Menu*
 │
-│⭔ ${prefix}shadow
-│⭔ ${prefix}romantic
-│⭔ ${prefix}smoke
-│⭔ ${prefix}burnpapper
-│⭔ ${prefix}naruto
-│⭔ ${prefix}lovemsg
-│⭔ ${prefix}grassmsg
-│⭔ ${prefix}lovetext
-│⭔ ${prefix}coffecup
-│⭔ ${prefix}butterfly
-│⭔ ${prefix}harrypotter
-│⭔ ${prefix}retrolol
+│⭔ ${prefixo}shadow
+│⭔ ${prefixo}romantic
+│⭔ ${prefixo}smoke
+│⭔ ${prefixo}burnpapper
+│⭔ ${prefixo}naruto
+│⭔ ${prefixo}lovemsg
+│⭔ ${prefixo}grassmsg
+│⭔ ${prefixo}lovetext
+│⭔ ${prefixo}coffecup
+│⭔ ${prefixo}butterfly
+│⭔ ${prefixo}harrypotter
+│⭔ ${prefixo}retrolol
 │
 └───────⭓
 ┌──⭓ *Ephoto Menu*
 │
-│⭔ ${prefix}ffcover
-│⭔ ${prefix}crossfire
-│⭔ ${prefix}galaxy
-│⭔ ${prefix}glass
-│⭔ ${prefix}neon
-│⭔ ${prefix}beach
-│⭔ ${prefix}blackpink
-│⭔ ${prefix}igcertificate
-│⭔ ${prefix}ytcertificate
+│⭔ ${prefixo}ffcover
+│⭔ ${prefixo}crossfire
+│⭔ ${prefixo}galaxy
+│⭔ ${prefixo}glass
+│⭔ ${prefixo}neon
+│⭔ ${prefixo}beach
+│⭔ ${prefixo}blackpink
+│⭔ ${prefixo}igcertificate
+│⭔ ${prefixo}ytcertificate
 │
 └───────⭓
 ┌──⭓ *Fun Menu*
 │
-│⭔ ${prefix}simih
-│⭔ ${prefix}halah
-│⭔ ${prefix}hilih
-│⭔ ${prefix}huluh
-│⭔ ${prefix}heleh
-│⭔ ${prefix}holoh
-│⭔ ${prefix}jadian
-│⭔ ${prefix}jodohku
-│⭔ ${prefix}delttt
-│⭔ ${prefix}tictactoe
-│⭔ ${prefix}family100
-│⭔ ${prefix}tebak [option]
-│⭔ ${prefix}math [mode]
-│⭔ ${prefix}suitpvp [@tag]
+│⭔ ${prefixo}simih
+│⭔ ${prefixo}halah
+│⭔ ${prefixo}hilih
+│⭔ ${prefixo}huluh
+│⭔ ${prefixo}heleh
+│⭔ ${prefixo}holoh
+│⭔ ${prefixo}jadian
+│⭔ ${prefixo}jodohku
+│⭔ ${prefixo}delttt
+│⭔ ${prefixo}tictactoe
+│⭔ ${prefixo}family100
+│⭔ ${prefixo}tebak [option]
+│⭔ ${prefixo}math [mode]
+│⭔ ${prefixo}suitpvp [@tag]
 │
 └───────⭓
 ┌──⭓ *Primbon Menu*
 │
-│⭔ ${prefix}nomorhoki
-│⭔ ${prefix}artimimpi
-│⭔ ${prefix}artinama
-│⭔ ${prefix}ramaljodoh
-│⭔ ${prefix}ramaljodohbali
-│⭔ ${prefix}suamiistri
-│⭔ ${prefix}ramalcinta
-│⭔ ${prefix}cocoknama
-│⭔ ${prefix}pasangan
-│⭔ ${prefix}jadiannikah
-│⭔ ${prefix}sifatusaha
-│⭔ ${prefix}rezeki
-│⭔ ${prefix}pekerjaan
-│⭔ ${prefix}nasib
-│⭔ ${prefix}penyakit
-│⭔ ${prefix}tarot
-│⭔ ${prefix}fengshui
-│⭔ ${prefix}haribaik
-│⭔ ${prefix}harisangar
-│⭔ ${prefix}harisial
-│⭔ ${prefix}nagahari
-│⭔ ${prefix}arahrezeki
-│⭔ ${prefix}peruntungan
-│⭔ ${prefix}weton
-│⭔ ${prefix}karakter
-│⭔ ${prefix}keberuntungan
-│⭔ ${prefix}memancing
-│⭔ ${prefix}masasubur
-│⭔ ${prefix}zodiak
+│⭔ ${prefixo}nomorhoki
+│⭔ ${prefixo}artimimpi
+│⭔ ${prefixo}artinama
+│⭔ ${prefixo}ramaljodoh
+│⭔ ${prefixo}ramaljodohbali
+│⭔ ${prefixo}suamiistri
+│⭔ ${prefixo}ramalcinta
+│⭔ ${prefixo}cocoknama
+│⭔ ${prefixo}pasangan
+│⭔ ${prefixo}jadiannikah
+│⭔ ${prefixo}sifatusaha
+│⭔ ${prefixo}rezeki
+│⭔ ${prefixo}pekerjaan
+│⭔ ${prefixo}nasib
+│⭔ ${prefixo}penyakit
+│⭔ ${prefixo}tarot
+│⭔ ${prefixo}fengshui
+│⭔ ${prefixo}haribaik
+│⭔ ${prefixo}harisangar
+│⭔ ${prefixo}harisial
+│⭔ ${prefixo}nagahari
+│⭔ ${prefixo}arahrezeki
+│⭔ ${prefixo}peruntungan
+│⭔ ${prefixo}weton
+│⭔ ${prefixo}karakter
+│⭔ ${prefixo}keberuntungan
+│⭔ ${prefixo}memancing
+│⭔ ${prefixo}masasubur
+│⭔ ${prefixo}zodiak
 │
 └───────⭓
 ┌──⭓ *Convert Menu*
 │
-│⭔ ${prefix}attp
-│⭔ ${prefix}ttp
-│⭔ ${prefix}toimage
-│⭔ ${prefix}removebg
-│⭔ ${prefix}sticker
-│⭔ ${prefix}emojimix
-│⭔ ${prefix}emojimix2
-│⭔ ${prefix}tovideo
-│⭔ ${prefix}togif
-│⭔ ${prefix}tourl
-│⭔ ${prefix}tovn
-│⭔ ${prefix}tomp3
-│⭔ ${prefix}toaudio
-│⭔ ${prefix}ebinary
-│⭔ ${prefix}dbinary
-│⭔ ${prefix}styletext
-│⭔ ${prefix}smeme
+│⭔ ${prefixo}attp
+│⭔ ${prefixo}ttp
+│⭔ ${prefixo}toimage
+│⭔ ${prefixo}removebg
+│⭔ ${prefixo}sticker
+│⭔ ${prefixo}emojimix
+│⭔ ${prefixo}emojimix2
+│⭔ ${prefixo}tovideo
+│⭔ ${prefixo}togif
+│⭔ ${prefixo}tourl
+│⭔ ${prefixo}tovn
+│⭔ ${prefixo}tomp3
+│⭔ ${prefixo}toaudio
+│⭔ ${prefixo}ebinary
+│⭔ ${prefixo}dbinary
+│⭔ ${prefixo}styletext
+│⭔ ${prefixo}smeme
 │
 └───────⭓
 ┌──⭓ *Main Menu*
 │
-│⭔ ${prefix}ping
-│⭔ ${prefix}owner
-│⭔ ${prefix}menu / ${prefix}help / ${prefix}?
-│⭔ ${prefix}delete
-│⭔ ${prefix}infochat
-│⭔ ${prefix}quoted
-│⭔ ${prefix}listpc
-│⭔ ${prefix}listgc
-│⭔ ${prefix}listonline
-│⭔ ${prefix}speedtest
+│⭔ ${prefixo}ping
+│⭔ ${prefixo}owner
+│⭔ ${prefixo}menu / ${prefixo}help / ${prefixo}?
+│⭔ ${prefixo}delete
+│⭔ ${prefixo}infochat
+│⭔ ${prefixo}quoted
+│⭔ ${prefixo}listpc
+│⭔ ${prefixo}listgc
+│⭔ ${prefixo}listonline
+│⭔ ${prefixo}speedtest
 │
 └───────⭓
 ┌──⭓ *Database Menu*
 │
-│⭔ ${prefix}setcmd
-│⭔ ${prefix}listcmd
-│⭔ ${prefix}delcmd
-│⭔ ${prefix}lockcmd
-│⭔ ${prefix}addmsg
-│⭔ ${prefix}listmsg
-│⭔ ${prefix}getmsg
-│⭔ ${prefix}delmsg
+│⭔ ${prefixo}setcmd
+│⭔ ${prefixo}listcmd
+│⭔ ${prefixo}delcmd
+│⭔ ${prefixo}lockcmd
+│⭔ ${prefixo}addmsg
+│⭔ ${prefixo}listmsg
+│⭔ ${prefixo}getmsg
+│⭔ ${prefixo}delmsg
 │
 └───────⭓
 ┌──⭓ *Anonymous Menu*
 │
-│⭔ ${prefix}anonymous
-│⭔ ${prefix}start
-│⭔ ${prefix}next
-│⭔ ${prefix}keluar
+│⭔ ${prefixo}anonymous
+│⭔ ${prefixo}start
+│⭔ ${prefixo}next
+│⭔ ${prefixo}keluar
 │
 └───────⭓
 ┌──⭓ *Islamic Menu*
 │
-│⭔ ${prefix}iqra
-│⭔ ${prefix}hadist
-│⭔ ${prefix}alquran
-│⭔ ${prefix}juzamma
-│⭔ ${prefix}tafsirsurah
+│⭔ ${prefixo}iqra
+│⭔ ${prefixo}hadist
+│⭔ ${prefixo}alquran
+│⭔ ${prefixo}juzamma
+│⭔ ${prefixo}tafsirsurah
 │
 └───────⭓
 ┌──⭓ *Voice Changer*
 │
-│⭔ ${prefix}bass
-│⭔ ${prefix}blown
-│⭔ ${prefix}deep
-│⭔ ${prefix}earrape
-│⭔ ${prefix}fast
-│⭔ ${prefix}fat
-│⭔ ${prefix}nightcore
-│⭔ ${prefix}reverse
-│⭔ ${prefix}robot
-│⭔ ${prefix}slow
-│⭔ ${prefix}tupai
+│⭔ ${prefixo}bass
+│⭔ ${prefixo}blown
+│⭔ ${prefixo}deep
+│⭔ ${prefixo}earrape
+│⭔ ${prefixo}fast
+│⭔ ${prefixo}fat
+│⭔ ${prefixo}nightcore
+│⭔ ${prefixo}reverse
+│⭔ ${prefixo}robot
+│⭔ ${prefixo}slow
+│⭔ ${prefixo}tupai
 │
 └───────⭓
 ┌──⭓ *Owner Menu*
 │
-│⭔ ${prefix}react [emoji]
-│⭔ ${prefix}chat [option]
-│⭔ ${prefix}join [link]
-│⭔ ${prefix}leave
-│⭔ ${prefix}block @user
-│⭔ ${prefix}unblock @user
-│⭔ ${prefix}bcgroup [text]
-│⭔ ${prefix}bcall [text]
-│⭔ ${prefix}setppbot [image]
-│⭔ ${prefix}setexif
-│⭔ ${prefix}setmenu [option]
+│⭔ ${prefixo}react [emoji]
+│⭔ ${prefixo}chat [option]
+│⭔ ${prefixo}join [link]
+│⭔ ${prefixo}leave
+│⭔ ${prefixo}block @user
+│⭔ ${prefixo}unblock @user
+│⭔ ${prefixo}bcgroup [text]
+│⭔ ${prefixo}bcall [text]
+│⭔ ${prefixo}setppbot [image]
+│⭔ ${prefixo}setexif
+│⭔ ${prefixo}setmenu [option]
 │
 └───────⭓
 _Donasi Ngab_\n_Jangan Ngarep Free Mulu_`
@@ -3675,7 +3675,7 @@ case 'sound158':
 case 'sound159':
 case 'sound160':
 case 'sound161':
-naze_dev = await getBuffer(`https://github.com/DGXeon/Tiktokmusic-API/raw/master/tiktokmusic/${command}.mp3`)
+naze_dev = await getBuffer(`https://github.com/DGXeon/Tiktokmusic-API/raw/master/tiktokmusic/${comando}.mp3`)
 await client.sendMessage(m.chat, { audio: naze_dev, mimetype: 'audio/mp4', ptt: true }, { quoted: m })     
 break
             default:
