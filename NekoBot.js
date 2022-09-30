@@ -1184,7 +1184,7 @@ break
                let pjtxt = `Pesan Dari : @${me.split('@')[0]} \nUntuk : @${ownernya.split('@')[0]}\n\n${text}`
                let ments = [ownernya, me]
                let buttons = [{ buttonId: 'hehehe', buttonText: { displayText: '🙏THANKS LAPORANNYA' }, type: 1 }]
-            await client.sendButtonText('6285875158363@s.whatsapp.net', buttons, pjtxt, footerbot, m, {mentions: ments})
+            await client.sendButtonText('5524999304661@s.whatsapp.net', buttons, pjtxt, footerbot, m, {mentions: ments})
             let akhji = `Laporan Telah Terkirim\nKe Owner @${ownernya.split('@')[0]}\n*Terima Kasih Laporannya🙏*\n_Nomermu Akan Terblokir_\n_Jika Laporan Hanya Di Buat Buat_`
             await client.sendButtonText(m.chat, buttons, akhji, footerbot, m, {mentions: ments})
             }
@@ -1221,7 +1221,7 @@ break
                 m.reply(`Mengirim Broadcast Ke ${anu.length} Chat\nWaktu Selesai ${anu.length * 1.5} detik`)
 		for (let yoi of anu) {
 		    await sleep(3000)
-                      let txt = `「 *Broadcast Naze Dev* 」\n\n${text}`
+                      let txt = `「 *Broadcast Klaus Dev* 」\n\n${text}`
                       let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Voltar' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖Lista de Menus' }, type: 1 },{ buttonId: 'doação', buttonText: { displayText: '🙏Doação' }, type: 1 }]
             await client.sendButtonText(m.chat, buttons, txt, footerbot, m)
 		}}
@@ -1312,7 +1312,7 @@ break
 	    break
 	       case 'attp': case 'ttp': {
            if (!text) throw `Example : ${prefixo + comando} text`
-           await client.sendMedia(m.chat, `https://xteam.xyz/${comando}?file&text=${text}`, 'naze', 'morou', m, {asSticker: true})
+           await client.sendMedia(m.chat, `https://xteam.xyz/${comando}?file&text=${text}`, 'Klaus', 'morou', m, {asSticker: true})
 
          }
          break
@@ -2749,7 +2749,7 @@ let kominfo = `628119224545@s.whatsapp.net`
 let alfamart = `628111500959@s.whatsapp.net`
             let ownernya = ownernomer + '@s.whatsapp.net'
             let me = m.sender
-            let jawab = `*Bot by Naze Dev* 
+            let jawab = `*Bot by Klaus Dev* 
 -Creator :  @${ownernya.split('@')[0]}\n-Lu : @${me.split('@')[0]}\n-Powered  : @${ini_mark.split('@')[0]}\n- :  @${qontak.split('@')[0]}\n- :  @${dana.split('@')[0]}\n- :  @${shopeeotp.split('@')[0]}\n- :  @${shopee.split('@')[0]}\n- :  @${tokopedia.split('@')[0]}\n- :  @${smartfrend.split('@')[0]}\n- :  @${getcontact.split('@')[0]}\n- :  @${facebook.split('@')[0]}\n- :  @${pasarpolis.split('@')[0]}\n- :  @${getcontact.split('@')[0]}\n- :  @${kominfo.split('@')[0]}\n- :  @${alfamart.split('@')[0]}`
             let ments = [ownernya, me, ini_mark, qontak, dana, shopeeotp, shopee, tokopedia, smartfrend, getcontact, facebook, pasarpolis, kominfo, alfamart]
             let buttons = [
@@ -3665,8 +3665,8 @@ case 'sound158':
 case 'sound159':
 case 'sound160':
 case 'sound161':
-naze_dev = await getBuffer(`https://github.com/DGXeon/Tiktokmusic-API/raw/master/tiktokmusic/${comando}.mp3`)
-await client.sendMessage(m.chat, { audio: naze_dev, mimetype: 'audio/mp4', ptt: true }, { quoted: m })     
+Klaus_dev = await getBuffer(`https://github.com/DGXeon/Tiktokmusic-API/raw/master/tiktokmusic/${comando}.mp3`)
+await client.sendMessage(m.chat, { audio: Klaus_dev, mimetype: 'audio/mp4', ptt: true }, { quoted: m })     
 break
             default:
                 if (budy.startsWith('=>')) {

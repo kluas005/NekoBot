@@ -684,11 +684,10 @@ async function start() {
 
 start()
 
-
 let file = require.resolve(__filename)
 fs.watchFile(file, () => {
 	fs.unwatchFile(file)
-	console.log(chalk.redBright(`Update ${__filename}`))
+	console.log(chalk.redBright(`Atualização de ${__filename}`))
 	delete require.cache[file]
 	require(file)
 })
