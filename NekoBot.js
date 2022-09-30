@@ -951,7 +951,7 @@ let buttonsVote = [
             client.sendMessage(m.chat, buttonMessageVote)
 	    }
             break
-               case 'upvote': case 'sim': {
+               case 'upvote': {
             if (!m.isGroup) throw mess.group
             if (!(m.chat in vote)) throw `_*sem votação neste grupo!*_\n\n*${prefixo}Votar* - para começar a votar`
             isVote = vote[m.chat][1].concat(vote[m.chat][2])
@@ -993,7 +993,7 @@ ${vote[m.chat][2].map((v, i) => `├ ${i + 1}. @${v.split`@`[0]}`).join('\n')}
             client.sendMessage(m.chat, buttonMessageUpvote)
 	    }
              break
-                case 'devote': case 'não': {
+                case 'devote': {
             if (!m.isGroup) throw mess.group
             if (!(m.chat in vote)) throw `_*sem votação neste grupo!*_\n\n*${prefixo}Votar* - para começar a votar`
             isVote = vote[m.chat][1].concat(vote[m.chat][2])
