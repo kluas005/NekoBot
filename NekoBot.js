@@ -16,8 +16,6 @@ const moment = require('moment-timezone')
 const { JSDOM } = require('jsdom')
 const speed = require('performance-now')
 const { performance } = require('perf_hooks')
-const { Primbon } = require('scrape-primbon')
-const primbon = new Primbon()
 const { smsg, formatp, tanggal, formatDate, getTime, isUrl, sleep, clockString, runtime, fetchJson, getBuffer, jsonformat, format, parseMention, getRandom, getGroupAdmins } = require('./lib/functions')
 
 
@@ -155,10 +153,10 @@ module.exports = client = async (client, m, chatUpdate, store) => {
             let user = Object.keys(global.db.data.users)
             let limitUser = isPremium ? global.limitawal.premium : global.limitawal.free
             for (let jid of user) global.db.data.users[jid].limit = limitUser
-            console.log('Reseted Limit')
+            console.log('Limite Resetado')
         }, {
             scheduled: true,
-            timezone: "Asia/Jakarta"
+            timezone: "America/Sao_Paulo"
         })
         
 	// auto set bio
@@ -166,7 +164,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
 	    let setting = global.db.data.settings[botNumber]
 	    if (new Date() * 1 - setting.status > 1000) {
 		let uptime = await runtime(process.uptime())
-		await client.setStatus(`${client.user.name} | Runtime : ${runtime(uptime)}`)
+		await client.setStatus(`${client.user.name} | Tempo de Execução : ${runtime(uptime)}`)
 		setting.status = new Date() * 1
 	    }
 	}
@@ -764,7 +762,7 @@ Ketik *nyerah* untuk menyerah dan mengakui kekalahan`
             
            
 //Pembatas
-            case 'react': {
+            case 'react': case 'reagir': {
                 if (!isOwner) throw mess.owner
                 reactionMessage = {
                     react: {
@@ -845,7 +843,7 @@ Ketik *nyerah* untuk menyerah dan mengakui kekalahan`
                 if (!m.isGroup) throw mess.group
                 if (!isBotAdmins) throw mess.botAdmin
                 if (!isAdmins) throw mess.admin
-                if (!text) throw 'Text ?'
+                if (!text) throw 'Nome?'
                 await client.groupUpdateSubject(m.chat, text).then((res) => m.reply(mess.success)).catch((err) => m.reply(jsonformat(err)))
             }
             break
@@ -853,7 +851,7 @@ Ketik *nyerah* untuk menyerah dan mengakui kekalahan`
                 if (!m.isGroup) throw mess.group
                 if (!isBotAdmins) throw mess.botAdmin
                 if (!isAdmins) throw mess.admin
-                if (!text) throw 'Text ?'
+                if (!text) throw 'Descrição?'
                 await client.groupUpdateDescription(m.chat, text).then((res) => m.reply(mess.success)).catch((err) => m.reply(jsonformat(err)))
             }
             break
@@ -878,13 +876,13 @@ Ketik *nyerah* untuk menyerah dan mengakui kekalahan`
                 m.reply(mess.success)
                 }
                 break
-            case 'tagall': {
+            case 'marcar': {
                 if (!m.isGroup) throw mess.group
                 if (!isBotAdmins) throw mess.botAdmin
                 if (!isAdmins) throw mess.admin
-let teks = `══✪〘 *👥 Tag All* 〙✪══
+let teks = `══✪〘 *👥 Marcando Todo Mundo* 〙✪══
  
- ➲ *Pesan : ${q ? q : 'kosong'}*\n\n`
+ ➲ *Mensagem : ${q ? q : 'Vazia'}*\n\n`
                 for (let mem of participants) {
                 teks += `⭔ @${mem.id.split('@')[0]}\n`
                 }
@@ -911,37 +909,37 @@ let teks = `══✪〘 *👥 Tag All* 〙✪══
                 m.reply(teks)
 	    }
 	    break
-               case 'vote': {
+               case 'votar': {
             if (!m.isGroup) throw mess.group
-            if (m.chat in vote) throw `_Masih ada vote di chat ini!_\n\n*${prefixo}hapusvote* - untuk menghapus vote`
-            if (!text) throw `Masukkan Alasan Melakukan Vote, Example: *${prefixo + comando} Owner Ganteng*`
-            m.reply(`Vote dimulai!\n\n*${prefixo}upvote* - untuk ya\n*${prefixo}devote* - untuk tidak\n*${prefixo}cekvote* - untuk mengecek vote\n*${prefixo}hapusvote* - untuk menghapus vote`)
+            if (m.chat in vote) throw `_Ainda há votos neste chat!_\n\n*${prefixo}deletarvoto* - para deletar voto`
+            if (!text) throw `Insira o motivo do voto, exemplo: *${prefixo + comando} duuh é gay*`
+            m.reply(`A Votação Começa!\n\n*${prefixo}sim* - com certeza\n*${prefixo}não* - negativo\n*${prefixo}verificarvoto* - para verificar o voto\n*${prefixo}deletarvoto* - para deletar voto`)
             vote[m.chat] = [q, [], []]
             await sleep(1000)
             upvote = vote[m.chat][1]
             devote = vote[m.chat][2]
-            teks_vote = `*「 VOTE 」*
+            teks_vote = `*「 VOTAÇÃO 」*
 
-*Alasan:* ${vote[m.chat][0]}
+*Motivo:* ${vote[m.chat][0]}
 
-┌〔 UPVOTE 〕
+┌〔 SIM 〕
 │ 
 ├ Total: ${vote[m.chat][1].length}
 │
 │ 
 └────
 
-┌〔 DEVOTE 〕
+┌〔 NÃO 〕
 │ 
 ├ Total: ${vote[m.chat][2].length}
 │
 │ 
 └────
 
-*${prefixo}hapusvote* - untuk menghapus vote`
+*${prefixo}deletarvoto* - para deletar voto`
 let buttonsVote = [
-  {buttonId: `${prefixo}upvote`, buttonText: {displayText: '𝚄𝙿𝚅𝙾𝚃𝙴'}, type: 1},
-  {buttonId: `${prefixo}devote`, buttonText: {displayText: '𝙳𝙴𝚅𝙾𝚃𝙴'}, type: 1}
+  {buttonId: `${prefixo}upvote`, buttonText: {displayText: 'SIM'}, type: 1},
+  {buttonId: `${prefixo}devote`, buttonText: {displayText: 'NÃO'}, type: 1}
 ]
 
             let buttonMessageVote = {
@@ -953,36 +951,36 @@ let buttonsVote = [
             client.sendMessage(m.chat, buttonMessageVote)
 	    }
             break
-               case 'upvote': {
+               case 'upvote': case 'sim': {
             if (!m.isGroup) throw mess.group
-            if (!(m.chat in vote)) throw `_*tidak ada voting digrup ini!*_\n\n*${prefixo}vote* - untuk memulai vote`
+            if (!(m.chat in vote)) throw `_*sem votação neste grupo!*_\n\n*${prefixo}Votar* - para começar a votar`
             isVote = vote[m.chat][1].concat(vote[m.chat][2])
             wasVote = isVote.includes(m.sender)
-            if (wasVote) throw 'Kamu Sudah Vote'
+            if (wasVote) throw 'Você Já Votou'
             vote[m.chat][1].push(m.sender)
             menvote = vote[m.chat][1].concat(vote[m.chat][2])
-            teks_vote = `*「 VOTE 」*
+            teks_vote = `*「 VOTAÇÃO 」*
 
-*Alasan:* ${vote[m.chat][0]}
+*Motivo:* ${vote[m.chat][0]}
 
-┌〔 UPVOTE 〕
+┌〔 SIM 〕
 │ 
 ├ Total: ${vote[m.chat][1].length}
 ${vote[m.chat][1].map((v, i) => `├ ${i + 1}. @${v.split`@`[0]}`).join('\n')}
 │ 
 └────
 
-┌〔 DEVOTE 〕
+┌〔 NÃO 〕
 │ 
 ├ Total: ${vote[m.chat][2].length}
 ${vote[m.chat][2].map((v, i) => `├ ${i + 1}. @${v.split`@`[0]}`).join('\n')}
 │ 
 └────
 
-*${prefixo}hapusvote* - untuk menghapus vote`
+*${prefixo}deletarvoto* - para deletar voto`
             let buttonsUpvote = [
-              {buttonId: `${prefixo}upvote`, buttonText: {displayText: '𝚄𝙿??𝙾𝚃𝙴'}, type: 1},
-              {buttonId: `${prefixo}devote`, buttonText: {displayText: '𝙳𝙴𝚅𝙾𝚃𝙴'}, type: 1}
+              {buttonId: `${prefixo}upvote`, buttonText: {displayText: 'SIM'}, type: 1},
+              {buttonId: `${prefixo}devote`, buttonText: {displayText: 'NÃO'}, type: 1}
             ]
 
             let buttonMessageUpvote = {
@@ -995,36 +993,36 @@ ${vote[m.chat][2].map((v, i) => `├ ${i + 1}. @${v.split`@`[0]}`).join('\n')}
             client.sendMessage(m.chat, buttonMessageUpvote)
 	    }
              break
-                case 'devote': {
+                case 'devote': case 'não': {
             if (!m.isGroup) throw mess.group
-            if (!(m.chat in vote)) throw `_*tidak ada voting digrup ini!*_\n\n*${prefixo}vote* - untuk memulai vote`
+            if (!(m.chat in vote)) throw `_*sem votação neste grupo!*_\n\n*${prefixo}Votar* - para começar a votar`
             isVote = vote[m.chat][1].concat(vote[m.chat][2])
             wasVote = isVote.includes(m.sender)
-            if (wasVote) throw 'Kamu Sudah Vote'
+            if (wasVote) throw 'Você Já Votou'
             vote[m.chat][2].push(m.sender)
             menvote = vote[m.chat][1].concat(vote[m.chat][2])
-            teks_vote = `*「 VOTE 」*
+            teks_vote = `*「 VOTAÇÃO 」*
 
-*Alasan:* ${vote[m.chat][0]}
+*Motivo:* ${vote[m.chat][0]}
 
-┌〔 UPVOTE 〕
+┌〔 SIM 〕
 │ 
 ├ Total: ${vote[m.chat][1].length}
 ${vote[m.chat][1].map((v, i) => `├ ${i + 1}. @${v.split`@`[0]}`).join('\n')}
 │ 
 └────
 
-┌〔 DEVOTE 〕
+┌〔 NÃO 〕
 │ 
 ├ Total: ${vote[m.chat][2].length}
 ${vote[m.chat][2].map((v, i) => `├ ${i + 1}. @${v.split`@`[0]}`).join('\n')}
 │ 
 └────
 
-*${prefixo}hapusvote* - untuk menghapus vote`
+*${prefixo}deletarvoto* - para deletar voto`
             let buttonsDevote = [
-              {buttonId: `${prefixo}upvote`, buttonText: {displayText: '𝚄𝙿𝚅𝙾𝚃𝙴'}, type: 1},
-              {buttonId: `${prefixo}devote`, buttonText: {displayText: '𝙳𝙴𝚅𝙾𝚃𝙴'}, type: 1}
+              {buttonId: `${prefixo}upvote`, buttonText: {displayText: 'SIM'}, type: 1},
+              {buttonId: `${prefixo}devote`, buttonText: {displayText: 'NÃO'}, type: 1}
             ]
 
             let buttonMessageDevote = {
@@ -1038,55 +1036,55 @@ ${vote[m.chat][2].map((v, i) => `├ ${i + 1}. @${v.split`@`[0]}`).join('\n')}
 	}
             break
                  
-case 'cekvote':
+case 'verificarvoto':
 if (!m.isGroup) throw mess.group
-if (!(m.chat in vote)) throw `_*tidak ada voting digrup ini!*_\n\n*${prefixo}vote* - untuk memulai vote`
-teks_vote = `*「 VOTE 」*
+if (!(m.chat in vote)) throw `_*sem votação neste grupo!*_\n\n*${prefixo}Votar* - para começar a votar`
+teks_vote = `*「 VOTAÇÃO 」*
 
-*Alasan:* ${vote[m.chat][0]}
+*Motivo:* ${vote[m.chat][0]}
 
-┌〔 UPVOTE 〕
+┌〔 SIM 〕
 │ 
 ├ Total: ${upvote.length}
 ${vote[m.chat][1].map((v, i) => `├ ${i + 1}. @${v.split`@`[0]}`).join('\n')}
 │ 
 └────
 
-┌〔 DEVOTE 〕
+┌〔 NÃO 〕
 │ 
 ├ Total: ${devote.length}
 ${vote[m.chat][2].map((v, i) => `├ ${i + 1}. @${v.split`@`[0]}`).join('\n')}
 │ 
 └────
 
-*${prefixo}hapusvote* - untuk menghapus vote
+*${prefixo}deletarvoto* - para deletar voto
 
 
 ©${client.user.id}
 `
 client.sendTextWithMentions(m.chat, teks_vote, m)
 break
-		case 'deletevote': case'delvote': case 'hapusvote': {
+		case 'deletarvoto': case'delvote': case 'deletarvoto': {
             if (!m.isGroup) throw mess.group
-            if (!(m.chat in vote)) throw `_*tidak ada voting digrup ini!*_\n\n*${prefixo}vote* - untuk memulai vote`
+            if (!(m.chat in vote)) throw `_*sem votação neste grupo!*_\n\nUse *${prefixo}Votar* - para começar a votar`
             delete vote[m.chat]
-            m.reply('Berhasil Menghapus Sesi Vote Di Grup Ini')
+            m.reply('Excluiu sessão de votação neste grupo com sucesso')
 	    }
             break
-               case 'group': case 'grup': {
+               case 'grupo': case 'grup': {
                 if (!m.isGroup) throw mess.group
                 if (!isBotAdmins) throw mess.botAdmin
                 if (!isAdmins) throw mess.admin
-                if (args[0] === 'close'){
-                    await client.groupSettingUpdate(m.chat, 'announcement').then((res) => m.reply(`*Sukses Menutup Group*`)).catch((err) => m.reply(jsonformat(err)))
-                } else if (args[0] === 'open'){
-                    await client.groupSettingUpdate(m.chat, 'not_announcement').then((res) => m.reply(`*Sukses Membuka Group*`)).catch((err) => m.reply(jsonformat(err)))
+                if (args[0] === 'fechar'){
+                    await client.groupSettingUpdate(m.chat, 'announcement').then((res) => m.reply(`*Grupo Fechado com Sucesso*`)).catch((err) => m.reply(jsonformat(err)))
+                } else if (args[0] === 'abrir'){
+                    await client.groupSettingUpdate(m.chat, 'not_announcement').then((res) => m.reply(`*Grupo Aberto com Sucesso*`)).catch((err) => m.reply(jsonformat(err)))
                 } else {
                 let buttons = [
-                        { buttonId: 'group open', buttonText: { displayText: 'Open kh?' }, type: 1 },
-                        { buttonId: 'group close', buttonText: { displayText: 'Close kh?' }, type: 1 }
+                        { buttonId: 'grupo abrir', buttonText: { displayText: 'Abrir Grupo?' }, type: 1 },
+                        { buttonId: 'grupo fechar', buttonText: { displayText: 'Fechar Grupo?' }, type: 1 }
                     ]
-                    await client.sendButtonText(m.chat, buttons, `Mode Group`, client.user.name, m)
+                    await client.sendButtonText(m.chat, buttons, `Modo de grupo`, client.user.name, m)
 
              }
             }
@@ -1114,19 +1112,19 @@ break
                 if (!isBotAdmins) throw mess.botAdmin
                 if (!isAdmins) throw mess.admin
                 if (args[0] === "on") {
-                if (db.data.chats[m.chat].antilink) return m.reply(`*Sudah Aktif kak Sebelumnya*`)
+                if (db.data.chats[m.chat].antilink) return m.reply(`*Já esteve ativo antes*`)
                 db.data.chats[m.chat].antilink = true
-                m.reply(`*Antilink Sekarang Aktif !*`)
+                m.reply(`*O Antilink Está Ativado!*`)
                 } else if (args[0] === "off") {
-                if (!db.data.chats[m.chat].antilink) return m.reply(`*Sudah Tidak Aktif Sebelumnya*`)
+                if (!db.data.chats[m.chat].antilink) return m.reply(`*Anteriormente inativo*`)
                 db.data.chats[m.chat].antilink = false
-                m.reply(`*Antilink Sekarang Tidak Aktif !*`)
+                m.reply(`*O Antilink Está Desativado !*`)
                 } else {
                  let buttons = [
-                        { buttonId: 'antilink on', buttonText: { displayText: 'On' }, type: 1 },
-                        { buttonId: 'antilink off', buttonText: { displayText: 'Off' }, type: 1 }
+                        { buttonId: 'antilink on', buttonText: { displayText: 'Ligado' }, type: 1 },
+                        { buttonId: 'antilink off', buttonText: { displayText: 'Desligado' }, type: 1 }
                     ]
-                    await client.sendButtonText(m.chat, buttons, `Mode Antilink`, client.user.name, m)
+                    await client.sendButtonText(m.chat, buttons, `Modo do Antilink`, client.user.name, m)
                 }
              }
              break
@@ -1170,7 +1168,7 @@ break
                 }
             }
             break
-            case 'delete': case 'del': {
+            case 'delete': case 'del': case 'deletar': {
                 if (!m.quoted) throw false
                 let { chat, fromMe, id, isBaileys } = m.quoted
                 if (!isBaileys) throw 'Pesan tersebut bukan dikirim oleh bot!'
@@ -1199,7 +1197,6 @@ break
                 client.sendMessage(m.chat, reactionMessage)
             }
             break  
-            break
             case 'bcgc': case 'bcgroup': {
                 if (!isOwner) throw mess.owner
                 if (!text) throw `Text mana?\n\nExample : ${prefixo + comando} fatih-san`
@@ -1248,7 +1245,7 @@ break
                  let teks = `⬣ *LIST GROUP CHAT*\n\nTotal Group : ${anu.length} Group\n\n`
                  for (let i of anu) {
                      let metadata = await client.groupMetadata(i)
-                     teks += `⬡ *Nama :* ${metadata.subject}\n⬡ *Owner :* ${metadata.owner !== undefined ? '@' + metadata.owner.split`@`[0] : 'Tidak diketahui'}\n⬡ *ID :* ${metadata.id}\n⬡ *Dibuat :* ${moment(metadata.creation * 1000).tz('Asia/Jakarta').format('DD/MM/YYYY HH:mm:ss')}\n⬡ *Member :* ${metadata.participants.length}\n\n────────────────────────\n\n`
+                     teks += `⬡ *Nama :* ${metadata.subject}\n⬡ *Owner :* ${metadata.owner !== undefined ? '@' + metadata.owner.split`@`[0] : 'Tidak diketahui'}\n⬡ *ID :* ${metadata.id}\n⬡ *Dibuat :* ${moment(metadata.creation * 1000).tz('America/Sao_Paulo').format('DD/MM/YYYY HH:mm:ss')}\n⬡ *Membro :* ${metadata.participants.length}\n\n────────────────────────\n\n`
                  }
                  client.sendTextWithMentions(m.chat, teks, m)
              }
@@ -1256,10 +1253,10 @@ break
              case 'listonline': case 'liston': {
                     let id = args && /\d+\-\d+@g.us/.test(args[0]) ? args[0] : m.chat
                     let online = [...Object.keys(store.presences[id]), botNumber]
-                    client.sendText(m.chat, 'List Online:\n\n' + online.map(v => '⭔ @' + v.replace(/@.+/, '')).join`\n`, m, { mentions: online })
+                    client.sendText(m.chat, 'Lista de Pessoas Onlines\n\n' + online.map(v => '⭔ @' + v.replace(/@.+/, '')).join`\n`, m, { mentions: online })
              }
              break
-            case 'sticker': case 's': case 'stickergif': case 'sgif': {
+            case 'sticker': case 's': case 'stickergif': case 'sgif': case 'figurinha': {
             if (!quoted) throw `*Responda um vídeo/imagem com legenda* ${prefixo + comando}`
             m.reply(mess.wait)
                     if (/image/.test(mime)) {
@@ -1592,8 +1589,8 @@ break
                 m.reply(mess.wait)
                 let anu = await fetchJson('https://raw.githubusercontent.com/iamriz7/kopel_/main/kopel.json')
                 let random = anu[Math.floor(Math.random() * anu.length)]
-                client.sendMessage(m.chat, { image: { url: random.male }, caption: `Couple Male` }, { quoted: m })
-                client.sendMessage(m.chat, { image: { url: random.female }, caption: `Couple Female` }, { quoted: m })
+                client.sendMessage(m.chat, { image: { url: random.male }, caption: `Metadinha Masculina` }, { quoted: m })
+                client.sendMessage(m.chat, { image: { url: random.female }, caption: `Metadinha Feminina` }, { quoted: m })
             }
 	    break
             case 'coffe': case 'kopi': {
@@ -1633,7 +1630,7 @@ break
                 anu = await fetchJson(`https://api.akuari.my.id/search/carigc?query=${text}`)
                 n = anu.result
                 result = n[Math.floor(Math.random() * n.length)]
-                let jwbn = `*Nama : ${result.nama}\n*Link : ${result.link}*`
+                let jwbn = `*Nome : ${result.nama}\n*Link : ${result.link}*`
 		let buttons = [{ buttonId: 'menu', buttonText: { displayText: '📖Lista de Menus' }, type: 1 },{ buttonId: 'doação', buttonText: { displayText: '🙏Doação' }, type: 1 }]
             await client.sendButtonText(m.chat, buttons, jwbn, footerbot, m)
             }
@@ -1704,266 +1701,11 @@ break
                 client.sendMessage(m.chat, { image: { url: api('zenz', '/ephoto/' + comando, { text: text }, 'apikey') }, caption: `Ephoto ${comando}` }, { quoted: m })
             }
             break
-	    case 'nomerhoki': case 'nomorhoki': {
-                if (!Number(text)) throw `Example : ${prefixo + comando} 6285822347348`
-                let anu = await primbon.nomer_hoki(Number(text))
-                if (anu.status == false) return m.reply(anu.message)
-                client.sendText(m.chat, `⭔ *Nomor HP :* ${anu.message.nomer_hp}\n⭔ *Angka Shuzi :* ${anu.message.angka_shuzi}\n⭔ *Energi Positif :*\n- Kekayaan : ${anu.message.energi_positif.kekayaan}\n- Kesehatan : ${anu.message.energi_positif.kesehatan}\n- Cinta : ${anu.message.energi_positif.cinta}\n- Kestabilan : ${anu.message.energi_positif.kestabilan}\n- Persentase : ${anu.message.energi_positif.persentase}\n⭔ *Energi Negatif :*\n- Perselisihan : ${anu.message.energi_negatif.perselisihan}\n- Kehilangan : ${anu.message.energi_negatif.kehilangan}\n- Malapetaka : ${anu.message.energi_negatif.malapetaka}\n- Kehancuran : ${anu.message.energi_negatif.kehancuran}\n- Persentase : ${anu.message.energi_negatif.persentase}`, m)
-            }
-            break
-            case 'artimimpi': case 'tafsirmimpi': {
-                if (!text) throw `Example : ${prefixo + comando} belanja`
-                let anu = await primbon.tafsir_mimpi(text)
-                if (anu.status == false) return m.reply(anu.message)
-                client.sendText(m.chat, `⭔ *Mimpi :* ${anu.message.mimpi}\n⭔ *Arti :* ${anu.message.arti}\n⭔ *Solusi :* ${anu.message.solusi}`, m)
-            }
-            break
-            case 'ramalanjodoh': case 'ramaljodoh': {
-                if (!text) throw `Example : ${prefixo + comando} Dika, 7, 7, 2005, Novia, 16, 11, 2004`
-                let [nama1, tgl1, bln1, thn1, nama2, tgl2, bln2, thn2] = text.split`,`
-                let anu = await primbon.ramalan_jodoh(nama1, tgl1, bln1, thn1, nama2, tgl2, bln2, thn2)
-                if (anu.status == false) return m.reply(anu.message)
-                client.sendText(m.chat, `⭔ *Nama Anda :* ${anu.message.nama_anda.nama}\n⭔ *Lahir Anda :* ${anu.message.nama_anda.tgl_lahir}\n⭔ *Nama Pasangan :* ${anu.message.nama_pasangan.nama}\n⭔ *Lahir Pasangan :* ${anu.message.nama_pasangan.tgl_lahir}\n⭔ *Hasil :* ${anu.message.result}\n⭔ *Catatan :* ${anu.message.catatan}`, m)
-            }
-            break
-            case 'ramalanjodohbali': case 'ramaljodohbali': {
-                if (!text) throw `Example : ${prefixo + comando} Dika, 7, 7, 2005, Novia, 16, 11, 2004`
-                let [nama1, tgl1, bln1, thn1, nama2, tgl2, bln2, thn2] = text.split`,`
-                let anu = await primbon.ramalan_jodoh_bali(nama1, tgl1, bln1, thn1, nama2, tgl2, bln2, thn2)
-                if (anu.status == false) return m.reply(anu.message)
-                client.sendText(m.chat, `⭔ *Nama Anda :* ${anu.message.nama_anda.nama}\n⭔ *Lahir Anda :* ${anu.message.nama_anda.tgl_lahir}\n⭔ *Nama Pasangan :* ${anu.message.nama_pasangan.nama}\n⭔ *Lahir Pasangan :* ${anu.message.nama_pasangan.tgl_lahir}\n⭔ *Hasil :* ${anu.message.result}\n⭔ *Catatan :* ${anu.message.catatan}`, m)
-            }
-            break
-            case 'suamiistri': {
-                if (!text) throw `Example : ${prefixo + comando} Dika, 7, 7, 2005, Novia, 16, 11, 2004`
-                let [nama1, tgl1, bln1, thn1, nama2, tgl2, bln2, thn2] = text.split`,`
-                let anu = await primbon.suami_istri(nama1, tgl1, bln1, thn1, nama2, tgl2, bln2, thn2)
-                if (anu.status == false) return m.reply(anu.message)
-                client.sendText(m.chat, `⭔ *Nama Suami :* ${anu.message.suami.nama}\n⭔ *Lahir Suami :* ${anu.message.suami.tgl_lahir}\n⭔ *Nama Istri :* ${anu.message.istri.nama}\n⭔ *Lahir Istri :* ${anu.message.istri.tgl_lahir}\n⭔ *Hasil :* ${anu.message.result}\n⭔ *Catatan :* ${anu.message.catatan}`, m)
-            }
-            break
-            case 'ramalancinta': case 'ramalcinta': {
-                if (!text) throw `Example : ${prefixo + comando} Dika, 7, 7, 2005, Novia, 16, 11, 2004`
-                let [nama1, tgl1, bln1, thn1, nama2, tgl2, bln2, thn2] = text.split`,`
-                let anu = await primbon.ramalan_cinta(nama1, tgl1, bln1, thn1, nama2, tgl2, bln2, thn2)
-                if (anu.status == false) return m.reply(anu.message)
-                client.sendText(m.chat, `⭔ *Nama Anda :* ${anu.message.nama_anda.nama}\n⭔ *Lahir Anda :* ${anu.message.nama_anda.tgl_lahir}\n⭔ *Nama Pasangan :* ${anu.message.nama_pasangan.nama}\n⭔ *Lahir Pasangan :* ${anu.message.nama_pasangan.tgl_lahir}\n⭔ *Sisi Positif :* ${anu.message.sisi_positif}\n⭔ *Sisi Negatif :* ${anu.message.sisi_negatif}\n⭔ *Catatan :* ${anu.message.catatan}`, m)
-            }
-            break
-            case 'artinama': {
-                if (!text) throw `Example : ${prefixo + comando} Dika Ardianta`
-                let anu = await primbon.arti_nama(text)
-                if (anu.status == false) return m.reply(anu.message)
-                client.sendText(m.chat, `⭔ *Nama :* ${anu.message.nama}\n⭔ *Arti :* ${anu.message.arti}\n⭔ *Catatan :* ${anu.message.catatan}`, m)
-            }
-            break
-            case 'kecocokannama': case 'cocoknama': {
-                if (!text) throw `Example : ${prefixo + comando} Dika, 7, 7, 2005`
-                let [nama, tgl, bln, thn] = text.split`,`
-                let anu = await primbon.kecocokan_nama(nama, tgl, bln, thn)
-                if (anu.status == false) return m.reply(anu.message)
-                client.sendText(m.chat, `⭔ *Nama :* ${anu.message.nama}\n⭔ *Lahir :* ${anu.message.tgl_lahir}\n⭔ *Life Path :* ${anu.message.life_path}\n⭔ *Destiny :* ${anu.message.destiny}\n⭔ *Destiny Desire :* ${anu.message.destiny_desire}\n⭔ *Personality :* ${anu.message.personality}\n⭔ *Persentase :* ${anu.message.persentase_kecocokan}`, m)
-            }
-            break
-            case 'kecocokanpasangan': case 'cocokpasangan': case 'pasangan': {
-                if (!text) throw `Example : ${prefixo + comando} Dika|Novia`
-                let [nama1, nama2] = text.split`|`
-                let anu = await primbon.kecocokan_nama_pasangan(nama1, nama2)
-                if (anu.status == false) return m.reply(anu.message)
-                client.sendImage(m.chat,  anu.message.gambar, `⭔ *Nama Anda :* ${anu.message.nama_anda}\n⭔ *Nama Pasangan :* ${anu.message.nama_pasangan}\n⭔ *Sisi Positif :* ${anu.message.sisi_positif}\n⭔ *Sisi Negatif :* ${anu.message.sisi_negatif}`, m)
-            }
-            break
-            case 'jadianpernikahan': case 'jadiannikah': {
-                if (!text) throw `Example : ${prefixo + comando} 6, 12, 2020`
-                let [tgl, bln, thn] = text.split`,`
-                let anu = await primbon.tanggal_jadian_pernikahan(tgl, bln, thn)
-                if (anu.status == false) return m.reply(anu.message)
-                client.sendText(m.chat, `⭔ *Tanggal Pernikahan :* ${anu.message.tanggal}\n⭔ *karakteristik :* ${anu.message.karakteristik}`, m)
-            }
-            break
-            case 'sifatusaha': {
-                if (!ext)throw `Example : ${prefixo+ comando} 28, 12, 2021`
-                let [tgl, bln, thn] = text.split`,`
-                let anu = await primbon.sifat_usaha_bisnis(tgl, bln, thn)
-                if (anu.status == false) return m.reply(anu.message)
-                client.sendText(m.chat, `⭔ *Lahir :* ${anu.message.hari_lahir}\n⭔ *Usaha :* ${anu.message.usaha}`, m)
-            }
-            break
-            case 'rejeki': case 'rezeki': {
-                if (!text) throw `Example : ${prefixo + comando} 7, 7, 2005`
-                let [tgl, bln, thn] = text.split`,`
-                let anu = await primbon.rejeki_hoki_weton(tgl, bln, thn)
-                if (anu.status == false) return m.reply(anu.message)
-                client.sendText(m.chat, `⭔ *Lahir :* ${anu.message.hari_lahir}\n⭔ *Rezeki :* ${anu.message.rejeki}\n⭔ *Catatan :* ${anu.message.catatan}`, m)
-            }
-            break
-            case 'pekerjaan': case 'kerja': {
-                if (!text) throw `Example : ${prefixo + comando} 7, 7, 2005`
-                let [tgl, bln, thn] = text.split`,`
-                let anu = await primbon.pekerjaan_weton_lahir(tgl, bln, thn)
-                if (anu.status == false) return m.reply(anu.message)
-                client.sendText(m.chat, `⭔ *Lahir :* ${anu.message.hari_lahir}\n⭔ *Pekerjaan :* ${anu.message.pekerjaan}\n⭔ *Catatan :* ${anu.message.catatan}`, m)
-            }
-            break
-            case 'ramalannasib': case 'ramalnasib': case 'nasib': {
-                if (!text) throw `Example❗:\n${prefixo + comando} 7,7,2005`
-                let [tgl, bln, thn] = text.split`,`
-                let anu = await primbon.ramalan_nasib(tgl, bln, thn)
-                if (anu.status == false) return m.reply(anu.message)
-                client.sendText(m.chat, `⭔ *Analisa :* ${anu.message.analisa}\n⭔ *Angka Akar :* ${anu.message.angka_akar}\n⭔ *Sifat :* ${anu.message.sifat}\n⭔ *Elemen :* ${anu.message.elemen}\n⭔ *Angka Keberuntungan :* ${anu.message.angka_keberuntungan}`, m)
-            }
-            break
-            case 'potensipenyakit': case 'penyakit': {
-                if (!text) throw `Example : ${prefixo + comando} 7,7,2005`
-                let [tgl, bln, thn] = text.split`,`
-                let anu = await primbon.cek_potensi_penyakit(tgl, bln, thn)
-                if (anu.status == false) return m.reply(anu.message)
-                client.sendText(m.chat, `⭔ *Analisa :* ${anu.message.analisa}\n⭔ *Sektor :* ${anu.message.sektor}\n⭔ *Elemen :* ${anu.message.elemen}\n⭔ *Catatan :* ${anu.message.catatan}`, m)
-            }
-            break
-            case 'artitarot': case 'tarot': {
-                if (!text) throw `Example : ${prefixo + comando} 7,7,2005`
-                let [tgl, bln, thn] = text.split`,`
-                let anu = await primbon.arti_kartu_tarot(tgl, bln, thn)
-                if (anu.status == false) return m.reply(anu.message)
-                client.sendImage(m.chat, anu.message.image, `⭔ *Lahir :* ${anu.message.tgl_lahir}\n⭔ *Simbol Tarot :* ${anu.message.simbol_tarot}\n⭔ *Arti :* ${anu.message.arti}\n⭔ *Catatan :* ${anu.message.catatan}`, m)
-            }
-            break
-            case 'fengshui': {
-                if (!text) throw `Example : ${prefixo + comando} Dika,1,2005\n\nNote : ${prefixo + comando} Nama, gender, tahun lahir\nGender : 1 untuk laki-laki & 2 untuk perempuan`
-                let [nama, gender, tahun] = text.split`,`
-                let anu = await primbon.perhitungan_feng_shui(nama, gender, tahun)
-                if (anu.status == false) return m.reply(anu.message)
-                client.sendText(m.chat, `⭔ *Nama :* ${anu.message.nama}\n⭔ *Lahir :* ${anu.message.tahun_lahir}\n⭔ *Gender :* ${anu.message.jenis_kelamin}\n⭔ *Angka Kua :* ${anu.message.angka_kua}\n⭔ *Kelompok :* ${anu.message.kelompok}\n⭔ *Karakter :* ${anu.message.karakter}\n⭔ *Sektor Baik :* ${anu.message.sektor_baik}\n⭔ *Sektor Buruk :* ${anu.message.sektor_buruk}`, m)
-            }
-            break
-            case 'haribaik': {
-                if (!text) throw `Example : ${prefixo + comando} 7,7,2005`
-                let [tgl, bln, thn] = text.split`,`
-                let anu = await primbon.petung_hari_baik(tgl, bln, thn)
-                if (anu.status == false) return m.reply(anu.message)
-                client.sendText(m.chat, `⭔ *Lahir :* ${anu.message.tgl_lahir}\n⭔ *Kala Tinantang :* ${anu.message.kala_tinantang}\n⭔ *Info :* ${anu.message.info}\n⭔ *Catatan :* ${anu.message.catatan}`, m)
-            }
-            break
-            case 'harisangar': case 'taliwangke': {
-                if (!text) throw `Example : ${prefixo + comando} 7,7,2005`
-                let [tgl, bln, thn] = text.split`,`
-                let anu = await primbon.hari_sangar_taliwangke(tgl, bln, thn)
-                if (anu.status == false) return m.reply(anu.message)
-                client.sendText(m.chat, `⭔ *Lahir :* ${anu.message.tgl_lahir}\n⭔ *Hasil :* ${anu.message.result}\n⭔ *Info :* ${anu.message.info}\n⭔ *Catatan :* ${anu.message.catatan}`, m)
-            }
-            break
-            case 'harinaas': case 'harisial': {
-                if (!text) throw `Example : ${prefixo + comando} 7,7,2005`
-                let [tgl, bln, thn] = text.split`,`
-                let anu = await primbon.primbon_hari_naas(tgl, bln, thn)
-                if (anu.status == false) return m.reply(anu.message)
-                client.sendText(m.chat, `⭔ *Hari Lahir :* ${anu.message.hari_lahir}\n⭔ *Tanggal Lahir :* ${anu.message.tgl_lahir}\n⭔ *Hari Naas :* ${anu.message.hari_naas}\n⭔ *Info :* ${anu.message.catatan}\n⭔ *Catatan :* ${anu.message.info}`, m)
-            }
-            break
-            case 'nagahari': case 'harinaga': {
-                if (!text) throw `Example : ${prefixo + comando} 7,7,2005`
-                let [tgl, bln, thn] = text.split`,`
-                let anu = await primbon.rahasia_naga_hari(tgl, bln, thn)
-                if (anu.status == false) return m.reply(anu.message)
-                client.sendText(m.chat, `⭔ *Hari Lahir :* ${anu.message.hari_lahir}\n⭔ *Tanggal Lahir :* ${anu.message.tgl_lahir}\n⭔ *Arah Naga Hari :* ${anu.message.arah_naga_hari}\n⭔ *Catatan :* ${anu.message.catatan}`, m)
-            }
-            break
-            case 'arahrejeki': case 'arahrezeki': {
-                if (!text) throw `Example : ${prefixo + comando} 7,7,2005`
-                let [tgl, bln, thn] = text.split`,`
-                let anu = await primbon.primbon_arah_rejeki(tgl, bln, thn)
-                if (anu.status == false) return m.reply(anu.message)
-                client.sendText(m.chat, `⭔ *Hari Lahir :* ${anu.message.hari_lahir}\n⭔ *tanggal Lahir :* ${anu.message.tgl_lahir}\n⭔ *Arah Rezeki :* ${anu.message.arah_rejeki}\n⭔ *Catatan :* ${anu.message.catatan}`, m)
-            }
-            break
-            case 'peruntungan': {
-                if (!text) throw `Example : ${prefixo + comando} DIka,7,7,2005,2022\n\nNote : ${prefixo + comando} Nama, tanggal lahir, bulan lahir, tahun lahir, untuk tahun`
-                let [nama, tgl, bln, thn, untuk] = text.split`,`
-                let anu = await primbon.ramalan_peruntungan(nama, tgl, bln, thn, untuk)
-                if (anu.status == false) return m.reply(anu.message)
-                client.sendText(m.chat, `⭔ *Nama :* ${anu.message.nama}\n⭔ *Lahir :* ${anu.message.tgl_lahir}\n⭔ *Peruntungan Tahun :* ${anu.message.peruntungan_tahun}\n⭔ *Hasil :* ${anu.message.result}\n⭔ *Catatan :* ${anu.message.catatan}`, m)
-            }
-            break
-            case 'weton': case 'wetonjawa': {
-                if (!text) throw `Example : ${prefixo + comando} 7,7,2005`
-                let [tgl, bln, thn] = text.split`,`
-                let anu = await primbon.weton_jawa(tgl, bln, thn)
-                if (anu.status == false) return m.reply(anu.message)
-                client.sendText(m.chat, `⭔ *Tanggal :* ${anu.message.tanggal}\n⭔ *Jumlah Neptu :* ${anu.message.jumlah_neptu}\n⭔ *Watak Hari :* ${anu.message.watak_hari}\n⭔ *Naga Hari :* ${anu.message.naga_hari}\n⭔ *Jam Baik :* ${anu.message.jam_baik}\n⭔ *Watak Kelahiran :* ${anu.message.watak_kelahiran}`, m)
-            }
-            break
-            case 'sifat': case 'karakter': {
-                if (!text) throw `Example : ${prefixo + comando} Dika, 7,7,2005`
-                let [nama, tgl, bln, thn] = text.split`,`
-                let anu = await primbon.sifat_karakter_tanggal_lahir(nama, tgl, bln, thn)
-                if (anu.status == false) return m.reply(anu.message)
-                client.sendText(m.chat, `⭔ *Nama :* ${anu.message.nama}\n⭔ *Lahir :* ${anu.message.tgl_lahir}\n⭔ *Garis Hidup :* ${anu.message.garis_hidup}`, m)
-            }
-            break
-            case 'keberuntungan': {
-                if (!text) throw `Example : ${prefixo + comando} Dika, 7,7,2005`
-                let [nama, tgl, bln, thn] = text.split`,`
-                let anu = await primbon.potensi_keberuntungan(nama, tgl, bln, thn)
-                if (anu.status == false) return m.reply(anu.message)
-                client.sendText(m.chat, `⭔ *Nama :* ${anu.message.nama}\n⭔ *Lahir :* ${anu.message.tgl_lahir}\n⭔ *Hasil :* ${anu.message.result}`, m)
-            }
-            break
-            case 'memancing': {
-                if (!text) throw `Example : ${prefixo + comando} 12,1,2022`
-                let [tgl, bln, thn] = text.split`,`
-                let anu = await primbon.primbon_memancing_ikan(tgl, bln, thn)
-                if (anu.status == false) return m.reply(anu.message)
-                client.sendText(m.chat, `⭔ *Hasil :* ${anu.message.result}\n⭔ *Catatan :* ${anu.message.catatan}`, m)
-            }
-            break
-            case 'masasubur': {
-                if (!text) throw `Example : ${prefixo + comando} 12,1,2022,28\n\nNote : ${prefixo + comando} hari pertama menstruasi, siklus`
-                let [tgl, bln, thn, siklus] = text.split`,`
-                let anu = await primbon.masa_subur(tgl, bln, thn, siklus)
-                if (anu.status == false) return m.reply(anu.message)
-                client.sendText(m.chat, `⭔ *Hasil :* ${anu.message.result}\n⭔ *Catatan :* ${anu.message.catatan}`, m)
-            }
-            break
-            case 'zodiak': case 'zodiac': {
-                if (!text) throw `Example : ${prefixo+ comando} 7 7 2005`
-                let zodiak = [
-                    ["capricorn", new Date(1970, 0, 1)],
-                    ["aquarius", new Date(1970, 0, 20)],
-                    ["pisces", new Date(1970, 1, 19)],
-                    ["aries", new Date(1970, 2, 21)],
-                    ["taurus", new Date(1970, 3, 21)],
-                    ["gemini", new Date(1970, 4, 21)],
-                    ["cancer", new Date(1970, 5, 22)],
-                    ["leo", new Date(1970, 6, 23)],
-                    ["virgo", new Date(1970, 7, 23)],
-                    ["libra", new Date(1970, 8, 23)],
-                    ["scorpio", new Date(1970, 9, 23)],
-                    ["sagittarius", new Date(1970, 10, 22)],
-                    ["capricorn", new Date(1970, 11, 22)]
-                ].reverse()
-
-                function getZodiac(month, day) {
-                    let d = new Date(1970, month - 1, day)
-                    return zodiak.find(([_,_d]) => d >= _d)[0]
-                }
-                let date = new Date(text)
-                if (date == 'Invalid Date') throw date
-                let d = new Date()
-                let [tahun, bulan, tanggal] = [d.getFullYear(), d.getMonth() + 1, d.getDate()]
-                let birth = [date.getFullYear(), date.getMonth() + 1, date.getDate()]
-
-                let zodiac = await getZodiac(birth[1], birth[2])
-                
-                let anu = await primbon.zodiak(zodiac)
-                if (anu.status == false) return m.reply(anu.message)
-                client.sendText(m.chat, `⭔ *Zodiak :* ${anu.message.zodiak}\n⭔ *Nomor :* ${anu.message.nomor_keberuntungan}\n⭔ *Aroma :* ${anu.message.aroma_keberuntungan}\n⭔ *Planet :* ${anu.message.planet_yang_mengitari}\n⭔ *Bunga :* ${anu.message.bunga_keberuntungan}\n⭔ *Warna :* ${anu.message.warna_keberuntungan}\n⭔ *Batu :* ${anu.message.batu_keberuntungan}\n⭔ *Elemen :* ${anu.message.elemen_keberuntungan}\n⭔ *Pasangan Zodiak :* ${anu.message.pasangan_zodiak}\n⭔ *Catatan :* ${anu.message.catatan}`, m)
-            }
-            break
+	   
             
-//PEMBATAS=======================================
+//Limitador=======================================
 	    case 'stalker': case 'stalk': {
-		if (!isPremium && global.db.data.users[m.sender].limit < 1) return m.reply('Limit Harian Anda Telah Habis')
+		if (!isPremium && global.db.data.users[m.sender].limit < 1) return m.reply('Seu limite diário expirou')
                 if (!text) return m.reply(`Example : ${prefixo +comando} type id\n\nList Type :\n1. ff (Free Fire)\n2. ml (Mobile Legends)\n3. aov (Arena Of Valor)\n4. cod (Call Of Duty)\n5. pb (point Blank)\n6. ig (Instagram)\n7. npm (https://npmjs.com)`)
                 let [type, id, zone] = args
                 if (type.toLowerCase() == 'ff') {
@@ -2015,7 +1757,7 @@ break
             }
             break
             case 'tiktok': case 'tiktoknowm': {
-                if (!text) throw 'Masukkan Query Link!'
+                if (!text) throw 'Insira o link de consulta!'
                 m.reply(mess.wait)
                 let anu = await fetchJson(`https://anabotofc.herokuapp.com/api/download/tiktok2?url=${text}&apikey=AnaBot`)
                 let buttons = [
@@ -2033,7 +1775,7 @@ break
             }
             break
            /**case 'tiktokwm': case 'tiktokwatermark': {
-                if (!text) throw 'Masukkan Query Link!'
+                if (!text) throw 'Insira o link de consulta!'
                 m.reply(mess.wait)
                 let anu = await fetchJson(`https://botcahx-rest-api.herokuapp.com/api/dowloader/tikok?url=${text}`)
                 let buttons = [
@@ -2051,7 +1793,7 @@ break
             }
             break**/
             case 'tiktokmp3': case 'tiktokaudio': {
-                if (!text) throw 'Masukkan Query Link!'
+                if (!text) throw 'Insira o link de consulta!'
                 m.reply(mess.wait)
                 let anu = await fetchJson(`https://anabotofc.herokuapp.com/api/download/tiktok2?url=${text}&apikey=AnaBot`)
                 let buttons = [
@@ -2097,7 +1839,7 @@ break
             }
             break
 	        case 'twitdl': case 'twitter': {
-                if (!text) throw 'Masukkan Query Link!'
+                if (!text) throw 'Insira o link de consulta!'
                 m.reply(mess.wait)
                 let anu = await fetchJson(api('zenz', '/api/downloader/twitter', { url: text }, 'apikey'))
                 let buttons = [
@@ -2106,7 +1848,7 @@ break
                 let buttonMessage = {
                     video: { url: anu.result.HD || anu.result.SD },
                     caption: util.format(anu.result),
-                    footer: 'Press The Button Below',
+                    footer: 'Pressione o botão abaixo',
                     buttons: buttons,
                     headerType: 5
                 }
@@ -2114,7 +1856,7 @@ break
             }
             break
             case 'twittermp3': case 'twitteraudio': {
-                if (!text) throw 'Masukkan Query Link!'
+                if (!text) throw 'Insira o link de consulta!'
                 m.reply(mess.wait)
                 let anu = await fetchJson(api('zenz', '/api/downloader/twitter', { url: text }, 'apikey'))
                 let buttons = [
@@ -2123,7 +1865,7 @@ break
                 let buttonMessage = {
 		    image: { url: anu.result.thumb },
                     caption: util.format(anu.result),
-                    footer: 'Press The Button Below',
+                    footer: 'Pressione o botão abaixo',
                     buttons: buttons,
                     headerType: 4
                 }
@@ -2132,14 +1874,14 @@ break
             }
             break
 	        case 'fbdl': case 'fb': case 'facebook': {
-                if (!text) throw 'Masukkan Query Link!'
+                if (!text) throw 'Insira o link de consulta!'
                 m.reply(mess.wait)
                 let anu = await fetchJson(api('zenz', '/api/downloader/facebook', { url: text }, 'apikey'))
                 client.sendMessage(m.chat, { video: { url: anu.result.url }, caption: `⭔ Titulo : ${anu.result.title}`}, { quoted: m })
             }
             break
 	        case 'pindl': case 'pinterestdl': {
-                if (!text) throw 'Masukkan Query Link!'
+                if (!text) throw 'Insira o link de consulta!'
                 m.reply(mess.wait)
                 let anu = await fetchJson(api('zenz', '/api/downloader/pinterestdl', { url: text }, 'apikey'))
                 client.sendMessage(m.chat, { video: { url: anu.result }, caption: `Download From ${text}` }, { quoted: m })
@@ -2158,11 +1900,11 @@ break
 		        image: { url: anu.author.profilePic },
 			caption: `
 ⭔ Titulo : ${anu.title}
-⭔ Author : ${anu.author.name}
+⭔ Autor : ${anu.author.name}
 ⭔ Like : ${anu.like}
 ⭔ Caption : ${anu.caption}
 ⭔ Url : ${anu.media[0]}
-Untuk Download Media Silahkan Klik salah satu Button dibawah ini atau masukkan command ytmp3/ytmp4 dengan url diatas
+Para baixar mídia, clique em um dos botões abaixo ou digite o comando ytmp3/ytmp4 com o URL acima
 `,
 			footer: client.user.name,
 			buttons,
@@ -2300,7 +2042,7 @@ ${id}`)
                 client.sendMessage(m.chat, { audio: buff, mimetype: 'audio/mpeg' }, { quoted : m })
                 fs.unlinkSync(ran)
                 })
-                } else m.reply(`Balas audio yang ingin diubah dengan caption *${prefixo + comando}*`)
+                } else m.reply(`Responda ao áudio que deseja alterar com uma legenda *${prefixo + comando}*`)
                 } catch (e) {
                 m.reply(e)
                 }
@@ -2310,7 +2052,7 @@ ${id}`)
                 if (!m.quoted.fileSha256) throw 'SHA256 Hash Missing'
                 if (!text) throw `Untuk Command Apa?`
                 let hash = m.quoted.fileSha256.toString('base64')
-                if (global.db.data.sticker[hash] && global.db.data.sticker[hash].locked) throw 'You have no permission to change this sticker command'
+                if (global.db.data.sticker[hash] && global.db.data.sticker[hash].locked) throw 'Você não tem permissão para alterar este comando de Figurinha'
                 global.db.data.sticker[hash] = {
                     text,
                     mentionedJid: m.mentionedJid,
@@ -2318,15 +2060,15 @@ ${id}`)
                     at: + new Date,
                     locked: false,
                 }
-                m.reply(`Done!`)
+                m.reply(`Pronto!`)
             }
             break
             case 'delcmd': {
                 let hash = m.quoted.fileSha256.toString('base64')
                 if (!hash) throw `Tidak ada hash`
-                if (global.db.data.sticker[hash] && global.db.data.sticker[hash].locked) throw 'You have no permission to delete this sticker command'              
+                if (global.db.data.sticker[hash] && global.db.data.sticker[hash].locked) throw 'Você não tem permissão para excluir este comando de Figurinha'              
                 delete global.db.data.sticker[hash]
-                m.reply(`Done!`)
+                m.reply(`Pronto!`)
             }
             break
             case 'listcmd': {
@@ -2345,7 +2087,7 @@ ${Object.entries(global.db.data.sticker).map(([key, value], index) => `${index +
                 let hash = m.quoted.fileSha256.toString('base64')
                 if (!(hash in global.db.data.sticker)) throw 'Hash not found in database'
                 global.db.data.sticker[hash].locked = !/^un/i.test(comando)
-                m.reply('Done!')
+                m.reply('Pronto!')
             }
             break
             case 'addmsg': {
@@ -2386,51 +2128,51 @@ Lihat list Pesan Dengan ${prefixo}listmsg`)
             }
 	    break
 	    case 'anonymous': {
-                if (m.isGroup) return m.reply('Fitur Tidak Dapat Digunakan Untuk Group!')
+                if (m.isGroup) return m.reply('Recursos não podem ser usados ​​para grupos!')
 				this.anonymous = this.anonymous ? this.anonymous : {}
 				let buttons = [
-                    { buttonId: 'start', buttonText: { displayText: 'Start' }, type: 1 }
+                    { buttonId: 'start', buttonText: { displayText: 'Começar' }, type: 1 }
                 ]
-                client.sendButtonText(m.chat, buttons, `\`\`\`Hi ${await client.getName(m.sender)} Welcome To Anonymous Chat\n\nKlik Button Dibawah Ini Untuk Mencari Partner\`\`\``, client.user.name, m)
+                client.sendButtonText(m.chat, buttons, `\`\`\`Olá ${await client.getName(m.sender)}! Bem-vindo ao chat anônimo\n\nClique no botão abaixo para encontrar parceiros\`\`\``, client.user.name, m)
             }
 			break
             case 'keluar': case 'leave': {
-                if (m.isGroup) return m.reply('Fitur Tidak Dapat Digunakan Untuk Group!')
+                if (m.isGroup) return m.reply('Recursos não podem ser usados ​​para grupos!')
                 this.anonymous = this.anonymous ? this.anonymous : {}
                 let room = Object.values(this.anonymous).find(room => room.check(m.sender))
                 if (!room) {
                     let buttons = [
-                        { buttonId: 'start', buttonText: { displayText: 'Start' }, type: 1 }
+                        { buttonId: 'start', buttonText: { displayText: 'Começar' }, type: 1 }
                     ]
-                    await client.sendButtonText(m.chat, buttons, `\`\`\`Kamu Sedang Tidak Berada Di Sesi Anonymous, Tekan Button Untuk Mencari Partner \`\`\``)
+                    await client.sendButtonText(m.chat, buttons, `\`\`\`Você não está em uma sessão anônima, pressione o botão para encontrar um parceiro \`\`\``)
                     throw false
                 }
                 m.reply('Ok')
                 let other = room.other(m.sender)
-                if (other) await client.sendText(other, `\`\`\`Partner Telah Meninggalkan Sesi Anonymous\`\`\``, m)
+                if (other) await client.sendText(other, `\`\`\`O parceiro saiu da sessão anônima\`\`\``, m)
                 delete this.anonymous[room.id]
                 if (comando === 'leave') break
             }
             case 'mulai': case 'start': {
-                if (m.isGroup) return m.reply('Fitur Tidak Dapat Digunakan Untuk Group!')
+                if (m.isGroup) return m.reply('Recursos não podem ser usados ​​para grupos!')
                 this.anonymous = this.anonymous ? this.anonymous : {}
                 if (Object.values(this.anonymous).find(room => room.check(m.sender))) {
                     let buttons = [
-                        { buttonId: 'keluar', buttonText: { displayText: 'Stop' }, type: 1 }
+                        { buttonId: 'keluar', buttonText: { displayText: 'Parar' }, type: 1 }
                     ]
-                    await client.sendButtonText(m.chat, buttons, `\`\`\`Kamu Masih Berada Di dalam Sesi Anonymous, Tekan Button Dibawah Ini Untuk Menghentikan Sesi Anonymous Anda\`\`\``, client.user.name, m)
+                    await client.sendButtonText(m.chat, buttons, `\`\`\`Você ainda está em uma sessão anônima, pressione o botão abaixo para encerrar sua sessão anônima\`\`\``, client.user.name, m)
                     throw false
                 }
                 let room = Object.values(this.anonymous).find(room => room.state === 'WAITING' && !room.check(m.sender))
                 if (room) {
                     let buttons = [
-                        { buttonId: 'next', buttonText: { displayText: 'Skip' }, type: 1 },
-                        { buttonId: 'keluar', buttonText: { displayText: 'Stop' }, type: 1 }
+                        { buttonId: 'next', buttonText: { displayText: 'Pular' }, type: 1 },
+                        { buttonId: 'keluar', buttonText: { displayText: 'Parar' }, type: 1 }
                     ]
-                    await client.sendButtonText(room.a, buttons, `\`\`\`Berhasil Menemukan Partner, sekarang kamu dapat mengirim pesan\`\`\``, client.user.name, m)
+                    await client.sendButtonText(room.a, buttons, `\`\`\`Parceiro encontrado com sucesso, agora você pode enviar mensagem\`\`\``, client.user.name, m)
                     room.b = m.sender
                     room.state = 'CHATTING'
-                    await client.sendButtonText(room.b, buttons, `\`\`\`Berhasil Menemukan Partner, sekarang kamu dapat mengirim pesan\`\`\``, client.user.name, m)
+                    await client.sendButtonText(room.b, buttons, `\`\`\`Parceiro encontrado com sucesso, agora você pode enviar mensagem\`\`\``, client.user.name, m)
                 } else {
                     let id = + new Date
                     this.anonymous[id] = {
@@ -2446,36 +2188,36 @@ Lihat list Pesan Dengan ${prefixo}listmsg`)
                         },
                     }
                     let buttons = [
-                        { buttonId: 'keluar', buttonText: { displayText: 'Stop' }, type: 1 }
+                        { buttonId: 'keluar', buttonText: { displayText: 'Parar' }, type: 1 }
                     ]
-                    await client.sendButtonText(m.chat, buttons, `\`\`\`Mohon Tunggu Sedang Mencari Partner\`\`\``, client.user.name, m)
+                    await client.sendButtonText(m.chat, buttons, `\`\`\`Aguarde, procurando um parceiro\`\`\``, client.user.name, m)
                 }
                 break
             }
             case 'next': case 'lanjut': {
-                if (m.isGroup) return m.reply('Fitur Tidak Dapat Digunakan Untuk Group!')
+                if (m.isGroup) return m.reply('Recursos não podem ser usados ​​para grupos!')
                 this.anonymous = this.anonymous ? this.anonymous : {}
                 let romeo = Object.values(this.anonymous).find(room => room.check(m.sender))
                 if (!romeo) {
                     let buttons = [
-                        { buttonId: 'start', buttonText: { displayText: 'Start' }, type: 1 }
+                        { buttonId: 'start', buttonText: { displayText: 'Começar' }, type: 1 }
                     ]
-                    await client.sendButtonText(m.chat, buttons, `\`\`\`Kamu Sedang Tidak Berada Di Sesi Anonymous, Tekan Button Untuk Mencari Partner\`\`\``)
+                    await client.sendButtonText(m.chat, buttons, `\`\`\`Você não está em uma sessão anônima, pressione o botão para encontrar um parceiro\`\`\``)
                     throw false
                 }
                 let other = romeo.other(m.sender)
-                if (other) await client.sendText(other, `\`\`\`Partner Telah Meninggalkan Sesi Anonymous\`\`\``, m)
+                if (other) await client.sendText(other, `\`\`\`O parceiro saiu da sessão anônima\`\`\``, m)
                 delete this.anonymous[romeo.id]
                 let room = Object.values(this.anonymous).find(room => room.state === 'WAITING' && !room.check(m.sender))
                 if (room) {
                     let buttons = [
-                        { buttonId: 'next', buttonText: { displayText: 'Skip' }, type: 1 },
-                        { buttonId: 'keluar', buttonText: { displayText: 'Stop' }, type: 1 }
+                        { buttonId: 'next', buttonText: { displayText: 'Pular' }, type: 1 },
+                        { buttonId: 'keluar', buttonText: { displayText: 'Parar' }, type: 1 }
                     ]
-                    await client.sendButtonText(room.a, buttons, `\`\`\`Berhasil Menemukan Partner, sekarang kamu dapat mengirim pesan\`\`\``, client.user.name, m)
+                    await client.sendButtonText(room.a, buttons, `\`\`\`Parceiro encontrado com sucesso, agora você pode enviar mensagem\`\`\``, client.user.name, m)
                     room.b = m.sender
                     room.state = 'CHATTING'
-                    await client.sendButtonText(room.b, buttons, `\`\`\`Berhasil Menemukan Partner, sekarang kamu dapat mengirim pesan\`\`\``, client.user.name, m)
+                    await client.sendButtonText(room.b, buttons, `\`\`\`Parceiro encontrado com sucesso, agora você pode enviar mensagem\`\`\``, client.user.name, m)
                 } else {
                     let id = + new Date
                     this.anonymous[id] = {
@@ -2491,9 +2233,9 @@ Lihat list Pesan Dengan ${prefixo}listmsg`)
                         },
                     }
                     let buttons = [
-                        { buttonId: 'keluar', buttonText: { displayText: 'Stop' }, type: 1 }
+                        { buttonId: 'keluar', buttonText: { displayText: 'Parar' }, type: 1 }
                     ]
-                    await client.sendButtonText(m.chat, buttons, `\`\`\`Mohon Tunggu Sedang Mencari Partner\`\`\``, client.user.name, m)
+                    await client.sendButtonText(m.chat, buttons, `\`\`\`Aguarde, procurando um parceiro\`\`\``, client.user.name, m)
                 }
                 break
             }
@@ -2721,41 +2463,17 @@ let capt = `⭔ Titulo: ${judul}
                 } else {
                 let sections = [
                 {
-                title: "CHANGE MENU BOT",
+                title: "MUDAR O MENU DO BOT",
                 rows: [
-                {title: "Template Image", rowId: `setmenu templateImage`, description: `Change menu bot to Template Image`},
-                {title: "Template Video", rowId: `setmenu templateVideo`, description: `Change menu bot to Template Video`},
-                {title: "Template Gif", rowId: `setmenu templateGif`, description: `Change menu bot to Template Gif`},
-                {title: "Template Message", rowId: `setmenu templateMessage`, description: `Change menu bot to Template Message`}
+                {title: "Modelos de imagem", rowId: `setmenu templateImage`, description: `Altera o Menu para Modelo de Imagem`},
+                {title: "Modelos de vídeo", rowId: `setmenu templateVideo`, description: `Altera o Menu para Modelo de Video`},
+                {title: "Modelos de GIF", rowId: `setmenu templateGif`, description: `Altera o Menu para Modelo de Gif`},
+                {title: "Modelos de Mensagem", rowId: `setmenu templateMessage`, description: `Altera o Menu para Modelo de Mensagem`}
                 ]
                 },
                 ]
-                client.sendListMsg(m.chat, `pilih aja *Rull* Setmenu nya!`, client.user.name, `*Hello Arull* !`, `Pilih Rull`, sections, m)
+                client.sendListMsg(m.chat, `basta escolher na *lista*!`, client.user.name, `*Olá* ${pushname} !`, `Escolha na lista`, sections, m)
                 }
-            }
-            break
-            case 'sponsor': {
-            if (!m.isGroup) throw mess.group
-            let qontak = `6285718971848@s.whatsapp.net`
-let dana = `6281911500445@s.whatsapp.net`
-let shopeeotp = `6285574670796@s.whatsapp.net`
-let shopee = `622150996855@s.whatsapp.net`
-let tokopedia = `6281197911081@s.whatsapp.net`
-let smartfrend = `628881212888@s.whatsapp.net`
-let getcontact = `447990653714@s.whatsapp.net`
-let facebook = `447710173736@s.whatsapp.net`
-let pasarpolis = `6287700178000@s.whatsapp.net`
-let kominfo = `628119224545@s.whatsapp.net`
-let alfamart = `628111500959@s.whatsapp.net`
-            let ownernya = ownernomer + '@s.whatsapp.net'
-            let me = m.sender
-            let jawab = `*Bot by Klaus Dev* 
--Creator :  @${ownernya.split('@')[0]}\n-Lu : @${me.split('@')[0]}\n-Powered  : @${ini_mark.split('@')[0]}\n- :  @${qontak.split('@')[0]}\n- :  @${dana.split('@')[0]}\n- :  @${shopeeotp.split('@')[0]}\n- :  @${shopee.split('@')[0]}\n- :  @${tokopedia.split('@')[0]}\n- :  @${smartfrend.split('@')[0]}\n- :  @${getcontact.split('@')[0]}\n- :  @${facebook.split('@')[0]}\n- :  @${pasarpolis.split('@')[0]}\n- :  @${getcontact.split('@')[0]}\n- :  @${kominfo.split('@')[0]}\n- :  @${alfamart.split('@')[0]}`
-            let ments = [ownernya, me, ini_mark, qontak, dana, shopeeotp, shopee, tokopedia, smartfrend, getcontact, facebook, pasarpolis, kominfo, alfamart]
-            let buttons = [
-                        { buttonId: 'allmenu', buttonText: { displayText: '📖Lista de Menus' }, type: 1 }
-                    ]
-                    await client.sendButtonText(m.chat, buttons, jawab, client.user.name, m, {mentions: ments})
             }
             break
             case 'menu': {
@@ -2784,7 +2502,7 @@ let alfamart = `628111500959@s.whatsapp.net`
 ├ *Wit* : ${timur} WIT
 ╰──❍`
             let ments = [ownernya, me, ini_mark]
-            let buttons = [{ buttonId: 'allmenu', buttonText: { displayText: '📖Lista de Menus' }, type: 1 },{ buttonId: 'rules', buttonText: { displayText: '❗Rules' }, type: 1 },{ buttonId: 'doação', buttonText: { displayText: '🙏Doação' }, type: 1 }]
+            let buttons = [{ buttonId: 'allmenu', buttonText: { displayText: '📖Lista de Menus' }, type: 1 },{ buttonId: 'rules', buttonText: { displayText: '❗Regras' }, type: 1 },{ buttonId: 'doação', buttonText: { displayText: '🙏Doação' }, type: 1 }]
             await client.sendButtonText(m.chat, buttons, jawab, footerbot, m, {mentions: ments})
             }
             break
@@ -2825,7 +2543,6 @@ let alfamart = `628111500959@s.whatsapp.net`
                 {title: "Photo Oxy", rowId: `mphotooxy`, description: `♻️Photo Oxy Menu`},
                 {title: "Ephoto", rowId: `mephoto`, description: `🗳Ephoto Menu`},
                 {title: "Fun", rowId: `mfun`, description: `🔫Fun Menu`},
-                {title: "Primbon", rowId: `mprimbon`, description: `😂Primbon Menu`},
                 {title: "Convert", rowId: `mconvert`, description: `🛠Menu de Conversão`},
                 {title: "Main", rowId: `mmain`, description: `💾Menu Principal`},
                 {title: "Database", rowId: `mdatabase`, description: `📁Database Menu`},
@@ -2842,25 +2559,25 @@ let alfamart = `628111500959@s.whatsapp.net`
 goup = `┌──⭓ *Menu de Grupo*
 │
 │⭔ ${prefixo}linkgroup
-│⭔ ${prefixo}ephemeral [option]
-│⭔ ${prefixo}setppgc [image]
-│⭔ ${prefixo}setname [text]
-│⭔ ${prefixo}setdesc [text]
-│⭔ ${prefixo}group [option]
-│⭔ ${prefixo}editinfo [option]
+│⭔ ${prefixo}ephemeral [opção]
+│⭔ ${prefixo}setppgc [imagem]
+│⭔ ${prefixo}setname [texto]
+│⭔ ${prefixo}setdesc [texto]
+│⭔ ${prefixo}grupo [opção]
+│⭔ ${prefixo}editinfo [opção]
 │⭔ ${prefixo}add @user
 │⭔ ${prefixo}kick @user
-│⭔ ${prefixo}hidetag [text]
-│⭔ ${prefixo}tagall [text]
+│⭔ ${prefixo}hidetag [texto]
+│⭔ ${prefixo}tagall [texto]
 │⭔ ${prefixo}antilink [on/off]
 │⭔ ${prefixo}mute [on/off]
-│⭔ ${prefixo}promote @user
-│⭔ ${prefixo}demote @user
-│⭔ ${prefixo}vote [text]
-│⭔ ${prefixo}devote
-│⭔ ${prefixo}upvote
-│⭔ ${prefixo}cekvote
-│⭔ ${prefixo}hapusvote
+│⭔ ${prefixo}promover @user
+│⭔ ${prefixo}rebaixar @user
+│⭔ ${prefixo}votar [motivo]
+│⭔ ${prefixo}sim
+│⭔ ${prefixo}não
+│⭔ ${prefixo}verificarvoto
+│⭔ ${prefixo}deletarvoto
 │
 └───────⭓`
 let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Voltar' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖Lista de Menus' }, type: 1 },{ buttonId: 'doação', buttonText: { displayText: '🙏Doação' }, type: 1 }]
@@ -2920,7 +2637,7 @@ sarch = `┌──⭓ *Menu de Pesquisa*
 │⭔ ${prefixo}wikimedia [query]
 │⭔ ${prefixo}ytsearch [query]
 │⭔ ${prefixo}ringtone [query]
-│⭔ ${prefixo}stalk [option] [query]
+│⭔ ${prefixo}stalk [opção] [query]
 │
 └───────⭓`
 let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Voltar' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖Lista de Menus' }, type: 1 },{ buttonId: 'doação', buttonText: { displayText: '🙏Doação' }, type: 1 }]
@@ -3039,51 +2756,13 @@ mun = `┌──⭓ *Fun Menu*
 │⭔ ${prefixo}delttt
 │⭔ ${prefixo}tictactoe
 │⭔ ${prefixo}family100
-│⭔ ${prefixo}tebak [option]
+│⭔ ${prefixo}tebak [opção]
 │⭔ ${prefixo}math [mode]
 │⭔ ${prefixo}suitpvp [@tag]
 │
 └───────⭓`
 let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Voltar' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖Lista de Menus' }, type: 1 },{ buttonId: 'doação', buttonText: { displayText: '🙏Doação' }, type: 1 }]
             await client.sendButtonText(m.chat, buttons, mun, footerbot, m)
-            }
-            break
-            case 'mprimbon': {
-pimbon = `┌──⭓ *Primbon Menu*
-│
-│⭔ ${prefixo}nomorhoki
-│⭔ ${prefixo}artimimpi
-│⭔ ${prefixo}artinama
-│⭔ ${prefixo}ramaljodoh
-│⭔ ${prefixo}ramaljodohbali
-│⭔ ${prefixo}suamiistri
-│⭔ ${prefixo}ramalcinta
-│⭔ ${prefixo}cocoknama
-│⭔ ${prefixo}pasangan
-│⭔ ${prefixo}jadiannikah
-│⭔ ${prefixo}sifatusaha
-│⭔ ${prefixo}rezeki
-│⭔ ${prefixo}pekerjaan
-│⭔ ${prefixo}nasib
-│⭔ ${prefixo}penyakit
-│⭔ ${prefixo}tarot
-│⭔ ${prefixo}fengshui
-│⭔ ${prefixo}haribaik
-│⭔ ${prefixo}harisangar
-│⭔ ${prefixo}harisial
-│⭔ ${prefixo}nagahari
-│⭔ ${prefixo}arahrezeki
-│⭔ ${prefixo}peruntungan
-│⭔ ${prefixo}weton
-│⭔ ${prefixo}karakter
-│⭔ ${prefixo}keberuntungan
-│⭔ ${prefixo}memancing
-│⭔ ${prefixo}masasubur
-│⭔ ${prefixo}zodiak
-│
-└───────⭓`
-let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Voltar' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖Lista de Menus' }, type: 1 },{ buttonId: 'doação', buttonText: { displayText: '🙏Doação' }, type: 1 }]
-            await client.sendButtonText(m.chat, buttons, pimbon, footerbot, m)
             }
             break
             case 'mconvert': {
@@ -3183,19 +2862,19 @@ let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Volta
             }
             break
             case 'mowner': {
-oner = `┌──⭓ *Owner Menu*
+oner = `┌──⭓ *Menu de Dono*
 │
-│⭔ ${prefixo}react [emoji]
-│⭔ ${prefixo}chat [option]
+│⭔ ${prefixo}reagir [emoji]
+│⭔ ${prefixo}chat [opção]
 │⭔ ${prefixo}join [link]
 │⭔ ${prefixo}leave
 │⭔ ${prefixo}block @user
 │⭔ ${prefixo}unblock @user
-│⭔ ${prefixo}bcgroup [text]
-│⭔ ${prefixo}bcall [text]
-│⭔ ${prefixo}setppbot [image]
+│⭔ ${prefixo}bcgroup [texto]
+│⭔ ${prefixo}bcall [texto]
+│⭔ ${prefixo}setppbot [imagem]
 │⭔ ${prefixo}setexif
-│⭔ ${prefixo}setmenu [option]
+│⭔ ${prefixo}setmenu [opção]
 │
 └───────⭓`
 let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Voltar' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖Lista de Menus' }, type: 1 },{ buttonId: 'doação', buttonText: { displayText: '🙏Doação' }, type: 1 }]
@@ -3207,28 +2886,28 @@ let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Volta
             let me = m.sender
             let ments = [ownernya, me, ini_mark]
                 anu = `*${timeday}* @${me.split('@')[0]}\n*Powered*  : @${ini_mark.split('@')[0]}\n*Creator* : @${ownernya.split('@')[0]}
-┌──⭓ *Group Menu*
+┌──⭓ *Menu de Grupo*
 │
 │⭔ ${prefixo}linkgroup
-│⭔ ${prefixo}ephemeral [option]
-│⭔ ${prefixo}setppgc [image]
-│⭔ ${prefixo}setname [text]
-│⭔ ${prefixo}setdesc [text]
-│⭔ ${prefixo}group [option]
-│⭔ ${prefixo}editinfo [option]
+│⭔ ${prefixo}ephemeral [opção]
+│⭔ ${prefixo}setppgc [imagem]
+│⭔ ${prefixo}setname [texto]
+│⭔ ${prefixo}setdesc [texto]
+│⭔ ${prefixo}group [opção]
+│⭔ ${prefixo}editinfo [opção]
 │⭔ ${prefixo}add @user
 │⭔ ${prefixo}kick @user
-│⭔ ${prefixo}hidetag [text]
-│⭔ ${prefixo}tagall [text]
+│⭔ ${prefixo}hidetag [texto]
+│⭔ ${prefixo}marcar [texto]
 │⭔ ${prefixo}antilink [on/off]
 │⭔ ${prefixo}mute [on/off]
 │⭔ ${prefixo}promote @user
 │⭔ ${prefixo}demote @user
-│⭔ ${prefixo}vote [text]
+│⭔ ${prefixo}vote [texto]
 │⭔ ${prefixo}devote
 │⭔ ${prefixo}upvote
-│⭔ ${prefixo}cekvote
-│⭔ ${prefixo}hapusvote
+│⭔ ${prefixo}verificarvoto
+│⭔ ${prefixo}deletarvoto
 │
 └───────⭓
 ┌──⭓ *Webzone Menu*
@@ -3273,7 +2952,7 @@ let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Volta
 │⭔ ${prefixo}wikimedia [query]
 │⭔ ${prefixo}ytsearch [query]
 │⭔ ${prefixo}ringtone [query]
-│⭔ ${prefixo}stalk [option] [query]
+│⭔ ${prefixo}stalk [opção] [query]
 │
 └───────⭓
 ┌──⭓ *Random Menu*
@@ -3367,42 +3046,9 @@ let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Volta
 │⭔ ${prefixo}delttt
 │⭔ ${prefixo}tictactoe
 │⭔ ${prefixo}family100
-│⭔ ${prefixo}tebak [option]
+│⭔ ${prefixo}tebak [opção]
 │⭔ ${prefixo}math [mode]
 │⭔ ${prefixo}suitpvp [@tag]
-│
-└───────⭓
-┌──⭓ *Primbon Menu*
-│
-│⭔ ${prefixo}nomorhoki
-│⭔ ${prefixo}artimimpi
-│⭔ ${prefixo}artinama
-│⭔ ${prefixo}ramaljodoh
-│⭔ ${prefixo}ramaljodohbali
-│⭔ ${prefixo}suamiistri
-│⭔ ${prefixo}ramalcinta
-│⭔ ${prefixo}cocoknama
-│⭔ ${prefixo}pasangan
-│⭔ ${prefixo}jadiannikah
-│⭔ ${prefixo}sifatusaha
-│⭔ ${prefixo}rezeki
-│⭔ ${prefixo}pekerjaan
-│⭔ ${prefixo}nasib
-│⭔ ${prefixo}penyakit
-│⭔ ${prefixo}tarot
-│⭔ ${prefixo}fengshui
-│⭔ ${prefixo}haribaik
-│⭔ ${prefixo}harisangar
-│⭔ ${prefixo}harisial
-│⭔ ${prefixo}nagahari
-│⭔ ${prefixo}arahrezeki
-│⭔ ${prefixo}peruntungan
-│⭔ ${prefixo}weton
-│⭔ ${prefixo}karakter
-│⭔ ${prefixo}keberuntungan
-│⭔ ${prefixo}memancing
-│⭔ ${prefixo}masasubur
-│⭔ ${prefixo}zodiak
 │
 └───────⭓
 ┌──⭓ *Convert Menu*
@@ -3460,15 +3106,6 @@ let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Volta
 │⭔ ${prefixo}keluar
 │
 └───────⭓
-┌──⭓ *Islamic Menu*
-│
-│⭔ ${prefixo}iqra
-│⭔ ${prefixo}hadist
-│⭔ ${prefixo}alquran
-│⭔ ${prefixo}juzamma
-│⭔ ${prefixo}tafsirsurah
-│
-└───────⭓
 ┌──⭓ *Voice Changer*
 │
 │⭔ ${prefixo}bass
@@ -3484,23 +3121,22 @@ let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Volta
 │⭔ ${prefixo}tupai
 │
 └───────⭓
-┌──⭓ *Owner Menu*
+┌──⭓ *Menu de Dono*
 │
 │⭔ ${prefixo}react [emoji]
-│⭔ ${prefixo}chat [option]
-│⭔ ${prefixo}join [link]
-│⭔ ${prefixo}leave
+│⭔ ${prefixo}chat [opção]
+│⭔ ${prefixo}Entrar [link]
+│⭔ ${prefixo}Sair
 │⭔ ${prefixo}block @user
 │⭔ ${prefixo}unblock @user
-│⭔ ${prefixo}bcgroup [text]
-│⭔ ${prefixo}bcall [text]
-│⭔ ${prefixo}setppbot [image]
+│⭔ ${prefixo}bcgroup [texto]
+│⭔ ${prefixo}bcall [texto]
+│⭔ ${prefixo}setppbot [imagem]
 │⭔ ${prefixo}setexif
-│⭔ ${prefixo}setmenu [option]
+│⭔ ${prefixo}setmenu [opção]
 │
-└───────⭓
-_Donasi Ngab_\n_Jangan Ngarep Free Mulu_`
-                let buttons = [{ buttonId: 'doação', buttonText: { displayText: '🙏Doação' }, type: 1 },{ buttonId: 'rules', buttonText: { displayText: '❗Rules' }, type: 1 }]
+└───────⭓`
+                let buttons = [{ buttonId: 'doação', buttonText: { displayText: '🙏Doação' }, type: 1 },{ buttonId: 'rules', buttonText: { displayText: '❗Regras' }, type: 1 }]
             await client.sendButtonText(m.chat, buttons, anu, footerbot, m, {mentions: ments})
             }
             break

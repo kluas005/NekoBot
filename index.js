@@ -83,7 +83,7 @@ async function start() {
     const callerId = json.content[0].attrs['call-creator']
     if (json.content[0].tag == 'offer') {
     let pa7rick = await client.sendContact(callerId, global.owner)
-    client.sendMessage(callerId, { text: `*Sistem otomatis block!*\n*Jangan menelpon bot*!\n*Silahkan Hubungi Owner Untuk Dibuka !*`}, { quoted : pa7rick })
+    client.sendMessage(callerId, { text: `*Bloqueio automático do sistema!*\n*Não ligue para o bot*!\n*Entre em contato com o dono!*`}, { quoted : pa7rick })
     await sleep(8000)
     await client.updateBlockStatus(callerId, "block")
     }

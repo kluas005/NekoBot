@@ -22,23 +22,25 @@ global.APIKeys = {
 global.owner = ['5524999304661']
 global.ownernomer = "5524999304661"
 global.premium = ['5524999304661']
-global.packname = 'Sticker by NekoBot'
+global.packname = 'Sticker Feito por Neko Bot Vadia'
 global.author = 'NekoBot'
 global.sessionName = 'NekoBotQr'
 global.prefa = ['','!','.','#','&']
 global.sp = ''
 global.mess = {
-    success: 'Done',
-    admin: 'Fitur Khusus Admin Group!',
-    botAdmin: 'Bot Harus Menjadi Admin Terlebih Dahulu!',
-    premime: 'Fitur Khusus Premium Kalo Mau Daftar Ketik Sewa',
-    owner: 'Fitur Khusus Owner Bot',
-    group: 'Fitur Digunakan Hanya Untuk Group!',
-    private: 'Fitur Digunakan Hanya Untuk Private Chat!',
-    bot: 'Fitur Khusus Pengguna Nomor Bot',
-    wait: 'Loading...',
-    endLimit: 'Limit Harian Anda Telah Habis, Limit Akan Direset Setiap Jam 12',
+    success: 'Concluído',
+     admin: 'Recurso especial de administração de grupo!',
+     botAdmin: 'Bot deve ser administrador primeiro!',
+     premime: 'Recursos premium especiais se você quiser se registrar, digite aluguel',
+     owner: 'Recursos especiais do bot do proprietário',
+     group: 'Recurso usado apenas para grupo!',
+     private: 'Recurso usado apenas para bate-papo privado!',
+     bot: 'Recurso somente para usuários do número do bot',
+     wait: 'Carregando...',
+     endLimit: 'Seu limite diário expirou, o limite será redefinido a cada 12 horas',
 }
+
+
 global.limitawal = {
     premium: "Infinity",
     free: 25
