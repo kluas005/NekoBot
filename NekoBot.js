@@ -479,7 +479,7 @@ Selama ${clockString(new Date - user.afkTime)}
         	if (!m.isGroup) throw mess.group
             let TicTacToe = require("./lib/tictactoe")
             this.game = this.game ? this.game : {}
-            if (Object.values(this.game).find(room => room.id.startsWith('tictactoe') && [room.game.playerX, room.game.playerO].includes(m.sender))) throw 'Kamu masih didalam game'
+            if (Object.values(this.game).find(room => room.id.startsWith('tictactoe') && [room.game.playerX, room.game.playerO].includes(m.sender))) throw 'Você ainda está no jogo'
             let room = Object.values(this.game).find(room => room.state === 'WAITING' && (text ? room.name === text : true))
             if (room) {
             m.reply('Partner ditemukan!')
@@ -501,15 +501,15 @@ Selama ${clockString(new Date - user.afkTime)}
             9: '9️⃣',
             }[v]
             })
-            let str = `Room ID: ${room.id}
+            let str = `ID da Sala: ${room.id}
 
 ${arr.slice(0, 3).join('')}
 ${arr.slice(3, 6).join('')}
 ${arr.slice(6).join('')}
 
-Menunggu @${room.game.currentTurn.split('@')[0]}
+Espere @${room.game.currentTurn.split('@')[0]}
 
-Ketik *nyerah* untuk menyerah dan mengakui kekalahan`
+Quando *desiste* de se render e admitir a derrota`
             if (room.x !== room.o) await client.sendText(room.x, str, m, { mentions: parseMention(str) } )
             await client.sendText(room.o, str, m, { mentions: parseMention(str) } )
             } else {
@@ -521,7 +521,7 @@ Ketik *nyerah* untuk menyerah dan mengakui kekalahan`
             state: 'WAITING'
             }
             if (text) room.name = text
-            m.reply('Menunggu partner' + (text ? ` mengetik command dibawah ini ${prefixo}${comando} ${text}` : ''))
+            m.reply('Esperando um parceiro' + (text ? ` digite o comando abaixo ${prefixo}${comando} ${text}` : ''))
             this.game[room.id] = room
             }
             }
@@ -531,12 +531,12 @@ Ketik *nyerah* untuk menyerah dan mengakui kekalahan`
             try {
             if (this.game) {
             delete this.game
-            client.sendText(m.chat, `Berhasil delete session TicTacToe`, m)
+            client.sendText(m.chat, `Excluiu sessão de TTT com sucesso`, m)
             } else if (!this.game) {
-            m.reply(`Session TicTacToe🎮 tidak ada`)
+            m.reply(`Sessão de TTT não existe`)
             } else throw '?'
             } catch (e) {
-            m.reply('rusak')
+            m.reply('danificado')
             }
             }
             break
@@ -546,15 +546,15 @@ Ketik *nyerah* untuk menyerah dan mengakui kekalahan`
             let poin_lose = 10
             let timeout = 60000
             if (Object.values(this.suit).find(roof => roof.id.startsWith('suit') && [roof.p, roof.p2].includes(m.sender))) m.reply(`Selesaikan suit mu yang sebelumnya`)
-	    if (m.mentionedJid[0] === m.sender) return m.reply(`Tidak bisa bermain dengan diri sendiri !`)
-            if (!m.mentionedJid[0]) return m.reply(`_Siapa yang ingin kamu tantang?_\nTag orangnya..\n\nContoh : ${prefixo}suit @${owner[1]}`, m.chat, { mentions: [owner[1] + '@s.whatsapp.net'] })
-            if (Object.values(this.suit).find(roof => roof.id.startsWith('suit') && [roof.p, roof.p2].includes(m.mentionedJid[0]))) throw `Orang yang kamu tantang sedang bermain suit bersama orang lain :(`
+	    if (m.mentionedJid[0] === m.sender) return m.reply(`Não consigo jogar comigo mesmo !`)
+            if (!m.mentionedJid[0]) return m.reply(`_Quem você quer desafiar?_\nMarque a pessoa..\n\nExemplo : ${prefixo}suit @${owner[1]}`, m.chat, { mentions: [owner[1] + '@s.whatsapp.net'] })
+            if (Object.values(this.suit).find(roof => roof.id.startsWith('suit') && [roof.p, roof.p2].includes(m.mentionedJid[0]))) throw `A pessoa que você está desafiando está jogando naipe com outra pessoa :(`
             let id = 'suit_' + new Date() * 1
             let caption = `_*SUIT PvP*_
 
-@${m.sender.split`@`[0]} *menantang* @${m.mentionedJid[0].split`@`[0]} *untuk bermain suit*
+@${m.sender.split`@`[0]} *desafio* @${m.mentionedJid[0].split`@`[0]} *jogar terno*
 
-*Silahkan* @${m.mentionedJid[0].split`@`[0]} *untuk ketik terima/tolak*`
+*Por favor* @${m.mentionedJid[0].split`@`[0]} *para digitar aceitar/rejeitar*`
             this.suit[id] = {
             chat: await client.sendText(m.chat, caption, m, { mentions: parseMention(caption) }),
             id: id,
@@ -562,7 +562,7 @@ Ketik *nyerah* untuk menyerah dan mengakui kekalahan`
             p2: m.mentionedJid[0],
             status: 'wait',
             waktu: setTimeout(() => {
-            if (this.suit[id]) client.sendText(m.chat, `_Waktu suit habis_`, m)
+            if (this.suit[id]) client.sendText(m.chat, `_Tempo limite do terno_`, m)
             delete this.suit[id]
             }, 60000), poin, poin_lose, timeout
             }
