@@ -1,7 +1,6 @@
 const fs = require('fs');
 
-const settings = JSON.parse(fs.readFileSync('./data/settings.json'))
-const {prefix, ownerName, ownerNumber } = settings
+
  
 exports.wait = () => {
 	return`𝗣𝗿𝗼𝗰𝗲𝘀𝘀𝗮𝗻𝗱𝗼⌛️`
