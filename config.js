@@ -21,8 +21,8 @@ global.APIKeys = {
 // Other
 global.owner = ['5524999304661']
 global.ownernomer = "5524999304661"
-global.premium = ['5524999304661']
-global.packname = 'Sticker Feito por Neko Bot Vadia'
+global.premium = []
+global.packname = 'Figurinha Feita por NekoBot Vadia'
 global.author = 'NekoBot'
 global.sessionName = 'NekoBotQr'
 global.prefa = ['','!','.','#','&']
@@ -51,7 +51,7 @@ global.vaze = { url: 'https://telegra.ph/file/15209657f9d4f59c7ca1e.mp4' }
 let file = require.resolve(__filename)
 fs.watchFile(file, () => {
 	fs.unwatchFile(file)
-	console.log(chalk.redBright(`Update'${__filename}'`))
+	console.log(chalk.redBright(`Atualização em: '${__filename}'`))
 	delete require.cache[file]
 	require(file)
 })

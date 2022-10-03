@@ -16,14 +16,27 @@ const moment = require('moment-timezone')
 const { JSDOM } = require('jsdom')
 const speed = require('performance-now')
 const { performance } = require('perf_hooks')
+
+
+const { ptbr } = require('./mess')
+
+/// Arquivos da Lib
+////
+const { addPremiumUser, dellprem, getPremiumExpired, checkOwner, expiredCheck, checkPremiumUser } = require("./lib/premium.js")
 const { smsg, formatp, tanggal, formatDate, getTime, isUrl, sleep, clockString, runtime, fetchJson, getBuffer, jsonformat, format, parseMention, getRandom, getGroupAdmins } = require('./lib/functions')
+const { getRegisterNo, getRegisterName, getRegisterSerial, getRegisterAge, getRegisterTime, getRegisteredRandomId, addRegisteredUser, createSerial, checkRegisteredUser } = require('./lib/register.js')
+const { addBanned, unBanned, BannedExpired, cekBannedUser } = require("./lib/banned.js")
+const { cmdadd } = require('./lib/totalcmd.js')
 
-
+///database
+const totalcmd = JSON.parse(fs.readFileSync('./database/data/totalcmd.json'))[0].totalcmd
+let ban = JSON.parse(fs.readFileSync('./database/user/banned.json'));
+const _registered = JSON.parse(fs.readFileSync('./database/user/registered.json'));
+///
 // Data e Hora
-const data = moment.tz('America/Sao_Paulo').format('DD/MM/YY')
-const barat = moment.tz('America/Sao_Paulo').format('HH:mm:ss')
-const tengah = moment.tz('America/Sao_Paulo').format('HH:mm:ss')
-const timur = moment.tz('America/Sao_Paulo').format('HH:mm:ss')
+
+const data = moment.tz('America/Sao_Paulo').format('DD/MM/YYYY')
+const hr = moment.tz('America/Sao_Paulo').format('HH:mm:ss')
 const footerbot = ('© NekoBot')  //ubah di config biar ngk emror
 const ini_mark = `0@s.whatsapp.net`
 
@@ -71,7 +84,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
         const isCmd = body.startsWith(prefixo)
         const comando = body.replace(prefixo, '').trim().split(/ +/).shift().toLowerCase()
         const args = body.trim().split(/ +/).slice(1)
-        const pushname = m.pushName || "No Name"
+        pushname = m.pushName || "No Name"
         const botNumber = await client.decodeJid(client.user.id)
         const isOwner = [botNumber, ...global.owner].map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
         const itsMe = m.sender == botNumber ? true : false
@@ -89,7 +102,9 @@ module.exports = client = async (client, m, chatUpdate, store) => {
         const groupAdmins = m.isGroup ? await getGroupAdmins(participants) : ''
     	const isBotAdmins = m.isGroup ? groupAdmins.includes(botNumber) : false
     	const isAdmins = m.isGroup ? groupAdmins.includes(m.sender) : false
-    	const isPremium = isOwner || global.premium.map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender) || false
+        const isPremium = isOwner || global.premium.map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender) || false
+        const isUser = checkRegisteredUser(sender)
+        const isBan = cekBannedUser(sender, ban)
 	
 	
 	try {
@@ -466,17 +481,32 @@ Selama ${clockString(new Date - user.afkTime)}
             user.afkTime = -1
             user.afkReason = ''
         }
+
+        /// variavel de isban 
+
+        if (isBan) return
+        BannedExpired(ban)
 	    
+
+        /// contador de comandos 
+
+        if (isCmd) cmdadd()
+
+        ////
+
         switch(comando) {
 	    case 'afk': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
                 let user = global.db.data.users[m.sender]
                 user.afkTime = + new Date
                 user.afkReason = text
-                m.reply(`${m.pushName} *Telah Afk*${text ? ': ' + text : ''}`)
+                m.reply(`${m.pushName} *Afk*${text ? ': ' + text : ''}`)
             }
             break	
         case 'ttc': case 'ttt': case 'tictactoe': {
-        	if (!m.isGroup) throw mess.group
+            if(!m.isGroup) throw ptbr.group()
+            if(!isUser) throw ptbr.userB()
             let TicTacToe = require("./lib/tictactoe")
             this.game = this.game ? this.game : {}
             if (Object.values(this.game).find(room => room.id.startsWith('tictactoe') && [room.game.playerX, room.game.playerO].includes(m.sender))) throw 'Você ainda está no jogo'
@@ -527,6 +557,8 @@ Quando *desiste* de se render e admitir a derrota`
             }
             break
             case 'delttc': case 'delttt': {
+            if(!m.isGroup) throw ptbr.group()
+            if(!isUser) throw ptbr.userB()
             this.game = this.game ? this.game : {}
             try {
             if (this.game) {
@@ -541,6 +573,8 @@ Quando *desiste* de se render e admitir a derrota`
             }
             break
             case 'suitpvp': case 'suit': {
+            if(!m.isGroup) throw ptbr.group()
+            if(!isUser) throw ptbr.userB()
             this.suit = this.suit ? this.suit : {}
             let poin = 10
             let poin_lose = 10
@@ -577,7 +611,7 @@ Quando *desiste* de se render e admitir a derrota`
             }
             break		 
             case 'chat': {
-                if (!isOwner) throw mess.owner
+                if (!isOwner) throw ptbr.ownerG()
                 if (!q) throw 'Option : 1. mute\n2. unmute\n3. archive\n4. unarchive\n5. read\n6. unread\n7. delete'
                 if (args[0] === 'mute') {
                     client.chatModify({ mute: 'Infinity' }, m.chat, []).then((res) => m.reply(jsonformat(res))).catch((err) => m.reply(jsonformat(err)))
@@ -722,7 +756,8 @@ Quando *desiste* de se render e admitir a derrota`
             }
             break
             case 'jodohku': {
-            if (!m.isGroup) throw mess.group
+             if(!m.isGroup) throw ptbr.group()
+ if(!isUser) throw ptbr.userB()
             let member = participants.map(u => u.id)
             let me = m.sender
             let jodoh = member[Math.floor(Math.random() * member.length)]
@@ -737,7 +772,8 @@ Quando *desiste* de se render e admitir a derrota`
             }
             break
             case 'jadian': {
-            if (!m.isGroup) throw mess.group
+             if(!m.isGroup) throw ptbr.group()
+ if(!isUser) throw ptbr.userB()
             let member = participants.map(u => u.id)
             let orang = member[Math.floor(Math.random() * member.length)]
             let jodoh = member[Math.floor(Math.random() * member.length)]
@@ -752,7 +788,7 @@ Quando *desiste* de se render e admitir a derrota`
             }
             break
             case 'gbtku': {
-            if (!isPremium) throw mess.premime
+            if (!isPremium) throw ptbr.premium()
 			if (!text) throw `Example : ${prefixo + comando} hai|halo`
             let jawab = `${text.split("|")[0]}`
             let buttons = [{ buttonId: 'menu', buttonText: { displayText: `` }, type: 1 }]
@@ -763,7 +799,7 @@ Quando *desiste* de se render e admitir a derrota`
            
 //Pembatas
             case 'react': case 'reagir': {
-                if (!isOwner) throw mess.owner
+                if (!isOwner) throw ptbr.ownerG()
                 reactionMessage = {
                     react: {
                         text: args[0],
@@ -774,21 +810,21 @@ Quando *desiste* de se render e admitir a derrota`
             }
             break  
             case 'entrar': {
-                if (!isOwner) throw mess.owner
-                if (!text) throw 'Masukkan Link Group!'
+                if (!isOwner) throw ptbr.ownerG()
+                if (!text) throw 'precisa ser um link de grupo!'
                 if (!isUrl(args[0]) && !args[0].includes('whatsapp.com')) throw 'Link Invalid!'
-                m.reply(mess.wait)
+                m.reply(ptbr.wait())
                 let result = args[0].split('https://chat.whatsapp.com/')[1]
                 await client.groupAcceptInvite(result).then((res) => m.reply(jsonformat(res))).catch((err) => m.reply(jsonformat(err)))
             }
             break
             case 'sair': {
-                if (!isOwner) throw mess.owner
+                if (!isOwner) throw ptbr.ownerG()
                 await client.groupLeave(m.chat).then((res) => m.reply(jsonformat(res))).catch((err) => m.reply(jsonformat(err)))
             }
             break
             case 'setexif': {
-               if (!isOwner) throw mess.owner
+               if (!isOwner) throw ptbr.ownerG()
                if (!text) throw `Example : ${prefixo + comando} packname|author`
           global.packname = text.split("|")[0]
           global.author = text.split("|")[1]
@@ -796,67 +832,75 @@ Quando *desiste* de se render e admitir a derrota`
             }
             break
 	case 'banir': {
-		if (!m.isGroup) throw mess.group
-                if (!isBotAdmins) throw mess.botAdmin
-                if (!isAdmins) throw mess.admin
+		 if(!m.isGroup) throw ptbr.group()
+ if(!isUser) throw ptbr.userB()
+                if (!isBotAdmins) throw ptbr.Botadmin()
+                if (!isAdmins) throw ptbr.admin()
 		let users = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
 		await client.groupParticipantsUpdate(m.chat, [users], 'remove').then((res) => m.reply(jsonformat(res))).catch((err) => m.reply(jsonformat(err)))
 	}
 	break
 	case 'add': {
-		if (!m.isGroup) throw mess.group
-                if (!isBotAdmins) throw mess.botAdmin
-                if (!isAdmins) throw mess.admin
+		 if(!m.isGroup) throw ptbr.group()
+ if(!isUser) throw ptbr.userB()
+                if (!isBotAdmins) throw ptbr.Botadmin()
+                if (!isAdmins) throw ptbr.admin()
 		let users = m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
 		await client.groupParticipantsUpdate(m.chat, [users], 'add').then((res) => m.reply(jsonformat(res))).catch((err) => m.reply(jsonformat(err)))
 	}
 	break
+
+    
 	case 'promover': {
-		if (!m.isGroup) throw mess.group
-                if (!isBotAdmins) throw mess.botAdmin
-                if (!isAdmins) throw mess.admin
+		 if(!m.isGroup) throw ptbr.group()
+ if(!isUser) throw ptbr.userB()
+                if (!isBotAdmins) throw ptbr.Botadmin()
+                if (!isAdmins) throw ptbr.admin()
 		let users = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
 		await client.groupParticipantsUpdate(m.chat, [users], 'promote').then((res) => m.reply(jsonformat(res))).catch((err) => m.reply(jsonformat(err)))
 	}
 	break
 	case 'rebaixar': {
-		if (!m.isGroup) throw mess.group
-                if (!isBotAdmins) throw mess.botAdmin
-                if (!isAdmins) throw mess.admin
+		 if(!m.isGroup) throw ptbr.group()
+ if(!isUser) throw ptbr.userB()
+                if (!isBotAdmins) throw ptbr.Botadmin()
+                if (!isAdmins) throw ptbr.admin()
 		let users = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
 		await client.groupParticipantsUpdate(m.chat, [users], 'demote').then((res) => m.reply(jsonformat(res))).catch((err) => m.reply(jsonformat(err)))
 	}
 	break
         case 'block': {
-		if (!isOwner) throw mess.owner
+		if (!isOwner) throw ptbr.ownerG()
 		let users = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
 		await client.updateBlockStatus(users, 'block').then((res) => m.reply(jsonformat(res))).catch((err) => m.reply(jsonformat(err)))
 	}
 	break
         case 'unblock': {
-		if (!isOwner) throw mess.owner
+		if (!isOwner) throw ptbr.ownerG()
 		let users = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
 		await client.updateBlockStatus(users, 'unblock').then((res) => m.reply(jsonformat(res))).catch((err) => m.reply(jsonformat(err)))
 	}
 	break
 	    case 'setname': case 'setsubject': {
-                if (!m.isGroup) throw mess.group
-                if (!isBotAdmins) throw mess.botAdmin
-                if (!isAdmins) throw mess.admin
+                 if(!m.isGroup) throw ptbr.group()
+ if(!isUser) throw ptbr.userB()
+                if (!isBotAdmins) throw ptbr.Botadmin()
+                if (!isAdmins) throw ptbr.admin()
                 if (!text) throw 'Nome?'
                 await client.groupUpdateSubject(m.chat, text).then((res) => m.reply(mess.success)).catch((err) => m.reply(jsonformat(err)))
             }
             break
           case 'setdesc': case 'setdesk': {
-                if (!m.isGroup) throw mess.group
-                if (!isBotAdmins) throw mess.botAdmin
-                if (!isAdmins) throw mess.admin
+                 if(!m.isGroup) throw ptbr.group()
+ if(!isUser) throw ptbr.userB()
+                if (!isBotAdmins) throw ptbr.Botadmin()
+                if (!isAdmins) throw ptbr.admin()
                 if (!text) throw 'Descrição?'
                 await client.groupUpdateDescription(m.chat, text).then((res) => m.reply(mess.success)).catch((err) => m.reply(jsonformat(err)))
             }
             break
           case 'setppbot': {
-                if (!isOwner) throw mess.owner
+                if (!isOwner) throw ptbr.ownerG()
                 if (!quoted) throw `Kirim/Reply Image Dengan Caption ${prefixo + comando}`
                 if (!/image/.test(mime)) throw `Kirim/Reply Image Dengan Caption ${prefixo + comando}`
                 if (/webp/.test(mime)) throw `Kirim/Reply Image Dengan Caption ${prefixo + comando}`
@@ -866,8 +910,9 @@ Quando *desiste* de se render e admitir a derrota`
                 }
                 break
            case 'setppgroup': case 'setppgrup': case 'setppgc': {
-                if (!m.isGroup) throw mess.group
-                if (!isAdmins) throw mess.admin
+                 if(!m.isGroup) throw ptbr.group()
+ if(!isUser) throw ptbr.userB()
+                if (!isAdmins) throw ptbr.admin()
                 if (!quoted) throw `Kirim/Reply Image Dengan Caption ${prefixo + comando}`
                 if (!/image/.test(mime)) throw `Kirim/Reply Image Dengan Caption ${prefixo + comando}`
                 if (/webp/.test(mime)) throw `Kirim/Reply Image Dengan Caption ${prefixo + comando}`
@@ -877,9 +922,10 @@ Quando *desiste* de se render e admitir a derrota`
                 }
                 break
             case 'marcar': {
-                if (!m.isGroup) throw mess.group
-                if (!isBotAdmins) throw mess.botAdmin
-                if (!isAdmins) throw mess.admin
+                 if(!m.isGroup) throw ptbr.group()
+ if(!isUser) throw ptbr.userB()
+                if (!isBotAdmins) throw ptbr.Botadmin()
+                if (!isAdmins) throw ptbr.admin()
 let teks = `══✪〘 *👥 Marcando Todo Mundo* 〙✪══
  
  ➲ *Mensagem : ${q ? q : 'Vazia'}*\n\n`
@@ -890,9 +936,10 @@ let teks = `══✪〘 *👥 Marcando Todo Mundo* 〙✪══
                 }
                 break
                 case 'hidetag': {
-            if (!m.isGroup) throw mess.group
-            if (!isBotAdmins) throw mess.botAdmin
-            if (!isAdmins) throw mess.admin
+             if(!m.isGroup) throw ptbr.group()
+ if(!isUser) throw ptbr.userB()
+            if (!isBotAdmins) throw ptbr.Botadmin()
+            if (!isAdmins) throw ptbr.admin()
             client.sendMessage(m.chat, { text : q ? q : '' , mentions: participants.map(a => a.id)}, { quoted: m })
             }
             break
@@ -910,7 +957,8 @@ let teks = `══✪〘 *👥 Marcando Todo Mundo* 〙✪══
 	    }
 	    break
                case 'votar': {
-            if (!m.isGroup) throw mess.group
+             if(!m.isGroup) throw ptbr.group()
+            if(!isUser) throw ptbr.userB()
             if (m.chat in vote) throw `_Ainda há votos neste chat!_\n\n*${prefixo}deletarvoto* - para deletar voto`
             if (!text) throw `Insira o motivo do voto, exemplo: *${prefixo + comando} duuh é gay*`
             m.reply(`A Votação Começa!\n\n*${prefixo}sim* - com certeza\n*${prefixo}não* - negativo\n*${prefixo}verificarvoto* - para verificar o voto\n*${prefixo}deletarvoto* - para deletar voto`)
@@ -951,8 +999,9 @@ let buttonsVote = [
             client.sendMessage(m.chat, buttonMessageVote)
 	    }
             break
-               case 'upvote': {
-            if (!m.isGroup) throw mess.group
+        case 'upvote': {
+             if(!m.isGroup) throw ptbr.group()
+            if(!isUser) throw ptbr.userB()
             if (!(m.chat in vote)) throw `_*sem votação neste grupo!*_\n\n*${prefixo}Votar* - para começar a votar`
             isVote = vote[m.chat][1].concat(vote[m.chat][2])
             wasVote = isVote.includes(m.sender)
@@ -994,7 +1043,8 @@ ${vote[m.chat][2].map((v, i) => `├ ${i + 1}. @${v.split`@`[0]}`).join('\n')}
 	    }
              break
                 case 'devote': {
-            if (!m.isGroup) throw mess.group
+             if(!m.isGroup) throw ptbr.group()
+            if(!isUser) throw ptbr.userB()
             if (!(m.chat in vote)) throw `_*sem votação neste grupo!*_\n\n*${prefixo}Votar* - para começar a votar`
             isVote = vote[m.chat][1].concat(vote[m.chat][2])
             wasVote = isVote.includes(m.sender)
@@ -1037,7 +1087,8 @@ ${vote[m.chat][2].map((v, i) => `├ ${i + 1}. @${v.split`@`[0]}`).join('\n')}
             break
                  
 case 'verificarvoto':
-if (!m.isGroup) throw mess.group
+ if(!m.isGroup) throw ptbr.group()
+ if(!isUser) throw ptbr.userB()
 if (!(m.chat in vote)) throw `_*sem votação neste grupo!*_\n\n*${prefixo}Votar* - para começar a votar`
 teks_vote = `*「 VOTAÇÃO 」*
 
@@ -1065,16 +1116,18 @@ ${vote[m.chat][2].map((v, i) => `├ ${i + 1}. @${v.split`@`[0]}`).join('\n')}
 client.sendTextWithMentions(m.chat, teks_vote, m)
 break
 		case 'deletarvoto': case'delvote': case 'deletarvoto': {
-            if (!m.isGroup) throw mess.group
+             if(!m.isGroup) throw ptbr.group()
+ if(!isUser) throw ptbr.userB()
             if (!(m.chat in vote)) throw `_*sem votação neste grupo!*_\n\nUse *${prefixo}Votar* - para começar a votar`
             delete vote[m.chat]
             m.reply('Excluiu sessão de votação neste grupo com sucesso')
 	    }
             break
                case 'grupo': case 'grup': {
-                if (!m.isGroup) throw mess.group
-                if (!isBotAdmins) throw mess.botAdmin
-                if (!isAdmins) throw mess.admin
+                 if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
+                if (!isBotAdmins) throw ptbr.Botadmin()
+                if (!isAdmins) throw ptbr.admin()
                 if (args[0] === 'fechar'){
                     await client.groupSettingUpdate(m.chat, 'announcement').then((res) => m.reply(`*Grupo Fechado com Sucesso*`)).catch((err) => m.reply(jsonformat(err)))
                 } else if (args[0] === 'abrir'){
@@ -1090,9 +1143,10 @@ break
             }
             break
             case 'editinfo': {
-                if (!m.isGroup) throw mess.group
-                if (!isBotAdmins) throw mess.botAdmin
-                if (!isAdmins) throw mess.admin
+                 if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
+                if (!isBotAdmins) throw ptbr.Botadmin()
+                if (!isAdmins) throw ptbr.admin()
              if (args[0] === 'open'){
                 await client.groupSettingUpdate(m.chat, 'unlocked').then((res) => m.reply(`*Sukses Membuka Edit Info Group*`)).catch((err) => m.reply(jsonformat(err)))
              } else if (args[0] === 'close'){
@@ -1108,9 +1162,10 @@ break
             }
             break
             case 'antilink': {
-                if (!m.isGroup) throw mess.group
-                if (!isBotAdmins) throw mess.botAdmin
-                if (!isAdmins) throw mess.admin
+                 if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
+                if (!isBotAdmins) throw ptbr.Botadmin()
+                if (!isAdmins) throw ptbr.admin()
                 if (args[0] === "on") {
                 if (db.data.chats[m.chat].antilink) return m.reply(`*Já esteve ativo antes*`)
                 db.data.chats[m.chat].antilink = true
@@ -1129,9 +1184,10 @@ break
              }
              break
              case 'mute': {
-                if (!m.isGroup) throw mess.group
-                if (!isBotAdmins) throw mess.botAdmin
-                if (!isAdmins) throw mess.admin
+                 if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
+                if (!isBotAdmins) throw ptbr.Botadmin()
+                if (!isAdmins) throw ptbr.admin()
                 if (args[0] === "on") {
                 if (db.data.chats[m.chat].mute) return m.reply(`Sudah Aktif Sebelumnya`)
                 db.data.chats[m.chat].mute = true
@@ -1150,16 +1206,18 @@ break
              }
              break
             case 'linkgroup': case 'linkgc': {
-                if (!m.isGroup) throw mess.group
-                if (!isBotAdmins) throw mess.botAdmin
+                 if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
+                if (!isBotAdmins) throw ptbr.Botadmin()
                 let response = await client.groupInviteCode(m.chat)
                 client.sendText(m.chat, `https://chat.whatsapp.com/${response}\n\n👾Link Group : ${groupMetadata.subject}`, m, { detectLink: true })
             }
             break
             case 'ephemeral': {
-                if (!m.isGroup) throw mess.group
-                if (!isBotAdmins) throw mess.botAdmin
-                if (!isAdmins) throw mess.admin
+                 if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
+                if (!isBotAdmins) throw ptbr.Botadmin()
+                if (!isAdmins) throw ptbr.admin()
                 if (!text) throw 'Masukkan value enable/disable'
                 if (args[0] === 'enable') {
                     await client.sendMessage(m.chat, { disappearingMessagesInChat: WA_DEFAULT_EPHEMERAL }).then((res) => m.reply(jsonformat(res))).catch((err) => m.reply(jsonformat(err)))
@@ -1169,6 +1227,8 @@ break
             }
             break
             case 'delete': case 'del': case 'deletar': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
                 if (!m.quoted) throw false
                 let { chat, fromMe, id, isBaileys } = m.quoted
                 if (!isBaileys) throw 'Pesan tersebut bukan dikirim oleh bot!'
@@ -1176,6 +1236,8 @@ break
             }
             break
             case 'report': case 'lapor': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
             	if (!text) throw `Example : ${prefixo + comando} Lapor Ada Fitur Yang error`
                let ownernya = ownernomer + '@s.whatsapp.net'
                let me = m.sender
@@ -1188,6 +1250,8 @@ break
             }
             break
             case 'hehehe': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
                 reactionMessage = {
                     react: {
                         text: '❤',
@@ -1198,7 +1262,7 @@ break
             }
             break  
             case 'bcgc': case 'bcgroup': {
-                if (!isOwner) throw mess.owner
+                if (!isOwner) throw ptbr.ownerG()
                 if (!text) throw `Text mana?\n\nExample : ${prefixo + comando} fatih-san`
                 let getGroups = await client.groupFetchAllParticipating()
                 let groups = Object.entries(getGroups).slice(0).map(entry => entry[1])
@@ -1212,7 +1276,7 @@ break
 		}}
             break
             case 'bc': case 'broadcast': case 'bcall': {
-                if (!isOwner) throw mess.owner
+                if (!isOwner) throw ptbr.ownerG()
                 if (!text) throw `Text mana?\n\nExample : ${prefixo + comando} fatih-san`
                 let anu = await store.chats.all().map(v => v.id)
                 m.reply(`Mengirim Broadcast Ke ${anu.length} Chat\nWaktu Selesai ${anu.length * 1.5} detik`)
@@ -1224,13 +1288,17 @@ break
 		}}
             break
             case 'q': case 'quoted': {
-		if (!m.quoted) return m.reply('Reply Pesannya!!')
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
+		if (!m.quoted) return m.reply('Responsa a Mensagem!!')
 		let wokwol = await client.serializeM(await m.getQuotedObj())
 		if (!wokwol.quoted) return m.reply('Pesan Yang anda reply tidak mengandung reply')
 		await wokwol.quoted.copyNForward(m.chat, true)
             }
 	    break
             case 'listpc': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
                  let anu = await store.chats.all().filter(v => v.id.endsWith('.net')).map(v => v.id)
                  let teks = `⬣ *LIST PERSONAL CHAT*\n\nTotal Chat : ${anu.length} Chat\n\n`
                  for (let i of anu) {
@@ -1241,6 +1309,8 @@ break
              }
              break
                 case 'listgc': {
+                    if(!m.isGroup) throw ptbr.group()
+                    if(!isUser) throw ptbr.userB()
                  let anu = await store.chats.all().filter(v => v.id.endsWith('@g.us')).map(v => v.id)
                  let teks = `⬣ *LIST GROUP CHAT*\n\nTotal Group : ${anu.length} Group\n\n`
                  for (let i of anu) {
@@ -1251,14 +1321,18 @@ break
              }
              break
              case 'listonline': case 'liston': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
                     let id = args && /\d+\-\d+@g.us/.test(args[0]) ? args[0] : m.chat
                     let online = [...Object.keys(store.presences[id]), botNumber]
                     client.sendText(m.chat, 'Lista de Pessoas Onlines\n\n' + online.map(v => '⭔ @' + v.replace(/@.+/, '')).join`\n`, m, { mentions: online })
              }
              break
             case 'sticker': case 's': case 'stickergif': case 'sgif': case 'figurinha': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
             if (!quoted) throw `*Responda um vídeo/imagem com legenda* ${prefixo + comando}`
-            m.reply(mess.wait)
+            m.reply(ptbr.wait())
                     if (/image/.test(mime)) {
                 let media = await quoted.download()
                 let encmedia = await client.sendImageAsSticker(m.chat, media, m, { packname: global.packname, author: global.author })
@@ -1274,6 +1348,8 @@ break
             }
             break
             case 'ebinary': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
             if (!text) throw `Example : ${prefixo + comando} text`
             let { eBinary } = require('./lib/binary')
             let eb = await eBinary(text)
@@ -1281,6 +1357,8 @@ break
         }
         break
             case 'dbinary': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
             if (!text) throw `Example : ${prefixo + comando} text`
             let { dBinary } = require('./lib/binary')
             let db = await dBinary(text)
@@ -1288,6 +1366,8 @@ break
         }
         break
             case 'emojimix': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
 		let [emoji1, emoji2] = text.split`+`
 		if (!emoji1) throw `Example : ${prefixo + comando} 😅+🤔`
 		if (!emoji2) throw `Example : ${prefixo + comando} 😅+🤔`
@@ -1299,6 +1379,8 @@ break
 	    }
 	    break
 	    case 'emojimix2': {
+            if(!m.isGroup) throw ptbr.group()
+            if(!isUser) throw ptbr.userB()
 	    if (!text) throw `Example : ${prefixo + comando} 😅`
 		let anu = await fetchJson(`https://tenor.googleapis.com/v2/featured?key=AIzaSyAyimkuYQYF_FXVALexPuGQctUWRURdCYQ&contentfilter=high&media_filter=png_transparent&component=proactive&collection=emoji_kitchen_v5&q=${encodeURIComponent(text)}`)
 		for (let res of anu.results) {
@@ -1308,16 +1390,20 @@ break
 	    }
 	    break
 	       case 'attp': case 'ttp': {
+            if(!m.isGroup) throw ptbr.group()
+            if(!isUser) throw ptbr.userB()
            if (!text) throw `Example : ${prefixo + comando} text`
            await client.sendMedia(m.chat, `https://xteam.xyz/${comando}?file&text=${text}`, 'Klaus', 'morou', m, {asSticker: true})
 
          }
          break
 	       case 'smeme': case 'stickmeme': case 'stikmeme': case 'stickermeme': case 'stikermeme': {
+            if(!m.isGroup) throw ptbr.group()
+            if(!isUser) throw ptbr.userB()
 	        let respond = `Kirim/reply image/sticker dengan caption ${prefixo + comando} text1|text2`
 	        if (!/image/.test(mime)) throw respond
             if (!text) throw respond
-	        m.reply(mess.wait)
+	        m.reply(ptbr.wait())
             atas = text.split('|')[0] ? text.split('|')[0] : '-'
             bawah = text.split('|')[1] ? text.split('|')[1] : '-'
             let { TelegraPh } = require('./lib/uploader')
@@ -1329,15 +1415,19 @@ break
             }
 	       break     
 	        case 'simih': case 'simisimi': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
             if (!text) throw `Example : ${prefixo + comando} text`
             hm = await fetchJson(api('zenz', '/api/simisimi', { text : text }, 'apikey'))
             m.reply(hm.result.message)
             }
             break
             case 'toimage': case 'toimg': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
                 if (!quoted) throw 'Reply Image'
                 if (!/webp/.test(mime)) throw `Balas sticker dengan caption *${prefixo + comando}*`
-                m.reply(mess.wait)
+                m.reply(ptbr.wait())
                 let media = await client.downloadAndSaveMediaMessage(quoted)
                 let ran = await getRandom('.png')
                 exec(`ffmpeg -i ${media} ${ran}`, (err) => {
@@ -1350,9 +1440,11 @@ break
             }
             break
 	        case 'tomp4': case 'tovideo': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
                 if (!quoted) throw 'Reply Image'
                 if (!/webp/.test(mime)) throw `balas stiker dengan caption *${prefixo + comando}*`
-                m.reply(mess.wait)
+                m.reply(ptbr.wait())
 		let { webp2mp4File } = require('./lib/uploader')
                 let media = await client.downloadAndSaveMediaMessage(quoted)
                 let webpToMp4 = await webp2mp4File(media)
@@ -1361,9 +1453,11 @@ break
             }
             break
             case 'toaud': case 'toaudio': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
             if (!/video/.test(mime) && !/audio/.test(mime)) throw `Kirim/Reply Video/Audio Yang Ingin Dijadikan Audio Dengan Caption ${prefixo + comando}`
             if (!quoted) throw `Kirim/Reply Video/Audio Yang Ingin Dijadikan Audio Dengan Caption ${prefixo + comando}`
-            m.reply(mess.wait)
+            m.reply(ptbr.wait())
             let media = await quoted.download()
             let { toAudio } = require('./lib/converter')
             let audio = await toAudio(media, 'mp4')
@@ -1371,10 +1465,12 @@ break
             }
             break
             case 'tomp3': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
             if (/document/.test(mime)) throw `Kirim/Reply Video/Audio Yang Ingin Dijadikan MP3 Dengan Caption ${prefixo + comando}`
             if (!/video/.test(mime) && !/audio/.test(mime)) throw `Kirim/Reply Video/Audio Yang Ingin Dijadikan MP3 Dengan Caption ${prefixo + comando}`
             if (!quoted) throw `Kirim/Reply Video/Audio Yang Ingin Dijadikan MP3 Dengan Caption ${prefixo + comando}`
-            m.reply(mess.wait)
+            m.reply(ptbr.wait())
             let media = await quoted.download()
             let { toAudio } = require('./lib/converter')
             let audio = await toAudio(media, 'mp4')
@@ -1382,9 +1478,11 @@ break
             }
             break
             case 'tovn': case 'toptt': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
             if (!/video/.test(mime) && !/audio/.test(mime)) throw `Reply Video/Audio Yang Ingin Dijadikan VN Dengan Caption ${prefixo + comando}`
             if (!quoted) throw `Reply Video/Audio Yang Ingin Dijadikan VN Dengan Caption ${prefixo + comando}`
-            m.reply(mess.wait)
+            m.reply(ptbr.wait())
             let media = await quoted.download()
             let { toPTT } = require('./lib/converter')
             let audio = await toPTT(media, 'mp4')
@@ -1392,9 +1490,11 @@ break
             }
             break
             case 'togif': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
                 if (!quoted) throw 'Reply Image'
                 if (!/webp/.test(mime)) throw `balas stiker dengan caption *${prefixo + comando}*`
-                m.reply(mess.wait)
+                m.reply(ptbr.wait())
 		let { webp2mp4File } = require('./lib/uploader')
                 let media = await client.downloadAndSaveMediaMessage(quoted)
                 let webpToMp4 = await webp2mp4File(media)
@@ -1403,7 +1503,9 @@ break
             }
             break
 	        case 'tourl': {
-                m.reply(mess.wait)
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
+                m.reply(ptbr.wait())
 		let { UploadFileUgu, webp2mp4File, TelegraPh } = require('./lib/uploader')
                 let media = await client.downloadAndSaveMediaMessage(quoted)
                 if (/image/.test(mime)) {
@@ -1417,6 +1519,8 @@ break
             }
             break
             case 'imagenobg': case 'removebg': case 'remove-bg': {
+            if(!m.isGroup) throw ptbr.group()
+            if(!isUser) throw ptbr.userB()
 	    if (!quoted) throw `Kirim/Reply Image Dengan Caption ${prefixo + comando}`
 	    if (!/image/.test(mime)) throw `Kirim/Reply Image Dengan Caption ${prefixo + comando}`
 	    if (/webp/.test(mime)) throw `Kirim/Reply Image Dengan Caption ${prefixo + comando}`
@@ -1426,7 +1530,7 @@ break
 	    hmm = await './src/remobg-'+getRandom('')
 	    localFile = await client.downloadAndSaveMediaMessage(quoted, hmm)
 	    outputFile = await './src/hremo-'+getRandom('.png')
-	    m.reply(mess.wait)
+	    m.reply(ptbr.wait())
 	    remobg.removeBackgroundFromImageFile({
 	      path: localFile,
 	      apiKey: apinobg,
@@ -1442,6 +1546,8 @@ break
 	    } 
 	    break
 	    case 'yts': case 'ytsearch': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
                 if (!text) throw `Example : ${prefixo + comando} story wa anime`
                 let yts = require("yt-search")
                 let search = await yts(text)
@@ -1454,6 +1560,8 @@ break
             }
             break
         case 'google': {
+            if(!m.isGroup) throw ptbr.group()
+            if(!isUser) throw ptbr.userB()
                 if (!text) throw `Example : ${prefixo + comando} fatih arridho`
                 let google = require('google-it')
                 google({'query': text}).then(res => {
@@ -1468,6 +1576,8 @@ break
                 }
                 break
         case 'gimage': {
+            if(!m.isGroup) throw ptbr.group()
+            if(!isUser) throw ptbr.userB()
         if (!text) throw `Example : ${prefixo + comando} kaori cicak`
         anu = await fetchJson(`https://api.akuari.my.id/search/googleimage?query=${text}`)
         n = anu.result
@@ -1488,7 +1598,10 @@ break
         }
         break
 	    case 'play': case 'ytplay': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
                 if (!text) throw `Example : ${prefixo + comando} story wa anime`
+                reply(ptbr.wait())
                 let yts = require("yt-search")
                 let search = await yts(text)
                 let anu = search.videos[Math.floor(Math.random() * search.videos.length)]
@@ -1517,6 +1630,9 @@ break
             }
             break
 	    case 'ytmp3': case 'ytaudio': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
+                 reply(ptbr.wait())
                 let { yta } = require('./lib/y2mate')
                 if (!text) throw `Example : ${prefixo + comando} https://youtube.com/watch?v=PtFMh6Tccag%27 128kbps`
                 let quality = args[1] ? args[1] : '128kbps'
@@ -1527,6 +1643,9 @@ break
             }
             break
             case 'ytmp4': case 'ytvideo': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
+                reply(ptbr.wait())
                 let { ytv } = require('./lib/y2mate')
                 if (!text) throw `Example : ${prefixo + comando} https://youtube.com/watch?v=PtFMh6Tccag%27 360p`
                 let quality = args[1] ? args[1] : '360p'
@@ -1536,6 +1655,8 @@ break
             }
             break
 	    case 'getmusic': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
                 let { yta } = require('./lib/y2mate')
                 if (!text) throw `Example : ${prefixo + comando} 1`
                 if (!m.quoted) return m.reply('Reply Pesan')
@@ -1550,6 +1671,8 @@ break
             }
             break
             case 'getvideo': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
                 let { ytv } = require('./lib/y2mate')
                 if (!text) throw `Example : ${prefixo + comando} 1`
                 if (!m.quoted) return m.reply('Reply Pesan')
@@ -1563,7 +1686,9 @@ break
             }
             break
             case 'pinterest': {
-                m.reply(mess.wait)
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
+                m.reply(ptbr.wait())
 		let { pinterest } = require('./lib/scraper')
                 anu = await pinterest(text)
                 result = anu[Math.floor(Math.random() * anu.length)]
@@ -1571,7 +1696,9 @@ break
             }
             break
             case 'waifu': {
-            	m.reply(mess.wait)
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
+            	m.reply(ptbr.wait())
                 anu = await fetchJson(`https://waifu.pics/api/sfw/waifu`)
                 buffer = await getBuffer(anu.url)
                 let buttons = [{buttonId: `waifu`, buttonText: {displayText: 'Proxima Imagem'}, type: 1},{buttonId: `simplemenu`, buttonText: {displayText: '⬅️Voltar'}, type: 1}]
@@ -1586,7 +1713,7 @@ break
             }
             break
 	    case 'couple': {
-                m.reply(mess.wait)
+                m.reply(ptbr.wait())
                 let anu = await fetchJson('https://raw.githubusercontent.com/iamriz7/kopel_/main/kopel.json')
                 let random = anu[Math.floor(Math.random() * anu.length)]
                 client.sendMessage(m.chat, { image: { url: random.male }, caption: `Metadinha Masculina` }, { quoted: m })
@@ -1594,6 +1721,8 @@ break
             }
 	    break
             case 'coffe': case 'kopi': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
             let buttons = [
                     {buttonId: `coffe`, buttonText: {displayText: 'Proxima Imagem'}, type: 1}
                 ]
@@ -1608,6 +1737,8 @@ break
             }
             break
             case 'wallpaper': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
                 if (!text) throw 'Masukkan Query Title'
 		let { wallpaper } = require('./lib/scraper')
                 anu = await wallpaper(text)
@@ -1626,6 +1757,8 @@ break
             }
             break
             case 'gcsearch': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
                 if (!text) throw 'Masukkan Query Title'
                 anu = await fetchJson(`https://api.akuari.my.id/search/carigc?query=${text}`)
                 n = anu.result
@@ -1636,6 +1769,8 @@ break
             }
             break
             case 'wikimedia': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
                 if (!text) throw 'Masukkan Query Title'
 		let { wikimedia } = require('./lib/scraper')
                 anu = await wikimedia(text)
@@ -1654,6 +1789,8 @@ break
             }
             break
             case 'quotesanime': case 'quoteanime': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
 		let { quotesAnime } = require('./lib/scraper')
                 let anu = await quotesAnime()
                 result = anu[Math.floor(Math.random() * anu.length)]
@@ -1670,6 +1807,8 @@ break
             }
             break
 	        case 'motivasi': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
                 let anu = await fetchJson(`https://kocakz.herokuapp.com/api/random/text/quotes`)
                 let buttons = [
                     {buttonId: `motivasi`, buttonText: {displayText: 'Next'}, type: 1}
@@ -1685,19 +1824,23 @@ break
             break
             case '3dchristmas': case '3ddeepsea': case 'americanflag': case '3dscifi': case '3drainbow': case '3dwaterpipe': case 'halloweenskeleton': case 'sketch': case 'bluecircuit': case 'space': case 'metallic': case 'fiction': case 'greenhorror': case 'transformer': case 'berry': case 'thunder': case 'magma': case '3dcrackedstone': case '3dneonlight': case 'impressiveglitch': case 'naturalleaves': case 'fireworksparkle': case 'matrix': case 'dropwater':  case 'harrypotter': case 'foggywindow': case 'neondevils': case 'christmasholiday': case '3dgradient': case 'blackpink': case 'gluetext': {
                 if (!text) throw `Example : ${prefixo + comando} text`
-                m.reply(mess.wait)
+                m.reply(ptbr.wait())
                 client.sendMessage(m.chat, { image: { url: api('zenz', '/textpro/' + comando, { text: text }, 'apikey') }, caption: `Text Pro ${comando}` }, { quoted: m})
 	    }
             break
 	    case 'shadow': case 'romantic': case 'smoke': case 'burnpapper': case 'naruto': case 'lovemsg': case 'grassmsg': case 'lovetext': case 'coffecup': case 'butterfly': case 'harrypotter': case 'retrolol': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
                 if (!text) throw 'No Query Text'
-                m.reply(mess.wait)
+                m.reply(ptbr.wait())
                 client.sendMessage(m.chat, { image: { url: api('zenz', '/photooxy/' + comando, { text: text }, 'apikey') }, caption: `Photo Oxy ${comando}` }, { quoted: m })
             }
             break
             case 'ffcover': case 'crossfire': case 'galaxy': case 'glass': case 'neon': case 'beach': case 'blackpink': case 'igcertificate': case 'ytcertificate': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
                 if (!text) throw 'No Query Text'
-                m.reply(mess.wait)
+                m.reply(ptbr.wait())
                 client.sendMessage(m.chat, { image: { url: api('zenz', '/ephoto/' + comando, { text: text }, 'apikey') }, caption: `Ephoto ${comando}` }, { quoted: m })
             }
             break
@@ -1757,8 +1900,10 @@ break
             }
             break
             case 'tiktok': case 'tiktoknowm': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
                 if (!text) throw 'Insira o link de consulta!'
-                m.reply(mess.wait)
+                m.reply(ptbr.wait())
                 let anu = await fetchJson(`https://anabotofc.herokuapp.com/api/download/tiktok2?url=${text}&apikey=AnaBot`)
                 let buttons = [
                     {buttonId: `allmenu`, buttonText: {displayText: '📖Lista de Menus'}, type: 1},
@@ -1776,7 +1921,7 @@ break
             break
            /**case 'tiktokwm': case 'tiktokwatermark': {
                 if (!text) throw 'Insira o link de consulta!'
-                m.reply(mess.wait)
+                m.reply(ptbr.wait())
                 let anu = await fetchJson(`https://botcahx-rest-api.herokuapp.com/api/dowloader/tikok?url=${text}`)
                 let buttons = [
                     {buttonId: `tiktoknowm ${text}`, buttonText: {displayText: '► No Watermark'}, type: 1},
@@ -1793,8 +1938,10 @@ break
             }
             break**/
             case 'tiktokmp3': case 'tiktokaudio': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
                 if (!text) throw 'Insira o link de consulta!'
-                m.reply(mess.wait)
+                m.reply(ptbr.wait())
                 let anu = await fetchJson(`https://anabotofc.herokuapp.com/api/download/tiktok2?url=${text}&apikey=AnaBot`)
                 let buttons = [
                     {buttonId: `allmenu`, buttonText: {displayText: '📖Lista de Menus'}, type: 1},
@@ -1811,8 +1958,10 @@ break
             }
             break
 	        case 'instagram': case 'ig': case 'igdl': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
                 if (!text) throw 'No Query Url!'
-                m.reply(mess.wait)
+                m.reply(ptbr.wait())
                 if (/(?:\/p\/|\/reel\/|\/tv\/)([^\s&]+)/.test(isUrl(text)[0])) {
                     let anu = await fetchJson(api('zenz', '/downloader/instagram2', { url: isUrl(text)[0] }, 'apikey'))
                     for (let media of anu.data) client.sendFileUrl(m.chat, media, `Download Url Instagram From ${isUrl(text)[0]}`, m)
@@ -1823,24 +1972,30 @@ break
             }
             break
             case 'joox': case 'jooxdl': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
                 if (!text) throw 'No Query Title'
-                m.reply(mess.wait)
+                m.reply(ptbr.wait())
                 let anu = await fetchJson(api('zenz', '/downloader/joox', { query: text }, 'apikey'))
                 let msg = await client.sendImage(m.chat, anu.result.img, `⭔ Titulo : ${anu.result.lagu}\n⭔ Album : ${anu.result.album}\n⭔ Singer : ${anu.result.penyanyi}\n⭔ Publish : ${anu.result.publish}\n⭔ Lirik :\n${anu.result.lirik.result}`, m)
                 client.sendMessage(m.chat, { audio: { url: anu.result.mp4aLink }, mimetype: 'audio/mpeg', fileName: anu.result.lagu+'.m4a' }, { quoted: msg })
             }
             break
             case 'soundcloud': case 'scdl': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
                 if (!text) throw 'No Query Title'
-                m.reply(mess.wait)
+                m.reply(ptbr.wait())
                 let anu = await fetchJson(api('zenz', '/downloader/soundcloud', { url: isUrl(text)[0] }, 'apikey'))
                 let msg = await client.sendImage(m.chat, anu.result.thumb, `⭔ Titulo : ${anu.result.title}\n⭔ Url : ${isUrl(text)[0]}`)
                 client.sendMessage(m.chat, { audio: { url: anu.result.url }, mimetype: 'audio/mpeg', fileName: anu.result.title+'.m4a' }, { quoted: msg })
             }
             break
 	        case 'twitdl': case 'twitter': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
                 if (!text) throw 'Insira o link de consulta!'
-                m.reply(mess.wait)
+                m.reply(ptbr.wait())
                 let anu = await fetchJson(api('zenz', '/api/downloader/twitter', { url: text }, 'apikey'))
                 let buttons = [
                     {buttonId: `twittermp3 ${text}`, buttonText: {displayText: '► Audio'}, type: 1}
@@ -1856,8 +2011,10 @@ break
             }
             break
             case 'twittermp3': case 'twitteraudio': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
                 if (!text) throw 'Insira o link de consulta!'
-                m.reply(mess.wait)
+                m.reply(ptbr.wait())
                 let anu = await fetchJson(api('zenz', '/api/downloader/twitter', { url: text }, 'apikey'))
                 let buttons = [
                     {buttonId: `twitter ${text}`, buttonText: {displayText: '► Video'}, type: 1}
@@ -1874,20 +2031,26 @@ break
             }
             break
 	        case 'fbdl': case 'fb': case 'facebook': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
                 if (!text) throw 'Insira o link de consulta!'
-                m.reply(mess.wait)
+                m.reply(ptbr.wait())
                 let anu = await fetchJson(api('zenz', '/api/downloader/facebook', { url: text }, 'apikey'))
                 client.sendMessage(m.chat, { video: { url: anu.result.url }, caption: `⭔ Titulo : ${anu.result.title}`}, { quoted: m })
             }
             break
 	        case 'pindl': case 'pinterestdl': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
                 if (!text) throw 'Insira o link de consulta!'
-                m.reply(mess.wait)
+                m.reply(ptbr.wait())
                 let anu = await fetchJson(api('zenz', '/api/downloader/pinterestdl', { url: text }, 'apikey'))
                 client.sendMessage(m.chat, { video: { url: anu.result }, caption: `Download From ${text}` }, { quoted: m })
             }
             break
             case 'umma': case 'ummadl': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
 	        if (!text) throw `Example : ${prefixo + comando} https://umma.id/channel/video/post/gus-arafat-sumber-kecewa-84464612933698`
                 let { umma } = require('./lib) scraper')
 		let anu = await umma(isUrl(text)[0])
@@ -1919,6 +2082,8 @@ Para baixar mídia, clique em um dos botões abaixo ou digite o comando ytmp3/yt
 	    }
 	    break
         case 'ringtone': {
+            if(!m.isGroup) throw ptbr.group()
+            if(!isUser) throw ptbr.userB()
 		if (!text) throw `Example : ${prefixo + comando} black rover`
         let { ringtone } = require('./lib/scraper')
 		let anu = await ringtone(text)
@@ -1927,6 +2092,8 @@ Para baixar mídia, clique em um dos botões abaixo ou digite o comando ytmp3/yt
 	    }
 	    break
 		case 'iqra': {
+            if(!m.isGroup) throw ptbr.group()
+            if(!isUser) throw ptbr.userB()
 		oh = `Example : ${prefixo + comando} 3\n\nIQRA Yang tersedia : 1,2,3,4,5,6`
 		if (!text) throw oh
 		yy = await getBuffer(`https://islamic-api-indonesia.herokuapp.com/api/data/pdf/iqra${text}`)
@@ -1935,16 +2102,16 @@ Para baixar mídia, clique em um dos botões abaixo ou digite o comando ytmp3/yt
 		break
 		/**case 'juzamma': {
 		if (args[0] === 'pdf') {
-		m.reply(mess.wait)
+		m.reply(ptbr.wait())
 		client.sendMessage(m.chat, {document: {url: 'https://fatiharridho.my.id/database/islam/juz-amma-arab-latin-indonesia.pdf'}, mimetype: 'application/pdf', fileName: 'juz-amma-arab-latin-indonesia.pdf'}, {quoted:m})
 		} else if (args[0] === 'docx') {
-		m.reply(mess.wait)
+		m.reply(ptbr.wait())
 		client.sendMessage(m.chat, {document: {url: 'https://fatiharridho.my.id/database/islam/juz-amma-arab-latin-indonesia.docx'}, mimetype: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', fileName: 'juz-amma-arab-latin-indonesia.docx'}, {quoted:m})
 		} else if (args[0] === 'pptx') {
-		m.reply(mess.wait)
+		m.reply(ptbr.wait())
 		client.sendMessage(m.chat, {document: {url: 'https://fatiharridho.my.id/database/islam/juz-amma-arab-latin-indonesia.pptx'}, mimetype: 'application/vnd.openxmlformats-officedocument.presentationml.presentation', fileName: 'juz-amma-arab-latin-indonesia.pptx'}, {quoted:m})
 		} else if (args[0] === 'xlsx') {
-		m.reply(mess.wait)
+		m.reply(ptbr.wait())
 		client.sendMessage(m.chat, {document: {url: 'https://fatiharridho.my.id/database/islam/juz-amma-arab-latin-indonesia.xlsx'}, mimetype: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', fileName: 'juz-amma-arab-latin-indonesia.xlsx'}, {quoted:m})
 		} else {
 		m.reply(`Mau format apa ? Example : ${prefixo + comando} pdf
@@ -1954,6 +2121,8 @@ Format yang tersedia : pdf, docx, pptx, xlsx`)
 		}
 		break**/
 		case 'hadis': case 'hadist': {
+            if(!m.isGroup) throw ptbr.group()
+            if(!isUser) throw ptbr.userB()
 		if (!args[0]) throw `Contoh:
 ${prefixo + comando} bukhari 1
 ${prefixo + comando} abu-daud 1
@@ -1990,6 +2159,8 @@ ${id}`)
 		}
 		break
 		case 'alquran': {
+            if(!m.isGroup) throw ptbr.group()
+            if(!isUser) throw ptbr.userB()
 		if (!args[0]) throw `Contoh penggunaan:\n${prefixo + comando} 1 2\n\nmaka hasilnya adalah surah Al-Fatihah ayat 2 beserta audionya, dan ayatnya 1 aja`
 		if (!args[1]) throw `Contoh penggunaan:\n${prefixo + comando} 1 2\n\nmaka hasilnya adalah surah Al-Fatihah ayat 2 beserta audionya, dan ayatnya 1 aja`
 		let res = await fetchJson(`https://islamic-api-indonesia.herokuapp.com/api/data/quran?surah=${args[0]}&ayat=${args[1]}`)
@@ -2003,6 +2174,8 @@ ${id}`)
 		}
 		break
 		case 'tafsirsurah': {
+            if(!m.isGroup) throw ptbr.group()
+            if(!isUser) throw ptbr.userB()
 		if (!args[0]) throw `Contoh penggunaan:\n${prefixo + comando} 1 2\n\nmaka hasilnya adalah tafsir surah Al-Fatihah ayat 2`
 		if (!args[1]) throw `Contoh penggunaan:\n${prefixo + comando} 1 2\n\nmaka hasilnya adalah tafsir surah Al-Fatihah ayat 2`
 		let res = await fetchJson(`https://islamic-api-indonesia.herokuapp.com/api/data/quran?surah=${args[0]}&ayat=${args[1]}`)
@@ -2017,6 +2190,8 @@ ${id}`)
 		}
 		break
 		   case 'bass': case 'blown': case 'deep': case 'earrape': case 'fast': case 'fat': case 'nightcore': case 'reverse': case 'robot': case 'slow': case 'smooth': case 'tupai':
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
                 try {
                 let set
                 if (/bass/.test(comando)) set = '-af equalizer=f=54:width_type=o:width=2:g=20'
@@ -2032,7 +2207,7 @@ ${id}`)
                 if (/smooth/.test(comando)) set = '-filter:v "minterpolate=\'mi_mode=mci:mc_mode=aobmc:vsbmc=1:fps=120\'"'
                 if (/tupai/.test(comando)) set = '-filter:a "atempo=0.5,asetrate=65100"'
                 if (/audio/.test(mime)) {
-                m.reply(mess.wait)
+                m.reply(ptbr.wait())
                 let media = await client.downloadAndSaveMediaMessage(quoted)
                 let ran = getRandom('.mp3')
                 exec(`ffmpeg -i ${media} ${set} ${ran}`, (err, stderr, stdout) => {
@@ -2048,6 +2223,8 @@ ${id}`)
                 }
                 break
             case 'setcmd': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
                 if (!m.quoted) throw 'Reply Pesan!'
                 if (!m.quoted.fileSha256) throw 'SHA256 Hash Missing'
                 if (!text) throw `Untuk Command Apa?`
@@ -2064,6 +2241,8 @@ ${id}`)
             }
             break
             case 'delcmd': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
                 let hash = m.quoted.fileSha256.toString('base64')
                 if (!hash) throw `Tidak ada hash`
                 if (global.db.data.sticker[hash] && global.db.data.sticker[hash].locked) throw 'Você não tem permissão para excluir este comando de Figurinha'              
@@ -2081,7 +2260,7 @@ ${Object.entries(global.db.data.sticker).map(([key, value], index) => `${index +
             }
             break
             case 'lockcmd': {
-                if (!isOwner) throw mess.owner
+                if (!isOwner) throw ptbr.ownerG()
                 if (!m.quoted) throw 'Reply Pesan!'
                 if (!m.quoted.fileSha256) throw 'SHA256 Hash Missing'
                 let hash = m.quoted.fileSha256.toString('base64')
@@ -2091,6 +2270,8 @@ ${Object.entries(global.db.data.sticker).map(([key, value], index) => `${index +
             }
             break
             case 'addmsg': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
                 if (!m.quoted) throw 'Reply Message Yang Ingin Disave Di Database'
                 if (!text) throw `Example : ${prefixo + comando} nama file`
                 let msgs = global.db.data.database
@@ -2104,6 +2285,8 @@ Lihat list Pesan Dengan ${prefixo}listmsg`)
             }
             break
             case 'getmsg': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
                 if (!text) throw `Example : ${prefixo + comando} file name\n\nLihat list pesan dengan ${prefixo}listmsg`
                 let msgs = global.db.data.database
                 if (!(text.toLowerCase() in msgs)) throw `'${text}' tidak terdaftar di list pesan`
@@ -2111,6 +2294,8 @@ Lihat list Pesan Dengan ${prefixo}listmsg`)
             }
             break
             case 'listmsg': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
                 let msgs = JSON.parse(fs.readFileSync('./src/database.json'))
 	        let seplit = Object.entries(global.db.data.database).map(([nama, isi]) => { return { nama, ...isi } })
 		let teks = '「 LIST DATABASE 」\n\n'
@@ -2196,6 +2381,7 @@ Lihat list Pesan Dengan ${prefixo}listmsg`)
             }
             case 'next': case 'lanjut': {
                 if (m.isGroup) return m.reply('Recursos não podem ser usados ​​para grupos!')
+                if(!isUser) throw ptbr.userB()
                 this.anonymous = this.anonymous ? this.anonymous : {}
                 let romeo = Object.values(this.anonymous).find(room => room.check(m.sender))
                 if (!romeo) {
@@ -2240,18 +2426,19 @@ Lihat list Pesan Dengan ${prefixo}listmsg`)
                 break
             }
             case 'public': {
-                if (!isOwner) throw mess.owner
+                if (!isOwner) throw ptbr.ownerG()
                 client.public = true
                 m.reply('*Mudança bem-sucedida para uso público*')
             }
             break
             case 'self': {
-                if (!isOwner) throw mess.owner
+                if (!isOwner) throw ptbr.ownerG()
                 client.public = false
                 m.reply('*Mudança bem-sucedida para uso próprio*')
             }
             break
             case 'ping': case 'botstatus': case 'statusbot': {
+                if(!isUser) throw ptbr.userB()
                 const used = process.memoryUsage()
                 const cpus = os.cpus().map(cpu => {
                     cpu.total = Object.keys(cpu.times).reduce((last, type) => last + cpu.times[type], 0)
@@ -2299,6 +2486,8 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
             }
             break
             case 'speedtest': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
             m.reply('Testing Speed...')
             let cp = require('child_process')
             let { promisify } = require('util')
@@ -2320,6 +2509,8 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
             }
             break
             case 'playstore': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
             if (!text) throw `Example : ${prefixo + comando} clash of clans`
             let res = await fetchJson(api('zenz', '/webzone/playstore', { query: text }, 'apikey'))
             let teks = `⭔ Playstore Search From : ${text}\n\n`
@@ -2333,6 +2524,8 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
             }
             break
             case 'gsmarena': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
             if (!text) throw `Example : ${prefixo + comando} samsung`
             let res = await fetchJson(api('zenz', '/webzone/gsmarena', { query: text }, 'apikey'))
             let { judul, rilis, thumb, ukuran, type, storage, display, inchi, pixel, videoPixel, ram, chipset, batrai, merek_batre, detail } = res.result
@@ -2354,6 +2547,8 @@ let capt = `⭔ Titulo: ${judul}
             }
             break
             case 'jadwalbioskop': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
             if (!text) throw `Example: ${prefixo + comando} jakarta`
             let res = await fetchJson(api('zenz', '/webzone/jadwalbioskop', { kota: text }, 'apikey'))
             let capt = `Jadwal Bioskop From : ${text}\n\n`
@@ -2366,6 +2561,8 @@ let capt = `⭔ Titulo: ${judul}
             }
             break
             case 'nowplayingbioskop': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
             let res = await fetchJson(api('zenz', '/webzone/nowplayingbioskop', {}, 'apikey'))
             let capt = `Now Playing Bioskop\n\n`
             for (let i of res.result){
@@ -2377,6 +2574,8 @@ let capt = `⭔ Titulo: ${judul}
             }
             break
             case 'aminio': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
             if (!text) throw `Example: ${prefixo + comando} free fire`
             let res = await fetchJson(api('zenz', '/webzone/amino', { query: text }, 'apikey'))
             let capt = `Amino Search From : ${text}\n\n`
@@ -2391,6 +2590,8 @@ let capt = `⭔ Titulo: ${judul}
             }
             break
             case 'wattpad': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
             if (!text) throw `Example : ${prefixo + comando} love`
             let res = await fetchJson(api('zenz', '/webzone/wattpad', { query: text }, 'apikey'))
             let { judul, dibaca, divote, bab, waktu, url, thumb, description } = res.result[0]
@@ -2406,6 +2607,8 @@ let capt = `⭔ Titulo: ${judul}
             }
             break
             case 'webtoons': {
+            if(!m.isGroup) throw ptbr.group()
+            if(!isUser) throw ptbr.userB()
             if (!text) throw `Example : ${prefixo + comando} love`
             let res = await fetchJson(api('zenz', '/webzone/webtoons', { query: text }, 'apikey'))
             let capt = `Webtoons Search From : ${text}\n\n`
@@ -2420,6 +2623,8 @@ let capt = `⭔ Titulo: ${judul}
             }
             break
             case 'drakor': {
+            if(!m.isGroup) throw ptbr.group()
+            if(!isUser) throw ptbr.userB()
             if (!text) throw `Example : ${prefixo + comando} love`
             let res = await fetchJson(api('zenz', '/webzone/drakor', { query: text }, 'apikey'))
             let capt = `Drakor Search From : ${text}\n\n`
@@ -2434,7 +2639,7 @@ let capt = `⭔ Titulo: ${judul}
             }
             break
             case 'setmenu': {
-            if (!isOwner) throw mess.owner
+            if (!isOwner) throw ptbr.ownerG()
             let setbot = db.data.settings[botNumber]
                if (args[0] === 'templateImage'){
                 setbot.templateImage = true
@@ -2477,6 +2682,8 @@ let capt = `⭔ Titulo: ${judul}
             }
             break
             case 'menu': {
+            if(!m.isGroup) throw ptbr.group()
+            if(!isUser) throw ptbr.userB()
             let ownernya = ownernomer + '@s.whatsapp.net'
             let me = m.sender
             let jawab = `*${timeday}*
@@ -2497,9 +2704,9 @@ let capt = `⭔ Titulo: ${judul}
 
 ╭──❍「 Data e Hora 」❍
 ├ *Data* : ${data}
-├ *Wib* : ${barat} WIB
-├ *Wita* : ${tengah} WITA
-├ *Wit* : ${timur} WIT
+├ *Hora* : ${hr}
+├ 
+├ 
 ╰──❍`
             let ments = [ownernya, me, ini_mark]
             let buttons = [{ buttonId: 'allmenu', buttonText: { displayText: '📖Lista de Menus' }, type: 1 },{ buttonId: 'rules', buttonText: { displayText: '❗Regras' }, type: 1 },{ buttonId: 'doação', buttonText: { displayText: '🙏Doação' }, type: 1 }]
@@ -2507,6 +2714,8 @@ let capt = `⭔ Titulo: ${judul}
             }
             break
             case 'simplemenu': case 'list': case 'help': {
+            if(!m.isGroup) throw ptbr.group()
+            if(!isUser) throw ptbr.userB()
             let ownernya = ownernomer + '@s.whatsapp.net'
             let me = m.sender
             let ments = [ownernya, me, ini_mark]
@@ -2525,10 +2734,10 @@ let capt = `⭔ Titulo: ${judul}
 ╰──❍
 
 ╭──❍「 Data e Hora 」❍
-├ *Hari Ini* : ${data} Data
-├ *Wib* : ${barat} WIB
-├ *Wita* : ${tengah} WITA
-├ *Wit* : ${timur} WIT
+├ *Data* : ${data} 
+├ *Hora: : ${hr}
+├ 
+├ 
 ╰──❍`
                 let sections = [
                 {
@@ -2555,7 +2764,34 @@ let capt = `⭔ Titulo: ${judul}
                 client.sendListMsg(m.chat, kukiw, footerbot, `*Olá ${pushname}*!`, `Selecione o menu`, sections, m)
             }
             break
+
+            case 'registrar':
+				case 'registro':
+                if(!m.isGroup) throw ptbr.group()
+				if (!q.includes('|')) return m.reply(`𝗗𝗶𝗴𝗶𝘁𝗲 𝗱𝗮 𝗳𝗼𝗿𝗺𝗮 𝗰𝗲𝗿𝘁𝗮:\n𝗖𝗼𝗺𝗮𝗻𝗱𝗼: ${prefixo}𝗥𝗲𝗴𝗶𝘀𝘁𝗿𝗮𝗿 𝗻𝗼𝗺𝗲|𝗶𝗱𝗮𝗱𝗲\n𝗘𝘅𝗲𝗺𝗽𝗹𝗼: ${prefixo}𝗥𝗲𝗴𝗶𝘀𝘁𝗿𝗮𝗿 𝗸𝗹𝗮𝘂𝘀|𝟮𝟬`)
+				const namaUser = q.substring(0, q.indexOf('|') - 0)
+				const umurUser = q.substring(q.lastIndexOf('|') + 1)
+				const serialUser = createSerial(20)
+				if(isNaN(umurUser)) return m.reply(`𝗗𝗶𝗴𝗶𝘁𝗲 𝗱𝗮 𝗳𝗼𝗿𝗺𝗮 𝗰𝗲𝗿𝘁𝗮:\n𝗖𝗼𝗺𝗮𝗻𝗱𝗼: ${prefixo}𝗥𝗲𝗴𝗶𝘀𝘁𝗿𝗮𝗿 𝗻𝗼𝗺𝗲|𝗶𝗱𝗮𝗱𝗲\n𝗘𝘅𝗲𝗺𝗽𝗹𝗼: ${prefixo}𝗥𝗲𝗴𝗶𝘀𝘁𝗿𝗮𝗿 𝗸𝗹𝗮𝘂𝘀|𝟮𝟬`)
+				if (namaUser.length >= 60) return m.reply(`𝐬𝐞𝐮 𝐧𝐨𝐦𝐞 é 𝐦𝐮𝐢𝐭𝐨 𝐥𝐨𝐧𝐠𝐨`)
+				if (umurUser > 40) return m.reply(`𝗜𝗱𝗮𝗱𝗲 𝗺𝗮𝘅𝗶𝗺𝗮 𝗱𝗲 𝟰𝟬 𝗮𝗻𝗼𝘀`)
+				if (umurUser < 12) return m.reply(`𝗜𝗱𝗮𝗱𝗲 𝗺𝗶𝗻𝗶𝗺𝗮 é 𝟭𝟮 𝗮𝗻𝗼𝘀`)
+				veri = sender
+				try {
+				ppimg = await client.profilePictureUrl(`${sender.split("@")[0]}@c.us`, "image")
+				} catch {
+				ppimg = 'https://i0.wp.com/www.gambarunik.id/wp-content/uploads/2019/06/Top-Gambar-Foto-Profil-Kosong-Lucu-Tergokil-.jpg'
+				}
+				captionnya = 
+					`𝐑𝐞𝐠𝐢𝐬𝐭𝐫𝐚𝐝𝐨 𝐜𝐨𝐦 𝐬𝐮𝐜𝐞𝐬𝐬𝐨✅\n𝗦𝗲𝗿𝗶𝗮𝗹: \n*${serialUser}*\n╔════════════════\n╠≽️ 𝗗𝗶𝗮: ${data}\n╠≽️ 𝗛𝗼𝗿𝗮: ${hr}\n╠≽️ 𝗡𝗼𝗺𝗲 𝗱𝗲 𝘂𝘀𝘂á𝗿𝗶𝗼: @${sender.split("@")[0]}\n╠≽️ 𝙉𝙤𝙢𝙚 𝙙𝙚 𝙧𝙚𝙜𝙞𝙨𝙩𝙧𝙤: ${namaUser}\n╠≽️ 𝗜𝗱𝗮𝗱𝗲: ${umurUser}\n╠≽️ 𝗦𝗲𝘂 𝗹𝗶𝗻𝗸 𝘄𝗮𝗺𝗲: wa.me/${sender.split("@")[0]}\n╠≽️ 𝙉ú𝙢𝙚𝙧𝙤: ${sender.split("@")[0]}\n╚════════════════
+					𝗩𝗼𝗰ê 𝘀𝗲 𝗿𝗲𝗴𝗶𝘀𝘁𝗿𝗼𝘂, 𝘿𝙞𝙜𝙞𝙩𝙚 ${prefixo}help 𝗣𝗮𝗿𝗮 𝘃𝗲𝗿 𝗮 𝗹𝗶𝘀𝘁𝗮 𝗱𝗲 𝗰𝗼𝗺𝗮𝗻𝗱𝗼𝘀`
+					daftarimg = await getBuffer(ppimg)
+					addRegisteredUser(sender, namaUser, umurUser, data, serialUser)
+					client.sendMessage(m.chat, { image: daftarimg, quoted: mek, caption: captionnya, contextInfo: {mentionedJid: [sender]}})                    
+					break
             case 'mgroup': {
+            if(!m.isGroup) throw ptbr.group()
+            if(!isUser) throw ptbr.userB()
 goup = `┌──⭓ *Menu de Grupo*
 │
 │⭔ ${prefixo}linkgroup
@@ -2585,6 +2821,8 @@ let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Volta
             }
             break
       case 'mwebzone': {
+        if(!m.isGroup) throw ptbr.group()
+        if(!isUser) throw ptbr.userB()
 wbzone = `┌──⭓ *Webzone Menu*
 │
 │⭔ ${prefixo}playstore
@@ -2602,6 +2840,8 @@ let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Volta
             }
             break
             case 'mdownloader': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
 dwnloader = `┌──⭓ *Downloader Menu*
 │
 │⭔ ${prefixo}tiktoknowm [url]
@@ -2626,6 +2866,8 @@ let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Volta
             }
             break
             case 'msearch': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
 sarch = `┌──⭓ *Menu de Pesquisa*
 │
 │⭔ ${prefixo}play [query]
@@ -2645,6 +2887,8 @@ let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Volta
             }
             break
             case 'mrandom': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
 rndom = `┌──⭓ *Random Menu*
 │
 │⭔ ${prefixo}coffe
@@ -2664,6 +2908,8 @@ let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Volta
             }
             break
             case 'mtextpro': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
 txtpro = `┌──⭓ *Text Pro Menu*
 │
 │⭔ ${prefixo}3dchristmas
@@ -2704,6 +2950,8 @@ let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Volta
             }
             break
             case 'mphotooxy': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
 potooxy = `┌──⭓ *Photo Oxy Menu*
 │
 │⭔ ${prefixo}shadow
@@ -2725,6 +2973,8 @@ let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Volta
             }
             break
             case 'mephoto': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
 ehoto = `┌──⭓ *Ephoto Menu*
 │
 │⭔ ${prefixo}ffcover
@@ -2743,6 +2993,8 @@ let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Volta
             }
             break
            case 'mfun': {
+            if(!m.isGroup) throw ptbr.group()
+            if(!isUser) throw ptbr.userB()
 mun = `┌──⭓ *Fun Menu*
 │
 │⭔ ${prefixo}simih
@@ -2766,6 +3018,8 @@ let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Volta
             }
             break
             case 'mconvert': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
 cnvert = `┌──⭓ *Convert Menu*
 │
 │⭔ ${prefixo}attp
@@ -2792,6 +3046,8 @@ let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Volta
             }
             break
             case 'mmain': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
 min = `┌──⭓ *Main Menu*
 │
 │⭔ ${prefixo}ping
@@ -2811,6 +3067,8 @@ let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Volta
             }
             break
             case 'mdatabase': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
 dtbase = `┌──⭓ *Database Menu*
 │
 │⭔ ${prefixo}setcmd
@@ -2828,6 +3086,8 @@ let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Volta
             }
             break
             case 'manonymous': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
 aonymous = `┌──⭓ *Anonymous Menu*
 │
 │⭔ ${prefixo}anonymous
@@ -2842,6 +3102,8 @@ let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Volta
             break
             
 case 'mvoice': {
+    if(!m.isGroup) throw ptbr.group()
+    if(!isUser) throw ptbr.userB()
 vice = `┌──⭓ *Voice Changer*
 │
 │⭔ ${prefixo}bass
@@ -2862,6 +3124,8 @@ let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Volta
             }
             break
             case 'mowner': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
 oner = `┌──⭓ *Menu de Dono*
 │
 │⭔ ${prefixo}reagir [emoji]
@@ -2882,6 +3146,8 @@ let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Volta
             }
             break
             case 'allmenu': {
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
             let ownernya = ownernomer + '@s.whatsapp.net'
             let me = m.sender
             let ments = [ownernya, me, ini_mark]
@@ -3141,6 +3407,8 @@ let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Volta
             }
             break
             case 'sound1':
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
 case 'sound2':
 case 'sound3':
 case 'sound4':
@@ -3304,9 +3572,12 @@ case 'sound161':
 Klaus_dev = await getBuffer(`https://github.com/DGXeon/Tiktokmusic-API/raw/master/tiktokmusic/${comando}.mp3`)
 await client.sendMessage(m.chat, { audio: Klaus_dev, mimetype: 'audio/mp4', ptt: true }, { quoted: m })     
 break
+        
+
+
             default:
                 if (budy.startsWith('=>')) {
-                    if (!isOwner) return m.reply(mess.owner)
+                    if (!isOwner) return m.reply(ptbr.ownerG())
                     function Return(sul) {
                         sat = JSON.stringify(sul, null, 2)
                         bang = util.format(sat)
@@ -3323,7 +3594,7 @@ break
                 }
 
                 if (budy.startsWith('>')) {
-                    if (!isOwner) return m.reply(mess.owner)
+                    if (!isOwner) return m.reply(ptbr.ownerG())
                     try {
                         let evaled = await eval(budy.slice(2))
                         if (typeof evaled !== 'string') evaled = require('util').inspect(evaled)
@@ -3334,7 +3605,7 @@ break
                 }
 
                 if (budy.startsWith('$')) {
-                    if (!isOwner) return m.reply(mess.owner)
+                    if (!isOwner) return m.reply(ptbr.ownerG())
                     exec(budy.slice(2), (err, stdout) => {
                         if(err) return m.reply(err)
                         if (stdout) return m.reply(stdout)
@@ -3379,7 +3650,7 @@ break
 let file = require.resolve(__filename)
 fs.watchFile(file, () => {
 	fs.unwatchFile(file)
-	console.log(chalk.redBright(`Update ${__filename}`))
+	console.log(chalk.redBright(`Atualização em: ${__filename}`))
 	delete require.cache[file]
 	require(file)
 })
