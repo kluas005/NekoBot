@@ -1601,7 +1601,6 @@ break
                 if(!m.isGroup) throw ptbr.group()
                 if(!isUser) throw ptbr.userB()
                 if (!text) throw `Example : ${prefixo + comando} story wa anime`
-                reply(ptbr.wait())
                 let yts = require("yt-search")
                 let search = await yts(text)
                 let anu = search.videos[Math.floor(Math.random() * search.videos.length)]
@@ -1632,7 +1631,7 @@ break
 	    case 'ytmp3': case 'ytaudio': {
                 if(!m.isGroup) throw ptbr.group()
                 if(!isUser) throw ptbr.userB()
-                 reply(ptbr.wait())
+                 m.reply(ptbr.wait())
                 let { yta } = require('./lib/y2mate')
                 if (!text) throw `Example : ${prefixo + comando} https://youtube.com/watch?v=PtFMh6Tccag%27 128kbps`
                 let quality = args[1] ? args[1] : '128kbps'
@@ -1645,7 +1644,7 @@ break
             case 'ytmp4': case 'ytvideo': {
                 if(!m.isGroup) throw ptbr.group()
                 if(!isUser) throw ptbr.userB()
-                reply(ptbr.wait())
+                m.reply(ptbr.wait())
                 let { ytv } = require('./lib/y2mate')
                 if (!text) throw `Example : ${prefixo + comando} https://youtube.com/watch?v=PtFMh6Tccag%27 360p`
                 let quality = args[1] ? args[1] : '360p'
