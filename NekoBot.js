@@ -1,5 +1,5 @@
 
-require('./config')
+require('./config/config')
 const { BufferJSON, WA_DEFAULT_EPHEMERAL, generateWAMessageFromContent, proto, generateWAMessageContent, generateWAMessage, prepareWAMessageMedia, areJidsSameUser, getContentType } = require('@adiwajshing/baileys')
 const fs = require('fs')
 const os = require('os')
@@ -887,7 +887,7 @@ Quando *desiste* de se render e admitir a derrota`
                 if (!isBotAdmins) throw ptbr.Botadmin()
                 if (!isAdmins) throw ptbr.admin()
                 if (!text) throw 'Nome?'
-                await client.groupUpdateSubject(m.chat, text).then((res) => m.reply(mess.success)).catch((err) => m.reply(jsonformat(err)))
+                await client.groupUpdateSubject(m.chat, text).then((res) => m.reply(ptbr.sucesso())).catch((err) => m.reply(jsonformat(err)))
             }
             break
           case 'setdesc': case 'setdesk': {
@@ -896,7 +896,7 @@ Quando *desiste* de se render e admitir a derrota`
                 if (!isBotAdmins) throw ptbr.Botadmin()
                 if (!isAdmins) throw ptbr.admin()
                 if (!text) throw 'Descrição?'
-                await client.groupUpdateDescription(m.chat, text).then((res) => m.reply(mess.success)).catch((err) => m.reply(jsonformat(err)))
+                await client.groupUpdateDescription(m.chat, text).then((res) => m.reply(ptbr.sucesso())).catch((err) => m.reply(jsonformat(err)))
             }
             break
           case 'setppbot': {
@@ -906,7 +906,7 @@ Quando *desiste* de se render e admitir a derrota`
                 if (/webp/.test(mime)) throw `Kirim/Reply Image Dengan Caption ${prefixo + comando}`
                 let media = await client.downloadAndSaveMediaMessage(quoted)
                 await client.updateProfilePicture(botNumber, { url: media }).catch((err) => fs.unlinkSync(media))
-                m.reply(mess.success)
+                m.reply(ptbr.sucesso())
                 }
                 break
            case 'setppgroup': case 'setppgrup': case 'setppgc': {
@@ -918,7 +918,7 @@ Quando *desiste* de se render e admitir a derrota`
                 if (/webp/.test(mime)) throw `Kirim/Reply Image Dengan Caption ${prefixo + comando}`
                 let media = await client.downloadAndSaveMediaMessage(quoted)
                 await client.updateProfilePicture(m.chat, { url: media }).catch((err) => fs.unlinkSync(media))
-                m.reply(mess.success)
+                m.reply(ptbr.sucesso())
                 }
                 break
             case 'marcar': {
@@ -944,7 +944,7 @@ let teks = `══✪〘 *👥 Marcando Todo Mundo* 〙✪══
             }
             break
 	    case 'style': case 'styletext': {
-	        if (!isPremium && global.db.data.users[m.sender].limit < 1) return m.reply(mess.endLimit) // respon ketika limit habis
+	        if (!isPremium && global.db.data.users[m.sender].limit < 1) return m.reply(ptbr.limitend()) // respon ketika limit habis
 		db.data.users[m.sender].limit -= 1 // -1 limit
 		let { styletext } = require('./lib/scraper')
 		if (!text) throw 'Masukkan Query text!'
@@ -1539,7 +1539,7 @@ break
 	      scale: "100%",
 	      outputFile 
 	    }).then(async result => {
-	    client.sendMessage(m.chat, {image: fs.readFileSync(outputFile), caption: mess.success}, { quoted : m })
+	    client.sendMessage(m.chat, {image: fs.readFileSync(outputFile), caption: ptbr.sucesso()}, { quoted : m })
 	    await fs.unlinkSync(localFile)
 	    await fs.unlinkSync(outputFile)
 	    })
@@ -1600,6 +1600,7 @@ break
 	    case 'play': case 'ytplay': {
                 if(!m.isGroup) throw ptbr.group()
                 if(!isUser) throw ptbr.userB()
+                m.reply(ptbr.wait())
                 if (!text) throw `Example : ${prefixo + comando} story wa anime`
                 let yts = require("yt-search")
                 let search = await yts(text)
@@ -1636,9 +1637,10 @@ break
                 if (!text) throw `Example : ${prefixo + comando} https://youtube.com/watch?v=PtFMh6Tccag%27 128kbps`
                 let quality = args[1] ? args[1] : '128kbps'
                 let media = await yta(text, quality)
-                if (media.filesize >= 100000) return m.reply('File Melebihi Batas '+util.format(media))
+                if (media.filesize >= 100000) return m.reply('Arquivo acima do limite '+util.format(media))
                 client.sendImage(m.chat, media.thumb, `⭔ Titulo : ${media.title}\n⭔ Tamanho do Arquivo : ${media.filesizeF}\n⭔ Url : ${isUrl(text)}\n⭔ Ext : MP3\n⭔ Resolução : ${args[1] || '128kbps'}`, m)
                 client.sendMessage(m.chat, { audio: { url: media.dl_link }, mimetype: 'audio/mpeg', fileName: `${media.title}.mp3` }, { quoted: m })
+                m.reply('enviando...')
             }
             break
             case 'ytmp4': case 'ytvideo': {
@@ -1649,8 +1651,9 @@ break
                 if (!text) throw `Example : ${prefixo + comando} https://youtube.com/watch?v=PtFMh6Tccag%27 360p`
                 let quality = args[1] ? args[1] : '360p'
                 let media = await ytv(text, quality)
-                if (media.filesize >= 100000) return m.reply('File Melebihi Batas '+util.format(media))
+                if (media.filesize >= 100000) return m.reply('Arquivo acima do limite '+util.format(media))
                 client.sendMessage(m.chat, { video: { url: media.dl_link }, mimetype: 'video/mp4', fileName: `${media.title}.mp4`, caption: `⭔ Titulo : ${media.title}\n⭔ Tamanho do Arquivo : ${media.filesizeF}\n⭔ Url : ${isUrl(text)}\n⭔ Ext : MP3\n⭔ Resolução : ${args[1] || '360p'}` }, { quoted: m })
+                m.reply('enviando...')
             }
             break
 	    case 'getmusic': {
@@ -1658,13 +1661,13 @@ break
                 if(!isUser) throw ptbr.userB()
                 let { yta } = require('./lib/y2mate')
                 if (!text) throw `Example : ${prefixo + comando} 1`
-                if (!m.quoted) return m.reply('Reply Pesan')
-                if (!m.quoted.isBaileys) throw `Hanya Bisa Membalas Pesan Dari Bot`
+                if (!m.quoted) return m.reply('Responda a mensagem')
+                if (!m.quoted.isBaileys) throw `Só pode responder a mensagem do bots`
 		let urls = quoted.text.match(new RegExp(/(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.|m\.)?youtube\.com\/(?:watch|v|embed|shorts)(?:\.php)?(?:\?.*v=|\/))([a-zA-Z0-9\_-]+)/, 'gi'))
-                if (!urls) throw `Mungkin pesan yang anda reply tidak mengandung result ytsearch`
+                if (!urls) throw `Talvez a mensagem que você respondeu não contenha o resultado do ytsearch`
                 let quality = args[1] ? args[1] : '128kbps'
                 let media = await yta(urls[text - 1], quality)
-                if (media.filesize >= 100000) return m.reply('File Melebihi Batas '+util.format(media))
+                if (media.filesize >= 100000) return m.reply('Arquivo acima do limite '+util.format(media))
                 client.sendImage(m.chat, media.thumb, `⭔ Titulo : ${media.title}\n⭔ Tamanho do Arquivo : ${media.filesizeF}\n⭔ Url : ${urls[text - 1]}\n⭔ Ext : MP3\n⭔ Resolução : ${args[1] || '128kbps'}`, m)
                 client.sendMessage(m.chat, { audio: { url: media.dl_link }, mimetype: 'audio/mpeg', fileName: `${media.title}.mp3` }, { quoted: m })
             }
@@ -1673,14 +1676,14 @@ break
                 if(!m.isGroup) throw ptbr.group()
                 if(!isUser) throw ptbr.userB()
                 let { ytv } = require('./lib/y2mate')
-                if (!text) throw `Example : ${prefixo + comando} 1`
-                if (!m.quoted) return m.reply('Reply Pesan')
-                if (!m.quoted.isBaileys) throw `Hanya Bisa Membalas Pesan Dari Bot`
+                if (!text) throw `Exemplo : ${prefixo + comando} 1`
+                if (!m.quoted) return m.reply('Responda a mensagem')
+                if (!m.quoted.isBaileys) throw `Só pode responder a mensagem do bots`
                 let urls = quoted.text.match(new RegExp(/(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.|m\.)?youtube\.com\/(?:watch|v|embed|shorts)(?:\.php)?(?:\?.*v=|\/))([a-zA-Z0-9\_-]+)/, 'gi'))
-                if (!urls) throw `Mungkin pesan yang anda reply tidak mengandung result ytsearch`
+                if (!urls) throw `Talvez a mensagem que você respondeu não contenha o resultado do ytsearch`
                 let quality = args[1] ? args[1] : '360p'
                 let media = await ytv(urls[text - 1], quality)
-                if (media.filesize >= 100000) return m.reply('File Melebihi Batas '+util.format(media))
+                if (media.filesize >= 100000) return m.reply('Arquivo acima do limite '+util.format(media))
                 client.sendMessage(m.chat, { video: { url: media.dl_link }, mimetype: 'video/mp4', fileName: `${media.title}.mp4`, caption: `⭔ Titulo : ${media.title}\n⭔ Tamanho do Arquivo : ${media.filesizeF}\n⭔ Url : ${urls[text - 1]}\n⭔ Ext : MP3\n⭔ Resolução : ${args[1] || '360p'}` }, { quoted: m })
             }
             break
@@ -2224,7 +2227,7 @@ ${id}`)
             case 'setcmd': {
                 if(!m.isGroup) throw ptbr.group()
                 if(!isUser) throw ptbr.userB()
-                if (!m.quoted) throw 'Reply Pesan!'
+                if (!m.quoted) throw 'Responda a mensagem!'
                 if (!m.quoted.fileSha256) throw 'SHA256 Hash Missing'
                 if (!text) throw `Untuk Command Apa?`
                 let hash = m.quoted.fileSha256.toString('base64')
@@ -2260,7 +2263,7 @@ ${Object.entries(global.db.data.sticker).map(([key, value], index) => `${index +
             break
             case 'lockcmd': {
                 if (!isOwner) throw ptbr.ownerG()
-                if (!m.quoted) throw 'Reply Pesan!'
+                if (!m.quoted) throw 'Responda a mensagem!'
                 if (!m.quoted.fileSha256) throw 'SHA256 Hash Missing'
                 let hash = m.quoted.fileSha256.toString('base64')
                 if (!(hash in global.db.data.sticker)) throw 'Hash not found in database'
@@ -2312,7 +2315,7 @@ Lihat list Pesan Dengan ${prefixo}listmsg`)
             }
 	    break
 	    case 'anonymous': {
-                if (m.isGroup) return m.reply('Recursos não podem ser usados ​​para grupos!')
+                if (m.isGroup) return m.reply('Não pode ser Usado em Grupos!')
 				this.anonymous = this.anonymous ? this.anonymous : {}
 				let buttons = [
                     { buttonId: 'start', buttonText: { displayText: 'Começar' }, type: 1 }
@@ -2321,7 +2324,7 @@ Lihat list Pesan Dengan ${prefixo}listmsg`)
             }
 			break
             case 'keluar': case 'leave': {
-                if (m.isGroup) return m.reply('Recursos não podem ser usados ​​para grupos!')
+                if (m.isGroup) return m.reply('Não pode ser Usado em Grupos!')
                 this.anonymous = this.anonymous ? this.anonymous : {}
                 let room = Object.values(this.anonymous).find(room => room.check(m.sender))
                 if (!room) {
@@ -2338,7 +2341,7 @@ Lihat list Pesan Dengan ${prefixo}listmsg`)
                 if (comando === 'leave') break
             }
             case 'mulai': case 'start': {
-                if (m.isGroup) return m.reply('Recursos não podem ser usados ​​para grupos!')
+                if (m.isGroup) return m.reply('Não pode ser Usado em Grupos!')
                 this.anonymous = this.anonymous ? this.anonymous : {}
                 if (Object.values(this.anonymous).find(room => room.check(m.sender))) {
                     let buttons = [
@@ -2379,7 +2382,7 @@ Lihat list Pesan Dengan ${prefixo}listmsg`)
                 break
             }
             case 'next': case 'lanjut': {
-                if (m.isGroup) return m.reply('Recursos não podem ser usados ​​para grupos!')
+                if (m.isGroup) return m.reply('Não pode ser Usado em Grupos!')
                 if(!isUser) throw ptbr.userB()
                 this.anonymous = this.anonymous ? this.anonymous : {}
                 let romeo = Object.values(this.anonymous).find(room => room.check(m.sender))
@@ -2645,25 +2648,25 @@ let capt = `⭔ Titulo: ${judul}
                 setbot.templateVideo = false
                 setbot.templateGif = false
                 setbot.templateMsg = false
-                m.reply(mess.success)
+                m.reply(ptbr.sucesso())
                 } else if (args[0] === 'templateVideo'){
                 setbot.templateImage = false
                 setbot.templateVideo = true
                 setbot.templateGif = false
                 setbot.templateMsg = false
-                m.reply(mess.success)
+                m.reply(ptbr.sucesso())
                 } else if (args[0] === 'templateGif'){
                 setbot.templateImage = false
                 setbot.templateVideo = false
                 setbot.templateGif = true
                 setbot.templateMsg = false
-                m.reply(mess.success)
+                m.reply(ptbr.sucesso())
                 } else if (args[0] === 'templateMessage'){
                 setbot.templateImage = false
                 setbot.templateVideo = false
                 setbot.templateGif = false
                 setbot.templateMsg = true
-                m.reply(mess.success)
+                m.reply(ptbr.sucesso())
                 } else {
                 let sections = [
                 {

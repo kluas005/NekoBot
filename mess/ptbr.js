@@ -135,4 +135,7 @@ exports.erro = () => {
 	return`❌ocorreu um erro❌\n\nTente novamente.`
 }
 
+exports.sucesso = () => {
+	return `Concluido sz`
+}
 

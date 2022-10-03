@@ -5,7 +5,7 @@
    * Follow https://github.com/nazedev
 */
 
-require('./config')
+require('./config/config')
 const { default: WaConnection, useSingleFileAuthState, DisconnectReason, fetchLatestBaileysVersion, generateForwardMessageContent, prepareWAMessageMedia, generateWAMessageFromContent, generateMessageID, downloadContentFromMessage, makeInMemoryStore, jidDecode, proto } = require("@adiwajshing/baileys")
 const { state, saveState } = useSingleFileAuthState(`./QrCode/${sessionName}.json`)
 const pino = require('pino')

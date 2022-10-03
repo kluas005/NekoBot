@@ -78,7 +78,8 @@
     },
     "120363026920693984@g.us": {
       "mute": false,
-      "antilink": false
+      "antilink": true,
+      "_leveling": true
     },
     "120363045146164295@g.us": {
       "mute": false,
