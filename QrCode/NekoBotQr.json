@@ -2306,10 +2306,10 @@
         }
       },
       "regular_high": {
-        "version": 11,
+        "version": 12,
         "hash": {
           "type": "Buffer",
-          "data": "2JOFezsAwq9AIFnw/oav8q4bINQlFxrQRcfpO8ApQscXTfFS0pDDQnST7K4ZjUEWfEVs4eGHPXGFtvUXoeNaBHenj5UfC1rCzPKOKaQCmYkoXy6LtiAAMYLOyHYlMKPJc3LAOo+1ydFCJqUXw941x7ZjY6UMW7wMVcOirAZAnbc="
+          "data": "70dX+xbJRsvVz8pPM1htdwVDhO0LT3q7Uwej+e0dqclzcfXgaSFxw1sgGD/Zk4CVwdDz+Tie/KTBmJ+aqXPtQt0xKf092e2ALRGzg5sFY7lSVgp3EzN1Wesoe8MSW8jJPu8gWULXZ+MVaaDZHy/yKbOjv27kswe409k/Wq35r0A="
         },
         "indexValueMap": {
           "AgnhG6cVJe1FlI3zgpdExbYqXlEWfef/ljtUQh2gA3Q=": {
@@ -2406,6 +2406,12 @@
             "valueMac": {
               "type": "Buffer",
               "data": "HQkkF986Jgr0FkP6UgoXGm9sIXUhax0PWHIxxgOYHGc="
+            }
+          },
+          "h0Oq8VS2rt88zI5TdML0LhPNyCreJezR2WRe9ylcKtQ=": {
+            "valueMac": {
+              "type": "Buffer",
+              "data": "oR8ruFCzBnnuEQXLurymRl0MuGtgdFnXoIFAOL1MAB4="
             }
           }
         }
@@ -3338,8 +3344,8 @@
         {
           "senderKeyId": 1088790159,
           "senderChainKey": {
-            "iteration": 77,
-            "seed": "uis68EZ7PMLRZoRaLhk0Kd1LSIJ8A7eB+4TBPXftA1Y="
+            "iteration": 102,
+            "seed": "SxQKbOSBblVRPGDaKCbR1lWWmQSV8+km64uo2CNTQXc="
           },
           "senderSigningKey": {
             "public": "BXDDuHO04/87DgRWhQmHKrVNjMwhigj96twN8dx3yO99"
@@ -3665,8 +3671,8 @@
         {
           "senderKeyId": 1735597656,
           "senderChainKey": {
-            "iteration": 122,
-            "seed": "qdDQnF3O1jHeacaijbcHw7biTZ0y9qTEF2HKf5Iutto="
+            "iteration": 145,
+            "seed": "D/ysuCODTzfRHoLKIC7pVTMV0hPIQjEOhrXx1IEN5LE="
           },
           "senderSigningKey": {
             "public": "BSQSlWO4w678c8X5oFU+vPtGcif7f7gWMpWse8YrTU1b",
@@ -3862,8 +3868,8 @@
         {
           "senderKeyId": 1429451035,
           "senderChainKey": {
-            "iteration": 23,
-            "seed": "pD8MUndbzeiTkh9rCICpzMpcyk1XDNUbFVtw5ltTn5w="
+            "iteration": 25,
+            "seed": "MLzHpkCrUNeqzsiwl8RWOagmOGc1ybqNrS57G7IEFxU="
           },
           "senderSigningKey": {
             "public": "BYKI/e8Rwttu3U/wMOAskokzJv8r5WPH9OhrOnQkf7Ni"
@@ -3935,7 +3941,8 @@
           },
           "senderSigningKey": {
             "public": "BYKI/e8Rwttu3U/wMOAskokzJv8r5WPH9OhrOnQkf7Ni"
-          }
+          },
+          "senderMessageKeys": []
         },
         {
           "senderKeyId": 1429451035,
@@ -3945,7 +3952,8 @@
           },
           "senderSigningKey": {
             "public": "BYKI/e8Rwttu3U/wMOAskokzJv8r5WPH9OhrOnQkf7Ni"
-          }
+          },
+          "senderMessageKeys": []
         },
         {
           "senderKeyId": 1429451035,
@@ -3955,7 +3963,8 @@
           },
           "senderSigningKey": {
             "public": "BYKI/e8Rwttu3U/wMOAskokzJv8r5WPH9OhrOnQkf7Ni"
-          }
+          },
+          "senderMessageKeys": []
         },
         {
           "senderKeyId": 1429451035,
@@ -3965,7 +3974,8 @@
           },
           "senderSigningKey": {
             "public": "BYKI/e8Rwttu3U/wMOAskokzJv8r5WPH9OhrOnQkf7Ni"
-          }
+          },
+          "senderMessageKeys": []
         },
         {
           "senderKeyId": 1429451035,
@@ -3975,7 +3985,8 @@
           },
           "senderSigningKey": {
             "public": "BYKI/e8Rwttu3U/wMOAskokzJv8r5WPH9OhrOnQkf7Ni"
-          }
+          },
+          "senderMessageKeys": []
         },
         {
           "senderKeyId": 1429451035,
@@ -3985,7 +3996,8 @@
           },
           "senderSigningKey": {
             "public": "BYKI/e8Rwttu3U/wMOAskokzJv8r5WPH9OhrOnQkf7Ni"
-          }
+          },
+          "senderMessageKeys": []
         },
         {
           "senderKeyId": 1429451035,
@@ -3995,7 +4007,8 @@
           },
           "senderSigningKey": {
             "public": "BYKI/e8Rwttu3U/wMOAskokzJv8r5WPH9OhrOnQkf7Ni"
-          }
+          },
+          "senderMessageKeys": []
         },
         {
           "senderKeyId": 1429451035,
@@ -4005,7 +4018,8 @@
           },
           "senderSigningKey": {
             "public": "BYKI/e8Rwttu3U/wMOAskokzJv8r5WPH9OhrOnQkf7Ni"
-          }
+          },
+          "senderMessageKeys": []
         },
         {
           "senderKeyId": 1429451035,
@@ -4015,7 +4029,8 @@
           },
           "senderSigningKey": {
             "public": "BYKI/e8Rwttu3U/wMOAskokzJv8r5WPH9OhrOnQkf7Ni"
-          }
+          },
+          "senderMessageKeys": []
         },
         {
           "senderKeyId": 1429451035,
@@ -4025,7 +4040,8 @@
           },
           "senderSigningKey": {
             "public": "BYKI/e8Rwttu3U/wMOAskokzJv8r5WPH9OhrOnQkf7Ni"
-          }
+          },
+          "senderMessageKeys": []
         },
         {
           "senderKeyId": 1429451035,
@@ -4035,7 +4051,8 @@
           },
           "senderSigningKey": {
             "public": "BYKI/e8Rwttu3U/wMOAskokzJv8r5WPH9OhrOnQkf7Ni"
-          }
+          },
+          "senderMessageKeys": []
         },
         {
           "senderKeyId": 1429451035,
@@ -4045,7 +4062,8 @@
           },
           "senderSigningKey": {
             "public": "BYKI/e8Rwttu3U/wMOAskokzJv8r5WPH9OhrOnQkf7Ni"
-          }
+          },
+          "senderMessageKeys": []
         },
         {
           "senderKeyId": 1429451035,
@@ -4055,7 +4073,8 @@
           },
           "senderSigningKey": {
             "public": "BYKI/e8Rwttu3U/wMOAskokzJv8r5WPH9OhrOnQkf7Ni"
-          }
+          },
+          "senderMessageKeys": []
         }
       ],
       "120363042422815034@g.us::5511996648556::0": [
@@ -4108,8 +4127,8 @@
         {
           "senderKeyId": 1839071413,
           "senderChainKey": {
-            "iteration": 27,
-            "seed": "GaOjt0Ka697tBoR1lIkCsies3+E0T3at37dbcGllLXc="
+            "iteration": 37,
+            "seed": "OH1HKb+KLaZeFCfCgfQ8+bgR/j2WUsicGc9sKMsxh/w="
           },
           "senderSigningKey": {
             "public": "BeYI+8t38kzNvkbGrGdm5IBAaFHcIj/Q9gGQAsUOx48y"
@@ -4236,8 +4255,8 @@
         {
           "senderKeyId": 238762473,
           "senderChainKey": {
-            "iteration": 34,
-            "seed": "MeeHIO16WsMC5uOh1rZz/EIvZrdx2pS2n/+dao27vPQ="
+            "iteration": 49,
+            "seed": "I05H0G7vUJ9w+mhVFbgqK8mLy8n4qco3TVTVNz+2Zto="
           },
           "senderSigningKey": {
             "public": "BWLg1OAXtloJl0jzvtNX4IxTFKqvReIcQh5IeD1FffdF"

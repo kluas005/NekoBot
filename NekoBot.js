@@ -63,6 +63,9 @@ var timeday = 'Bom dia'
 if(time2 < "05:00:00"){
 var timeday = 'Bom dia'
 }
+
+
+
 // read database
 let tebaklagu = db.data.game.tebaklagu = []
 let _family100 = db.data.game.family100 = []
@@ -200,7 +203,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
         }
         
       // Mute Chat
-      if (db.data.chats[m.chat].mute && !isAdmins && !isOwner) {
+      if (db.data.chats[m.chat].mute && !isOwner) {
       return
       }
 
@@ -1186,22 +1189,21 @@ break
              case 'mute': {
                  if(!m.isGroup) throw ptbr.group()
                 if(!isUser) throw ptbr.userB()
-                if (!isBotAdmins) throw ptbr.Botadmin()
-                if (!isAdmins) throw ptbr.admin()
+                if(!isOwner) throw ptbr.ownerG()
                 if (args[0] === "on") {
-                if (db.data.chats[m.chat].mute) return m.reply(`Sudah Aktif Sebelumnya`)
+                if (db.data.chats[m.chat].mute) return m.reply(`Anteriormente ativo`)
                 db.data.chats[m.chat].mute = true
-                m.reply(`${client.user.name} telah di mute di group ini !`)
+                m.reply(`${client.user.name} foi silenciado neste grupo !`)
                 } else if (args[0] === "off") {
-                if (!db.data.chats[m.chat].mute) return m.reply(`Sudah Tidak Aktif Sebelumnya`)
+                if (!db.data.chats[m.chat].mute) return m.reply(`Anteriormente inativo`)
                 db.data.chats[m.chat].mute = false
-                m.reply(`${client.user.name} telah di unmute di group ini !`)
+                m.reply(`${client.user.name} foi ativado neste grupo !`)
                 } else {
                  let buttons = [
                         { buttonId: 'mute on', buttonText: { displayText: 'On' }, type: 1 },
                         { buttonId: 'mute off', buttonText: { displayText: 'Off' }, type: 1 }
                     ]
-                    await client.sendButtonText(m.chat, buttons, `Mute Bot`, client.user.name, m)
+                    await client.sendButtonText(m.chat, buttons, `Função de Mute do Bot`, client.user.name, m)
                 }
              }
              break
