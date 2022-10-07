@@ -133,7 +133,7 @@
     },
     "120363026920693984@g.us": {
       "mute": true,
-      "antilink": true,
+      "antilink": false,
       "_leveling": true
     },
     "120363045146164295@g.us": {
@@ -141,10 +141,14 @@
       "antilink": false
     },
     "120363042422815034@g.us": {
-      "mute": true,
+      "mute": false,
       "antilink": true
     },
     "5524999304661@s.whatsapp.net": {
+      "mute": false,
+      "antilink": false
+    },
+    "555191056836@s.whatsapp.net": {
       "mute": false,
       "antilink": false
     }
