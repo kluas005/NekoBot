@@ -2102,7 +2102,7 @@ case 'lava': case 'rock': case 'bloodglas': case 'hallowen': case 'darkgold': ca
                     {buttonId: `tiktokmp3 ${text}`, buttonText: {displayText: '♫ Audio'}, type: 1}
                 ]
                 let buttonMessage = {
-                    video: { url: anu.result.nowm },
+                    video: { url: anu.result.video.nowm },
                     caption: `Download de ${text}`,
                     footer: footerbot,
                     buttons: buttons,

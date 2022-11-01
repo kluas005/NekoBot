@@ -8409,13 +8409,16 @@
         {
           "senderKeyId": 1191512491,
           "senderChainKey": {
-            "iteration": 215,
-            "seed": "npryWeS0BXsrXfPp5Od3zQzfmY13+iMQt2oFqPcpxMg="
+            "iteration": 218,
+            "seed": "5DHnTD0GMF1zx53q7zDLbPm8sAxxQpCNIXx9xjlSXtc="
           },
           "senderSigningKey": {
             "public": "BYGaibNWOYbbbh2GHFKdJZR9TC4yfd4VKDYULzdjmV0M"
           },
-          "senderMessageKeys": []
+          "senderMessageKeys": [
+            {},
+            {}
+          ]
         },
         {
           "senderKeyId": 1191512491,
@@ -8433,8 +8436,8 @@
         {
           "senderKeyId": 743057011,
           "senderChainKey": {
-            "iteration": 29,
-            "seed": "ideZsQWCtr80m34i1j7vNOa4Mhb0thTOvzBBy3gwYOI="
+            "iteration": 31,
+            "seed": "l9MuJoIk1TF60dO+H9OfDjl3TeGhnU5WBWVYXPJgGv4="
           },
           "senderSigningKey": {
             "public": "BRWHeVwvW1mnYtUO5e7qB04qciqn1etI/PEJd0Fu5qpI",
