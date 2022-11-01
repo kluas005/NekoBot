@@ -47,7 +47,8 @@ global.limitawal = {
 }
 global.thumb = fs.readFileSync('./lib/naze.png')
 global.vaze = { url: 'https://telegra.ph/file/15209657f9d4f59c7ca1e.mp4' }
-
+global.botname = 'NEKO BOT'
+global.ytname = 'sexo'
 let file = require.resolve(__filename)
 fs.watchFile(file, () => {
 	fs.unwatchFile(file)

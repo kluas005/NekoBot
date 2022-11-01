@@ -11,6 +11,10 @@ const chalk = require('chalk')
 const yts = require('yt-search')
 const xfar = require('xfarr-api')
 const google = require('google-it')
+const maker = require('mumaker')
+const request = require('request');
+const textpro = require('./lib/textpro')
+const { mediafireDl } = require('./lib/mediafire.js')
 const { exec, spawn, execSync } = require("child_process")
 const moment = require('moment-timezone')
 const { JSDOM } = require('jsdom')
@@ -39,7 +43,7 @@ const data = moment.tz('America/Sao_Paulo').format('DD/MM/YYYY')
 const hr = moment.tz('America/Sao_Paulo').format('HH:mm:ss')
 const footerbot = ('© NekoBot')  //ubah di config biar ngk emror
 const ini_mark = `0@s.whatsapp.net`
-
+global.prem = require("./lib/premium")
 
 /////
 
@@ -105,7 +109,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
         const groupAdmins = m.isGroup ? await getGroupAdmins(participants) : ''
     	const isBotAdmins = m.isGroup ? groupAdmins.includes(botNumber) : false
     	const isAdmins = m.isGroup ? groupAdmins.includes(m.sender) : false
-        const isPremium = isOwner || global.premium.map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender) || false
+        const isPremium = isOwner || isOwner || prem.checkPremiumUser(m.sender, premium);
         const isUser = checkRegisteredUser(sender)
         const isBan = cekBannedUser(sender, ban)
 	
@@ -165,6 +169,53 @@ module.exports = client = async (client, m, chatUpdate, store) => {
             client.readMessages([m.key])
         }
 
+        //Premium Exp
+prem.expiredCheck(client, m, premium);
+                
+//sticker url
+const sendStickerFromUrl = async(to, url) => {
+                var names = Date.now() / 10000;
+                var download = function (uri, filename, callback) {
+                    request.head(uri, function (err, res, body) {
+                        request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
+                    });
+                };
+                download(url, './database/stick' + names + '.png', async function () {
+                    console.log('selesai');
+                    let filess = './database/stick' + names + '.png'
+                    let asw = './database/stick' + names + '.webp'
+                    exec(`ffmpeg -i ${filess} -vcodec libwebp -filter:v fps=fps=20 -lossless 1 -loop 0 -preset default -an -vsync 0 -s 512:512 ${asw}`, (err) => {
+                        let media = fs.readFileSync(asw)
+                        client.sendMessage(to, { sticker: media}, {quoted: m})
+                        fs.unlinkSync(filess)
+                        fs.unlinkSync(asw)
+                    });
+                });
+            }
+
+        //Resize
+        const reSize = async(buffer, ukur1, ukur2) => {
+            return new Promise(async(resolve, reject) => {
+            let jimp = require('jimp')
+            var baper = await jimp.read(buffer);
+            var ab = await baper.resize(ukur1, ukur2).getBufferAsync(jimp.MIME_JPEG)
+            resolve(ab)
+            })
+            }
+
+             //Fake
+	    const ftroli ={key: {fromMe: false,"participant":"0@s.whatsapp.net", "remoteJid": "status@broadcast"}, "message": {orderMessage: {itemCount: 2022,status: 200, thumbnail: await reSize(thumb, 100, 100), surface: 200, message: `${ytname}`, orderTitle: 'Naze', sellerJid: '0@s.whatsapp.net'}}, contextInfo: {"forwardingScore":999,"isForwarded":true},sendEphemeral: true}
+		const fdoc = {key : {participant : '0@s.whatsapp.net', ...(m.chat ? { remoteJid: `status@broadcast` } : {}) },message: {documentMessage: {title: `${ytname}`,jpegThumbnail: await reSize(thumb, 100, 100)}}}
+		const fvn = {key: {participant: `0@s.whatsapp.net`, ...(m.chat ? { remoteJid: "status@broadcast" } : {})},message: { "audioMessage": {"mimetype":"audio/ogg; codecs=opus","seconds":359996400,"ptt": "true"}} } 
+		const ftextt = {key: {fromMe: false, participant: `0@s.whatsapp.net`, ...(m.chat ? { remoteJid: "status@broadcast" } : {})}, message: { "extendedTextMessage": {"text":`${ytname}`, "title": `${botname}`, 'jpegThumbnail': await reSize(thumb, 100, 100)}}}
+        const ftoko = {key: {fromMe: false, participant: `0@s.whatsapp.net`, ...(m.chat ? {remoteJid: "status@broadcast" } : {})}, message: { "productMessage": { "product": { "productImage":{ "mimetype": "image/jpeg", "jpegThumbnail": await reSize(thumb, 100, 100)},"title": `${ytname}`, "description": `${botname}`, "currencyCode": "IDR", "priceAmount1000": "1000000000000000000", "retailerId": `${ytname}`, "productImageCount": 1}, "businessOwnerJid": `0@s.whatsapp.net`}}} 
+		const fgif = {key: {participant: `0@s.whatsapp.net`, ...(m.chat ? { remoteJid: "status@broadcast" } : {})},message: {"videoMessage": { "title":`${ytname}`, "h": `Hmm`,'seconds': '359996400', 'gifPlayback': 'true', 'caption': `${ytname}`, 'jpegThumbnail': await reSize(thumb, 100, 100)}}}
+		const fgclink = {key: {participant: "0@s.whatsapp.net","remoteJid": "0@s.whatsapp.net"},"message": {"groupInviteMessage": {"groupJid": "6288213840883-1616169743@g.us","inviteCode": "m","groupName": `${ytname}`, "caption": `${ytname}`, 'jpegThumbnail': await reSize(thumb, 100, 100)}}}
+		const fvideo = {key: { fromMe: false,participant: `0@s.whatsapp.net`, ...(m.chat ? { remoteJid: "status@broadcast" } : {}) },message: { "videoMessage": { "title":`${ytname}`, "h": `Hmm`,'seconds': '359996400', 'caption': `${ytname}`, 'jpegThumbnail': await reSize(thumb, 100, 100)}}}
+		const floc = {key : {participant : '0@s.whatsapp.net', ...(m.chat ? { remoteJid: `status@broadcast` } : {}) },message: {locationMessage: {name: `${ytname}`,jpegThumbnail: await reSize(thumb, 100, 100)}}}
+		const floc2 = {key: { fromMe: false, participant: `0@s.whatsapp.net`, ...(m.chat ? { remoteJid: "status@broadcast" } : {}) }, message: { "liveLocationMessage": { "title": `${ytname}`,"h": `Hmm`, 'jpegThumbnail': await reSize(thumb, 100, 100)}}}
+		const fkontak = { key: {participant: `0@s.whatsapp.net`, ...(m.chat ? { remoteJid: `status@broadcast` } : {}) }, message: { 'contactMessage': { 'displayName': `${ytname}`, 'vcard': `BEGIN:VCARD\nVERSION:3.0\nN:XL;ytname,;;;\nFN:ytname\nitem1.TEL;waid=6285875158363:6285875158363\nitem1.X-ABLabel:Ponsel\nEND:VCARD`, 'jpegThumbnail': await reSize(thumb, 100, 100), thumbnail: await reSize(thumb, 100, 100),sendEphemeral: true}}}
+	    const fakestatus = {key: {fromMe: false,participant: `0@s.whatsapp.net`, ...(m.chat ? { remoteJid: "status@broadcast" } : {})},message: { "imageMessage": {"url": "https://mmg.whatsapp.net/d/f/At0x7ZdIvuicfjlf9oWS6A3AR9XPh0P-hZIVPLsI70nM.enc","mimetype": "image/jpeg","caption": `${ytname}`,"fileSha256": "+Ia+Dwib70Y1CWRMAP9QLJKjIJt54fKycOfB2OEZbTU=","fileLength": "28777","height": 1080,"width": 1079,"mediaKey": "vXmRR7ZUeDWjXy5iQk17TrowBzuwRya0errAFnXxbGc=","fileEncSha256": "sR9D2RS5JSifw49HeBADguI23fWDz1aZu4faWG/CyRY=","directPath": "/v/t62.7118-24/21427642_840952686474581_572788076332761430_n.enc?oh=3f57c1ba2fcab95f2c0bb475d72720ba&oe=602F3D69","mediaKeyTimestamp": "1610993486","jpegThumbnail": await reSize(thumb, 100, 100),"scansSidecar": "1W0XhfaAcDwc7xh1R8lca6Qg/1bB4naFCSngM2LKO2NoP5RI7K+zLw=="}}}
 	// reset limit every 12 hours
         let cron = require('node-cron')
         cron.schedule('00 12 * * *', () => {
@@ -884,6 +935,51 @@ Quando *desiste* de se render e admitir a derrota`
 		await client.updateBlockStatus(users, 'unblock').then((res) => m.reply(jsonformat(res))).catch((err) => m.reply(jsonformat(err)))
 	}
 	break
+    case 'addprem':
+				if (!isOwner) return m.reply(ptbr.ownerG())
+				{ q, args } {
+				if (args.length < 2)
+				return m.reply(
+				`Uso:\n*#addprem* @time tag\n*#addprem* número de hora\n\nExemplo: #addprem @tag 30d`
+				);
+				if (m.mentionedJid.length !== 0) {
+				for (let i = 0; i < m.mentionedJid.length; i++) {
+				prem.addPremiumUser(m.mentionedJid[0], args[1], premium);
+						}
+				client.sendMessage(m.chat, { text: "adicionado com sucesso" }, { quoted: fkontak });
+					} else {
+				prem.addPremiumUser(args[0] + "@s.whatsapp.net", args[1], premium);
+				client.sendMessage(m.chat, { text: "sucesso pelo numero" }, { quoted: fkontak });
+						}
+					}
+				break
+			case 'delprem':
+				if (!isOwner) return m.reply(ptbr.ownerG())
+				{ q, args, arg } {
+				if (args.length < 1) return reply(`Uso:\n*#delprem* @tag\n*#delprem* número`);
+				if (m.mentionedJid.length !== 0) {
+					for (let i = 0; i < m.mentionedJid.length; i++) {
+						premium.splice(prem.getPremiumPosition(m.mentionedJid[i], premium), 1);
+						fs.writeFileSync("./database/user/premium.json", JSON.stringify(premium));
+					}
+					client.sendMessage(m.chat, { text: "deletado com sucesso" }, { quoted: fkontak });
+				} else {
+				premium.splice(prem.getPremiumPosition(args[0] + "@s.whatsapp.net", premium), 1);
+				fs.writeFileSync("./database/user/premium.json", JSON.stringify(premium));
+				client.sendMessage(m.chat, { text: "Sucesso através do número" }, { quoted: fkontak });
+				}
+				}
+				break
+		case 'listprem': {
+			if (!isOwner) return m.reply(ptbr.ownerG())
+			let data = require("./database/user/premium.json")
+			let txt = `*------「 LIST PREMIUM 」------*\n\n`
+                    for (let i of data) {
+                txt += `*Nome : ${i.id}*\n*Expira : ${i.expired} Segundos*\n\n`
+                }
+            m.reply(txt)
+			}
+			break
 	    case 'setname': case 'setsubject': {
                  if(!m.isGroup) throw ptbr.group()
  if(!isUser) throw ptbr.userB()
@@ -1521,32 +1617,33 @@ break
             }
             break
             case 'imagenobg': case 'removebg': case 'remove-bg': {
-            if(!m.isGroup) throw ptbr.group()
-            if(!isUser) throw ptbr.userB()
-	    if (!quoted) throw `Kirim/Reply Image Dengan Caption ${prefixo + comando}`
-	    if (!/image/.test(mime)) throw `Kirim/Reply Image Dengan Caption ${prefixo + comando}`
-	    if (/webp/.test(mime)) throw `Kirim/Reply Image Dengan Caption ${prefixo + comando}`
-	    let remobg = require('remove.bg')
-	    let apirnobg = ['q61faXzzR5zNU6cvcrwtUkRU','S258diZhcuFJooAtHTaPEn4T','5LjfCVAp4vVNYiTjq9mXJWHF','aT7ibfUsGSwFyjaPZ9eoJc61','BY63t7Vx2tS68YZFY6AJ4HHF','5Gdq1sSWSeyZzPMHqz7ENfi8','86h6d6u4AXrst4BVMD9dzdGZ','xp8pSDavAgfE5XScqXo9UKHF','dWbCoCb3TacCP93imNEcPxcL']
-	    let apinobg = apirnobg[Math.floor(Math.random() * apirnobg.length)]
-	    hmm = await './src/remobg-'+getRandom('')
-	    localFile = await client.downloadAndSaveMediaMessage(quoted, hmm)
-	    outputFile = await './src/hremo-'+getRandom('.png')
-	    m.reply(ptbr.wait())
-	    remobg.removeBackgroundFromImageFile({
-	      path: localFile,
-	      apiKey: apinobg,
-	      size: "regular",
-	      type: "auto",
-	      scale: "100%",
-	      outputFile 
-	    }).then(async result => {
-	    client.sendMessage(m.chat, {image: fs.readFileSync(outputFile), caption: ptbr.sucesso()}, { quoted : m })
-	    await fs.unlinkSync(localFile)
-	    await fs.unlinkSync(outputFile)
-	    })
-	    } 
-	    break
+                if(!m.isGroup) throw ptbr.group()
+                if(!isUser) throw ptbr.userB()
+                m.reply(ptbr.wait())
+                if (!quoted) throw `Enviar/Responder imagem com legenda ${prefixo + comando}`
+                if (!/image/.test(mime)) throw `Enviar/Responder imagem com legenda ${prefixo + comando}`
+                if (/webp/.test(mime)) throw `Enviar/Responder imagem com legenda ${prefixo + comando}`
+                let remobg = require('remove.bg')
+                let apirnobg = ['q61faXzzR5zNU6cvcrwtUkRU','S258diZhcuFJooAtHTaPEn4T','5LjfCVAp4vVNYiTjq9mXJWHF','aT7ibfUsGSwFyjaPZ9eoJc61','BY63t7Vx2tS68YZFY6AJ4HHF','5Gdq1sSWSeyZzPMHqz7ENfi8','86h6d6u4AXrst4BVMD9dzdGZ','xp8pSDavAgfE5XScqXo9UKHF','dWbCoCb3TacCP93imNEcPxcL']
+                let apinobg = apirnobg[Math.floor(Math.random() * apirnobg.length)]
+                hmm = await './src/remobg-'+getRandom('')
+                localFile = await client.downloadAndSaveMediaMessage(quoted, hmm)
+                outputFile = await './src/hremo-'+getRandom('.png')
+                m.reply(mess.wait)
+                remobg.removeBackgroundFromImageFile({
+                  path: localFile,
+                  apiKey: apinobg,
+                  size: "regular",
+                  type: "auto",
+                  scale: "100%",
+                  outputFile 
+                }).then(async result => {
+                client.sendMessage(m.chat, {image: fs.readFileSync(outputFile), caption: mess.success}, { quoted : m })
+                await fs.unlinkSync(localFile)
+                await fs.unlinkSync(outputFile)
+                })
+                }
+                break
 	    case 'yts': case 'ytsearch': {
                 if(!m.isGroup) throw ptbr.group()
                 if(!isUser) throw ptbr.userB()
@@ -1720,8 +1817,8 @@ break
                 m.reply(ptbr.wait())
                 let anu = await fetchJson('https://raw.githubusercontent.com/iamriz7/kopel_/main/kopel.json')
                 let random = anu[Math.floor(Math.random() * anu.length)]
-                client.sendMessage(m.chat, { image: { url: random.male }, caption: `Metadinha Masculina` }, { quoted: m })
-                client.sendMessage(m.chat, { image: { url: random.female }, caption: `Metadinha Feminina` }, { quoted: m })
+                client.sendMessage(m.chat, { image: { url: random.male }, caption: `Couple Male` }, { quoted: m })
+                client.sendMessage(m.chat, { image: { url: random.female }, caption: `Couple Female` }, { quoted: m })
             }
 	    break
             case 'coffe': case 'kopi': {
@@ -1792,6 +1889,118 @@ break
                 client.sendMessage(m.chat, buttonMessage, { quoted: m })
             }
             break
+
+            /// comandos novos
+
+            case 'carbon': {
+            	if (!text) throw 'No Query Text'
+               m.reply(ptbr.wait())
+               client.sendMessage(m.chat, { image: { url: `https://api-rull.herokuapp.com/api/cmd?code=${text}` }, caption: `boa mlk` }, { quoted: m })
+            	}
+            break
+            case 'candy': case 'christmas': case '3dchristmas': case 'sparklechristmas': case 'holographic':
+case 'deepsea': case 'scifi': case 'rainbow': case 'waterpipe': case 'spooky': case 'karbon': case 'neonlight2': 
+case 'pencil': case 'circuit': case 'discovery': case 'metalic': case 'fiction': case 'demon': case '3dbox': 
+case 'transformer': case 'berry': case 'thunder': case 'magma': case '3dstone': case 'greenneon': 
+case 'neonlight': case 'glitch': case 'harrypotter': case 'brokenglass': case 'papercut': case 'lion2': 
+case 'watercolor': case 'multicolor': case 'neondevil': case 'underwater': case 'graffitibike': case '3davengers': 
+ case 'snow': case 'cloud': case 'honey': case 'ice': case 'fruitjuice': case 'biscuit': case 'wood': case 'whitebear': 
+case 'chocolate': case 'strawberry': case 'matrix': case 'blood': case 'dropwater': case 'toxic': 
+case 'lava': case 'rock': case 'bloodglas': case 'hallowen': case 'darkgold': case 'joker': case 'wicker':
+ case 'firework': case 'skeleton': case 'blackpink': case 'sand': case 'glue': case '1917': case 'leaves': {
+             if (!q) return reply(`Example : ${prefixo + comando} ${global.ownername}`) 
+             m.reply(ptbr.wait())
+             let link
+             if (/candy/.test(comando)) link = 'https://textpro.me/create-christmas-candy-cane-text-effect-1056.html'
+             if (/neonlight2/.test(comando)) link = 'https://textpro.me/neon-light-text-effect-with-galaxy-style-981.html'
+             if (/christmas/.test(comando)) link = 'https://textpro.me/christmas-tree-text-effect-online-free-1057.html'
+             if (/3dchristmas/.test(comando)) link = 'https://textpro.me/3d-christmas-text-effect-by-name-1055.html'
+             if (/sparklechristmas/.test(comando)) link = 'https://textpro.me/sparkles-merry-christmas-text-effect-1054.html'
+             if (/deepsea/.test(comando)) link = 'https://textpro.me/create-3d-deep-sea-metal-text-effect-online-1053.html'
+             if (/scifi/.test(comando)) link = 'https://textpro.me/create-3d-sci-fi-text-effect-online-1050.html'
+             if (/whitebear/.test(comando)) link = 'https://textpro.me/online-black-and-white-bear-mascot-logo-creation-1012.html'
+             if (/holographic/.test(comando)) link = 'https://textpro.me/holographic-3d-text-effect-975.html'
+             if (/3davengers/.test(comando)) link = 'https://textpro.me/create-3d-avengers-logo-online-974.html'
+             if (/rainbow/.test(comando)) link = 'https://textpro.me/3d-rainbow-color-calligraphy-text-effect-1049.html'
+             if (/waterpipe/.test(comando)) link = 'https://textpro.me/create-3d-water-pipe-text-effects-online-1048.html'
+             if (/spooky/.test(comando)) link = 'https://textpro.me/create-halloween-skeleton-text-effect-online-1047.html'
+             if (/greenneon/.test(comando)) link = 'https://textpro.me/green-neon-text-effect-874.html'
+             if (/lion2/.test(comando)) link = 'https://textpro.me/create-lion-logo-mascot-online-938.html'
+             if (/3dbox/.test(comando)) link = 'https://textpro.me/3d-box-text-effect-online-880.html'
+             if (/pencil/.test(comando)) link = 'https://textpro.me/create-a-sketch-text-effect-online-1044.html'
+             if (/circuit/.test(comando)) link = 'https://textpro.me/create-blue-circuit-style-text-effect-online-1043.html'
+             if (/discovery/.test(comando)) link = 'https://textpro.me/create-space-text-effects-online-free-1042.html'
+             if (/metalic/.test(comando)) link = 'https://textpro.me/creat-glossy-metalic-text-effect-free-online-1040.html'
+             if (/fiction/.test(comando)) link = 'https://textpro.me/create-science-fiction-text-effect-online-free-1038.html'
+             if (/demon/.test(comando)) link = 'https://textpro.me/create-green-horror-style-text-effect-online-1036.html'
+             if (/transformer/.test(comando)) link = 'https://textpro.me/create-a-transformer-text-effect-online-1035.html'
+             if (/berry/.test(comando)) link = 'https://textpro.me/create-berry-text-effect-online-free-1033.html'
+             if (/thunder/.test(comando)) link = 'https://textpro.me/online-thunder-text-effect-generator-1031.html'
+             if (/magma/.test(comando)) link = 'https://textpro.me/create-a-magma-hot-text-effect-online-1030.html'
+             if (/3dstone/.test(comando)) link = 'https://textpro.me/3d-stone-cracked-cool-text-effect-1029.html'
+             if (/neonlight/.test(comando)) link = 'https://textpro.me/create-3d-neon-light-text-effect-online-1028.html'
+             if (/glitch/.test(comando)) link = 'https://textpro.me/create-impressive-glitch-text-effects-online-1027.html'
+             if (/harrypotter/.test(comando)) link = 'https://textpro.me/create-harry-potter-text-effect-online-1025.html'
+             if (/brokenglass/.test(comando)) link = 'https://textpro.me/broken-glass-text-effect-free-online-1023.html'
+             if (/papercut/.test(comando)) link = 'https://textpro.me/create-art-paper-cut-text-effect-online-1022.html'
+             if (/watercolor/.test(comando)) link = 'https://textpro.me/create-a-free-online-watercolor-text-effect-1017.html'
+             if (/multicolor/.test(comando)) link = 'https://textpro.me/online-multicolor-3d-paper-cut-text-effect-1016.html'
+             if (/neondevil/.test(comando)) link = 'https://textpro.me/create-neon-devil-wings-text-effect-online-free-1014.html'
+             if (/underwater/.test(comando)) link = 'https://textpro.me/3d-underwater-text-effect-generator-online-1013.html'
+             if (/graffitibike/.test(comando)) link = 'https://textpro.me/create-wonderful-graffiti-art-text-effect-1011.html'
+             if (/snow/.test(comando)) link = 'https://textpro.me/create-snow-text-effects-for-winter-holidays-1005.html'
+             if (/cloud/.test(comando)) link = 'https://textpro.me/create-a-cloud-text-effect-on-the-sky-online-1004.html'
+             if (/karbon/.test(comando)) link = 'https://textpro.me/carbon-text-effect-833.html'
+             if (/honey/.test(comando)) link = 'https://textpro.me/honey-text-effect-868.html'
+             if (/ice/.test(comando)) link = 'https://textpro.me/ice-cold-text-effect-862.html'
+             if (/fruitjuice/.test(comando)) link = 'https://textpro.me/fruit-juice-text-effect-861.html'
+             if (/biscuit/.test(comando)) link = 'https://textpro.me/biscuit-text-effect-858.html'
+             if (/wood/.test(comando)) link = 'https://textpro.me/wood-text-effect-856.html'
+             if (/chocolate/.test(comando)) link = 'https://textpro.me/chocolate-cake-text-effect-890.html'
+             if (/strawberry/.test(comando)) link = 'https://textpro.me/strawberry-text-effect-online-889.html'
+             if (/matrix/.test(comando)) link = 'https://textpro.me/matrix-style-text-effect-online-884.html'
+             if (/blood/.test(comando)) link = 'https://textpro.me/horror-blood-text-effect-online-883.html'
+             if (/dropwater/.test(comando)) link = 'https://textpro.me/dropwater-text-effect-872.html'
+             if (/toxic/.test(comando)) link = 'https://textpro.me/toxic-text-effect-online-901.html'
+             if (/lava/.test(comando)) link = 'https://textpro.me/lava-text-effect-online-914.html'
+             if (/rock/.test(comando)) link = 'https://textpro.me/rock-text-effect-online-915.html'
+             if (/bloodglas/.test(comando)) link = 'https://textpro.me/blood-text-on-the-frosted-glass-941.html'
+             if (/hallowen/.test(comando)) link = 'https://textpro.me/halloween-fire-text-effect-940.html'
+             if (/darkgold/.test(comando)) link = 'https://textpro.me/metal-dark-gold-text-effect-online-939.html'
+             if (/joker/.test(comando)) link = 'https://textpro.me/create-logo-joker-online-934.html'
+             if (/wicker/.test(comando)) link = 'https://textpro.me/wicker-text-effect-online-932.html'
+             if (/firework/.test(comando)) link = 'https://textpro.me/firework-sparkle-text-effect-930.html'
+             if (/skeleton/.test(comando)) link = 'https://textpro.me/skeleton-text-effect-online-929.html'
+             if (/blackpink/.test(comando)) link = 'https://textpro.me/create-blackpink-logo-style-online-1001.html'
+             if (/sand/.test(comando)) link = 'https://textpro.me/write-in-sand-summer-beach-free-online-991.html'
+             if (/glue/.test(comando)) link = 'https://textpro.me/create-3d-glue-text-effect-with-realistic-style-986.html'
+             if (/1917/.test(comando)) link = 'https://textpro.me/1917-style-text-effect-online-980.html'
+             if (/leaves/.test(comando)) link = 'https://textpro.me/natural-leaves-text-effect-931.html'
+             let anu = await maker.textpro(link, q)
+             client.sendMessage(m.chat, { image: { url: anu }, caption: `Feito por ${global.botname} vadia` }, { quoted: m })
+             }
+             break
+             case 'glitch2': case 'harrypot': case 'graffiti': case 'pornhub': case 'glitch3': case '3dspace': case 'lion': case 'wolf': case 'retro': case '8bit': {
+             if(!q) return m.reply(`Use ${prefixo + comando} text1|text2`)
+             m.reply(ptbr.wait())
+             teks1 = q.split("|")[0]
+             teks2 = q.split("|")[1]
+             let link
+             if (/glitch3/.test(comando)) link = 'https://textpro.me/create-glitch-text-effect-style-tik-tok-983.html'
+             if (/harrypot/.test(comando)) link = 'https://textpro.me/create-harry-potter-text-effect-online-1025.html'
+             if (/graffiti/.test(comando)) link = 'https://textpro.me/create-a-cool-graffiti-text-on-the-wall-1010.html'
+             if (/pornhub/.test(comando)) link = 'https://textpro.me/pornhub-style-logo-online-generator-free-977.html'
+             if (/glitch2/.test(comando)) link = 'https://textpro.me/create-a-glitch-text-effect-online-free-1026.html'
+             if (/3dspace/.test(comando)) link = 'https://textpro.me/create-space-3d-text-effect-online-985.html'
+             if (/lion/.test(comando)) link = 'https://textpro.me/create-lion-logo-mascot-online-938.html'
+             if (/wolf/.test(comando)) link = 'https://textpro.me/create-wolf-logo-galaxy-online-936.html'
+             if (/retro/.test(comando)) link = 'https://textpro.me/create-3d-retro-text-effect-online-free-1065.html'
+             if (/8bit/.test(comando)) link = 'https://textpro.me/video-game-classic-8-bit-text-effect-1037.html'
+             let anu = await maker.textpro(link, [`${teks1}`,`${teks2}`])
+             client.sendMessage(m.chat, { image: { url: anu }, caption: `Feito por ${global.botname} vadia` }, { quoted: m })
+             }
+             break
+             ////
             case 'quotesanime': case 'quoteanime': {
                 if(!m.isGroup) throw ptbr.group()
                 if(!isUser) throw ptbr.userB()
@@ -1826,28 +2035,7 @@ break
                 client.sendMessage(m.chat, buttonMessage, { quoted: m })
             }
             break
-            case '3dchristmas': case '3ddeepsea': case 'americanflag': case '3dscifi': case '3drainbow': case '3dwaterpipe': case 'halloweenskeleton': case 'sketch': case 'bluecircuit': case 'space': case 'metallic': case 'fiction': case 'greenhorror': case 'transformer': case 'berry': case 'thunder': case 'magma': case '3dcrackedstone': case '3dneonlight': case 'impressiveglitch': case 'naturalleaves': case 'fireworksparkle': case 'matrix': case 'dropwater':  case 'harrypotter': case 'foggywindow': case 'neondevils': case 'christmasholiday': case '3dgradient': case 'blackpink': case 'gluetext': {
-                if (!text) throw `Example : ${prefixo + comando} text`
-                m.reply(ptbr.wait())
-                client.sendMessage(m.chat, { image: { url: api('zenz', '/textpro/' + comando, { text: text }, 'apikey') }, caption: `Text Pro ${comando}` }, { quoted: m})
-	    }
-            break
-	    case 'shadow': case 'romantic': case 'smoke': case 'burnpapper': case 'naruto': case 'lovemsg': case 'grassmsg': case 'lovetext': case 'coffecup': case 'butterfly': case 'harrypotter': case 'retrolol': {
-                if(!m.isGroup) throw ptbr.group()
-                if(!isUser) throw ptbr.userB()
-                if (!text) throw 'No Query Text'
-                m.reply(ptbr.wait())
-                client.sendMessage(m.chat, { image: { url: api('zenz', '/photooxy/' + comando, { text: text }, 'apikey') }, caption: `Photo Oxy ${comando}` }, { quoted: m })
-            }
-            break
-            case 'ffcover': case 'crossfire': case 'galaxy': case 'glass': case 'neon': case 'beach': case 'blackpink': case 'igcertificate': case 'ytcertificate': {
-                if(!m.isGroup) throw ptbr.group()
-                if(!isUser) throw ptbr.userB()
-                if (!text) throw 'No Query Text'
-                m.reply(ptbr.wait())
-                client.sendMessage(m.chat, { image: { url: api('zenz', '/ephoto/' + comando, { text: text }, 'apikey') }, caption: `Ephoto ${comando}` }, { quoted: m })
-            }
-            break
+           
 	   
             
 //Limitador=======================================
@@ -1908,14 +2096,14 @@ break
                 if(!isUser) throw ptbr.userB()
                 if (!text) throw 'Insira o link de consulta!'
                 m.reply(ptbr.wait())
-                let anu = await fetchJson(`https://anabotofc.herokuapp.com/api/download/tiktok2?url=${text}&apikey=AnaBot`)
+                let anu = await fetchJson(`https://hadi-api.cf/api/tiktok?url=${text}`)
                 let buttons = [
                     {buttonId: `allmenu`, buttonText: {displayText: '📖Lista de Menus'}, type: 1},
                     {buttonId: `tiktokmp3 ${text}`, buttonText: {displayText: '♫ Audio'}, type: 1}
                 ]
                 let buttonMessage = {
                     video: { url: anu.result.nowm },
-                    caption: `Download From ${text}`,
+                    caption: `Download de ${text}`,
                     footer: footerbot,
                     buttons: buttons,
                     headerType: 5
@@ -1946,19 +2134,19 @@ break
                 if(!isUser) throw ptbr.userB()
                 if (!text) throw 'Insira o link de consulta!'
                 m.reply(ptbr.wait())
-                let anu = await fetchJson(`https://anabotofc.herokuapp.com/api/download/tiktok2?url=${text}&apikey=AnaBot`)
+                let anu = await fetchJson(`ttps://hadi-api.cf/api/tiktok?url=${text}`)
                 let buttons = [
                     {buttonId: `allmenu`, buttonText: {displayText: '📖Lista de Menus'}, type: 1},
                     {buttonId: `tiktoknowm ${text}`, buttonText: {displayText: '► No Watermark'}, type: 1}
                 ]
                 let buttonMessage = {
-                    text: `Download From ${text}`,
+                    text: `Download de ${text}`,
                     footer: footerbot,
                     buttons: buttons,
                     headerType: 2
                 }
                 let msg = await client.sendMessage(m.chat, buttonMessage, { quoted: m })
-                client.sendMessage(m.chat, { audio: { url: anu.result.nowm }, mimetype: 'audio/mpeg'}, { quoted: msg })
+                client.sendMessage(m.chat, { audio: { url: anu.result.audio_only.audio1 }, mimetype: 'audio/mpeg'}, { quoted: msg })
             }
             break
 	        case 'instagram': case 'ig': case 'igdl': {
@@ -2916,37 +3104,80 @@ let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Volta
                 if(!isUser) throw ptbr.userB()
 txtpro = `┌──⭓ *Text Pro Menu*
 │
-│⭔ ${prefixo}3dchristmas
-│⭔ ${prefixo}3ddeepsea
-│⭔ ${prefixo}americanflag
-│⭔ ${prefixo}3dscifi
-│⭔ ${prefixo}3drainbow
-│⭔ ${prefixo}3dwaterpipe
-│⭔ ${prefixo}halloweenskeleton
-│⭔ ${prefixo}sketch
-│⭔ ${prefixo}bluecircuit
-│⭔ ${prefixo}space
-│⭔ ${prefixo}metallic
+│⭔ ${prefixo}candy
+│⭔ ${prefixo}christmas
+│⭔ ${prefixo}dchristmas
+│⭔ ${prefixo}sparklechristmas
+│⭔ ${prefixo}holographic
+│⭔ ${prefixo}deepsea
+│⭔ ${prefixo}scifi
+│⭔ ${prefixo}rainbow
+│⭔ ${prefixo}waterpipe
+│⭔ ${prefixo}spooky
+│⭔ ${prefixo}karbon
+│⭔ ${prefixo}carbon
+│⭔ ${prefixo}neonlight2
+│⭔ ${prefixo}pencil
+│⭔ ${prefixo}circuit
+│⭔ ${prefixo}discovery
+│⭔ ${prefixo}metalic
 │⭔ ${prefixo}fiction
-│⭔ ${prefixo}greenhorror
+│⭔ ${prefixo}demon
+│⭔ ${prefixo}3dbox
 │⭔ ${prefixo}transformer
 │⭔ ${prefixo}berry
 │⭔ ${prefixo}thunder
 │⭔ ${prefixo}magma
-│⭔ ${prefixo}3dcrackedstone
-│⭔ ${prefixo}3dneonlight
-│⭔ ${prefixo}impressiveglitch
-│⭔ ${prefixo}naturalleaves
-│⭔ ${prefixo}fireworksparkle
-│⭔ ${prefixo}matrix
-│⭔ ${prefixo}dropwater
+│⭔ ${prefixo}3dstone
+│⭔ ${prefixo}greenneon
+│⭔ ${prefixo}neonlight
+│⭔ ${prefixo}glitch
 │⭔ ${prefixo}harrypotter
-│⭔ ${prefixo}foggywindow
-│⭔ ${prefixo}neondevils
-│⭔ ${prefixo}christmasholiday
-│⭔ ${prefixo}3dgradient
+│⭔ ${prefixo}brokenglass
+│⭔ ${prefixo}papercut
+│⭔ ${prefixo}lion2
+│⭔ ${prefixo}watercolor
+│⭔ ${prefixo}multicolor
+│⭔ ${prefixo}neondevil
+│⭔ ${prefixo}underwater
+│⭔ ${prefixo}graffitibike
+│⭔ ${prefixo}3davengers
+│⭔ ${prefixo}snow
+│⭔ ${prefixo}cloud
+│⭔ ${prefixo}honey
+│⭔ ${prefixo}ice
+│⭔ ${prefixo}fruitjuice
+│⭔ ${prefixo}biscuit
+│⭔ ${prefixo}wood
+│⭔ ${prefixo}whitebear
+│⭔ ${prefixo}chocolate
+│⭔ ${prefixo}strawberry
+│⭔ ${prefixo}blood
+│⭔ ${prefixo}dropwater
+│⭔ ${prefixo}toxic
+│⭔ ${prefixo}lava
+│⭔ ${prefixo}rock
+│⭔ ${prefixo}bloodglas
+│⭔ ${prefixo}hallowen
+│⭔ ${prefixo}darkgold
+│⭔ ${prefixo}joker
+│⭔ ${prefixo}wicker
+│⭔ ${prefixo}firework
+│⭔ ${prefixo}skeleton
 │⭔ ${prefixo}blackpink
-│⭔ ${prefixo}gluetext
+│⭔ ${prefixo}sand
+│⭔ ${prefixo}glue
+│⭔ ${prefixo}1917
+│⭔ ${prefixo}leaves
+│⭔ ${prefixo}glitch2
+│⭔ ${prefixo}harrypot
+│⭔ ${prefixo}graffiti
+│⭔ ${prefixo}glith3
+│⭔ ${prefixo}3dspace
+│⭔ ${prefixo}lion
+│⭔ ${prefixo}wolf
+│⭔ ${prefixo}retro
+│⭔ ${prefixo}8bit
 │
 └───────⭓`
 let buttons = [{ buttonId: 'simplemenu', buttonText: { displayText: '⬅️Voltar' }, type: 1 },{ buttonId: 'allmenu', buttonText: { displayText: '📖Lista de Menus' }, type: 1 },{ buttonId: 'doação', buttonText: { displayText: '🙏Doação' }, type: 1 }]
