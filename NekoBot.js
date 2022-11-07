@@ -91,6 +91,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
         const isCmd = body.startsWith(prefixo)
         const comando = body.replace(prefixo, '').trim().split(/ +/).shift().toLowerCase()
         const args = body.trim().split(/ +/).slice(1)
+        const arg = body.substring(body.indexOf(" ") + 1);
         pushname = m.pushName || "No Name"
         const botNumber = await client.decodeJid(client.user.id)
         const isOwner = [botNumber, ...global.owner].map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
@@ -98,6 +99,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
         const text = q = args.join(" ")
         const quoted = m.quoted ? m.quoted : m
         const mime = (quoted.msg || quoted).mimetype || ''
+        const qmsg = (quoted.msg || quoted)
         const isMedia = /image|video|sticker|audio/.test(mime)
         const sender = m.isGroup ? (mek.key.participant ? mek.key.participant : mek.participant) : mek.key.remoteJid
 	
@@ -112,8 +114,7 @@ module.exports = client = async (client, m, chatUpdate, store) => {
         const isPremium = isOwner || isOwner || prem.checkPremiumUser(m.sender, premium);
         const isUser = checkRegisteredUser(sender)
         const isBan = cekBannedUser(sender, ban)
-	
-	
+        
 	try {
             let isNumber = x => typeof x === 'number' && !isNaN(x)
             let limitUser = isPremium ? global.limitawal.premium : global.limitawal.free
@@ -167,6 +168,14 @@ module.exports = client = async (client, m, chatUpdate, store) => {
         }
         if (m.message) {
             client.readMessages([m.key])
+        }
+        
+        if (m.text.includes('🗿')) {
+    client.sendMessage(m.chat, {
+          react: {
+            text: '🗿',
+            key: m.key
+          }})
         }
 
         //Premium Exp
@@ -252,6 +261,7 @@ const sendStickerFromUrl = async(to, url) => {
         client.groupParticipantsUpdate(m.chat, [m.sender], 'remove')
         }
         }
+        
         
       // Mute Chat
       if (db.data.chats[m.chat].mute && !isOwner) {
@@ -1492,9 +1502,20 @@ break
             if(!isUser) throw ptbr.userB()
            if (!text) throw `Example : ${prefixo + comando} text`
            await client.sendMedia(m.chat, `https://xteam.xyz/${comando}?file&text=${text}`, 'Klaus', 'morou', m, {asSticker: true})
+            }
+            break
 
-         }
-         break
+           case 'tts': {
+            if(!m.isGroup) throw ptbr.group()
+            if(!isUser) throw ptbr.userB()
+            m.reply(ptbr.wait())
+            if (!text) throw `Example : ${prefixo + comando} texto`
+            let tts = await fetchJson(`https://api.akuari.my.id/texttovoice/texttosound_id?query=${text}`)
+            client.sendMessage(m.chat, { audio: { url: tts.result }, mimetype: 'audio/mpeg', fileName: `${text}.mp3` }, { quoted: fvn })
+            }
+        break
+
+        
 	       case 'smeme': case 'stickmeme': case 'stikmeme': case 'stickermeme': case 'stikermeme': {
             if(!m.isGroup) throw ptbr.group()
             if(!isUser) throw ptbr.userB()
@@ -2134,7 +2155,7 @@ case 'lava': case 'rock': case 'bloodglas': case 'hallowen': case 'darkgold': ca
                 if(!isUser) throw ptbr.userB()
                 if (!text) throw 'Insira o link de consulta!'
                 m.reply(ptbr.wait())
-                let anu = await fetchJson(`ttps://hadi-api.cf/api/tiktok?url=${text}`)
+                let anu = await fetchJson(`https://hadi-api.cf/api/tiktok?url=${text}`)
                 let buttons = [
                     {buttonId: `allmenu`, buttonText: {displayText: '📖Lista de Menus'}, type: 1},
                     {buttonId: `tiktoknowm ${text}`, buttonText: {displayText: '► No Watermark'}, type: 1}

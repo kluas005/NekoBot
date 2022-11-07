@@ -63,6 +63,26 @@ global.loadDatabase = async function loadDatabase() {
 }
 loadDatabase()
 
+const mentions = (teks, memberr, id) => {
+    (id == null || id == undefined || id == false) ? client.sendMessage(from, teks.trim(), extendedText, {contextInfo: {"mentionedJid": memberr}}) : client.sendMessage(from, teks.trim(), extendedText, {quoted: mek, contextInfo: {"mentionedJid": memberr}})
+}
+
+const isQuotedMsg = () => {
+    if (client.message.extendedTextMessage != undefined) {
+        if (client.message.extendedTextMessage.contextInfo != undefined) {
+            if (client.message.extendedTextMessage.contextInfo.quotedMessage != undefined) {
+                return true
+            } else {
+                return false
+            }
+        } else {
+            return false
+        }
+    } else {
+        return false
+    }
+}
+
 // save database every 30seconds
 if (global.db) setInterval(async () => {
     if (global.db.data) await global.db.write()
@@ -141,6 +161,15 @@ async function start() {
                     ppuser = 'https://i0.wp.com/www.gambarunik.id/wp-content/uploads/2019/06/Top-Gambar-Foto-Profil-Kosong-Lucu-Tergokil-.jpg'
                 }
 
+                const reSize = async(buffer, ukur1, ukur2) => {
+                    return new Promise(async(resolve, reject) => {
+                    let jimp = require('jimp')
+                    var baper = await jimp.read(buffer);
+                    var ab = await baper.resize(ukur1, ukur2).getBufferAsync(jimp.MIME_JPEG)
+                    resolve(ab)
+                    })
+                    }
+
                 // Get Profile Picture Group
                 try {
                     ppgroup = await client.profilePictureUrl(anu.id, 'image')
@@ -148,10 +177,23 @@ async function start() {
                     ppgroup = 'https://i0.wp.com/www.gambarunik.id/wp-content/uploads/2019/06/Top-Gambar-Foto-Profil-Kosong-Lucu-Tergokil-.jpg'
                 }
 
+                let butwel = [{ buttonId: 'menu', buttonText: { displayText: 'WELCOME' }, type: 1 }]
+                let butleav = [{ buttonId: 'subsyt', buttonText: { displayText: 'Sayonara👋' }, type: 1 }]
+                let butselamat = [{ buttonId: '', buttonText: { displayText: 'SELAMAT' }, type: 1 }]
+                let butsebar = [{ buttonId: '', buttonText: { displayText: 'SABAR' }, type: 1 }]
+                let nyoutube = ('© Naze\nYoutube/Sc :\nhttps://youtube.com/c/Nazedev')
+                let teks1 = `*Halo Kak @${num.split('@')[0]}*\n*Selamat Datang Di Grup*\n*${metadata.subject}*\n*Jangan Lupa Intro Yahh*\n_~Admin_`
+                let teks2 = `*Selamat Tinggal Kak @${num.split('@')[0]}*\n*Semoga Tenang Di Alam Sana*\n_~Admin_`
+                let teks3 = `*@${num.split('@')[0]} Promote From*\n*${metadata.subject}*\n*Selamat Anda Menjadi Admin*\n_~Jangan Semena Mena!_`
+                let teks4 = `*@${num.split('@')[0]} Demote From*\n*${metadata.subject}*\n_Kasihan Turun Pangkat🤭_`
                 if (anu.action == 'add') {
-                    client.sendMessage(anu.id, { image: { url: ppuser }, contextInfo: { mentionedJid: [num] }, caption: `Entrando em: ${metadata.subject} @${num.split("@")[0]}` })
+                    client.sendMessage(anu.id, { caption: teks1, location: { jpegThumbnail: await reSize(ppuser, 100, 100)}, buttons: butwel, footer: nyoutube, mentions: [num] })
                 } else if (anu.action == 'remove') {
-                    client.sendMessage(anu.id, { image: { url: ppuser }, contextInfo: { mentionedJid: [num] }, caption: `@${num.split("@")[0]} Saindo de: ${metadata.subject}` })
+                    client.sendMessage(anu.id, { caption: teks2, location: { jpegThumbnail: await reSize(ppuser, 100, 100)}, buttons: butleav, footer: nyoutube, mentions: [num] })
+                } else if (anu.action == 'promote') {
+                    client.sendMessage(anu.id, { caption: teks3, location: { jpegThumbnail: await reSize(ppuser, 100, 100)}, buttons: butselamat, footer: nyoutube, mentions: [num] })
+                } else if (anu.action == 'demote') {
+                    client.sendMessage(anu.id, { caption: teks4, location: { jpegThumbnail: await reSize(ppuser, 100, 100)}, buttons: butsebar, footer: nyoutube, mentions: [num] })
                 }
             }
         } catch (err) {
@@ -242,6 +284,18 @@ async function start() {
     })
 
     client.ev.on('creds.update', saveState)
+    /** Resize Image
+      *
+      * @param {Buffer} Buffer (Only Image)
+      * @param {Numeric} Width
+      * @param {Numeric} Height
+      */
+     client.reSize = async (image, width, height) => {
+        let jimp = require('jimp')
+        var oyy = await jimp.read(image);
+        var kiyomasa = await oyy.resize(width, height).getBufferAsync(jimp.MIME_JPEG)
+        return kiyomasa
+       }
 
     // Add Other
 
@@ -295,6 +349,19 @@ async function start() {
         sections
         }
         client.sendMessage(jid, listMes, { quoted: quoted })
+        /** Send Button 5 Location
+       *
+       * @param {*} jid
+       * @param {*} text
+       * @param {*} footer
+       * @param {*} location
+       * @param [*] button
+       * @param {*} options
+       */
+      client.send5ButLoc = async (jid , text = '' , footer = '', lok, but = [], options = {}) =>{
+        let bb = await client.reSize(lok, 300, 300)
+        client.sendMessage(jid, { location: { jpegThumbnail: bb }, caption: text, footer: footer, templateButtons: but, ...options })
+        }
         }
 
     /** Send Button 5 Message
