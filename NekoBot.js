@@ -860,6 +860,7 @@ Quando *desiste* de se render e admitir a derrota`
             }
             break
             
+            
            
 //Pembatas
             case 'react': case 'reagir': {
@@ -1698,25 +1699,32 @@ break
         case 'gimage': {
             if(!m.isGroup) throw ptbr.group()
             if(!isUser) throw ptbr.userB()
-        if (!text) throw `Example : ${prefixo + comando} kaori cicak`
-        anu = await fetchJson(`https://api.akuari.my.id/search/googleimage?query=${text}`)
-        n = anu.result
+            m.reply(ptbr.wait)
+            try {
+                if (!text) throw `Example : ${prefixo + comando} texto`
+                let gis = require('g-i-s')
+        gis(args.join(" "), async (error, result) => {
+        n = result
         images = n[Math.floor(Math.random() * n.length)]
         let buttons = [
-                    {buttonId: `gimage ${text}`, buttonText: {displayText: 'Proxima Imagem'}, type: 1}
+                    {buttonId: `gimage ${text}`, buttonText: {displayText: 'Próxima Imagem'}, type: 1}
                 ]
                 let buttonMessage = {
-                    image: { url: images },
+                    image: { url: webin + images.url },
                     caption: `*-------「 GIMAGE SEARCH 」-------*
 🤠 *Query* : ${text}
-🔗 *Media Url* : ${images}`,
-                    footer: client.user.name,
+🔗 *Media Url* : ${images.url}`,
+                    footer: footerbot,
                     buttons: buttons,
                     headerType: 4
                 }
                 client.sendMessage(m.chat, buttonMessage, { quoted: m })
+                })
+                } catch (e) {
+		        m.reply(mess.errmor)}
         }
         break
+
 	    case 'play': case 'ytplay': {
                 if(!m.isGroup) throw ptbr.group()
                 if(!isUser) throw ptbr.userB()
