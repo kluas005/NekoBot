@@ -136,15 +136,15 @@ async function start() {
        }
        let wm_fatih = { url : ppgc }
        if (pea[0].announce == true) {
-       client.send5ButImg(pea[0].id, `「 *Group Settings Change* 」\n\nGroup telah ditutup oleh admin, Sekarang hanya admin yang dapat mengirim pesan !`, `Group Settings Change Message by ArullOfc`, wm_fatih, [])
+       client.send5ButImg(pea[0].id, `「 *Alteração nas configurações do grupo* \n\nO grupo foi fechado pelo administrador, agora apenas o administrador pode enviar mensagens !`, wm_fatih, [])
        } else if(pea[0].announce == false) {
-       client.send5ButImg(pea[0].id, `「 *Group Settings Change* 」\n\nGroup telah dibuka oleh admin, Sekarang peserta dapat mengirim pesan !`, `Group Settings Change Message by ArullOfc`, wm_fatih, [])
+       client.send5ButImg(pea[0].id, `「 *Alteração nas configurações do grupo* \n\nO grupo foi aberto pelo administrador, agora os participantes podem enviar mensagens !`, wm_fatih, [])
        } else if (pea[0].restrict == true) {
-       client.send5ButImg(pea[0].id, `「 *Group Settings Change* 」\n\nInfo group telah dibatasi, Sekarang hanya admin yang dapat mengedit info group !`, `Group Settings Change Message by ArullOfc`, wm_fatih, [])
+       client.send5ButImg(pea[0].id, `「 *Alteração das configurações do grupo* \n\nAs informações do grupo foram restritas, agora apenas o administrador pode editar as informações do grupo !`, wm_fatih, [])
        } else if (pea[0].restrict == false) {
-       client.send5ButImg(pea[0].id, `「 *Group Settings Change* 」\n\nInfo group telah dibuka, Sekarang peserta dapat mengedit info group !`, `Group Settings Change Message by ArullOfc`, wm_fatih, [])
+       client.send5ButImg(pea[0].id, `「 *Alteração das configurações do grupo* \n\nAs informações do grupo foram abertas, agora os participantes podem editar as informações do grupo !`, wm_fatih, [])
        } else {
-       client.send5ButImg(pea[0].id, `「 *Group Settings Change* 」\n\nGroup Subject telah diganti menjadi *${pea[0].subject}*`, `Group Settings Change Message by ArullOfc`, wm_fatih, [])
+       client.send5ButImg(pea[0].id, `「 *Alteração das configurações do grupo* \n\nAssunto do grupo foi alterado para *${pea[0].subject}*`, wm_fatih, [])
      }
     })
 
@@ -177,23 +177,23 @@ async function start() {
                     ppgroup = 'https://i0.wp.com/www.gambarunik.id/wp-content/uploads/2019/06/Top-Gambar-Foto-Profil-Kosong-Lucu-Tergokil-.jpg'
                 }
 
-                let butwel = [{ buttonId: 'menu', buttonText: { displayText: 'WELCOME' }, type: 1 }]
-                let butleav = [{ buttonId: 'subsyt', buttonText: { displayText: 'Sayonara👋' }, type: 1 }]
-                let butselamat = [{ buttonId: '', buttonText: { displayText: 'SELAMAT' }, type: 1 }]
-                let butsebar = [{ buttonId: '', buttonText: { displayText: 'SABAR' }, type: 1 }]
-                let nyoutube = ('© Naze\nYoutube/Sc :\nhttps://youtube.com/c/Nazedev')
-                let teks1 = `*Halo Kak @${num.split('@')[0]}*\n*Selamat Datang Di Grup*\n*${metadata.subject}*\n*Jangan Lupa Intro Yahh*\n_~Admin_`
-                let teks2 = `*Selamat Tinggal Kak @${num.split('@')[0]}*\n*Semoga Tenang Di Alam Sana*\n_~Admin_`
-                let teks3 = `*@${num.split('@')[0]} Promote From*\n*${metadata.subject}*\n*Selamat Anda Menjadi Admin*\n_~Jangan Semena Mena!_`
-                let teks4 = `*@${num.split('@')[0]} Demote From*\n*${metadata.subject}*\n_Kasihan Turun Pangkat🤭_`
+                let butwel = [{ buttonId: 'menu', buttonText: { displayText: 'Bem Vindo' }, type: 1 }]
+                let butleav = [{ buttonId: 'subsyt', buttonText: { displayText: 'Adeus Vadia' }, type: 1 }]
+                let butselamat = [{ buttonId: '', buttonText: { displayText: 'Promovido' }, type: 1 }]
+                let butsebar = [{ buttonId: '', buttonText: { displayText: 'Rebaixado' }, type: 1 }]
+                let nekoo = ('© NekoBot')
+                let teks1 = `*Olá@${num.split('@')[0]}*\n*Bem-vindo(a) ao Grupo*\n*${metadata.subject}*\n*Não esqueça a introdução*\n_~Admin_`
+                let teks2 = `*Adeus vadia @${num.split('@')[0]}*\n*Descanse em paz*\n_~Admin_`
+                let teks3 = `*@${num.split('@')[0]} Promovido em*\n*${metadata.subject}*\n*Você Virou adm do grupo!_`
+                let teks4 = `*@${num.split('@')[0]} Rebaixado em*\n*${metadata.subject}*\n_Tu Perdeu o Adm mlk_`
                 if (anu.action == 'add') {
-                    client.sendMessage(anu.id, { caption: teks1, location: { jpegThumbnail: await reSize(ppuser, 100, 100)}, buttons: butwel, footer: nyoutube, mentions: [num] })
+                    client.sendMessage(anu.id, { caption: teks1, location: { jpegThumbnail: await reSize(ppuser, 100, 100)}, buttons: butwel, footer: nekoo, mentions: [num] })
                 } else if (anu.action == 'remove') {
-                    client.sendMessage(anu.id, { caption: teks2, location: { jpegThumbnail: await reSize(ppuser, 100, 100)}, buttons: butleav, footer: nyoutube, mentions: [num] })
+                    client.sendMessage(anu.id, { caption: teks2, location: { jpegThumbnail: await reSize(ppuser, 100, 100)}, buttons: butleav, footer: nekoo, mentions: [num] })
                 } else if (anu.action == 'promote') {
-                    client.sendMessage(anu.id, { caption: teks3, location: { jpegThumbnail: await reSize(ppuser, 100, 100)}, buttons: butselamat, footer: nyoutube, mentions: [num] })
+                    client.sendMessage(anu.id, { caption: teks3, location: { jpegThumbnail: await reSize(ppuser, 100, 100)}, buttons: butselamat, footer: nekoo, mentions: [num] })
                 } else if (anu.action == 'demote') {
-                    client.sendMessage(anu.id, { caption: teks4, location: { jpegThumbnail: await reSize(ppuser, 100, 100)}, buttons: butsebar, footer: nyoutube, mentions: [num] })
+                    client.sendMessage(anu.id, { caption: teks4, location: { jpegThumbnail: await reSize(ppuser, 100, 100)}, buttons: butsebar, footer: nekoo, mentions: [num] })
                 }
             }
         } catch (err) {
