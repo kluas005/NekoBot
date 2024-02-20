@@ -94,24 +94,6 @@ return `
 ║╭─⊣〘 BRINCADEIRAS 〙
 ║
 ┃➽${prefix}fazernick
-┃➽${prefix}Pau
-┃➽${prefix}ppt
-┃➽${prefix}Gadometro
-┃➽${prefix}Chance (Texto)
-┃➽${prefix}cassino 
-┃➽${prefix}casal
-┃➽${prefix}shipo
-┃➽${prefix}alma-gemeas
-┃➽${prefix}gay
-┃➽${prefix}feio
-┃➽${prefix}vesgo
-┃➽${prefix}bebado
-┃➽${prefix}gado
-┃➽${prefix}gostoso
-┃➽${prefix}gostosa
-┃➽${prefix}rankgay
-┃➽${prefix}rankgado
-┃➽${prefix}rankcorno
 ║
 ║╭─⊣〘 FIGURINHAS 〙
 ║
@@ -256,32 +238,6 @@ return `
 ╠➽${prefix}sakura
 ╠➽${prefix}tsunade
 ┃
-┝━〢  Hentai/+18 no pv
-┃
-╠➽ ${prefix}ahegao
-╠➽ ${prefix}ass
-╠➽ ${prefix}bdsm
-╠➽ ${prefix}blowjob
-╠➽ ${prefix}cuckold
-╠➽ ${prefix}cum
-╠➽ ${prefix}ero
-╠➽ ${prefix}kasedaiki
-╠➽ ${prefix}femdom
-╠➽ ${prefix}foot
-╠➽ ${prefix}gangbang
-╠➽ ${prefix}glasses
-╠➽ ${prefix}jahy
-╠➽ ${prefix}manga
-╠➽ ${prefix}masturbation
-╠➽ ${prefix}neko
-╠➽ ${prefix}orgy
-╠➽ ${prefix}panties
-╠➽ ${prefix}pussy
-╠➽ ${prefix}neko2
-╠➽ ${prefix}tentacles
-╠➽ ${prefix}thighs
-╠➽ ${prefix}yuri
-╠➽ ${prefix}zettai
 ║
 ╚════• 〘${nomeBot}〙•═════╝
 `

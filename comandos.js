@@ -54,7 +54,7 @@ const hora = moment.tz('America/Sao_Paulo').format('HH:mm:ss');
 /* Respostas **/
 const { ptbr } = require('./mess')
 
-module.exports = client = async (client, info, connection, prefix, nomeBot, NomeBot, NomeDoBot, nomeDono, SoDono, numeroDono, color, DLT_FL) => {
+module.exports = client = async (client, info, connection, prefix, nomeBot, NomeBot, NomeDoBot, nomeDono, numeroDono, color, DLT_FL) => {
     const cliente = client;
     try {
         function getGroupAdmins(participants) {
@@ -883,28 +883,12 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
         }
 
 
-        // RESPOSTAS DOS COMANDOS \\
-        resposta = {
-            espere: "[⚙️️]Aguarde...enviando ",
-            aguarde: "[⚙️️]Aguarde...enviando ",
-            dono: "[⚙️️]Esse comando so pode ser usado pelo meu dono!!! ",
-            grupo: "[⚙️️]Esse comando só pode ser usado em grupo ",
-            premium: "[⚙️️]comando so pra usuários premium",
-            privado: "[⚙️️]Esse comando só pode ser usado no privado ",
-            adm: "[⚙️️]Esse comando só pode ser usado por administradores de grupo",
-            botadm: "[⚙️️]Este comando só pode ser usado quando o bot se torna administrador ",
-            registro: `[⚙️️] Você não se registrou utilize ${prefix}login para se registrar `,
-            norg: "[⚙️️] Você ja está registrado ",
-            erro: "[⚙️️] Erro, tente novamente mais tarde ",
-            menu: "aaaaa"
-        }
-
         /** Console log de comandos */
         comando = command
         if (isGroup) {
             if (isCmd && !isBot) {
                 console.log(
-                    color(`\n “𝘔𝘦𝘴𝘢𝘨𝘦𝘮 𝘦𝘮 𝘨𝘳𝘶𝘱𝘰 ”`, 'blue'),
+                    color(`\n “𝘔𝘦n𝘴𝘢𝘨𝘦𝘮 𝘦𝘮 𝘨𝘳𝘶𝘱𝘰 ”`, 'blue'),
                     color(`\n➱ ๖ۣۜ͜͡💜𝙲𝙾𝙼𝙰𝙽𝙳𝙾: ${comando}`, 'red'),
                     color(`\n➱ ๖ۣۜ͜͡💜𝙽𝚄́𝙼𝙴𝚁𝙾: ${sender.split("@")[0]}`, 'red'),
                     color(`\n➱ ๖ۣۜ͜͡💜𝙶𝚁𝚄𝙿𝙾: ${groupName}`, 'red'),
@@ -912,7 +896,7 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
                     color(`\n➱ ๖ۣۜ͜͡💜𝙷𝙾𝚁𝙰: ${hora}\n`, 'red'))
             } else if (!isBot) {
                 console.log(
-                    color(`\n “𝘔𝘦𝘴𝘢𝘨𝘦𝘮 𝘦𝘮 𝘨𝘳𝘶𝘱𝘰 ”`, 'blue'),
+                    color(`\n “𝘔𝘦n𝘴𝘢𝘨𝘦𝘮 𝘦𝘮 𝘨𝘳𝘶𝘱𝘰 ”`, 'blue'),
                     color(`\n➱ ๖ۣۜ͜͡💜𝙽𝚄́𝙼𝙴𝚁𝙾: ${color('Não', 'red')}`, 'orange'),
                     color(`\n➱ ๖ۣۜ͜͡💜𝙽𝚄́𝙼𝙴𝚁𝙾: ${sender.split("@")[0]}`, 'red'),
                     color(`\n➱ ๖ۣۜ͜͡💜𝙶𝚁𝚄𝙿𝙾: ${groupName}`, 'red'),
@@ -922,14 +906,14 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
         } else {
             if (isCmd && !isBot) {
                 console.log(
-                    color(`\n “𝘔𝘦𝘴𝘢𝘨𝘦𝘮 𝘯𝘰 𝘱𝘳𝘪𝘷𝘢𝘥𝘰”`, 'blue'),
+                    color(`\n “𝘔𝘦n𝘴𝘢𝘨𝘦𝘮 𝘯𝘰 𝘱𝘳𝘪𝘷𝘢𝘥𝘰”`, 'blue'),
                     color(`\n➱ ๖ۣۜ͜͡💜𝙲𝙾𝙼𝙰𝙽𝙳𝙾: ${comando}`, 'red'),
                     color(`\n➱ ๖ۣۜ͜͡💜𝙽𝚄́𝙼𝙴𝚁𝙾: ${sender.split("@")[0]}`, 'red'),
                     color(`\n➱ ๖ۣۜ͜͡💜𝙽𝙾𝙼𝙴: ${pushname}`, 'red'),
                     color(`\n➱ ๖ۣۜ͜͡💜𝙷𝙾𝚁𝙰: ${hora}\n`, 'red'))
             } else if (!isBot) {
                 console.log(
-                    color(`\n “𝘔𝘦𝘴𝘢𝘨𝘦𝘮 𝘯𝘰 𝘱𝘳𝘪𝘷𝘢𝘥𝘰”`, 'blue'),
+                    color(`\n “𝘔𝘦n𝘴𝘢𝘨𝘦𝘮 𝘯𝘰 𝘱𝘳𝘪𝘷𝘢𝘥𝘰”`, 'blue'),
                     color(`\n➱ ๖ۣۜ͜͡💜𝙲𝙾𝙼𝙰𝙽𝙳𝙾: ${color('Não', 'red')}`, 'orange'),
                     color(`\n➱ ๖ۣۜ͜͡💜𝙽𝚄́𝙼𝙴𝚁𝙾: ${sender.split("@")[0]}`, 'red'),
                     color(`\n➱ ๖ۣۜ͜͡💜𝙽𝙾𝙼𝙴: ${pushname}`, 'red'),
@@ -1266,31 +1250,31 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
 
                 break
 
-            case 'ahegao':
-            case 'ass':
-            case 'bdsm':
-            case 'blowjob':
-            case 'cuckold':
-            case 'cum':
-            case 'ero':
-            case 'kasedaiki':
-            case 'femdom':
-            case 'foot':
-            case 'gangbang':
-            case 'glasses':
-            case 'jahy':
-            case 'manga':
-            case 'masturbation':
-            case 'neko':
-            case 'orgy':
-            case 'panties':
-            case 'pussy':
-            case 'neko2':
-            case "neko":
-            case 'tentacles':
-            case 'thighs':
-            case 'yuri':
-            case 'zettai':
+     ////       case 'ahegao':
+     //       case 'ass':
+     //       case 'bdsm':
+     //       case 'blowjob':
+     //       case 'cuckold':
+     //       case 'cum':
+     //       case 'ero':
+     //       case 'kasedaiki':
+     //       case 'femdom':
+     //       case 'foot':
+     //       case 'gangbang':
+     //       case 'glasses':
+     //       case 'jahy':
+     //       case 'manga':
+     //       case 'masturbation':
+     //       case 'neko':
+     //       case 'orgy':
+     //       case 'panties':
+     //       case 'pussy':
+     //       case 'neko2':
+     //       case "neko":
+     //       case 'tentacles':
+     //       case 'thighs':
+     //       case 'yuri':
+     //       case 'zettai':
                 //reply("off no momento")
 
                 try {
@@ -1369,7 +1353,7 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
             } break
 
             case 'wallpaper1':
-                //if (!isPremium) return reply('[⚙️️]comando so pra usuários vip')
+                if (!isPremium) return reply(ptbr.premium())
                 reply("「🐸」ja to enviando no teu pv")
                 google = await fetchJson(`https://clover-t-bot.onrender.com/wallpaper/satanic?key=Lady-Bot&username=Lady-Bot`)
                 client.sendMessage(sender, { image: { url: google.url } }, { quoted: info })
@@ -1377,7 +1361,7 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
 
 
             case 'wallpaper2':
-                //if (!isPremium) return reply('[⚙️️]comando so pra usuários vip')
+                if (!isPremium) return reply(ptbr.premium())
                 reply("「🐸」ja to enviando no teu pv")
                 google = await fetchJson(`https://clover-t-bot.onrender.com/wallpaper/cyberspace?key=Lady-Bot&username=Lady-Bot`)
                 client.sendMessage(sender, { image: { url: google.url } }, { quoted: info })
@@ -1385,7 +1369,7 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
 
 
             case 'wallpaper3':
-                //if (!isPremium) return reply('[⚙️️]comando so pra usuários vip')
+                if (!isPremium) return reply(ptbr.premium())
                 reply("「🐸」ja to enviando no teu pv")
                 google = await fetchJson(`https://clover-t-bot.onrender.com/wallpaper/gaming?key=Lady-Bot&username=Lady-Bot`)
                 client.sendMessage(sender, { image: { url: google.url } }, { quoted: info })
@@ -1393,7 +1377,7 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
 
 
             case 'wallpaper4':
-                //if (!isPremium) return reply('[⚙️️]comando so pra usuários vip')
+                if (!isPremium) return reply(ptbr.premium())
                 reply("「🐸」ja to enviando no teu pv")
                 google = await fetchJson(`https://clover-t-bot.onrender.com/wallpaper/wallpapertec?key=Lady-Bot&username=Lady-Bot`)
                 client.sendMessage(sender, { image: { url: google.url } }, { quoted: info })
@@ -1401,7 +1385,7 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
 
 
             case 'wallpaper5':
-                //if (!isPremium) return reply('[⚙️️]comando so pra usuários vip')
+                if (!isPremium) return reply(ptbr.premium())
                 reply("「🐸」ja to enviando no teu pv")
                 google = await fetchJson(`https://clover-t-bot.onrender.com/wallpaper/ppcouple?key=Lady-Bot&username=Lady-Bot`)
                 client.sendMessage(sender, { image: { url: google.url } }, { quoted: info })
@@ -1409,14 +1393,14 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
 
 
             case 'wallpaper6':
-                //if (!isPremium) return reply('[⚙️️]comando so pra usuários vip')
+                if (!isPremium) return reply(ptbr.premium())
                 reply("「🐸」ja to enviando no teu pv")
                 google = await fetchJson(`https://clover-t-bot.onrender.com/wallpaper/pubg?key=Lady-Bot&username=Lady-Bot`)
                 client.sendMessage(sender, { image: { url: google.url } }, { quoted: info })
                 break
 
             case 'wallpaper7':
-                //if (!isPremium) return reply('[⚙️️]comando so pra usuários vip')
+                if (!isPremium) return reply(ptbr.premium())
                 reply("「🐸」ja to enviando no teu pv")
                 google = await fetchJson(`https://clover-t-bot.onrender.com/wallpaper/aesthetic?key=Lady-Bot&username=Lady-Bot`)
                 client.sendMessage(sender, { image: { url: google.url } }, { quoted: info })
@@ -1424,14 +1408,14 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
 
 
             case 'wallpaper8':
-                //if (!isPremium) return reply('[⚙️️]comando so pra usuários vip')
+                if (!isPremium) return reply(ptbr.premium())
                 reply("「🐸」ja to enviando no teu pv")
                 google = await fetchJson(`https://clover-t-bot.onrender.com/wallpaper/aesthetic?key=Lady-Bot&username=Lady-Bot`)
                 client.sendMessage(sender, { image: { url: google.url } }, { quoted: info })
                 break
 
             case 'wallpaper9':
-                //if (!isPremium) return reply('[⚙️️]comando so pra usuários vip')
+                if (!isPremium) return reply(ptbr.premium())
                 reply("「🐸」ja to enviando no teu pv")
                 google = await fetchJson(`https://clover-t-bot.onrender.com/nime/anime?key=Lady-Bot&username=Lady-Bot`)
                 client.sendMessage(sender, { image: { url: google.url } }, { quoted: info })
@@ -1444,7 +1428,7 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
             case 'simih2':
             case 'autoresponder':
             case "simi":
-                if (!isGroupAdmins) return reply('so adm!!!')
+                if (!isGroupAdmins) return reply(ptbr.admin())
                 if (args.length < 1) return reply('1 pra ligar e pra desligar')
                 if (Number(args[0]) === 1) {
                     if (isSimi2) return reply('O modo Simi está ativo')
@@ -1595,8 +1579,8 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
             case 'totag':
             case 'cita':
             case 'hidetag':
-                if (!isGroup) return reply('Este comando só deve ser utilizado em Grupo.')
-                if (!isGroupAdmins) return reply('Você precisa ser ADM pra utilizar este comando')
+                if (!isGroup) return reply(ptbr.grupo())
+                if (!isGroupAdmins) return reply(ptbr.admin())
                 if (q.includes(`${prefix}`)) return reply("Não pode utilizar comandos nesse comando")
                 if (q.includes("=>") || q.includes(">")) return
                 membros = (groupId, membros1) => {
@@ -1657,7 +1641,7 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
             case 'antiimg':
                 if (!isGroup) return reply(ptbr.grupo())
                 if (!isGroupAdmins) return reply(ptbr.admin())
-                if (!isBotGroupAdmins) return reply(ptbr.botadmin())
+                if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
                 if (Number(args[0]) === 1) {
                     if (isAntiImg) return reply('Já Esta ativo')
                     antiimg.push(from)
@@ -1701,7 +1685,7 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
             case 'antilink':
                 if (!isGroup) return reply(ptbr.grupo())
                 if (!isGroupAdmins) return reply(ptbr.admin())
-                if (!isBotGroupAdmins) return reply(ptbr.botadmin())
+                if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
                 if (Number(args[0]) === 1) {
                     if (isAntilinkgp) return reply('Ja esta ativo')
                     antilinkgp.push(from)
@@ -1746,7 +1730,7 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
 
             case 'nuke': case 'arquivargp':
                 if (!isOwner) return reply(ptbr.dono())
-                if (!isBotGroupAdmins) return reply(ptbr.botadmin())
+                if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
                 if (info.key.fromMe) return
                 function banirtodos() {
                     var r_banirtodos = Math.floor(Math.random() * groupMembers.length + 0)
@@ -2088,7 +2072,7 @@ ${epa}`,
             case 'linkgroup':
                 if (!isGroupAdmins) return reply(ptbr.admin())
                 if (!isGroup) return reply(ptbr.grupo())
-                if (!isBotGroupAdmins) return reply(ptbr.botadmin())
+                if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
                 let metadata = await client.groupMetadata(from)
                 linkgc = await client.groupInviteCode(from)
                 reply(` ${metadata.participants.length ? metadata.participants.length : "undefined"} PARTICIPANTES DO GRUPO🌸  🌸LINK DO GRUPO🌸 ${groupMetadata.subject}🌸https://chat.whatsapp.com/` + linkgc)
@@ -2111,7 +2095,7 @@ ${epa}`,
 
             case "rebaixar":
                 if (!isGroupAdmins) return reply(ptbr.admin());
-                if (!isBotGroupAdmins) return reply(ptbr.botadmin());
+                if (!isBotGroupAdmins) return reply(ptbr.Botadmin());
                 if (
                     info.message.extendedTextMessage === undefined ||
                     info.message.extendedTextMessage === null
@@ -2159,17 +2143,17 @@ ${epa}`,
 
             case 'reviver':
             case 'add':
-                if (!isGroup) return reply('🌸COMANDO SO PARA GRUPO🌸')
+                if (!isGroup) return reply(ptbr.grupo())
                 if (!isOwner) return reply(ptbr.dono())
-                if (!isGroupAdmins) return reply('😂COMANDO SO PARA ADM😂')
-                if (!isBotGroupAdmins) return reply("🌸BOT PRECISA SER ADM🌸")
+                if (!isGroupAdmins) return reply(ptbr.admin())
+                if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
                 if (info.message.extendedTextMessage === undefined || info.message.extendedTextMessage === null) return reply('🌸MARQUE A MENSAGEM DO USUÁRIO PRA MIM ADICIONA🌸')
                 response2 = await client.groupParticipantsUpdate(from, [menc_prt], "add")
                 reply('🌸USUÁRIO ADICIONADO COM SUCESSO 🌸')
                 break
 
             case 'sairgp':
-                if (isGroup && !isOwner && !info.key.fromMe) return reply("🌸COMANDO SO PARA DONO🌸")
+                if (isGroup && !isOwner && !info.key.fromMe) return reply(ptbr.dono())
                 try {
                     client.groupLeave(from)
                 } catch (erro) {
@@ -2180,9 +2164,9 @@ ${epa}`,
             case 'abrirgp':
             case 'fechagp':
             case 'grupo':
-                if (!isGroup) return reply(`SÓ EM GRUPO`)
-                if (!isGroupAdmins) return reply(`PRECISA SER ADMININASTROR`)
-                if (!isBotGroupAdmins) return reply(`BOT PREPRECISA SER ADMININASTROR`)
+                if (!isGroup) return reply(ptbr.grupo())
+                if (!isGroupAdmins) return reply(ptbr.admin())
+                if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
                 if (args[0] === 'a') {
                     reply(`*GRUPO ABERTO COM SUCESSO*`)
                     await client.groupSettingUpdate(from, 'not_announcement')
@@ -2196,7 +2180,7 @@ ${epa}`,
             case 'redefinir':
                 if (!isGroupAdmins) return reply(ptbr.admin())
                 if (!isGroup) return reply(ptbr.grupo())
-                if (!isBotGroupAdmins) return reply(ptbr.botadmin())
+                if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
                 try {
                     await client.groupRevokeInvite(from)
                     reply('🌸LINK DO GRUPO REDEFINIDO🌸')
@@ -2209,9 +2193,9 @@ ${epa}`,
             case 'setfotogp':
             case 'fotogp':
                 addFilter(from)
-                if (!isGroup) return reply('🌸ESTE COMANDO SO PODE SER UTILIZANDO EM GRUPO🌸')
-                if (!isGroupAdmins) return reply('🌸COMANDO SO PARA ADM🌸')
-                if (!isBotGroupAdmins) return reply('🌸O BOT PRECISA SER ADM🌸')
+                if (!isGroup) return reply(ptbr.grupo())
+                if (!isGroupAdmins) return reply(ptbr.admin())
+                if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
                 if (!isQuotedImage) return reply(`Use: ${prefix + command} Marque uma foto`)
                 ftgp = isQuotedImage ? info.message.extendedTextMessage.contextInfo.quotedMessage.imageMessage : info.message.imageMessage
                 rane = getRandom('.' + await getExtension(ftgp.mimetype))
@@ -2226,7 +2210,7 @@ ${epa}`,
                 {
                     if (!isGroup) return reply(ptbr.grupo())
                     if (!isGroupAdmins) return reply(ptbr.admin())
-                    if (!isBotGroupAdmins) return reply(ptbr.botadmin())
+                    if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
                     blat = args.join(" ")
                     client.groupUpdateSubject(from, `${blat}`)
                     client.sendMessage(from, { text: '🌸NOME DO GRUPO ALTERADO COM SUCESSO 🌸' }, { quoted: info }).catch((err) => {
@@ -2239,7 +2223,7 @@ ${epa}`,
             case 'descriçãogp':
                 if (!isGroup) return reply(ptbr.grupo())
                 if (!isGroupAdmins) return reply(ptbr.admin())
-                if (!isBotGroupAdmins) return reply(ptbr.botadmin())
+                if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
                 blabla = args.join(" ")
                 client.groupUpdateDescription(from, `${blabla}`)
                 client.sendMessage(from, { text: 'Sucesso, alterou a descrição do grupo' }, { quoted: info })
@@ -2249,9 +2233,9 @@ ${epa}`,
             case 'setfotogp':
             case 'fotogp':
                 addFilter(from)
-                if (!isGroup) return reply('Só pode ser utilizado em Grupo')
-                if (!isGroupAdmins) return reply('Você precisa ser ADM')
-                if (!isBotGroupAdmins) return reply('O bot Precisa ser ADM')
+                if (!isGroup) return reply(ptbr.grupo())
+                if (!isGroupAdmins) return reply(ptbr.admin())
+                if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
                 if (!isQuotedImage) return reply(`Use: ${prefix + command} <Marque uma foto>`)
                 ftgp = isQuotedImage ? info.message.extendedTextMessage.contextInfo.quotedMessage.imageMessage : info.message.imageMessage
                 rane = getRandom('.' + await getExtension(ftgp.mimetype))
@@ -2275,7 +2259,7 @@ ${epa}`,
             case 'autofig':
                 if (!isGroup) return reply(ptbr.grupo());
                 if (!isGroupAdmins) return reply(ptbr.admin());
-                if (!isBotGroupAdmins) return reply(ptbr.botadmin());
+                if (!isBotGroupAdmins) return reply(ptbr.Botadmin());
                 if (Number(args[0]) === 1) {
                     if (isAutoSticker) return reply('Já está ativo');
                     autosticker.push(from);
@@ -2341,7 +2325,7 @@ ${epa}`,
             case 'antisticker':
                 if (!isGroup) return reply(ptbr.grupo())
                 if (!isGroupAdmins) return reply(ptbr.admin())
-                if (!isBotGroupAdmins) return reply(ptbr.botadmin())
+                if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
                 if (Number(args[0]) === 1) {
                     if (isAntiSticker) return reply('Já Esta ativo')
                     antisticker.push(from)
@@ -2383,7 +2367,7 @@ ${epa}`,
             case 'leave':
                 if (!isGroup) return reply(ptbr.grupo())
                 if (!isGroupAdmins) return reply(ptbr.admin())
-                if (!isBotGroupAdmins) return reply(ptbr.botadmin())
+                if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
                 const leaveMessage = {
                     text: `O bot saiu do grupo: ${groupName}`,
                     footer: `${nomeBot}`,
@@ -2397,7 +2381,7 @@ ${epa}`,
             case 'mute':
                 if (!isGroup) return reply(ptbr.grupo())
                 if (!isGroupAdmins) return reply(ptbr.admin())
-                if (!isBotGroupAdmins) return reply(ptbr.botadmin())
+                if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
                 const muteMessage = {
                     text: `O bot silenciou o grupo: ${groupName}`,
                     footer: `${nomeBot}`,
@@ -2411,7 +2395,7 @@ ${epa}`,
             case 'unmute':
                 if (!isGroup) return reply(ptbr.grupo())
                 if (!isGroupAdmins) return reply(ptbr.admin())
-                if (!isBotGroupAdmins) return reply(ptbr.botadmin())
+                if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
                 const unmuteMessage = {
                     text: `O bot destilenciou o grupo: ${groupName}`,
                     footer: `${nomeBot}`,
@@ -2424,7 +2408,7 @@ ${epa}`,
             case 'antiimg':
                 if (!isGroup) return reply(ptbr.grupo())
                 if (!isGroupAdmins) return reply(ptbr.admin())
-                if (!isBotGroupAdmins) return reply(ptbr.botadmin())
+                if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
                 if (Number(args[0]) === 1) {
                     if (isAntiImg) return reply('Já Esta ativo')
                     antiimg.push(from)
@@ -2498,7 +2482,7 @@ tem que ter a / e o id do grupo destinado senão não vai.`)
             case 'antivideo':
                 if (!isGroup) return reply(ptbr.grupo())
                 if (!isGroupAdmins) return reply(ptbr.admin())
-                if (!isBotGroupAdmins) return reply(ptbr.botadmin())
+                if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
                 if (Number(args[0]) === 1) {
                     if (isAntiVid) return reply('Ja esta ativo🤝')
                     antivid.push(from)
@@ -2537,9 +2521,9 @@ tem que ter a / e o id do grupo destinado senão não vai.`)
                 break
 
             case 'antiaudio':
-                if (!isGroup) return reply(respostagrupo)
+                if (!isGroup) return reply(ptbr.grupo())
                 if (!isGroupAdmins) return reply(ptbr.admin())
-                if (!isBotGroupAdmins) return reply(ptbr.botadmin())
+                if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
                 if (Number(args[0]) === 1) {
                     if (isAntiAudio) return reply('🤝Ja esta ativo🤝')
                     antiaudio.push(from)
@@ -2582,7 +2566,7 @@ tem que ter a / e o id do grupo destinado senão não vai.`)
             case 'antidoc':
                 if (!isGroup) return reply(ptbr.grupo())
                 if (!isGroupAdmins) return reply(ptbr.admin())
-                if (!isBotGroupAdmins) return reply(ptbr.botadmin())
+                if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
                 if (Number(args[0]) === 1) {
                     if (Antidoc) return reply('🌸Ja esta ativo🌸')
                     antidoc.push(from)
@@ -2628,7 +2612,7 @@ tem que ter a / e o id do grupo destinado senão não vai.`)
                 break
 
             case 'antipv':
-                if (!isOwner) return reply(`Apenas dono pode ativar/desativar essa função..`)
+                if (!isOwner) return reply(ptbr.dono())
                 if (args.length < 1) return reply('1 pra ligar / 0 pra desligar')
                 if (Number(args[0]) === 1) {
                     if (isAntiPv) return reply('Ja esta ativo')
@@ -2731,8 +2715,8 @@ tem que ter a / e o id do grupo destinado senão não vai.`)
                 break
 
 
-            case 'rankgostosos':
-            case 'rankgostoso':
+          //  case 'rankgostosos':
+          //  case 'rankgostoso':
                 if (!isGroup) return reply('Só pode ser utilizado este comando, em grupo.')
 
                 member = []
@@ -2756,7 +2740,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 mentions(luy, member, true)
                 break
 
-            case 'rankgay':
+           // case 'rankgay':
                 if (!isGroup) return reply(ptbr.grupo())
                 membr = []
                 var porcentagem = `${Math.floor(Math.random() * 105)}`
@@ -2797,7 +2781,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 membr.push(gays5.id)
                 client.sendMessage(from, { text: rankzingay, mentions: membr }, { quoted: live })
                 break
-            case 'rankcorno':
+          //  case 'rankcorno':
                 if (!isGroup) return reply(ptbr.grupo())
                 var porcentagem = `${Math.floor(Math.random() * 105)}`
                 membr = []
@@ -2839,7 +2823,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 client.sendMessage(from, { text: rankzincorno, mentions: membr }, { quoted: live })
                 break
 
-            case 'rankhetero':
+          //  case 'rankhetero':
                 if (!isGroup) return reply(ptbr.grupo())
                 var porcentagem = `${Math.floor(Math.random() * 105)}`
                 membr = []
@@ -2881,7 +2865,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 client.sendMessage(from, { text: rankzinhetero, mentions: membr }, { quoted: live })
                 break
 
-            case 'vesgo': // Sem Fotos
+          //  case 'vesgo': // Sem Fotos
                 if (!isGroup) return reply(ptbr.grupo())
                 const aletttb = `${Math.floor(Math.random() * 105)}`
                 reply('Aguarde, confiscando sua porcentagem...')
@@ -2889,7 +2873,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 reply(`Sua Porcentagem De Vesgo é De : ${aletttb}%`)
                 break
 
-            case 'bebado': // Sem Fotos
+          //  case 'bebado': // Sem Fotos
                 if (!isGroup) return reply(ptbr.grupo())
                 const alettb = `${Math.floor(Math.random() * 105)}`
                 reply('Aguarde, confiscando sua porcentagem...')
@@ -2897,7 +2881,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 reply(`Sua Porcentagem De bebado é De : ${alettb}%`)
                 break
 
-            case 'feio': // Sem Fotos
+          //  case 'feio': // Sem Fotos
                 if (!isGroup) return reply(ptbr.grupo())
                 const aletb = `${Math.floor(Math.random() * 105)}`
                 reply('Aguarde, confiscando sua porcentagem...')
@@ -2905,7 +2889,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 reply(`Sua Porcentagem De Feio é De : ${aletb}%`)
                 break
 
-            case 'lindo':
+         //   case 'lindo':
                 if (!isGroup) return reply(ptbr.grupo())
                 const aletc = `${Math.floor(Math.random() * 105)}`
                 reply('Aguarde, confiscando sua porcentagem...')
@@ -2913,7 +2897,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 reply(`Sua Porcentagem De Lindo(a) é De : ${aletc}%`)
                 break
 
-            case 'gostoso':
+          //  case 'gostoso':
                 if (!isGroup) return reply(ptbr.grupo())
                 const aletd = `${Math.floor(Math.random() * 105)}`
                 reply('Aguarde, confiscando sua porcentagem...')
@@ -2921,16 +2905,16 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 reply(`Sua Porcentagem De Gostoso(a) é De : ${aletd}%`)
                 break
 
-            case 'gostosa': {
+         //   case 'gostosa': {
                 if (!isGroup) return reply(ptbr.grupo())
                 const aletd = `${Math.floor(Math.random() * 105)}`
                 reply('Aguarde, confiscando sua porcentagem...')
                 await delay(5000)
                 reply(`Sua Porcentagem De Gostoso(a) é De : ${aletd}%`)
-            }
+          //  }
                 break
 
-            case 'gado':
+          //  case 'gado':
                 if (!isGroup) return reply(ptbr.grupo())
                 const alete = `${Math.floor(Math.random() * 105)}`
                 reply('Aguarde, confiscando sua porcentagem...')
@@ -2938,7 +2922,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 reply(`Sua Porcentagem De Gado(a) é De : ${alete}%`)
                 break
 
-            case 'punheteiro':
+         //   case 'punheteiro':
                 if (!isGroup) return reply(ptbr.grupo())
                 const aletl = `${Math.floor(Math.random() * 105)}`
                 reply('Aguarde, confiscando sua porcentagem...')
@@ -2947,7 +2931,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 break
 
 
-            case 'gay':// Sem Fotos
+         //   case 'gay':// Sem Fotos
                 if (!isGroup) return reply(ptbr.grupo())
                 const aleta = `${Math.floor(Math.random() * 105)}`
                 reply('Aguarde, confiscando sua porcentagem...')
@@ -2955,7 +2939,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 reply(`Sua Porcentagem De Gay é De : ${aleta}%`)
                 break
 
-            case 'alma-gemeas':
+          //  case 'alma-gemeas':
                 if (!isGroup) return reply(ptbr.grupo())
                 membr = []
                 const suamae121 = groupMembers
@@ -2971,7 +2955,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 break
 
 
-            case 'shipo':
+         //   case 'shipo':
                 if (!isGroup) return reply(ptbr.grupo())
                 teks = args.join(" ")
                 if (teks.length < 10) return reply('Marque uma pessoa do grupo para encontrar o par dela')
@@ -3128,7 +3112,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 }
                 break
 
-            case 'chance':
+          //  case 'chance':
                 if (!isGroup) return reply('Só pode ser utilizado este comando, em grupo.')
                 var avb = body.slice(7)
                 if (args.length < 1) return client.sendMessage(from, { text: `Você precisa digitar da forma correta\nExemplo: ${prefix}chance do luuck ser gay` }, { quoted: info })
@@ -3137,7 +3121,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 await client.sendMessage(from, { text: hasil, contextInfo: { mentionedJid: [sender] } }, { quoted: info })
                 break
 
-            case 'gadometro':
+         //   case 'gadometro':
                 if (!isGroup) return reply(ptbr.grupo())
                 var chifre = ["ultra extreme gado", "Gado-Master", "Gado-Rei", "Gado", "Escravo-ceta", "Escravo-ceta Maximo", "Gacorno?", "Jogador De Forno Livre<3", "Mestre Do Frifai<3<3", "Gado-Manso", "Gado-Conformado", "Gado-Incubado", "Gado Deus", "Mestre dos Gados", "Topa tudo por buceta", "Gado Comum", "Mini Gadinho", "Gado Iniciante", "Gado Basico", "Gado Intermediario", "Gado Avançado", "Gado Profisional", "Gado Mestre", "Gado Chifrudo", "Corno Conformado", "Corno HiperChifrudo", "Chifrudo Deus", "Mestre dos Chifrudos"]
                 var gado = chifre[Math.floor(Math.random() * chifre.length)]
@@ -3146,7 +3130,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 reply(hisil)
                 break
 
-            case 'pau'://Jogos
+         //   case 'pau'://Jogos
                 if (!isGroup) return reply(ptbr.grupo())
                 randommmm = `${Math.floor(Math.random() * 35)}`
                 const tamanho = randommmm
@@ -3158,7 +3142,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 break
 
 
-            case 'gay1':
+          //  case 'gay1':
                 if (!isGroup) return reply(ptbr.grupo())
                 if (args.length < 1) return reply('marque o gay do gp!')
                 rate = body.slice(5)
@@ -3282,7 +3266,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
             case 'banghosts':
                 if (!isGroup) return reply(ptbr.grupo())
                 if (!isOwner) return reply(ptbr.dono())
-                if (!isBotGroupAdmins) return reply(ptbr.botadmin())
+                if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
                 if (q.length < 1) return reply(`Exemplo: ${prefix}banghosts 0\n\nEle vai banir todos aqueles que tá com 0 mensagens, mas faça isso apenas se passou um tempo com o bot armazenando mensagem dos membros ativos do grupo.`)
                 async function banghst() {
                     if (groupIdscount.indexOf(from) >= 0) {
@@ -3563,7 +3547,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 break
 
             case 'recusar':
-                if (!isOwner) return reply("Só dono...")
+                if (!isOwner) return reply(ptbr.dono())
                 client.sendMessage(q, { text: `Olá,seu convite foi recusado 😪` })
                 break
 
@@ -3604,7 +3588,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 reply(tkks.trim())
                 break
 
-            case 'casal':
+          //  case 'casal':
                 if (!isGroup) return reply('Só pode ser utilizado este comando, em grupo.')
                 membr = []
                 const suamae11 = groupMembers
@@ -3620,8 +3604,8 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 break
 
             case 'leveling':
-                if (!isGroupAdmins) return reply('comando apenas para admins')
-                if (!isBotGroupAdmins) return reply(ptbr.botadmin())
+                if (!isGroupAdmins) return reply(ptbr.admin())
+                if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
                 if (args.length < 1) return reply('digite 1 para ativar ou 0 para desativar ')
                 if (Number(args[0]) === 1) {
                     if (isLevelingOn) return reply('o level está ativo')
@@ -3638,9 +3622,9 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 break
 
             case 'anagrama':
-                if (!isGroup) return reply('comando apenas para grupos')
+                if (!isGroup) return reply(ptbr.grupo())
+                if (!isGroupAdmins) return reply(ptbr.admin())
                 const anaaleatorio = Math.floor(Math.random() * palavrasANA.length)
-                if (!isGroupAdmins) return reply('comando apenas para admins')
                 if (args.length == 0) return reply('use 1 para ativar o jogo do anagrama\npara desativar use anagrama 0')
                 if (args.join(' ') === '1') {
                     if (fs.existsSync(`./functions/anagrama-${from}.json`)) {
@@ -3766,7 +3750,7 @@ ${conselho}`
             case 'kick':
                 if (!isGroup) return reply(ptbr.grupo())
                 if (!isGroupAdmins) return reply(ptbr.admin())
-                if (!isBotGroupAdmins) return reply(ptbr.botadmin())
+                if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
 
                 const frases = JSON.parse(fs.readFileSync('./functions/frases.json'))
                 const clover = frases[Math.floor(Math.random() * frases.length)]
@@ -3919,7 +3903,7 @@ ${conselho}`
                 break
 
             case "jokenpo":
-                if (!isGroup) return reply("Comando só para grupos.");
+                if (!isGroup) return reply(ptbr.admin());
                 if (args.length < 1) return reply(`Exemplo: ${prefix}jokenpo pedra`);
 
                 const opptions = ["pedra", "papel", "tesoura"];
@@ -3954,7 +3938,7 @@ ${conselho}`
                 reply(message);
                 break;
             case "adivinhação":
-                if (!isGroup) return reply(`Comando só para grupos.`)
+                if (!isGroup) return reply(ptbr.grupo())
                 if (args.length < 1) return reply(`Exemplo: ${prefix} adivinhacao 50`)
                 const num = Math.floor(Math.random() * 100) + 1
                 const guess = parseInt(args[0])
