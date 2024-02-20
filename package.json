@@ -1,13 +1,13 @@
 {
-  "name": "Lady",
-  "version": "2.0.0",
-  "main": "app.js",
+  "name": "NekoBot",
+  "version": "v4",
+  "main": "conexão.js",
   "scripts": {
-    "start": "node app.js",
+    "start": "node conexão.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "@clovermods",
+  "author": "@Klaus",
   "license": "MIT",
   "dependencies": {
     "@adiwajshing/keyed-db": "^0.2.4",
@@ -56,5 +56,5 @@
   "directories": {
     "lib": "lib"
   },
-  "description": "me segue kkkkkk"
+  "description": "teste"
 }
