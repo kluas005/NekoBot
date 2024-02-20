@@ -2907,10 +2907,10 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
 
          //   case 'gostosa': {
                 if (!isGroup) return reply(ptbr.grupo())
-                const aletd = `${Math.floor(Math.random() * 105)}`
+                const aletd1 = `${Math.floor(Math.random() * 105)}`
                 reply('Aguarde, confiscando sua porcentagem...')
                 await delay(5000)
-                reply(`Sua Porcentagem De Gostoso(a) é De : ${aletd}%`)
+                reply(`Sua Porcentagem De Gostoso(a) é De : ${aletd1}%`)
           //  }
                 break
 
