@@ -60,7 +60,7 @@ exports.levelnol = () => {
 }
 
 exports.limitend = (pushname) => {
-	return`*Desculpe ${pushname} Seu limite acabou*\n*Para conseguir mais limite compre ou passe de nível*`
+	return`*Desculpe  Seu limite acabou*\n*Para conseguir mais limite compre ou passe de nível*`
 }
 
 exports.limitcount = (limitCounts) => {
@@ -72,7 +72,7 @@ NOTA : para obter mais limite. você pode passar de nível ou comprar`
 }
 
 exports.reall = (pushname, sender, real) => {
-	return`*┏⊱ 「 DINHEIRO 」⊰━┓*\n┣⊱ *Nome* : ${pushname}\n┣⊱ *Número* : ${sender.split("@")[0]}\n┣⊱ *Dinheiro* : ${real}\n┗━━━━━━━━━━`
+	return`*┏⊱ 「 DINHEIRO 」⊰━┓*\n┣⊱ *Nome* : \n┣⊱ *Número* : ${sender.split("@")[0]}\n┣⊱ *Dinheiro* : ${real}\n┗━━━━━━━━━━`
 }
 
 exports.wrongf = () => {
@@ -100,7 +100,7 @@ exports.Lv = () => {
 }
 
 exports.grupo = () => {
-	return`[❗] ${pushname} 𝗘𝘀𝘁𝗲 𝗰𝗼𝗺𝗮𝗻𝗱𝗼 𝘀ó 𝗽𝗼𝗱𝗲 𝘀𝗲𝗿 𝘂𝘀𝗮𝗱𝗼 𝗲𝗺 𝗴𝗿𝘂𝗽𝗼𝘀! ❌`
+	return`[❗] 𝗘𝘀𝘁𝗲 𝗰𝗼𝗺𝗮𝗻𝗱𝗼 𝘀ó 𝗽𝗼𝗱𝗲 𝘀𝗲𝗿 𝘂𝘀𝗮𝗱𝗼 𝗲𝗺 𝗴𝗿𝘂𝗽𝗼𝘀! ❌`
 }
 
 exports.premium = () => {
@@ -120,7 +120,7 @@ exports.Botadmin = () => {
 }
 
 exports.userB = () => {
-	return`「 ℹ️ | 𝗥𝗲𝗴𝗶𝘀𝘁𝗿𝗲-𝘀𝗲 」 \n\nO͓̽l͓̽á͓̽ *${pushname}*!\n𝗩𝗼𝗰ê 𝗻ã𝗼 𝗲𝘀𝘁á 𝗿𝗲𝗴𝗶𝘀𝘁𝗿𝗮𝗱𝗼(𝗮) 𝗻𝗼 𝗡𝗘𝗞𝗢𝗕𝗢𝗧...\n\n𝗣𝗮𝗿𝗮 𝘀𝗲 𝗿𝗲𝗴𝗶𝘀𝘁𝗿𝗮𝗿 𝘂𝘀𝗲 𝗥𝗲𝗴𝗶𝘀𝘁𝗿𝗮𝗿 𝗡𝗼𝗺𝗲|𝗜𝗱𝗮𝗱𝗲\n𝗘𝘅𝗲𝗺𝗽𝗹𝗼 : 𝗿𝗲𝗴𝗶𝘀𝘁𝗿𝗮𝗿 𝗸𝗹𝗮𝘂𝘀|𝟮𝟬`
+	return`「 ℹ️ | 𝗥𝗲𝗴𝗶𝘀𝘁𝗿𝗲-𝘀𝗲 」 \n\nO͓̽l͓̽á͓̽ **!\n𝗩𝗼𝗰ê 𝗻ã𝗼 𝗲𝘀𝘁á 𝗿𝗲𝗴𝗶𝘀𝘁𝗿𝗮𝗱𝗼(𝗮) 𝗻𝗼 𝗡𝗘𝗞𝗢𝗕𝗢𝗧...\n\n𝗣𝗮𝗿𝗮 𝘀𝗲 𝗿𝗲𝗴𝗶𝘀𝘁𝗿𝗮𝗿 𝘂𝘀𝗲 𝗥𝗲𝗴𝗶𝘀𝘁𝗿𝗮𝗿 𝗡𝗼𝗺𝗲|𝗜𝗱𝗮𝗱𝗲\n𝗘𝘅𝗲𝗺𝗽𝗹𝗼 : 𝗿𝗲𝗴𝗶𝘀𝘁𝗿𝗮𝗿 𝗸𝗹𝗮𝘂𝘀|𝟮𝟬`
 }
 
 exports.nsfw = () => {
