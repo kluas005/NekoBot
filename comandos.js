@@ -4104,7 +4104,7 @@ Solicitado por: ${pushname}`
 
             case 'deletar': case 'apagar': case 'delete': case 'del': case 'd':
                 if (!isGroup) return reply(ptbr.grupo())
-                if (!SoDono && !isGroupAdmins && !isPremium) return reply(ptbr.admin())
+                if (!isOwner && !isGroupAdmins && !isPremium) return reply(ptbr.admin())
                 client.sendMessage(from, { delete: { remoteJid: from, fromMe: true, id: info.message.extendedTextMessage.contextInfo.stanzaId, participant: sender } })
                     .catch((err) => {
                         console.log(err)

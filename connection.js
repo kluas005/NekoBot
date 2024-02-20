@@ -55,7 +55,6 @@ try {
     var nomeBot = infoBot.nomeBot// nome do bot 
     var NomeBot = infoBot.nomeBot// nome do bot 
     var nomeDono = infoBot.nomeDono// nome do dono 
-    var SoDono = infoBot.owner
     var numeroDono = infoBot.owner
     var NomeDoBot = nomeBot
     const groupIdWelcomed = []
@@ -347,7 +346,7 @@ try {
             const info = connection.messages[0];
             if (connection.type != 'notify') return;
             if (info.key.remoteJid === 'status@broadcast') return;
-            require('./comandos.js')(client, info, connection, prefix, nomeBot, NomeBot, NomeDoBot, nomeDono, SoDono, numeroDono, color, DLT_FL)
+            require('./comandos.js')(client, info, connection, prefix, nomeBot, NomeBot, NomeDoBot, nomeDono, numeroDono, color, DLT_FL)
         });
 
         client.ev.on('group-participants.update', async (anu) => {
