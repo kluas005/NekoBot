@@ -9,6 +9,7 @@ NC='\033[0m'
 echo $YELLOW"[$RED ! $YELLOW] Eu vou instalar as dependências essenciais pro bot funcionar você só concorda com os programas que vou instalar blz? [s/n]"
 read inp
 if [ "$inp" = "s" ]; then
+
 apt-get upgrade
 apt-get update
 apt upgrade -y
@@ -18,7 +19,8 @@ apt install nodejs-lts -y
 apt install ffmpeg -y
 apt install wget -y 
 apt install git -y
-apt install pm2 -y
+npm install pm2 -g
+
 echo $GREEN"Hmmm tudo certo pode dar npm start, escanear o código e se divirta com o bot :)"
 fi
 if [ "$inp" = "n" ]; then
