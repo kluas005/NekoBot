@@ -2953,7 +2953,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 break
 
 
-               case 'shipo':
+            case 'shipo':
                 if (!isGroup) return reply(ptbr.grupo())
                 teks = args.join(" ")
                 if (teks.length < 10) return reply('Marque uma pessoa do grupo para encontrar o par dela')
@@ -3585,7 +3585,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 reply(tkks.trim())
                 break
 
-          //  case 'casal':
+            case 'casal':
                 if (!isGroup) return reply('Só pode ser utilizado este comando, em grupo.')
                 membr = []
                 const suamae11 = groupMembers
