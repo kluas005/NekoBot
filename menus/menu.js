@@ -43,6 +43,7 @@ return `
 ╠➽${prefix}bug
 ╠➽${prefix}avalie
 ╠➽${prefix}novocmd
+╠➽${prefix}calcular
 ║
 ║╭─⊣〘 MENUS ADM 〙
 ║
@@ -93,7 +94,27 @@ return `
 ║
 ║╭─⊣〘 BRINCADEIRAS 〙
 ║
+║╭─⊣〘 BRINCADEIRAS 〙
+║
 ┃➽${prefix}fazernick
+┃➽${prefix}Pau
+┃➽${prefix}ppt
+┃➽${prefix}Gadometro
+┃➽${prefix}Chance (Texto)
+┃➽${prefix}cassino 
+┃➽${prefix}casal
+┃➽${prefix}shipo
+┃➽${prefix}alma-gemeas
+┃➽${prefix}gay
+┃➽${prefix}feio
+┃➽${prefix}vesgo
+┃➽${prefix}bebado
+┃➽${prefix}gado
+┃➽${prefix}gostoso
+┃➽${prefix}gostosa
+┃➽${prefix}rankgay
+┃➽${prefix}rankgado
+┃➽${prefix}rankcorno
 ║
 ║╭─⊣〘 FIGURINHAS 〙
 ║

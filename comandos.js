@@ -15,7 +15,7 @@ const ffmpeg = require('fluent-ffmpeg');
 //const thiccysapi = require('textmaker-thiccy');
 let bancht = JSON.parse(fs.readFileSync('./functions/banchat.json'));
 const infoBot = JSON.parse(fs.readFileSync('./config/config.json'));
-const imagemdomenu = "https://telegra.ph/file/41e27ca006bb7488f155d.png"
+const imagemdomenu = "https://telegra.ph/file/91734dc02ee089ecc883b.jpg"
 const { palavras } = require('./functions/conselhos.js');
 const { fromBuffer } = require("file-type");
 const bye_group2 = JSON.parse(fs.readFileSync('./functions/byegp.json'));
@@ -168,7 +168,7 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
                         renderLargerThumbnail: false,
                         showAdAttribution: true,
                         body: `𝑩𝒚 ${nomeDono}`,
-                        thumbnail: { url: `https://telegra.ph/file/899eeb68fbedb64c2d926.jpg` },
+                        thumbnail: { url: `https://telegra.ph/file/91734dc02ee089ecc883b.jpg` },
                         mediaUrl: `${q}`,
                         sourceUrl: `${q}`,
                         headerType: 4
@@ -1142,11 +1142,8 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
                     client.sendMessage(from, { audio: { url: ytbr.url }, mimetype: 'audio/mpeg' }, { quoted: info })
 
                 })
-                .catch(error => {
-                    console.error(error);
-                    return reply("Ocorreu um erro ao processar o pedido. Tente novamente mais tarde.");
-                });
-            break
+
+                break
 
             case "tiktokvd": {
                 if (q.length < 1) return reply("Por favor, coloque o link do vídeo após o comando.");
@@ -2165,7 +2162,7 @@ ${epa}`,
                 break
 
             case 'abrirgp':
-            case 'fechargp':
+            case 'fechagp':
             case 'grupo':
                 if (!isGroup) return reply(ptbr.grupo())
                 if (!isGroupAdmins) return reply(ptbr.admin())
@@ -2868,23 +2865,21 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 client.sendMessage(from, { text: rankzinhetero, mentions: membr }, { quoted: live })
                 break
 
-          //  case 'vesgo': // Sem Fotos
+            case 'vesgo': // Sem Fotos
                 if (!isGroup) return reply(ptbr.grupo())
                 const aletttb = `${Math.floor(Math.random() * 105)}`
                 reply('Aguarde, confiscando sua porcentagem...')
                 await delay(5000)
                 reply(`Sua Porcentagem De Vesgo é De : ${aletttb}%`)
-                break
-
-          //  case 'bebado': // Sem Fotos
+                brea        
+            case 'bebado': // Sem Fotos
                 if (!isGroup) return reply(ptbr.grupo())
                 const alettb = `${Math.floor(Math.random() * 105)}`
                 reply('Aguarde, confiscando sua porcentagem...')
                 await delay(5000)
                 reply(`Sua Porcentagem De bebado é De : ${alettb}%`)
-                break
-
-          //  case 'feio': // Sem Fotos
+                brea        
+            case 'feio': // Sem Fotos
                 if (!isGroup) return reply(ptbr.grupo())
                 const aletb = `${Math.floor(Math.random() * 105)}`
                 reply('Aguarde, confiscando sua porcentagem...')
@@ -2892,7 +2887,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 reply(`Sua Porcentagem De Feio é De : ${aletb}%`)
                 break
 
-         //   case 'lindo':
+            case 'lindo':
                 if (!isGroup) return reply(ptbr.grupo())
                 const aletc = `${Math.floor(Math.random() * 105)}`
                 reply('Aguarde, confiscando sua porcentagem...')
@@ -2900,7 +2895,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 reply(`Sua Porcentagem De Lindo(a) é De : ${aletc}%`)
                 break
 
-          //  case 'gostoso':
+            case 'gostoso':
                 if (!isGroup) return reply(ptbr.grupo())
                 const aletd = `${Math.floor(Math.random() * 105)}`
                 reply('Aguarde, confiscando sua porcentagem...')
@@ -2908,16 +2903,16 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 reply(`Sua Porcentagem De Gostoso(a) é De : ${aletd}%`)
                 break
 
-         //   case 'gostosa': {
+            case 'gostosa': {
                 if (!isGroup) return reply(ptbr.grupo())
                 const aletd1 = `${Math.floor(Math.random() * 105)}`
                 reply('Aguarde, confiscando sua porcentagem...')
                 await delay(5000)
                 reply(`Sua Porcentagem De Gostoso(a) é De : ${aletd1}%`)
-          //  }
+                }
                 break
 
-          //  case 'gado':
+            case 'gado':
                 if (!isGroup) return reply(ptbr.grupo())
                 const alete = `${Math.floor(Math.random() * 105)}`
                 reply('Aguarde, confiscando sua porcentagem...')
@@ -2925,7 +2920,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 reply(`Sua Porcentagem De Gado(a) é De : ${alete}%`)
                 break
 
-         //   case 'punheteiro':
+            case 'punheteiro':
                 if (!isGroup) return reply(ptbr.grupo())
                 const aletl = `${Math.floor(Math.random() * 105)}`
                 reply('Aguarde, confiscando sua porcentagem...')
@@ -2934,7 +2929,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 break
 
 
-         //   case 'gay':// Sem Fotos
+            case 'gay':// Sem Fotos
                 if (!isGroup) return reply(ptbr.grupo())
                 const aleta = `${Math.floor(Math.random() * 105)}`
                 reply('Aguarde, confiscando sua porcentagem...')
@@ -2942,7 +2937,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 reply(`Sua Porcentagem De Gay é De : ${aleta}%`)
                 break
 
-          //  case 'alma-gemeas':
+            case 'alma-gemeas':
                 if (!isGroup) return reply(ptbr.grupo())
                 membr = []
                 const suamae121 = groupMembers
@@ -2958,7 +2953,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 break
 
 
-         //   case 'shipo':
+               case 'shipo':
                 if (!isGroup) return reply(ptbr.grupo())
                 teks = args.join(" ")
                 if (teks.length < 10) return reply('Marque uma pessoa do grupo para encontrar o par dela')
@@ -3115,7 +3110,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 }
                 break
 
-          //  case 'chance':
+            case 'chance':
                 if (!isGroup) return reply('Só pode ser utilizado este comando, em grupo.')
                 var avb = body.slice(7)
                 if (args.length < 1) return client.sendMessage(from, { text: `Você precisa digitar da forma correta\nExemplo: ${prefix}chance do luuck ser gay` }, { quoted: info })
@@ -3124,7 +3119,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 await client.sendMessage(from, { text: hasil, contextInfo: { mentionedJid: [sender] } }, { quoted: info })
                 break
 
-         //   case 'gadometro':
+            case 'gadometro':
                 if (!isGroup) return reply(ptbr.grupo())
                 var chifre = ["ultra extreme gado", "Gado-Master", "Gado-Rei", "Gado", "Escravo-ceta", "Escravo-ceta Maximo", "Gacorno?", "Jogador De Forno Livre<3", "Mestre Do Frifai<3<3", "Gado-Manso", "Gado-Conformado", "Gado-Incubado", "Gado Deus", "Mestre dos Gados", "Topa tudo por buceta", "Gado Comum", "Mini Gadinho", "Gado Iniciante", "Gado Basico", "Gado Intermediario", "Gado Avançado", "Gado Profisional", "Gado Mestre", "Gado Chifrudo", "Corno Conformado", "Corno HiperChifrudo", "Chifrudo Deus", "Mestre dos Chifrudos"]
                 var gado = chifre[Math.floor(Math.random() * chifre.length)]
@@ -3133,7 +3128,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 reply(hisil)
                 break
 
-         //   case 'pau'://Jogos
+            case 'pau'://Jogos
                 if (!isGroup) return reply(ptbr.grupo())
                 randommmm = `${Math.floor(Math.random() * 35)}`
                 const tamanho = randommmm
@@ -3145,7 +3140,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 break
 
 
-          //  case 'gay1':
+            case 'gay1':
                 if (!isGroup) return reply(ptbr.grupo())
                 if (args.length < 1) return reply('marque o gay do gp!')
                 rate = body.slice(5)
@@ -3376,7 +3371,6 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 break
 
             case 'gerarcpf':
-                //const isPremium = premium.includes(sender)
                 if (!isPremium) return reply(ptbr.premium())
                 cp1 = `${Math.floor(Math.random() * 300) + 600}`
                 cp2 = `${Math.floor(Math.random() * 300) + 600}`
@@ -3555,7 +3549,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 break
 
             case 'join': case 'entrar':
-                if (!isOwner) return reply('Somente proprietário!')
+                if (!isOwner) return reply(ptbr.dono())
                 string = args.join(' ')
                 if (!string) return reply('Insira um link de convite ao lado do comando.')
                 if (string.includes('chat.whatsapp.com/') || reply('Ops, verifique o link que você inseriu.')) {
@@ -3843,7 +3837,7 @@ ${conselho}`
 
 
             case "ppt":
-                if (!isGroup) return reply(`Comando so para grupos.`)
+                if (!isGroup) return reply(ptbr.grupo())
                 if (args.length < 1) return reply('exemplo: /ppt pedra')
                 ppt = ["pedra", "papel", "tesoura"]
                 ppy = ppt[Math.floor(Math.random() * ppt.length)]
@@ -3937,9 +3931,9 @@ ${conselho}`
                     message += `\n\nParabéns! Você ganhou 🥳💥🌸️`;
                     // Aqui você pode adicionar sua lógica para dar a recompensa ao usuário.
                 }
-
                 reply(message);
-                break;
+                break
+
             case "adivinhação":
                 if (!isGroup) return reply(ptbr.grupo())
                 if (args.length < 1) return reply(`Exemplo: ${prefix} adivinhacao 50`)
@@ -3954,9 +3948,6 @@ ${conselho}`
                     reply(`Que pena, você errou. O número era ${num}. Tente novamente.`)
                 }
                 break
-
-
-
 
             case 'avalie':
                 if (!q) return enviar(`Ex: ${prefix} avaliação bot muito top..`)
@@ -4113,8 +4104,6 @@ Solicitado por: ${pushname}`
                 reply(ptbr.sucesso())
             }
                 break
-
-
 
             case "arma": {
                 bancoDeDados = {
