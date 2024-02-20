@@ -1142,8 +1142,11 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
                     client.sendMessage(from, { audio: { url: ytbr.url }, mimetype: 'audio/mpeg' }, { quoted: info })
 
                 })
-
-                break
+                .catch(error => {
+                    console.error(error);
+                    return reply("Ocorreu um erro ao processar o pedido. Tente novamente mais tarde.");
+                });
+            break
 
             case "tiktokvd": {
                 if (q.length < 1) return reply("Por favor, coloque o link do vídeo após o comando.");
@@ -2162,7 +2165,7 @@ ${epa}`,
                 break
 
             case 'abrirgp':
-            case 'fechagp':
+            case 'fechargp':
             case 'grupo':
                 if (!isGroup) return reply(ptbr.grupo())
                 if (!isGroupAdmins) return reply(ptbr.admin())
