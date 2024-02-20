@@ -2715,9 +2715,9 @@ tem que ter a / e o id do grupo destinado senão não vai.`)
                 break
 
 
-          //  case 'rankgostosos':
-          //  case 'rankgostoso':
-                if (!isGroup) return reply('Só pode ser utilizado este comando, em grupo.')
+            case 'rankgostosos':
+            case 'rankgostoso':
+                if (!isGroup) return reply(ptbr.grupo())
 
                 member = []
                 const p01 = groupMembers
@@ -2740,7 +2740,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 mentions(luy, member, true)
                 break
 
-           // case 'rankgay':
+            case 'rankgay':
                 if (!isGroup) return reply(ptbr.grupo())
                 membr = []
                 var porcentagem = `${Math.floor(Math.random() * 105)}`
@@ -3111,7 +3111,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 break
 
             case 'chance':
-                if (!isGroup) return reply('Só pode ser utilizado este comando, em grupo.')
+                if (!isGroup) return reply(ptbr.grupo())
                 var avb = body.slice(7)
                 if (args.length < 1) return client.sendMessage(from, { text: `Você precisa digitar da forma correta\nExemplo: ${prefix}chance do luuck ser gay` }, { quoted: info })
                 random = `${Math.floor(Math.random() * 100)}`
@@ -3586,7 +3586,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 break
 
             case 'casal':
-                if (!isGroup) return reply('Só pode ser utilizado este comando, em grupo.')
+                if (!isGroup) return reply(ptbr.grupo())
                 membr = []
                 const suamae11 = groupMembers
                 const suamae21 = groupMembers
