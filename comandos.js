@@ -1083,7 +1083,7 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
             //case 'play_video':
             case 'ytmp4':
                 try {
-                    if (!q) return reply(`˖⸙̭❛✰❤️Coloque um link do YouTube pata o bot baixar`)
+                    if (!q) return reply(`coloque um link do youtube para o bot baixar`)
                     client.sendMessage(from, { react: { text: '🕚', key: info.key } })
                     var url = q;
                     var anikit = await fetchJson(`https://fine-gold-squid-yoke.cyclic.app/anikit/ytmp4?username=Lady-Bot&key=Lady-Bot&videoUrl=${url}`)
@@ -1102,7 +1102,7 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
             //case 'play_audio':
             case 'ytmp3':
                 try {
-                    if (!q) return reply(`˖⸙̭❛✰❤️Coloque um link do YouTube pata o bot baixar`)
+                    if (!q) return reply(`coloque um link do youtube para o bot baixar`)
                     client.sendMessage(from, { react: { text: '🕚', key: info.key } })
                     var url = q;
                     var anikit = await fetchJson(`https://fine-gold-squid-yoke.cyclic.app/anikit/ytmp3?username=Lady-Bot&key=Lady-Bot&videoUrl=${url}`)
@@ -1120,7 +1120,7 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
             case "playvideo":
             case 'playvd':
                 if (!q) return reply('Coloque o nome da musica também')
-                reply("「🍉」𝙲𝚊𝚕𝚖𝚘 𝙰𝚛𝚛𝚘𝚖𝚋𝚊𝚍𝚘, 𝙹𝚊 𝚃𝚘 𝙴𝚗𝚟𝚒𝚊𝚗𝚍𝚘...")
+                reply(ptbr.wait())
                 fetch(`https://clover-t-bot.onrender.com/yt/playmp4?query=${q}&key=Lady-Bot&username=Lady-Bot`).then(response => response.json()).then(ytbr => {
 
                     client.sendMessage(from, { image: { url: `${ytbr.thumb}` }, caption: `「👤」𝙽𝚘𝚖𝚎  ҂ ${ytbr.title}\n「📺」𝙲𝚊𝚗𝚊𝚕  ҂ ${ytbr.channel}\n「📈」𝚅𝚒𝚎𝚠𝚜  ҂ ${ytbr.views}` }, { quoted: info })
@@ -1128,7 +1128,6 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
                     client.sendMessage(from, { video: { url: ytbr.url }, mimetype: 'video/mp4' }, { quoted: info })
 
                 })
-
                 break
 
             case "playaudio":
@@ -1250,31 +1249,31 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
 
                 break
 
-     ////       case 'ahegao':
-     //       case 'ass':
-     //       case 'bdsm':
-     //       case 'blowjob':
-     //       case 'cuckold':
-     //       case 'cum':
-     //       case 'ero':
-     //       case 'kasedaiki':
-     //       case 'femdom':
-     //       case 'foot':
-     //       case 'gangbang':
-     //       case 'glasses':
-     //       case 'jahy':
-     //       case 'manga':
-     //       case 'masturbation':
-     //       case 'neko':
-     //       case 'orgy':
-     //       case 'panties':
-     //       case 'pussy':
-     //       case 'neko2':
-     //       case "neko":
-     //       case 'tentacles':
-     //       case 'thighs':
-     //       case 'yuri':
-     //       case 'zettai':
+                case 'ahegao':
+                case 'ass':
+                case 'bdsm':
+                case 'blowjob':
+                case 'cuckold':
+                case 'cum':
+                case 'ero':
+                case 'kasedaiki':
+                case 'femdom':
+                case 'foot':
+                case 'gangbang':
+                case 'glasses':
+                case 'jahy':
+                case 'manga':
+                case 'masturbation':
+                case 'neko':
+                case 'orgy':
+                case 'panties':
+                case 'pussy':
+                case 'neko2':
+                case "neko":
+                case 'tentacles':
+                case 'thighs':
+                case 'yuri':
+                case 'zettai':
                 //reply("off no momento")
 
                 try {
@@ -2080,15 +2079,15 @@ ${epa}`,
 
             case 'promover':
             case 'promote':
-                if (!isGroupAdmins) return reply('🌸Só ADM pode utilizar este comando🌸')
-                if (!isBotGroupAdmins) return reply('🌸O Bot Precisa ser ADM pra executar esse comando🌸.')
+                if (!isGroupAdmins) return reply(ptbr.admin())
+                if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
 
                 if (info.message.extendedTextMessage === undefined || info.message.extendedTextMessage === null) return reply('🌸Marque ou responda a mensagem de quem você quer promover🌸')
                 mentioned = info.message.extendedTextMessage.contextInfo.mentionedJid[0] ? info.message.extendedTextMessage.contextInfo.mentionedJid[0] : info.message.extendedTextMessage.contextInfo.participant
                 if (botNumber.includes(mentioned)) return reply("😑")
 
                 let responsedm = await client.groupParticipantsUpdate(from, [mentioned], 'promote')
-                if (responsedm[0].status === "200") client.sendMessage(from, { text: `@${mentioned.split("@")[0]} 😂agora é um fiscal do bar😂.️`, mentions: [mentioned, sender], contextInfo: { forwardingScore: 999, isForwarded: true } })
+                if (responsedm[0].status === "200") client.sendMessage(from, { text: `@${mentioned.split("@")[0]} Agora é Adm.️`, mentions: [mentioned, sender], contextInfo: { forwardingScore: 999, isForwarded: true } })
                 else if (responsedm[0].status === "404") client.sendMessage(from, { text: `@${mentioned.split("@")[0]} não está no grupo️`, mentions: [mentioned, sender], contextInfo: { forwardingScore: 999, isForwarded: true } })
                 else client.sendMessage(from, { text: `😥Parece que deu erro😥️`, mentions: [sender], contextInfo: { forwardingScore: 999, isForwarded: true } })
                 break

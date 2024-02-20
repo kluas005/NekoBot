@@ -259,6 +259,32 @@ return `
 ╠➽${prefix}sakura
 ╠➽${prefix}tsunade
 ┃
+┝━〢 Hentai/+18 no pv
+┃
+╠➽ ${prefix}ahegao
+╠➽ ${prefix}ass
+╠➽ ${prefix}bdsm
+╠➽ ${prefix}blowjob
+╠➽ ${prefix}cuckold
+╠➽ ${prefix}cum
+╠➽ ${prefix}ero
+╠➽ ${prefix}kasedaiki
+╠➽ ${prefix}femdom
+╠➽ ${prefix}foot
+╠➽ ${prefix}gangbang
+╠➽ ${prefix}glasses
+╠➽ ${prefix}jahy
+╠➽ ${prefix}manga
+╠➽ ${prefix}masturbation
+╠➽ ${prefix}neko
+╠➽ ${prefix}orgy
+╠➽ ${prefix}panties
+╠➽ ${prefix}pussy
+╠➽ ${prefix}neko2
+╠➽ ${prefix}tentacles
+╠➽ ${prefix}thighs
+╠➽ ${prefix}yuri
+╠➽ ${prefix}zettai
 ║
 ╚════• 〘${nomeBot}〙•═════╝
 `
