@@ -1,5 +1,5 @@
 
-require('./config/config')
+require('./config/config.js')
 const { BufferJSON, WA_DEFAULT_EPHEMERAL, generateWAMessageFromContent, proto, generateWAMessageContent, generateWAMessage, prepareWAMessageMedia, areJidsSameUser, getContentType } = require('@adiwajshing/baileys')
 const fs = require('fs')
 const os = require('os')
@@ -13,7 +13,7 @@ const xfar = require('xfarr-api')
 const google = require('google-it')
 const maker = require('mumaker')
 const request = require('request');
-const textpro = require('./lib/textpro')
+const textpro = require('./lib/textpro.js')
 const { mediafireDl } = require('./lib/mediafire.js')
 const { exec, spawn, execSync } = require("child_process")
 const moment = require('moment-timezone')
@@ -22,12 +22,12 @@ const speed = require('performance-now')
 const { performance } = require('perf_hooks')
 
 
-const { ptbr } = require('./mess')
+const { ptbr } = require('./mess/index.js')
 
 /// Arquivos da Lib
 ////
 const { addPremiumUser, dellprem, getPremiumExpired, checkOwner, expiredCheck, checkPremiumUser } = require("./lib/premium.js")
-const { smsg, formatp, tanggal, formatDate, getTime, isUrl, sleep, clockString, runtime, fetchJson, getBuffer, jsonformat, format, parseMention, getRandom, getGroupAdmins } = require('./lib/functions')
+const { smsg, formatp, tanggal, formatDate, getTime, isUrl, sleep, clockString, runtime, fetchJson, getBuffer, jsonformat, format, parseMention, getRandom, getGroupAdmins } = require('./lib/functions.js')
 const { getRegisterNo, getRegisterName, getRegisterSerial, getRegisterAge, getRegisterTime, getRegisteredRandomId, addRegisteredUser, createSerial, checkRegisteredUser } = require('./lib/register.js')
 const { addBanned, unBanned, BannedExpired, cekBannedUser } = require("./lib/banned.js")
 const { cmdadd } = require('./lib/totalcmd.js')
@@ -43,7 +43,7 @@ const data = moment.tz('America/Sao_Paulo').format('DD/MM/YYYY')
 const hr = moment.tz('America/Sao_Paulo').format('HH:mm:ss')
 const footerbot = ('© NekoBot')  //ubah di config biar ngk emror
 const ini_mark = `0@s.whatsapp.net`
-global.prem = require("./lib/premium")
+global.prem = require("./lib/premium.js")
 
 /////
 
@@ -571,7 +571,7 @@ Selama ${clockString(new Date - user.afkTime)}
         case 'ttc': case 'ttt': case 'tictactoe': {
             if(!m.isGroup) throw ptbr.group()
             if(!isUser) throw ptbr.userB()
-            let TicTacToe = require("./lib/tictactoe")
+            let TicTacToe = require("./lib/tictactoe.js")
             this.game = this.game ? this.game : {}
             if (Object.values(this.game).find(room => room.id.startsWith('tictactoe') && [room.game.playerX, room.game.playerO].includes(m.sender))) throw 'Você ainda está no jogo'
             let room = Object.values(this.game).find(room => room.state === 'WAITING' && (text ? room.name === text : true))
@@ -805,7 +805,7 @@ Quando *desiste* de se render e admitir a derrota`
             break
             case 'kuismath': case 'math': {
                 if (kuismath.hasOwnProperty(m.sender.split('@')[0])) throw "Masih Ada Sesi Yang Belum Diselesaikan!"
-                let { genMath, modes } = require('./src/math')
+                let { genMath, modes } = require('./src/math.js')
                 if (!text) throw `Mode: ${Object.keys(modes).join(' | ')}\nContoh penggunaan: ${prefixo}math medium`
                 let result = await genMath(text.toLowerCase())
                 client.sendText(m.chat, `*Berapa hasil dari: ${result.soal.toLowerCase()}*?\n\nWaktu: ${(result.waktu / 1000).toFixed(2)} detik`, m).then(() => {
@@ -1056,7 +1056,7 @@ let teks = `══✪〘 *👥 Marcando Todo Mundo* 〙✪══
 	    case 'style': case 'styletext': {
 	        if (!isPremium && global.db.data.users[m.sender].limit < 1) return m.reply(ptbr.limitend()) // respon ketika limit habis
 		db.data.users[m.sender].limit -= 1 // -1 limit
-		let { styletext } = require('./lib/scraper')
+		let { styletext } = require('./lib/scraper.js')
 		if (!text) throw 'Masukkan Query text!'
                 let anu = await styletext(text)
                 let teks = `Srtle Text From ${text}\n\n`
@@ -1460,7 +1460,7 @@ break
                 if(!m.isGroup) throw ptbr.group()
                 if(!isUser) throw ptbr.userB()
             if (!text) throw `Example : ${prefixo + comando} text`
-            let { eBinary } = require('./lib/binary')
+            let { eBinary } = require('./lib/binary.js')
             let eb = await eBinary(text)
             m.reply(eb)
         }
@@ -1469,7 +1469,7 @@ break
                 if(!m.isGroup) throw ptbr.group()
                 if(!isUser) throw ptbr.userB()
             if (!text) throw `Example : ${prefixo + comando} text`
-            let { dBinary } = require('./lib/binary')
+            let { dBinary } = require('./lib/binary.js')
             let db = await dBinary(text)
             m.reply(db)
         }
@@ -1526,7 +1526,7 @@ break
 	        m.reply(ptbr.wait())
             atas = text.split('|')[0] ? text.split('|')[0] : '-'
             bawah = text.split('|')[1] ? text.split('|')[1] : '-'
-            let { TelegraPh } = require('./lib/uploader')
+            let { TelegraPh } = require('./lib/uploader.js')
             let mee = await client.downloadAndSaveMediaMessage(quoted)
             let mem = await TelegraPh(mee)
 	        let smeme = `https://api.memegen.link/images/custom/${encodeURIComponent(atas)}/${encodeURIComponent(bawah)}.png?background=${mem}`
@@ -1565,7 +1565,7 @@ break
                 if (!quoted) throw 'Reply Image'
                 if (!/webp/.test(mime)) throw `balas stiker dengan caption *${prefixo + comando}*`
                 m.reply(ptbr.wait())
-		let { webp2mp4File } = require('./lib/uploader')
+		let { webp2mp4File } = require('./lib/uploader.js')
                 let media = await client.downloadAndSaveMediaMessage(quoted)
                 let webpToMp4 = await webp2mp4File(media)
                 await client.sendMessage(m.chat, { video: { url: webpToMp4.result, caption: 'Convert Webp To Video' } }, { quoted: m })
@@ -1579,7 +1579,7 @@ break
             if (!quoted) throw `Kirim/Reply Video/Audio Yang Ingin Dijadikan Audio Dengan Caption ${prefixo + comando}`
             m.reply(ptbr.wait())
             let media = await quoted.download()
-            let { toAudio } = require('./lib/converter')
+            let { toAudio } = require('./lib/converter.js')
             let audio = await toAudio(media, 'mp4')
             client.sendMessage(m.chat, {audio: audio, mimetype: 'audio/mpeg'}, { quoted : m })
             }
@@ -1592,7 +1592,7 @@ break
             if (!quoted) throw `Kirim/Reply Video/Audio Yang Ingin Dijadikan MP3 Dengan Caption ${prefixo + comando}`
             m.reply(ptbr.wait())
             let media = await quoted.download()
-            let { toAudio } = require('./lib/converter')
+            let { toAudio } = require('./lib/converter.js')
             let audio = await toAudio(media, 'mp4')
             client.sendMessage(m.chat, {document: audio, mimetype: 'audio/mpeg', fileName: `Convert By ${client.user.name}.mp3`}, { quoted : m })
             }
@@ -1604,7 +1604,7 @@ break
             if (!quoted) throw `Reply Video/Audio Yang Ingin Dijadikan VN Dengan Caption ${prefixo + comando}`
             m.reply(ptbr.wait())
             let media = await quoted.download()
-            let { toPTT } = require('./lib/converter')
+            let { toPTT } = require('./lib/converter.js')
             let audio = await toPTT(media, 'mp4')
             client.sendMessage(m.chat, {audio: audio, mimetype:'audio/mpeg', ptt:true }, {quoted:m})
             }
@@ -1615,7 +1615,7 @@ break
                 if (!quoted) throw 'Reply Image'
                 if (!/webp/.test(mime)) throw `balas stiker dengan caption *${prefixo + comando}*`
                 m.reply(ptbr.wait())
-		let { webp2mp4File } = require('./lib/uploader')
+		let { webp2mp4File } = require('./lib/uploader.js')
                 let media = await client.downloadAndSaveMediaMessage(quoted)
                 let webpToMp4 = await webp2mp4File(media)
                 await client.sendMessage(m.chat, { video: { url: webpToMp4.result, caption: 'Convert Webp To Video' }, gifPlayback: true }, { quoted: m })
@@ -1626,7 +1626,7 @@ break
                 if(!m.isGroup) throw ptbr.group()
                 if(!isUser) throw ptbr.userB()
                 m.reply(ptbr.wait())
-		let { UploadFileUgu, webp2mp4File, TelegraPh } = require('./lib/uploader')
+		let { UploadFileUgu, webp2mp4File, TelegraPh } = require('./lib/uploader.js')
                 let media = await client.downloadAndSaveMediaMessage(quoted)
                 if (/image/.test(mime)) {
                     let anu = await TelegraPh(media)
@@ -1761,7 +1761,7 @@ break
                 if(!m.isGroup) throw ptbr.group()
                 if(!isUser) throw ptbr.userB()
                  m.reply(ptbr.wait())
-                let { yta } = require('./lib/y2mate')
+                let { yta } = require('./lib/y2mate.js')
                 if (!text) throw `Example : ${prefixo + comando} https://youtube.com/watch?v=PtFMh6Tccag%27 128kbps`
                 let quality = args[1] ? args[1] : '128kbps'
                 let media = await yta(text, quality)
@@ -1775,7 +1775,7 @@ break
                 if(!m.isGroup) throw ptbr.group()
                 if(!isUser) throw ptbr.userB()
                 m.reply(ptbr.wait())
-                let { ytv } = require('./lib/y2mate')
+                let { ytv } = require('./lib/y2mate.js')
                 if (!text) throw `Example : ${prefixo + comando} https://youtube.com/watch?v=PtFMh6Tccag%27 360p`
                 let quality = args[1] ? args[1] : '360p'
                 let media = await ytv(text, quality)
@@ -1787,7 +1787,7 @@ break
 	    case 'getmusic': {
                 if(!m.isGroup) throw ptbr.group()
                 if(!isUser) throw ptbr.userB()
-                let { yta } = require('./lib/y2mate')
+                let { yta } = require('./lib/y2mate.js')
                 if (!text) throw `Example : ${prefixo + comando} 1`
                 if (!m.quoted) return m.reply('Responda a mensagem')
                 if (!m.quoted.isBaileys) throw `Só pode responder a mensagem do bots`
@@ -1803,7 +1803,7 @@ break
             case 'getvideo': {
                 if(!m.isGroup) throw ptbr.group()
                 if(!isUser) throw ptbr.userB()
-                let { ytv } = require('./lib/y2mate')
+                let { ytv } = require('./lib/y2mate.js')
                 if (!text) throw `Exemplo : ${prefixo + comando} 1`
                 if (!m.quoted) return m.reply('Responda a mensagem')
                 if (!m.quoted.isBaileys) throw `Só pode responder a mensagem do bots`
@@ -1819,7 +1819,7 @@ break
                 if(!m.isGroup) throw ptbr.group()
                 if(!isUser) throw ptbr.userB()
                 m.reply(ptbr.wait())
-		let { pinterest } = require('./lib/scraper')
+		let { pinterest } = require('./lib/scraper.js')
                 anu = await pinterest(text)
                 result = anu[Math.floor(Math.random() * anu.length)]
                 client.sendMessage(m.chat, { image: { url: result }, caption: '⭔ Media Url : '+result }, { quoted: m })
@@ -1870,7 +1870,7 @@ break
                 if(!m.isGroup) throw ptbr.group()
                 if(!isUser) throw ptbr.userB()
                 if (!text) throw 'Masukkan Query Title'
-		let { wallpaper } = require('./lib/scraper')
+		let { wallpaper } = require('./lib/scraper.js')
                 anu = await wallpaper(text)
                 result = anu[Math.floor(Math.random() * anu.length)]
 		let buttons = [
@@ -1902,7 +1902,7 @@ break
                 if(!m.isGroup) throw ptbr.group()
                 if(!isUser) throw ptbr.userB()
                 if (!text) throw 'Masukkan Query Title'
-		let { wikimedia } = require('./lib/scraper')
+		let { wikimedia } = require('./lib/scraper.js')
                 anu = await wikimedia(text)
                 result = anu[Math.floor(Math.random() * anu.length)]
                 let buttons = [
@@ -2033,7 +2033,7 @@ case 'lava': case 'rock': case 'bloodglas': case 'hallowen': case 'darkgold': ca
             case 'quotesanime': case 'quoteanime': {
                 if(!m.isGroup) throw ptbr.group()
                 if(!isUser) throw ptbr.userB()
-		let { quotesAnime } = require('./lib/scraper')
+		let { quotesAnime } = require('./lib/scraper.js')
                 let anu = await quotesAnime()
                 result = anu[Math.floor(Math.random() * anu.length)]
                 let buttons = [
@@ -2306,7 +2306,7 @@ Para baixar mídia, clique em um dos botões abaixo ou digite o comando ytmp3/yt
             if(!m.isGroup) throw ptbr.group()
             if(!isUser) throw ptbr.userB()
 		if (!text) throw `Example : ${prefixo + comando} black rover`
-        let { ringtone } = require('./lib/scraper')
+        let { ringtone } = require('./lib/scraper.js')
 		let anu = await ringtone(text)
 		let result = anu[Math.floor(Math.random() * anu.length)]
 		client.sendMessage(m.chat, { audio: { url: result.audio }, fileName: result.title+'.mp3', mimetype: 'audio/mpeg' }, { quoted: m })

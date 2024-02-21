@@ -14,6 +14,7 @@ try {
     const readline = require("readline");
     const axios = require('axios');
     const ffmpeg = require('fluent-ffmpeg');
+    const yts = require('yt-search');
     let bancht = JSON.parse(fs.readFileSync('./functions/banchat.json'));
     const infoBot = JSON.parse(fs.readFileSync('./config/config.json'));
     const imagemdomenu = "https://telegra.ph/file/41e27ca006bb7488f155d.png"

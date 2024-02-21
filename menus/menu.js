@@ -115,6 +115,7 @@ return `
 ┃➽${prefix}rankgay
 ┃➽${prefix}rankgado
 ┃➽${prefix}rankcorno
+➽${prefix}gtts PT (alguma coisa)
 ║
 ║╭─⊣〘 FIGURINHAS 〙
 ║

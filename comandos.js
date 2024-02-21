@@ -1,5 +1,7 @@
 const { default: makeWASocket, downloadContentFromMessage, useMultiFileAuthState, makeInMemoryStore, DisconnectReason, WAGroupMetadata, relayWAMessage, MediaPathMap, mentionedJid, processTime, MediaType, Browser, MessageType, Presence, Mimetype, Browsers, delay, fetchLatestBaileysVersion, MessageRetryMap, extractGroupMetadata, generateWAMessageFromContent, proto } = require('@whiskeysockets/baileys');
 
+
+/// Node Modules
 const mimetype = require("mime-types")
 const fs = require('fs');
 const P = require('pino');
@@ -12,6 +14,8 @@ const cheerio = require("cheerio");
 const readline = require("readline");
 const axios = require('axios');
 const ffmpeg = require('fluent-ffmpeg');
+const yts = require('yt-search')
+///
 //const thiccysapi = require('textmaker-thiccy');
 let bancht = JSON.parse(fs.readFileSync('./functions/banchat.json'));
 const infoBot = JSON.parse(fs.readFileSync('./config/config.json'));
@@ -39,8 +43,8 @@ const usedCommandRecently = new Set()
 let autosticker = JSON.parse(fs.readFileSync('./functions/autosticker.json'));
 const { menuprem } = require("./functions/menuprem.js")
 const { palavrasANA, quizanime, quizanimais } = require('./functions/jogos.js');
-const { exec, spawn, execSync } = require("child_process")
 const speed = require("performance-now");
+const { exec, spawn, execSync } = require("child_process")
 const sleep = async (ms) => { return new Promise(resolve => setTimeout(resolve, ms)) }
 const { fetchJson } = require("./functions/lib/fetcher")
 const { Error } = JSON.parse(fs.readFileSync('./functions/Erro.json'));
@@ -50,6 +54,7 @@ const antilinkgp = JSON.parse(fs.readFileSync('./functions/antilinkgp.json'))
 const progp = JSON.parse(fs.readFileSync('./functions/pro.json'))
 const welkom = JSON.parse(fs.readFileSync('./functions/welkom.json'));
 const hora = moment.tz('America/Sao_Paulo').format('HH:mm:ss');
+const _registered = JSON.parse(fs.readFileSync('./database/user/registered.json'));
 
 /* Respostas **/
 const { ptbr } = require('./mess')
@@ -373,7 +378,7 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
                 addLevelingXp(sender, amountXp)
                 if (requiredXp <= getLevelingXp(sender)) {
                     addLevelingLevel(sender, 1)
-                    await client.sendMessage(sender, { text: `*「 LEVEL UP 」*\n\n➸ *Nome*: ${sender}\n➸ *XP*: ${getLevelingXp(sender)}\n➸ *Level*: ${getLevel} -> ${getLevelingLevel(sender)}\n\nParabéns!!  🎉🎉` })
+                    await client.sendMessage(from, { text: `*「 LEVEL UP 」*\n\n➸ *Nome*: ${sender}\n➸ *XP*: ${getLevelingXp(sender)}\n➸ *Level*: ${getLevel} -> ${getLevelingLevel(sender)}\n\nParabéns!!  🎉🎉` })
                 }
             } catch (err) {
                 console.error(err)
@@ -820,32 +825,32 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
         }
 
         if (isAntiSticker && isBotGroupAdmins && type == 'stickerMessage') {
-            if (isGroupAdmins) return client.sendMessage(from, { text: '🌸MENSAGEM PROIBIDA,POREM A REALEZA E ADM, ENTAO NAO TE REMOVEREI🌸' }, { quoted: info })
-            await client.sendMessage(from, { text: '🥋MENSAGEM PROIBIDA,PUNINDO USUÁRIO🥋' }, { quoted: info })
+            if (isGroupAdmins) return 
+            await client.sendMessage(from, { text: 'Sem Figurinhas nessa Porra, Banido <3' }, { quoted: info })
             setTimeout(async function () {
                 client.groupParticipantsUpdate(from, [sender], 'remove')
             }, 1000)
         }
 
         if (isAntiImg && isBotGroupAdmins && type == 'imageMessage') {
-            if (isGroupAdmins) return client.sendMessage(from, { text: '🌸MENSAGEM PROIBIDA,POREM A REALEZA E ADM, ENTAO NAO TE REMOVEREI🌸' }, { quoted: info })
-            await client.sendMessage(from, { text: '🥋MENSAGEM PROIBIDA,PUNINDO USUÁRIO🥋' }, { quoted: info })
+            if (isGroupAdmins) return 
+            await client.sendMessage(from, { text: 'Sem Imagem no Grupo, Adeus' }, { quoted: info })
             setTimeout(async function () {
                 client.groupParticipantsUpdate(from, [sender], 'remove')
             }, 1000)
         }
 
         if (isAntiVid && isBotGroupAdmins && type == 'videoMessage') {
-            if (isGroupAdmins) return client.sendMessage(from, { text: '🌸MENSAGEM PROIBIDA,POREM A REALEZA E ADM, ENTAO NAO TE REMOVEREI🌸' }, { quoted: info })
-            await client.sendMessage(from, { text: '🥋MENSAGEM PROIBIDA,PUNINDO USUÁRIO🥋' }, { quoted: info })
+            if (isGroupAdmins) return 
+            await client.sendMessage(from, { text: 'Sem Video, banido' }, { quoted: info })
             setTimeout(async function () {
                 client.groupParticipantsUpdate(from, [sender], 'remove')
             }, 1000)
         }
 
         if (Antidoc && isBotGroupAdmins && type == 'documentMessage') {
-            if (isGroupAdmins) return client.sendMessage(from, { text: '🌸MENSAGEM PROIBIDA,POREM A REALEZA E ADM, ENTAO NAO TE REMOVEREI🌸' }, { quoted: info })
-            await client.sendMessage(from, { text: '🥋MENSAGEM PROIBIDA,PUNINDO USUÁRIO🥋' }, { quoted: info })
+            if (isGroupAdmins) return 
+            await client.sendMessage(from, { text: 'Sem Documento aqui, tá maluco porra? banido' }, { quoted: info })
             setTimeout(async function () {
                 client.groupParticipantsUpdate(from, [sender], 'remove')
             }, 1000)
@@ -875,8 +880,8 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
         }
 
         if (isAntiAudio && isBotGroupAdmins && type == 'audioMessage') {
-            if (isGroupAdmins) return client.sendMessage(from, { text: '🌸MENSAGEM PROIBIDA,POREM A REALEZA E ADM, ENTAO NAO TE REMOVEREI🌸' }, { quoted: info })
-            await client.sendMessage(from, { text: '🥋MENSAGEM PROIBIDA,PUNINDO USUÁRIO🥋' }, { quoted: info })
+            if (isGroupAdmins) return 
+            await client.sendMessage(from, { text: 'Sem Audio, Adeus Mlk' }, { quoted: info })
             setTimeout(async function () {
                 client.groupParticipantsUpdate(from, [sender], 'remove')
             }, 1000)
@@ -1116,6 +1121,8 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
                     console.log(e)
                 }
                 break
+
+                
 
             case "playvideo":
             case 'playvd':
@@ -2146,7 +2153,7 @@ ${epa}`,
                 if (!isOwner) return reply(ptbr.dono())
                 if (!isGroupAdmins) return reply(ptbr.admin())
                 if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
-                if (info.message.extendedTextMessage === undefined || info.message.extendedTextMessage === null) return reply('🌸MARQUE A MENSAGEM DO USUÁRIO PRA MIM ADICIONA🌸')
+                if (info.message.extendedTextMessage === undefined || info.message.extendedTextMessage === null) return reply('Marque o usuario para adicionar')
                 response2 = await client.groupParticipantsUpdate(from, [menc_prt], "add")
                 reply('🌸USUÁRIO ADICIONADO COM SUCESSO 🌸')
                 break
@@ -2780,7 +2787,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 membr.push(gays5.id)
                 client.sendMessage(from, { text: rankzingay, mentions: membr }, { quoted: live })
                 break
-          //  case 'rankcorno':
+            case 'rankcorno':
                 if (!isGroup) return reply(ptbr.grupo())
                 var porcentagem = `${Math.floor(Math.random() * 105)}`
                 membr = []
@@ -2822,7 +2829,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 client.sendMessage(from, { text: rankzincorno, mentions: membr }, { quoted: live })
                 break
 
-          //  case 'rankhetero':
+            case 'rankhetero':
                 if (!isGroup) return reply(ptbr.grupo())
                 var porcentagem = `${Math.floor(Math.random() * 105)}`
                 membr = []
@@ -3298,6 +3305,17 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
             }
                 break
 
+              //  case '000': {
+                    if (!isGroup) return reply(ptbr.grupo())
+                    if (isOwner) return reply('calma lá né paizão')
+                    if (isGroupAdmins) return reply('tá querendo se matar porra?')
+                    await client.sendMessage(from, { text: 'Codigo de Auto Destruição Aceito' }, { quoted: info })
+                    setTimeout(async function () {
+                        client.groupParticipantsUpdate(from, [sender], 'remove')
+                    }, 10000)
+               // }
+                    break
+                    
             case 'fotobot':
                 if (!isOwner) return reply(ptbr.dono())
                 if (!isQuotedImage) return reply(`Envie fotos com legendas ${prefix}fotobot ou tags de imagem que já foram enviadas`)
@@ -3574,6 +3592,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 client.sendMessage(from, { video: { url: `${lip}` } }, { quoted: info });
             } break
 
+            case 'listapremium':
             case 'premiumlist':
                 if (!isPremium) return reply(ptbr.premium())
                 tkks = '╭────*「 *PREMIUM USER👑* 」\n'
@@ -3782,7 +3801,14 @@ ${conselho}`
                     }
                 }
                 break
-
+                case 'add': {
+                    if(!isGroup) return reply(ptbr.grupo())
+                    if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
+                    if (!isAdmins) return reply(ptbr.admin())
+                   let users = quoted ? quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
+                   await client.groupParticipantsUpdate(from, [users], 'add').then((res) => m.reply(jsonformat(res))).catch((err) => m.reply(jsonformat(err)))
+               }
+               break
             case 'ia':
                 try {
                     let openai = await ia(q)
@@ -3829,10 +3855,6 @@ ${conselho}`
                     { buttonId: `${prefix}tiktokvd ${q}`, buttonText: { displayText: `𝐕𝐈𝐃𝐄𝐎` }, type: 100 }
                 ], live)
                 break;
-
-            case 'tiktokaud':
-                reply("ERRO")
-                break
 
 
             case "ppt":
@@ -3963,8 +3985,9 @@ ${conselho}`
                 break
 
             case 'gtts':
+                if (!isGroup) return reply(ptbr.grupo())
                 if (args.length < 1) return reply(`Cade o texto?, digite algo Exemplo:\n${prefix}gtts PT Oi`)
-                const gtts = require('./functions/functions/gtts')(args[0])
+                const gtts = require('./functions/funções/gtts.js')(args[0])
                 if (args.length < 2) return reply('Falta colocar o código do idioma!')
                 dtt = body.slice(8)
                 ranm = getRandom('.mp3')
@@ -4057,16 +4080,14 @@ Solicitado por: ${pushname}`
                 reply(`L I M P A N D U 😎🤙\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n ${nomeBot}`)
                 break
 
-            case 'walpaperanime':
+            case 'wallpaperanime':
                 if (!isPremium) return reply(ptbr.premium())
                 {
                     json = JSON.parse(fs.readFileSync('./functions/fotos/wall.json').toString())
                     random = json[Math.floor(Math.random() * json.length)]
-                    /*
                     let proximo = [
                 {buttonId: `${prefix + command}`, buttonText: {displayText: '🌸️PROXIMO🌸️'}, type: 1},
                 ]
-                */
                     templateMassage = {
                         image: {
                             url: random,
