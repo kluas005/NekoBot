@@ -50,7 +50,7 @@ try {
     const { TextoDoBemvindo } = require("./info/TextoDoBemvindo.js")
     const { TextoDoSaiu } = require("./info/TextoDoBemvindo.js")
     const { Error } = JSON.parse(fs.readFileSync('./functions/Erro.json'))
-
+    
 
     var prefix = infoBot.prefix //prefixo 
     var nomeBot = infoBot.nomeBot// nome do bot 

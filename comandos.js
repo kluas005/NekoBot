@@ -54,7 +54,9 @@ const antilinkgp = JSON.parse(fs.readFileSync('./functions/antilinkgp.json'))
 const progp = JSON.parse(fs.readFileSync('./functions/pro.json'))
 const welkom = JSON.parse(fs.readFileSync('./functions/welkom.json'));
 const hora = moment.tz('America/Sao_Paulo').format('HH:mm:ss');
+const dataz = moment.tz('America/Sao_Paulo').format('DD/MM/YYYY')
 const _registered = JSON.parse(fs.readFileSync('./database/user/registered.json'));
+const { getRegisterNo, getRegisterName, getRegisterSerial, getRegisterAge, getRegisterTime, getRegisteredRandomId, addRegisteredUser, createSerial, checkRegisteredUser } = require('./lib/register.js')
 
 /* Respostas **/
 const { ptbr } = require('./mess')
@@ -378,12 +380,13 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
                 addLevelingXp(sender, amountXp)
                 if (requiredXp <= getLevelingXp(sender)) {
                     addLevelingLevel(sender, 1)
-                    await client.sendMessage(from, { text: `*「 LEVEL UP 」*\n\n➸ *Nome*: ${sender}\n➸ *XP*: ${getLevelingXp(sender)}\n➸ *Level*: ${getLevel} -> ${getLevelingLevel(sender)}\n\nParabéns!!  🎉🎉` })
+                    await client.sendMessage(from, { text: `*「 LEVEL UP 」*\n\n➸ *Nome*: **${pushname}**\n **Número: @${sender.split('@')[0]}\n➸ *XP*: ${getLevelingXp(sender)}\n➸ *Level*: ${getLevel} -> ${getLevelingLevel(sender)}\n\nParabéns!!  🎉🎉` })
                 }
             } catch (err) {
                 console.error(err)
             }
         }
+        
         const getLevel = getLevelingLevel(sender)
         const tictactoe = JSON.parse(fs.readFileSync('./functions/database/tictactoe.json'));
         const registros = JSON.parse(fs.readFileSync("./functions/registros.json"))
@@ -601,6 +604,7 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
         }
         const isGroupAdmins = groupAdmins.includes(sender) || false
         const isBotGroupAdmins = groupAdmins.includes(botNumber) || false
+        const isUser = checkRegisteredUser(sender)
 
         ///////////////////////////////////////////////
         //FUNÇÃO DE DONO 
@@ -934,8 +938,34 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
                 client.sendMessage(from, { poll: { name: `teste`, values: [`teste`, `Klaus`], selectableCount: 1 } }, { quoted: info });
                 break
 
+                case 'registrar':
+				case 'registro':
+                if(!isGroup) return reply(ptbr.grupo())
+                if (isUser) return reply ('**Você já está registrado**')
+				if (!q.includes('|')) return reply(`𝗗𝗶𝗴𝗶𝘁𝗲 𝗱𝗮 𝗳𝗼𝗿𝗺𝗮 𝗰𝗲𝗿𝘁𝗮:\n𝗖𝗼𝗺𝗮𝗻𝗱𝗼: ${prefix}𝗥𝗲𝗴𝗶𝘀𝘁𝗿𝗮𝗿 𝗻𝗼𝗺𝗲|𝗶𝗱𝗮𝗱𝗲\n𝗘𝘅𝗲𝗺𝗽𝗹𝗼: ${prefix}𝗥𝗲𝗴𝗶𝘀𝘁𝗿𝗮𝗿 𝗸𝗹𝗮𝘂𝘀|𝟮𝟬`)
+				const namaUser = q.substring(0, q.indexOf('|') - 0)
+				const umurUser = q.substring(q.lastIndexOf('|') + 1)
+				const serialUser = createSerial(20)
+				if(isNaN(umurUser)) return reply(`𝗗𝗶𝗴𝗶𝘁𝗲 𝗱𝗮 𝗳𝗼𝗿𝗺𝗮 𝗰𝗲𝗿𝘁𝗮:\n𝗖𝗼𝗺𝗮𝗻𝗱𝗼: ${prefix}𝗥𝗲𝗴𝗶𝘀𝘁𝗿𝗮𝗿 𝗻𝗼𝗺𝗲|𝗶𝗱𝗮𝗱𝗲\n𝗘𝘅𝗲𝗺𝗽𝗹𝗼: ${prefix}𝗥𝗲𝗴𝗶𝘀𝘁𝗿𝗮𝗿 𝗸𝗹𝗮𝘂𝘀|𝟮𝟬`)
+				if (namaUser.length >= 60) return reply(`𝐬𝐞𝐮 𝐧𝐨𝐦𝐞 é 𝐦𝐮𝐢𝐭𝐨 𝐥𝐨𝐧𝐠𝐨`)
+				if (umurUser > 40) return reply(`𝗜𝗱𝗮𝗱𝗲 𝗺𝗮𝘅𝗶𝗺𝗮 𝗱𝗲 𝟰𝟬 𝗮𝗻𝗼𝘀`)
+				if (umurUser < 12) return reply(`𝗜𝗱𝗮𝗱𝗲 𝗺𝗶𝗻𝗶𝗺𝗮 é 𝟭𝟮 𝗮𝗻𝗼𝘀`)
+				veri = sender
+				try {
+				ppimg = await client.profilePictureUrl(`${sender.split("@")[0]}@c.us`, "image")
+				} catch {
+				ppimg = 'https://i0.wp.com/www.gambarunik.id/wp-content/uploads/2019/06/Top-Gambar-Foto-Profil-Kosong-Lucu-Tergokil-.jpg'
+				}
+				captionnya = 
+					`𝐑𝐞𝐠𝐢𝐬𝐭𝐫𝐚𝐝𝐨 𝐜𝐨𝐦 𝐬𝐮𝐜𝐞𝐬𝐬𝐨✅\n𝗦𝗲𝗿𝗶𝗮𝗹: \n*${serialUser}*\n╔════════════════\n╠≽️ 𝗗𝗶𝗮: ${dataz}\n╠≽️ 𝗛𝗼𝗿𝗮: ${hora}\n╠≽️ 𝗡𝗼𝗺𝗲 𝗱𝗲 𝘂𝘀𝘂á𝗿𝗶𝗼: @${sender.split("@")[0]}\n╠≽️ 𝙉𝙤𝙢𝙚 𝙙𝙚 𝙧𝙚𝙜𝙞𝙨𝙩𝙧𝙤: ${namaUser}\n╠≽️ 𝗜𝗱𝗮𝗱𝗲: ${umurUser}\n╠≽️ 𝗦𝗲𝘂 𝗹𝗶𝗻𝗸 𝘄𝗮𝗺𝗲: wa.me/${sender.split("@")[0]}\n╠≽️ 𝙉ú𝙢𝙚𝙧𝙤: ${sender.split("@")[0]}\n╚════════════════
+					𝗩𝗼𝗰ê 𝘀𝗲 𝗿𝗲𝗴𝗶𝘀𝘁𝗿𝗼𝘂, 𝘿𝙞𝙜𝙞𝙩𝙚 ${prefix}Menu 𝗣𝗮𝗿𝗮 𝘃𝗲𝗿 𝗮 𝗹𝗶𝘀𝘁𝗮 𝗱𝗲 𝗰𝗼𝗺𝗮𝗻𝗱𝗼𝘀`
+					daftarimg = await getBuffer(ppimg)
+					addRegisteredUser(sender, namaUser, umurUser, dataz, serialUser)
+					client.sendMessage(from, { image: daftarimg, quoted: info, caption: captionnya, contextInfo: {mentionedJid: [sender]}})                    
+					break
 
             case 'menu': {
+                if (!isUser) return reply(ptbr.userB())
                 client.sendMessage(from, {
                     react: {
                         text: "🥁",
@@ -3118,6 +3148,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
 
             case 'chance':
                 if (!isGroup) return reply(ptbr.grupo())
+                if (!isUser) return reply(ptbr.userB())
                 var avb = body.slice(7)
                 if (args.length < 1) return client.sendMessage(from, { text: `Você precisa digitar da forma correta\nExemplo: ${prefix}chance do luuck ser gay` }, { quoted: info })
                 random = `${Math.floor(Math.random() * 100)}`
@@ -3806,7 +3837,7 @@ ${conselho}`
                     if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
                     if (!isAdmins) return reply(ptbr.admin())
                    let users = quoted ? quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
-                   await client.groupParticipantsUpdate(from, [users], 'add').then((res) => m.reply(jsonformat(res))).catch((err) => m.reply(jsonformat(err)))
+                   await client.groupParticipantsUpdate(from, [users], 'add').then((res) => reply(jsonformat(res))).catch((err) => reply(jsonformat(err)))
                }
                break
             case 'ia':
