@@ -14,7 +14,7 @@ const cheerio = require("cheerio");
 const readline = require("readline");
 const axios = require('axios');
 const ffmpeg = require('fluent-ffmpeg');
-const yts = require('yt-search')
+
 ///
 //const thiccysapi = require('textmaker-thiccy');
 let bancht = JSON.parse(fs.readFileSync('./functions/banchat.json'));
@@ -948,13 +948,13 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
 				const serialUser = createSerial(20)
 				if(isNaN(umurUser)) return reply(`𝗗𝗶𝗴𝗶𝘁𝗲 𝗱𝗮 𝗳𝗼𝗿𝗺𝗮 𝗰𝗲𝗿𝘁𝗮:\n𝗖𝗼𝗺𝗮𝗻𝗱𝗼: ${prefix}𝗥𝗲𝗴𝗶𝘀𝘁𝗿𝗮𝗿 𝗻𝗼𝗺𝗲|𝗶𝗱𝗮𝗱𝗲\n𝗘𝘅𝗲𝗺𝗽𝗹𝗼: ${prefix}𝗥𝗲𝗴𝗶𝘀𝘁𝗿𝗮𝗿 𝗸𝗹𝗮𝘂𝘀|𝟮𝟬`)
 				if (namaUser.length >= 60) return reply(`𝐬𝐞𝐮 𝐧𝐨𝐦𝐞 é 𝐦𝐮𝐢𝐭𝐨 𝐥𝐨𝐧𝐠𝐨`)
-				if (umurUser > 40) return reply(`𝗜𝗱𝗮𝗱𝗲 𝗺𝗮𝘅𝗶𝗺𝗮 𝗱𝗲 𝟰𝟬 𝗮𝗻𝗼𝘀`)
+				if (umurUser > 2000) return reply(`𝗜𝗱𝗮𝗱𝗲 𝗺𝗮𝘅𝗶𝗺𝗮 𝗱𝗲 2000 𝗮𝗻𝗼𝘀`)
 				if (umurUser < 12) return reply(`𝗜𝗱𝗮𝗱𝗲 𝗺𝗶𝗻𝗶𝗺𝗮 é 𝟭𝟮 𝗮𝗻𝗼𝘀`)
 				veri = sender
 				try {
 				ppimg = await client.profilePictureUrl(`${sender.split("@")[0]}@c.us`, "image")
 				} catch {
-				ppimg = 'https://i0.wp.com/www.gambarunik.id/wp-content/uploads/2019/06/Top-Gambar-Foto-Profil-Kosong-Lucu-Tergokil-.jpg'
+				ppimg = 'https://telegra.ph/file/b5427ea4b8701bc47e751.jpg'
 				}
 				captionnya = 
 					`𝐑𝐞𝐠𝐢𝐬𝐭𝐫𝐚𝐝𝐨 𝐜𝐨𝐦 𝐬𝐮𝐜𝐞𝐬𝐬𝐨✅\n𝗦𝗲𝗿𝗶𝗮𝗹: \n*${serialUser}*\n╔════════════════\n╠≽️ 𝗗𝗶𝗮: ${dataz}\n╠≽️ 𝗛𝗼𝗿𝗮: ${hora}\n╠≽️ 𝗡𝗼𝗺𝗲 𝗱𝗲 𝘂𝘀𝘂á𝗿𝗶𝗼: @${sender.split("@")[0]}\n╠≽️ 𝙉𝙤𝙢𝙚 𝙙𝙚 𝙧𝙚𝙜𝙞𝙨𝙩𝙧𝙤: ${namaUser}\n╠≽️ 𝗜𝗱𝗮𝗱𝗲: ${umurUser}\n╠≽️ 𝗦𝗲𝘂 𝗹𝗶𝗻𝗸 𝘄𝗮𝗺𝗲: wa.me/${sender.split("@")[0]}\n╠≽️ 𝙉ú𝙢𝙚𝙧𝙤: ${sender.split("@")[0]}\n╚════════════════
