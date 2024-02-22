@@ -390,123 +390,76 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
         const getLevel = getLevelingLevel(sender)
         const tictactoe = JSON.parse(fs.readFileSync('./functions/database/tictactoe.json'));
 
-        const addTTTId = (userId) => {
-            const obj = { jid: userId, wins: 0, defeats: 0, ties: 0, points: 0 }
-            tictactoe.push(obj)
-            fs.writeFileSync('./functions/database/tictactoe.json', JSON.stringify(tictactoe))
-        }
 
-        const addTTTwin = (userId, amount) => {
-            let position = false
-            Object.keys(tictactoe).forEach((i) => {
-                if (tictactoe[i].jid === userId) {
-                    position = i
-                }
-            })
-            if (position !== false) {
-                tictactoe[position].wins += amount
-                fs.writeFileSync('./functions/database/tictactoe.json', JSON.stringify(tictactoe))
-            }
-        }
+/// tictactoe
 
-        const addTTTdefeat = (userId, amount) => {
-            let position = false
-            Object.keys(tictactoe).forEach((i) => {
-                if (tictactoe[i].jid === userId) {
-                    position = i
-                }
-            })
-            if (position !== false) {
-                tictactoe[position].defeats += amount
-                fs.writeFileSync('./functions/database/tictactoe.json', JSON.stringify(tictactoe))
-            }
-        }
+const parseMention = (text = '') => {
+    return [...text.matchAll(/@([0-9]{5,16}|0)/g)].map(v => v[1] + '@s.whatsapp.net')
+}
 
-        const addTTTtie = (userId, amount) => {
-            let position = false
-            Object.keys(tictactoe).forEach((i) => {
-                if (tictactoe[i].jid === userId) {
-                    position = i
-                }
-            })
-            if (position !== false) {
-                tictactoe[position].ties += amount
-                fs.writeFileSync('./functions/database/tictactoe.json', JSON.stringify(tictactoe))
-            }
-        }
+this.game = this.game ? this.game : {}
+	    let room = Object.values(this.game).find(room => room.id && room.game && room.state && room.id.startsWith('tictactoe') && [room.game.playerX, room.game.playerO].includes(sender) && room.state == 'PLAYING')
+	    if (room) {
+	    let ok
+	    let isWin = !1
+	    let isTie = !1
+	    let isSurrender = !1
+	    // reply(`[DEBUG]\n${parseInt(from)}`)
+	    if (!/^([1-9]|(me)?nyerah|surr?ender|off|skip)$/i.test(from)) return
+	    isSurrender = !/^[1-9]$/.test(from)
+	    if (sender !== room.game.currentTurn) { // nek wayahku
+	    if (!isSurrender) return !0
+	    }
+	    if (!isSurrender && 1 > (ok = room.game.turn(sender === room.game.playerO, parseInt(from) - 1))) {
+	    reply({
+	    '-3': 'O jogo acabou',
+	    '-2': 'Inválido',
+	    '-1': 'Posição inválida',
+	    0: 'Posição inválida',
+	    }[ok])
+	    return !0
+	    }
+	    if (sender === room.game.winner) isWin = true
+	    else if (room.game.board === 511) isTie = true
+	    let arr = room.game.render().map(v => {
+	    return {
+	    X: '❌',
+	    O: '⭕',
+	    1: '1️⃣',
+	    2: '2️⃣',
+	    3: '3️⃣',
+	    4: '4️⃣',
+	    5: '5️⃣',
+	    6: '6️⃣',
+	    7: '7️⃣',
+	    8: '8️⃣',
+	    9: '9️⃣',
+	    }[v]
+	    })
+	    if (isSurrender) {
+	    room.game._currentTurn = sender === room.game.playerX
+	    isWin = true
+	    }
+	    let winner = isSurrender ? room.game.currentTurn : room.game.winner
+	    let str = `Room ID: ${room.id}
 
-        const addTTTpoints = (userId, amount) => {
-            let position = false
-            Object.keys(tictactoe).forEach((i) => {
-                if (tictactoe[i].jid === userId) {
-                    position = i
-                }
-            })
-            if (position !== false) {
-                tictactoe[position].points += amount
-                fs.writeFileSync('./functions/database/tictactoe.json', JSON.stringify(tictactoe))
-            }
-        }
+${arr.slice(0, 3).join('')}
+${arr.slice(3, 6).join('')}
+${arr.slice(6).join('')}
 
-        const getTTTId = (userId) => {
-            let position = false
-            Object.keys(tictactoe).forEach((i) => {
-                if (tictactoe[i].jid === userId) {
-                    position = i
-                }
-            })
-            if (position !== false) {
-                return tictactoe[position].jid
-            }
-        }
+${isWin ? `@${winner.split('@')[0]} Menang!` : isTie ? `Game berakhir` : `Giliran ${['❌', '⭕'][1 * room.game._currentTurn]} (@${room.game.currentTurn.split('@')[0]})`}
+❌: @${room.game.playerX.split('@')[0]}
+⭕: @${room.game.playerO.split('@')[0]}
 
-        const getTTTwins = (userId) => {
-            let position = false
-            Object.keys(tictactoe).forEach((i) => {
-                if (tictactoe[i].jid === userId) {
-                    position = i
-                }
-            })
-            if (position !== false) {
-                return tictactoe[position].wins
-            }
-        }
-
-        const getTTTdefeats = (userId) => {
-            let position = false
-            Object.keys(tictactoe).forEach((i) => {
-                if (tictactoe[i].jid === userId) {
-                    position = i
-                }
-            })
-            if (position !== false) {
-                return tictactoe[position].defeats
-            }
-        }
-
-        const getTTTties = (userId) => {
-            let position = false
-            Object.keys(tictactoe).forEach((i) => {
-                if (tictactoe[i].jid === userId) {
-                    position = i
-                }
-            })
-            if (position !== false) {
-                return tictactoe[position].ties
-            }
-        }
-
-        const getTTTpoints = (userId) => {
-            let position = false
-            Object.keys(tictactoe).forEach((i) => {
-                if (tictactoe[i].jid === userId) {
-                    position = i
-                }
-            })
-            if (position !== false) {
-                return tictactoe[position].points
-            }
-        }
+Quando *se render* para se render e admitir a derrota`
+	    if ((room.game._currentTurn ^ isSurrender ? room.x : room.o) !== m.chat)
+	    room[room.game._currentTurn ^ isSurrender ? 'x' : 'o'] = m.chat
+	    if (room.x !== room.o) await client.sendMessage(room.x, str, from, { mentions: parseMention(str) } )
+	    await client.sendMessage(room.o, str, from, { mentions: parseMention(str) } )
+	    if (isTie || isWin) {
+	    delete this.game[room.id]
+	    }
+	    }
 
         ///////////////////////////////////////////////
         // IS DE functions PARA ADM
@@ -3210,7 +3163,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                     emror = String(e)
                     reply(`${e}`)
                 }
-                await limitAdd(sender)
+              //  await limitAdd(sender)
                 break
 
             case 'ddd':
@@ -3473,7 +3426,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                     emror = String(e)
                     reply(`${e}`)
                 }
-                await limitAdd(sender)
+             //   await limitAdd(sender)
                 break
 
             case 'serpremium':
@@ -3686,7 +3639,7 @@ dica: ${dataAnagrama2.dica}
 ╰────────────────────────
 `,
                             lfooter: `${nomeBot}`,
-                            //buttons: buttons,
+                            buttons: buttons,
                             headerType: 4
                         }
 
@@ -3698,8 +3651,78 @@ dica: ${dataAnagrama2.dica}
                     fs.unlinkSync(`./functions/anagrama-${from}.json`)
                     reply("desativado com sucesso")
                 }
-                await limitAdd(sender)
+             //   await limitAdd(sender)
                 break
+
+             //   case 'ttc': case 'ttt': case 'tictactoe': {
+                    if(!isGroup) reply(ptbr.grupo())
+                    if(!isUser) reply(ptbr.userB())
+                    let TicTacToe = require("./lib/tictactoe.js")
+                    this.game = this.game ? this.game : {}
+                    if (Object.values(this.game).find(room => room.id.startsWith('tictactoe') && [room.game.playerX, room.game.playerO].includes(sender))) reply ('Você ainda está no jogo')
+                    let room = Object.values(this.game).find(room => room.state === 'WAITING' && (text ? room.name === text : true))
+                    if (room) {
+                    reply('Parceiro Encontrado!')
+                    room.o = from
+                    room.game.playerO = sender
+                    room.state = 'PLAYING'
+                    let arr = room.game.render().map(v => {
+                    return {
+                    X: '❌',
+                    O: '⭕',
+                    1: '1️⃣',
+                    2: '2️⃣',
+                    3: '3️⃣',
+                    4: '4️⃣',
+                    5: '5️⃣',
+                    6: '6️⃣',
+                    7: '7️⃣',
+                    8: '8️⃣',
+                    9: '9️⃣',
+                    }[v]
+                    })
+                    let str = `ID da Sala: ${room.id}
+        
+        ${arr.slice(0, 3).join('')}
+        ${arr.slice(3, 6).join('')}
+        ${arr.slice(6).join('')}
+        
+        Espere @${room.game.currentTurn.split('@')[0]}
+        
+        Quando *desiste* de se render e admitir a derrota`
+                    if (room.x !== room.o) await client.sendMessage(room.x, str, from, { mentions: parseMention(str) } )
+                    await client.sendMessage(room.o, str, from, { mentions: parseMention(str) } )
+                    } else {
+                    room = {
+                    id: 'tictactoe-' + (+new Date),
+                    x: from,
+                    o: '',
+                    game: new TicTacToe(sender, 'o'),
+                    state: 'WAITING'
+                    }
+                    if (q) room.name = text
+                    reply('Esperando um parceiro' + (q ? ` digite o comando abaixo ${prefix}${command} ${text}` : ''))
+                    this.game[room.id] = room
+                    }
+                 //   }
+                    break
+
+             //   case 'delttc': case 'delttt': {
+                    if(!isGroup) return reply(ptbr.grupo())
+                    if(!isUser) return reply(ptbr.userB())
+                    this.game = this.game ? this.game : {}
+                    try {
+                    if (this.game) {
+                    delete this.game
+                    client.sendMessage(from, `Excluiu sessão de TTT com sucesso`, m)
+                    } else if (!this.game) {
+                    reply(`Sessão de TTT não existe`)
+                    } else throw '?'
+                    } catch (e) {
+                    reply('danificado')
+                    }
+                 //   }
+                    break
 
             case "level":
                 if (!isLevelingOn) return reply("o leveling nao ta ativo, peca pra algum adm ativar!!!")
