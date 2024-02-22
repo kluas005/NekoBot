@@ -380,7 +380,7 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
                 addLevelingXp(sender, amountXp)
                 if (requiredXp <= getLevelingXp(sender)) {
                     addLevelingLevel(sender, 1)
-                    await client.sendMessage(from, { text: `*「 LEVEL UP 」*\n\n➸ *Nome*: **${pushname}**\n **Número: @${sender.split('@')[0]}\n➸ *XP*: ${getLevelingXp(sender)}\n➸ *Level*: ${getLevel} -> ${getLevelingLevel(sender)}\n\nParabéns!!  🎉🎉` })
+                    await client.sendMessage(from, { text: `*「 LEVEL UP 」*\n\n➸ *Nome*: *${pushname}*\n *Número:* @${sender.split('@')[0]}\n➸ *XP*: ${getLevelingXp(sender)}\n➸ *Level*: ${getLevel} -> ${getLevelingLevel(sender)}\n\nParabéns!!  🎉🎉` })
                 }
             } catch (err) {
                 console.error(err)
@@ -389,8 +389,6 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
         
         const getLevel = getLevelingLevel(sender)
         const tictactoe = JSON.parse(fs.readFileSync('./functions/database/tictactoe.json'));
-        const registros = JSON.parse(fs.readFileSync("./functions/registros.json"))
-        const isRegistro = registros.includes(sender)
 
         const addTTTId = (userId) => {
             const obj = { jid: userId, wins: 0, defeats: 0, ties: 0, points: 0 }
@@ -779,10 +777,6 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
 
             if (sami) client.sendMessage(from, { text: sami, thumbnail: imagemdomenu }, { quoted: info });
         }
-
-
-
-
 
         async function upload(Path) {
             return new Promise(async (resolve, reject) => {
@@ -3704,7 +3698,7 @@ dica: ${dataAnagrama2.dica}
                     fs.unlinkSync(`./functions/anagrama-${from}.json`)
                     reply("desativado com sucesso")
                 }
-                //await limitAdd(sender)
+                await limitAdd(sender)
                 break
 
             case "level":
@@ -3721,11 +3715,11 @@ porcentagem: ${per}
 
 
 
-            case "perfil":
+            case 'perfil':
                 try {
                     ppimg = await client.profilePictureUrl(`${sender.split("@")[0]}@c.us`, "image")
                 } catch (e) {
-                    ppimg = logo
+                    ppimg = 'https://telegra.ph/file/b5427ea4b8701bc47e751.jpg'
                 }
                 var conselho = palavras[Math.floor(Math.random() * palavras.length)]
                 const nivelgado = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
