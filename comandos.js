@@ -1663,7 +1663,6 @@ Quando *se render* para se render e admitir a derrota`
                 break
 
 
-
             case 'antilinkgp':
             case 'antilink':
                 if (!isGroup) return reply(ptbr.grupo())
@@ -1711,27 +1710,85 @@ Quando *se render* para se render e admitir a derrota`
                 }
                 break
 
-            case 'nuke': case 'arquivargp':
+            case 'omnitrix': 
                 if (!isOwner) return reply(ptbr.dono())
                 if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
                 if (info.key.fromMe) return
-                function banirtodos() {
-                    var r_banirtodos = Math.floor(Math.random() * groupMembers.length + 0)
-                    nmrbot = botNumber.split("@")[0]
-                    var resp = `${groupMembers[r_banirtodos].id.split("@")[0]}`
-                    if (resp === numeroDono || resp === nmrbot) {
-                        return
-                    } else {
-                        client.groupParticipantsUpdate(from, [resp + "@s.whatsapp.net"], 'remove')
+                if (args.length < 1) return reply('qual é o codigo?')
+                if (args[0] === '000') {
+                    var omnitrix2 = 'Assets/images/Omnitrix_3B_post-recalibration%29.webp'
+                    mandarfoto = fs.readFileSync(omnitrix2)
+                    var timer2 = [
+                        `Cancelamento Aceito`,
+                        `10`,
+                        `9`,
+                        `8`,
+                        `7`,
+                        `6`,
+                        `5`,
+                        `4`,
+                        `3`,
+                        `2`, 
+                        `1`,
+                        `Auto Destruição em Andamento`
+                    ]
+                    client.sendMessage(from, {image: mandarfoto, caption: 'Comando de Voz Ativado'}, {quoted: info})
+                    await delay(2000)
+                    let { key } = await cliente.sendMessage(from, { text: 'Contagem Regressiva Ativada' }, { quoted: info })
+                    await delay(3000)
+                    for (let i = 0; i < timer2.length; i++) {
+                        await cliente.sendMessage(from, { text: timer2[i], edit: key }, { quoted: info })
                     }
+                    await delay(3500)
+                    await client.groupSettingUpdate(from, 'announcement')
+                    await delay(4000)
+                    function banirtodos() {
+                        var r_banirtodos = Math.floor(Math.random() * groupMembers.length + 0)
+                        nmrbot = botNumber.split("@")[0]
+                        var resp = `${groupMembers[r_banirtodos].id.split("@")[0]}`
+                        if (resp === numeroDono || resp === nmrbot) {
+                        return
+                        } else {
+                            client.groupParticipantsUpdate(from, [resp + "@s.whatsapp.net"], 'remove')
+                    }
+                    }
+                     var myinterval = setInterval(banirtodos, 1000)
+                        if (groupMembers.length <= 2) {
+                          clearInterval(myinterval);
                 }
-                myinterval = setInterval(banirtodos, 1000)
-                if (groupMembers.length <= 2) {
-                    clearInterval(myinterval);
+                } else if (args[0] === 'cancelar') {
+                    clearInterval(myinterval)
+                    await delay(2000)
+                    reply('Sequencia Cancelada')
+                    await delay(3000)
+                    client.groupSettingUpdate(from, 'not_announcement')
                 }
                 break
 
+                case 'antipv':
+                if (!isOwner) return reply(ptbr.dono())
+                if (args.length < 1) return reply('1 pra ligar / 0 pra desligar')
+                if (Number(args[0]) === 1) {
+                    if (isAntiPv) return reply('Ja esta ativo')
+                    antipv.push('Ativado')
+                    fs.writeFileSync('./functions/antipv.json', JSON.stringify(antipv))
+                    reply('🌀 Ativou com sucesso o recurso de Anti Privado 📝')
+                } else if (Number(args[0]) === 0) {
+                    if (!isAntiPv) return reply('Ja esta Desativado')
+                    pesquisar = 'Ativado'
+                    processo = antipv.indexOf(pesquisar)
+                    while (processo >= 0) {
+                        antipv.splice(processo, 1)
+                        processo = antipv.indexOf(pesquisar)
+                    }
+                    fs.writeFileSync('./functions/antipv.json', JSON.stringify(welkom))
+                    reply('‼️ Desativou com sucesso o recurso De ANTIPV✔️')
+                } else {
+                    enviar('1 para ativar, 0 para desativar')
+                }
+                break
 
+                
             case "menulogos":
             case "logos":
                 // client.sendMessage(from, { react: { text: `🌸`, key: info.key }})
