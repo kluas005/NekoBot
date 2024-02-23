@@ -59,7 +59,8 @@ const _registered = JSON.parse(fs.readFileSync('./database/user/registered.json'
 const { getRegisterNo, getRegisterName, getRegisterSerial, getRegisterAge, getRegisterTime, getRegisteredRandomId, addRegisteredUser, createSerial, checkRegisteredUser } = require('./lib/register.js')
 
 /* Respostas **/
-const { ptbr } = require('./mess')
+const { ptbr } = require('./mess');
+const { ytdownload } = require('./functions/Download/fileimport.js');
 
 module.exports = client = async (client, info, connection, prefix, nomeBot, NomeBot, NomeDoBot, nomeDono, numeroDono, color, DLT_FL) => {
     const cliente = client;
@@ -389,77 +390,6 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
         
         const getLevel = getLevelingLevel(sender)
         const tictactoe = JSON.parse(fs.readFileSync('./functions/database/tictactoe.json'));
-
-
-/// tictactoe
-
-const parseMention = (text = '') => {
-    return [...text.matchAll(/@([0-9]{5,16}|0)/g)].map(v => v[1] + '@s.whatsapp.net')
-}
-
-this.game = this.game ? this.game : {}
-	    let room = Object.values(this.game).find(room => room.id && room.game && room.state && room.id.startsWith('tictactoe') && [room.game.playerX, room.game.playerO].includes(sender) && room.state == 'PLAYING')
-	    if (room) {
-	    let ok
-	    let isWin = !1
-	    let isTie = !1
-	    let isSurrender = !1
-	    // reply(`[DEBUG]\n${parseInt(from)}`)
-	    if (!/^([1-9]|(me)?nyerah|surr?ender|off|skip)$/i.test(from)) return
-	    isSurrender = !/^[1-9]$/.test(from)
-	    if (sender !== room.game.currentTurn) { // nek wayahku
-	    if (!isSurrender) return !0
-	    }
-	    if (!isSurrender && 1 > (ok = room.game.turn(sender === room.game.playerO, parseInt(from) - 1))) {
-	    reply({
-	    '-3': 'O jogo acabou',
-	    '-2': 'Inválido',
-	    '-1': 'Posição inválida',
-	    0: 'Posição inválida',
-	    }[ok])
-	    return !0
-	    }
-	    if (sender === room.game.winner) isWin = true
-	    else if (room.game.board === 511) isTie = true
-	    let arr = room.game.render().map(v => {
-	    return {
-	    X: '❌',
-	    O: '⭕',
-	    1: '1️⃣',
-	    2: '2️⃣',
-	    3: '3️⃣',
-	    4: '4️⃣',
-	    5: '5️⃣',
-	    6: '6️⃣',
-	    7: '7️⃣',
-	    8: '8️⃣',
-	    9: '9️⃣',
-	    }[v]
-	    })
-	    if (isSurrender) {
-	    room.game._currentTurn = sender === room.game.playerX
-	    isWin = true
-	    }
-	    let winner = isSurrender ? room.game.currentTurn : room.game.winner
-	    let str = `Room ID: ${room.id}
-
-${arr.slice(0, 3).join('')}
-${arr.slice(3, 6).join('')}
-${arr.slice(6).join('')}
-
-${isWin ? `@${winner.split('@')[0]} Menang!` : isTie ? `Game berakhir` : `Giliran ${['❌', '⭕'][1 * room.game._currentTurn]} (@${room.game.currentTurn.split('@')[0]})`}
-❌: @${room.game.playerX.split('@')[0]}
-⭕: @${room.game.playerO.split('@')[0]}
-
-Quando *se render* para se render e admitir a derrota`
-	    if ((room.game._currentTurn ^ isSurrender ? room.x : room.o) !== m.chat)
-	    room[room.game._currentTurn ^ isSurrender ? 'x' : 'o'] = m.chat
-	    if (room.x !== room.o) await client.sendMessage(room.x, str, from, { mentions: parseMention(str) } )
-	    await client.sendMessage(room.o, str, from, { mentions: parseMention(str) } )
-	    if (isTie || isWin) {
-	    delete this.game[room.id]
-	    }
-	    }
 
         ///////////////////////////////////////////////
         // IS DE functions PARA ADM
@@ -1063,7 +993,7 @@ Quando *se render* para se render e admitir a derrota`
 
             // comandos que utilizam a Api \\
             //case 'play_video':
-            case 'ytmp4':
+         //   case 'ytmp4':
                 try {
                     if (!q) return reply(`coloque um link do youtube para o bot baixar`)
                     client.sendMessage(from, { react: { text: '🕚', key: info.key } })
@@ -1082,7 +1012,7 @@ Quando *se render* para se render e admitir a derrota`
 
 
             //case 'play_audio':
-            case 'ytmp3':
+          //  case 'ytmp3':
                 try {
                     if (!q) return reply(`coloque um link do youtube para o bot baixar`)
                     client.sendMessage(from, { react: { text: '🕚', key: info.key } })
@@ -1101,7 +1031,7 @@ Quando *se render* para se render e admitir a derrota`
 
                 
 
-            case "playvideo":
+               case "playvideo":
             case 'playvd':
                 if (!q) return reply('Coloque o nome da musica também')
                 reply(ptbr.wait())
@@ -1127,6 +1057,8 @@ Quando *se render* para se render e admitir a derrota`
                 })
 
                 break
+
+
 
             case "tiktokvd": {
                 if (q.length < 1) return reply("Por favor, coloque o link do vídeo após o comando.");
@@ -1854,7 +1786,7 @@ Quando *se render* para se render e admitir a derrota`
 ┃ Anti link grupo = ${isAntilinkgp ? 'ON' : 'OFF'}
 ┃ Bem vindo = ${isWelkom ? 'ON' : 'OFF'}
 ╚━━━━━━━━━━━━╝`
-                client.sendMessage(from, { image: { url: logo }, caption: statuszada, thumbnail: null })
+                client.sendMessage(from, { text: statuszada, thumbnail: null })
                 break
 
 
