@@ -60,7 +60,6 @@ const { getRegisterNo, getRegisterName, getRegisterSerial, getRegisterAge, getRe
 
 /* Respostas **/
 const { ptbr } = require('./mess');
-const { ytdownload } = require('./functions/Download/fileimport.js');
 
 module.exports = client = async (client, info, connection, prefix, nomeBot, NomeBot, NomeDoBot, nomeDono, numeroDono, color, DLT_FL) => {
     const cliente = client;
