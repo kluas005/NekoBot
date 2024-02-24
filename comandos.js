@@ -60,6 +60,7 @@ const { getRegisterNo, getRegisterName, getRegisterSerial, getRegisterAge, getRe
 
 /* Respostas **/
 const { ptbr } = require('./mess');
+const { userB } = require('./mess/ptbr.js');
 
 module.exports = client = async (client, info, connection, prefix, nomeBot, NomeBot, NomeDoBot, nomeDono, numeroDono, color, DLT_FL) => {
     const cliente = client;
@@ -991,8 +992,8 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
 
 
             // comandos que utilizam a Api \\
-            //case 'play_video':
-         //   case 'ytmp4':
+            case 'play_video':
+            case 'ytmp4':
                 try {
                     if (!q) return reply(`coloque um link do youtube para o bot baixar`)
                     client.sendMessage(from, { react: { text: '🕚', key: info.key } })
@@ -1010,8 +1011,8 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
                 break
 
 
-            //case 'play_audio':
-          //  case 'ytmp3':
+            case 'play_audio':
+            case 'ytmp3':
                 try {
                     if (!q) return reply(`coloque um link do youtube para o bot baixar`)
                     client.sendMessage(from, { react: { text: '🕚', key: info.key } })
@@ -1032,6 +1033,9 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
 
                case "playvideo":
             case 'playvd':
+                if (!isGroup) return reply(ptbr.grupo())
+                if (!isUser) return reply(ptbr.userB())
+                try {
                 if (!q) return reply('Coloque o nome da musica também')
                 reply(ptbr.wait())
                 fetch(`https://clover-t-bot.onrender.com/yt/playmp4?query=${q}&key=Lady-Bot&username=Lady-Bot`).then(response => response.json()).then(ytbr => {
@@ -1039,12 +1043,17 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
                     client.sendMessage(from, { image: { url: `${ytbr.thumb}` }, caption: `「👤」𝙽𝚘𝚖𝚎  ҂ ${ytbr.title}\n「📺」𝙲𝚊𝚗𝚊𝚕  ҂ ${ytbr.channel}\n「📈」𝚅𝚒𝚎𝚠𝚜  ҂ ${ytbr.views}` }, { quoted: info })
 
                     client.sendMessage(from, { video: { url: ytbr.url }, mimetype: 'video/mp4' }, { quoted: info })
-
                 })
+                } catch (e) {
+                    reply('erro de api')
+                }     
                 break
 
             case "playaudio":
             case 'play':
+                if (!isGroup) return reply(ptbr.grupo())
+                if (!isUser) return reply(ptbr.userB())
+                try {
                 if (!q) return reply('Coloque o nome da musica também')
                 reply(ptbr.wait())
                 fetch(`https://clover-t-bot.onrender.com/yt/playmp4?query=${q}&key=Lady-Bot&username=Lady-Bot`).then(response => response.json()).then(ytbr => {
@@ -1052,12 +1061,11 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
                     client.sendMessage(from, { image: { url: `${ytbr.thumb}` }, caption: `「👤」𝙽𝚘𝚖𝚎  ҂ ${ytbr.title}\n「📺」𝙲𝚊𝚗𝚊𝚕  ҂ ${ytbr.channel}\n「📈」𝚅𝚒𝚎𝚠𝚜  ҂ ${ytbr.views}` }, { quoted: info })
 
                     client.sendMessage(from, { audio: { url: ytbr.url }, mimetype: 'audio/mpeg' }, { quoted: info })
-
                 })
-
+                } catch (e) {
+                    reply('erro de api')
+                }     
                 break
-
-
 
             case "tiktokvd": {
                 if (q.length < 1) return reply("Por favor, coloque o link do vídeo após o comando.");
@@ -3857,9 +3865,13 @@ ${conselho}`
                 }
                 break
 
-            case "play4": {
+            case "play4": 
+            if (!isGroup) return reply(ptbr.grupo())
+            if (!userB) return reply(ptbr.userB())
+            try {    
                 client.sendMessage(from, { react: { text: '🌸️', key: info.key } })
                 if (!q) return reply("digite o nome da música que você deseja exemplo: /play teto m4")
+                ytttts = require('yt-search')
                 ab = args.join(" ")
                 res = await ytttts(ab)
                 reply(ptbr.wait())
@@ -3874,6 +3886,9 @@ ${conselho}`
 
                 sendBimg(from, `${res.all[0].image}`, bla, nomeBot, [
                     { buttonId: `${prefix}playmp3 ${res.all[0].url}`, buttonText: { displayText: '『𝐀𝐔𝐃𝐈𝐎』' }, type: 1 }, { buttonId: `${prefix}playmp4 ${res.all[0].url}`, buttonText: { displayText: '『𝐕𝐈́𝐃𝐄𝐎』' }, type: 1 }], live)
+            } catch (e) {
+                reply('erro')
+                console.log(e)
             }
                 break
 
