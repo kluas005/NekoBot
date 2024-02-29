@@ -841,6 +841,12 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
 					client.sendMessage(from, { image: daftarimg, quoted: info, caption: captionnya, contextInfo: {mentionedJid: [sender]}})                    
 					break
 
+                    case 'registro':
+                        serialUser.push()
+                        regix = 
+                        `Olá`
+                        break
+
             case 'menu': {
                 if (!isUser) return reply(ptbr.userB())
                 client.sendMessage(from, {
@@ -1063,6 +1069,7 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
                     client.sendMessage(from, { audio: { url: ytbr.url }, mimetype: 'audio/mpeg' }, { quoted: info })
                 })
                 } catch (e) {
+                    console.log(e)
                     reply('erro de api')
                 }     
                 break
@@ -1197,8 +1204,6 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
                 case 'thighs':
                 case 'yuri':
                 case 'zettai':
-                //reply("off no momento")
-
                 try {
                     client.sendMessage(sender, { react: { text: '🕚', key: info.key } })
                     fetch(encodeURI(`https://clover-t-bot.onrender.com/nsfw/${command}?username=Lady-Bot&key=Lady-Bot`))
@@ -1213,11 +1218,14 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
                                 //buttons: buttons,
                                 headerType: 4
                             }
+                            setTimeout(() => {
+                                reply(`Olá ${pushname} estou enviando no seu pv...`)
+                            }, 100);
                             client.sendMessage(sender, buttonMessage4, { quoted: info })
                         })
                 } catch (e) {
                     console.log(e)
-                    reply("nao achei a foto, tente novamente mais tarde")
+                    reply("não achei a foto, tente novamente mais tarde")
                 }
 
                 break
@@ -2964,7 +2972,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                     image: { url: imagemdomenu },
                     caption: `╭─⊣〘 ${nomeBot} 〙
 ║
-╠➽𝐔𝐙𝐔𝐀𝐑𝐈𝐎: ${pushname}
+╠➽USER: ${pushname}
 ╠➽𝐕𝐄𝐑𝐒Ã𝐎: 2.5
 ╠➽𝐍𝐎𝐌𝐄:  ${pushname}
 ║
@@ -3068,11 +3076,10 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 } else {
                     var Vitória = "Você perdeu..."
                 }
-                /*
+                
                 let butttons = [
                   {buttonId: `${prefix}cassino`, buttonText: {displayText: '💦PRÓXIMO💦'}, type: 1},
                   ]
-                  */
                 templateMassage = {
                     text: `
 ╔═════🥇︎═════╗
@@ -3084,6 +3091,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                     headerType: 1
                 }
                 client.sendMessage(from, templateMassage)
+            
                 if (Vitória == "Você ganhou!!!") {
                     reply('Parabéns')
                 }

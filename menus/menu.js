@@ -94,8 +94,6 @@ return `
 ║
 ║╭─⊣〘 BRINCADEIRAS 〙
 ║
-║╭─⊣〘 BRINCADEIRAS 〙
-║
 ┃➽${prefix}fazernick
 ┃➽${prefix}Pau
 ┃➽${prefix}ppt
