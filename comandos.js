@@ -58,9 +58,10 @@ const dataz = moment.tz('America/Sao_Paulo').format('DD/MM/YYYY')
 const _registered = JSON.parse(fs.readFileSync('./database/user/registered.json'));
 const { getRegisterNo, getRegisterName, getRegisterSerial, getRegisterAge, getRegisterTime, getRegisteredRandomId, addRegisteredUser, createSerial, checkRegisteredUser } = require('./lib/register.js')
 
+/* Música **/ 
+const { play1, play2 } = require("./functions/lib/scraper-play.js");
 /* Respostas **/
 const { ptbr } = require('./mess');
-const { userB } = require('./mess/ptbr.js');
 
 module.exports = client = async (client, info, connection, prefix, nomeBot, NomeBot, NomeDoBot, nomeDono, numeroDono, color, DLT_FL) => {
     const cliente = client;
@@ -998,81 +999,28 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
 
 
             // comandos que utilizam a Api \\
-            case 'play_video':
-            case 'ytmp4':
-                try {
-                    if (!q) return reply(`coloque um link do youtube para o bot baixar`)
-                    client.sendMessage(from, { react: { text: '🕚', key: info.key } })
-                    var url = q;
-                    var anikit = await fetchJson(`https://fine-gold-squid-yoke.cyclic.app/anikit/ytmp4?username=Lady-Bot&key=Lady-Bot&videoUrl=${url}`)
-                    client.sendMessage(from,
-                        {
-                            video: { url: `${anikit.url}` },
-                            mimetype: 'video/mp4'
-                        })
-                } catch (e) {
-                    return reply(ptbr.erro());
-                    console.log(e)
-                }
-                break
+         
 
-
-            case 'play_audio':
-            case 'ytmp3':
-                try {
-                    if (!q) return reply(`coloque um link do youtube para o bot baixar`)
-                    client.sendMessage(from, { react: { text: '🕚', key: info.key } })
-                    var url = q;
-                    var anikit = await fetchJson(`https://fine-gold-squid-yoke.cyclic.app/anikit/ytmp3?username=Lady-Bot&key=Lady-Bot&videoUrl=${url}`)
-                    client.sendMessage(from,
-                        {
-                            audio: { url: `${anikit.url}` },
-                            mimetype: 'audio/mpeg'
-                        })
-                } catch (e) {
-                    return reply(ptbr.erro());
-                    console.log(e)
-                }
-                break
-
-                
-
-               case "playvideo":
-            case 'playvd':
-                if (!isGroup) return reply(ptbr.grupo())
-                if (!isUser) return reply(ptbr.userB())
-                try {
-                if (!q) return reply('Coloque o nome da musica também')
-                reply(ptbr.wait())
-                fetch(`https://clover-t-bot.onrender.com/yt/playmp4?query=${q}&key=Lady-Bot&username=Lady-Bot`).then(response => response.json()).then(ytbr => {
-
-                    client.sendMessage(from, { image: { url: `${ytbr.thumb}` }, caption: `「👤」𝙽𝚘𝚖𝚎  ҂ ${ytbr.title}\n「📺」𝙲𝚊𝚗𝚊𝚕  ҂ ${ytbr.channel}\n「📈」𝚅𝚒𝚎𝚠𝚜  ҂ ${ytbr.views}` }, { quoted: info })
-
-                    client.sendMessage(from, { video: { url: ytbr.url }, mimetype: 'video/mp4' }, { quoted: info })
-                })
-                } catch (e) {
-                    reply('erro de api')
-                }     
-                break
-
-            case "playaudio":
-            case 'play':
-                if (!isGroup) return reply(ptbr.grupo())
-                if (!isUser) return reply(ptbr.userB())
-                try {
-                if (!q) return reply('Coloque o nome da musica também')
-                reply(ptbr.wait())
-                fetch(`https://clover-t-bot.onrender.com/yt/playmp4?query=${q}&key=Lady-Bot&username=Lady-Bot`).then(response => response.json()).then(ytbr => {
-
-                    client.sendMessage(from, { image: { url: `${ytbr.thumb}` }, caption: `「👤」𝙽𝚘𝚖𝚎  ҂ ${ytbr.title}\n「📺」𝙲𝚊𝚗𝚊𝚕  ҂ ${ytbr.channel}\n「📈」𝚅𝚒𝚎𝚠𝚜  ҂ ${ytbr.views}` }, { quoted: info })
-
-                    client.sendMessage(from, { audio: { url: ytbr.url }, mimetype: 'audio/mpeg' }, { quoted: info })
-                })
-                } catch (e) {
-                    console.log(e)
-                    reply('erro de api')
-                }     
-                break
+                    case 'play': 
+                    if (!q) return reply('coloque algo para pesquisar');
+                    reply('baixando');
+                    play1(q).then(res => { 
+                    client.sendMessage(from, {image: {url: res.thumb}, caption: tema.musica}, {quoted: info});
+                    client.sendMessage(from, {audio: {url: res.download}, mimetype: 'audio/mpeg', fileName: res.titulo}, {quoted: info});
+                    }).catch(() => {
+                    return reply("Erro..");
+                    }); 
+                    break
+                    
+                    case 'play2':
+                    if (!q) return reply('coloque algo para pesquisar');
+                    reply('baixando');
+                    play2(q).then(res => { 
+                    client.sendMessage(from, {video: {url: res.download}}, {quoted: info});
+                    }).catch(() => {
+                    return reply("Erro..");
+                    });
+                    break
 
             case "tiktokvd": {
                 if (q.length < 1) return reply("Por favor, coloque o link do vídeo após o comando.");
