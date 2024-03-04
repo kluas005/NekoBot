@@ -59,7 +59,7 @@ const _registered = JSON.parse(fs.readFileSync('./database/user/registered.json'
 const { getRegisterNo, getRegisterName, getRegisterSerial, getRegisterAge, getRegisterTime, getRegisteredRandomId, addRegisteredUser, createSerial, checkRegisteredUser } = require('./lib/register.js')
 
 /* Música **/ 
-const { play1, play2 } = require("./functions/lib/scraper-play.js");
+const { play, play1, play2 } = require("./functions/lib/scraper-play.js");
 /* Respostas **/
 const { ptbr } = require('./mess');
 
@@ -849,7 +849,7 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
                         break
 
             case 'menu': {
-                if (!isUser) return reply(ptbr.userB())
+                if (!isUser) return reply(ptbr.user())
                 client.sendMessage(from, {
                     react: {
                         text: "🥁",
@@ -1002,70 +1002,31 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
          
 
                     case 'play': 
+                    if(!isGroup) return reply(ptbr.grupo())
+                    if (!isUser) return reply (ptbr.user())
                     if (!q) return reply('coloque algo para pesquisar');
-                    reply('baixando');
-                    play1(q).then(res => { 
-                    client.sendMessage(from, {image: {url: res.thumb}, caption: tema.musica}, {quoted: info});
+                    reply(ptbr.waitmusic());
+                    play2(q).then(res => { 
+                    infomidia = `\n **canal: ${res.canal}**\n\ **Views: ${res.views}**\n\ **Publicado em: ${res.publicado}**`;
+                    client.sendMessage(from, {image: {url: res.thumb}, caption: infomidia }, {quoted: info});
                     client.sendMessage(from, {audio: {url: res.download}, mimetype: 'audio/mpeg', fileName: res.titulo}, {quoted: info});
                     }).catch(() => {
-                    return reply("Erro..");
+                    return reply(ptbr.restriçãodownload());
                     }); 
                     break
                     
                     case 'play2':
+                    if(!isGroup) return reply(ptbr.grupo())
+                    if (!isUser) return reply (ptbr.user())
                     if (!q) return reply('coloque algo para pesquisar');
-                    reply('baixando');
+                    reply(ptbr.waitvideo());
                     play2(q).then(res => { 
-                    client.sendMessage(from, {video: {url: res.download}}, {quoted: info});
+                    infomidia2 = `\n **canal: ${res.canal}**\n\ **Views: ${res.views}**\n\ **Publicado em: ${res.publicado}**`;
+                    client.sendMessage(from, {video: {url: res.download}}, {caption: infomidia2}, {quoted: info});
                     }).catch(() => {
-                    return reply("Erro..");
+                    return reply(ptbr.restriçãodownload());
                     });
                     break
-
-            case "tiktokvd": {
-                if (q.length < 1) return reply("Por favor, coloque o link do vídeo após o comando.");
-                const url = q;
-                const apiUrl = `https://clover-t-bot.onrender.com/download/tiktok?url=${url}&username=Lady-Bot&key=Lady-Bot`;
-                fetch(apiUrl)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.videoSemWt) {
-                            client.sendMessage(from, {
-                                video: { url: data.videoSemWt },
-                                mimetype: 'video/mp4'
-                            });
-                        } else {
-                            return reply("Não foi possível obter o vídeo. Verifique o link e tente novamente.");
-                        }
-                    })
-                    .catch(error => {
-                        console.error(error);
-                        return reply("Ocorreu um erro ao processar o pedido. Tente novamente mais tarde.");
-                    });
-            } break
-
-            case "tiktokad": {
-                if (q.length < 1) return reply("Por favor, coloque o link do vídeo após o comando.");
-                const url = q;
-                const apiUrl = `https://clover-t-bot.onrender.com/download/tiktok?url=${url}&username=Lady-Bot&key=Lady-Bot`;
-                fetch(apiUrl)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.videoSemWt) {
-                            client.sendMessage(from, {
-                                audio: { url: data.audio },
-                                mimetype: 'audio/mpeg'
-                            });
-                        } else {
-                            reply("Não foi possível obter o vídeo. Verifique o link e tente novamente.");
-                        }
-                    })
-                    .catch(error => {
-                        console.error(error);
-                        return reply("Ocorreu um erro ao processar o pedido. Tente novamente mais tarde.");
-                    });
-            } break
-
             /// lembre-se de fazer as adaptações necessárias para funcionar 
             // TROQUE O USERNAME E A KEY 
 
@@ -3047,7 +3008,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
 
             case 'chance':
                 if (!isGroup) return reply(ptbr.grupo())
-                if (!isUser) return reply(ptbr.userB())
+                if (!isUser) return reply(ptbr.user())
                 var avb = body.slice(7)
                 if (args.length < 1) return client.sendMessage(from, { text: `Você precisa digitar da forma correta\nExemplo: ${prefix}chance do luuck ser gay` }, { quoted: info })
                 random = `${Math.floor(Math.random() * 100)}`
@@ -3608,7 +3569,7 @@ dica: ${dataAnagrama2.dica}
 
              //   case 'ttc': case 'ttt': case 'tictactoe': {
                     if(!isGroup) reply(ptbr.grupo())
-                    if(!isUser) reply(ptbr.userB())
+                    if(!isUser) reply(ptbr.user())
                     let TicTacToe = require("./lib/tictactoe.js")
                     this.game = this.game ? this.game : {}
                     if (Object.values(this.game).find(room => room.id.startsWith('tictactoe') && [room.game.playerX, room.game.playerO].includes(sender))) reply ('Você ainda está no jogo')
@@ -3661,7 +3622,7 @@ dica: ${dataAnagrama2.dica}
 
              //   case 'delttc': case 'delttt': {
                     if(!isGroup) return reply(ptbr.grupo())
-                    if(!isUser) return reply(ptbr.userB())
+                    if(!isUser) return reply(ptbr.user())
                     this.game = this.game ? this.game : {}
                     try {
                     if (this.game) {
@@ -3823,7 +3784,7 @@ ${conselho}`
 
             case "play4": 
             if (!isGroup) return reply(ptbr.grupo())
-            if (!userB) return reply(ptbr.userB())
+            if (!userB) return reply(ptbr.user())
             try {    
                 client.sendMessage(from, { react: { text: '🌸️', key: info.key } })
                 if (!q) return reply("digite o nome da música que você deseja exemplo: /play teto m4")

@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 const config = ('./NekoBot.js')
-const {prefix} = config
+const { prefix } = config
  
 exports.wait = () => {
 	return`𝗣𝗿𝗼𝗰𝗲𝘀𝘀𝗮𝗻𝗱𝗼⌛️`
@@ -13,6 +13,10 @@ exports.tterro = () => {
 
 exports.waitmusic = () => {
 	return`⏳Aguarde alguns instantes...⏳\n\nA sua música será enviada em até 2 minutos\nCaso não envie, tente especificar o nome da música.`
+}
+
+exports.waitvideo = () => {
+	return`⏳Aguarde alguns instantes...⏳\n\nO Seu Video será enviado em até 2 minutos\nCaso não envie, tente especificar o nome da música.`
 }
 
 exports.waitfig = () => {
@@ -119,12 +123,16 @@ exports.Botadmin = () => {
 	return`[❗] 𝗘𝘀𝘁𝗲 𝗰𝗼𝗺𝗮𝗻𝗱𝗼 𝘀ó 𝗽𝗼𝗱𝗲 𝘀𝗲𝗿 𝘂𝘀𝗮𝗱𝗼 𝗾𝘂𝗮𝗻𝗱𝗼 𝗼 𝗯𝗼𝘁 𝘀𝗲 𝘁𝗼𝗿𝗻𝗮 𝗮𝗱𝗺𝗶𝗻𝗶𝘀𝘁𝗿𝗮𝗱𝗼𝗿! ❌'`
 }
 
-exports.userB = () => {
+exports.user = () => {
 	return`「 ℹ️ | 𝗥𝗲𝗴𝗶𝘀𝘁𝗿𝗲-𝘀𝗲 」 \n\nO͓̽l͓̽á͓̽ !\n𝗩𝗼𝗰ê 𝗻ã𝗼 𝗲𝘀𝘁á 𝗿𝗲𝗴𝗶𝘀𝘁𝗿𝗮𝗱𝗼(𝗮) 𝗻𝗼 𝗡𝗘𝗞𝗢𝗕𝗢𝗧...\n\n𝗣𝗮𝗿𝗮 𝘀𝗲 𝗿𝗲𝗴𝗶𝘀𝘁𝗿𝗮𝗿 𝘂𝘀𝗲 𝗥𝗲𝗴𝗶𝘀𝘁𝗿𝗮𝗿 𝗡𝗼𝗺𝗲|𝗜𝗱𝗮𝗱𝗲\n𝗘𝘅𝗲𝗺𝗽𝗹𝗼 : 𝗿𝗲𝗴𝗶𝘀𝘁𝗿𝗮𝗿 𝗸𝗹𝗮𝘂𝘀|𝟮𝟬`
 }
 
 exports.nsfw = () => {
 	return`🚫funções NSFW desativadas nesse grupo🚫`
+}
+
+exports.restriçãodownload = () => {
+	return `Midia com Restrição de idade, ou foi deletado`
 }
 
 exports.antinofap = () => {
