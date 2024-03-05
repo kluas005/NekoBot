@@ -19,9 +19,8 @@ async function play1(query) {
                 .then((data) => {
                     let pormat = data.formats
                     let audio = []
-                    let video = []
                     for (let i = 0; i < pormat.length; i++) {
-                    if (pormat[i].mimeType == 'audio/webm; codecs=\"opus\"') {
+                    if (pormat[i].container == 'mp4' && pormat[i].hasVideo == true && pormat[i].hasAudio == true) {
                         let aud = pormat[i]
                         audio.push(aud.url)
                     }

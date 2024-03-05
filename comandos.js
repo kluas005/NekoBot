@@ -34,7 +34,7 @@ const antisticker = JSON.parse(fs.readFileSync('./functions/antisticker.json'))
 const antivid = JSON.parse(fs.readFileSync('./functions/antivideo.json'))
 const autoreact = JSON.parse(fs.readFileSync('./functions/autoreact.json'))
 const { menu, menuadm, menudono, menuanime, wallpaper } = require('./menus/menu.js')
-const { runtime } = require("./functions/myfunc")
+const { runtime } = require("./functions/myfunc.js")
 const { convertSticker } = require("./functions/swm.js");
 const { isUrl } = require("./functions/lib/myfunc.js")
 const { EmojiAPI } = require("emoji-api")
@@ -46,7 +46,7 @@ const { palavrasANA, quizanime, quizanimais } = require('./functions/jogos.js');
 const speed = require("performance-now");
 const { exec, spawn, execSync } = require("child_process")
 const sleep = async (ms) => { return new Promise(resolve => setTimeout(resolve, ms)) }
-const { fetchJson } = require("./functions/lib/fetcher")
+const { fetchJson } = require("./functions/lib/fetcher.js")
 const { Error } = JSON.parse(fs.readFileSync('./functions/Erro.json'));
 const welcome_group = JSON.parse(fs.readFileSync('./functions/welcomegp.json'));
 const antipv = JSON.parse(fs.readFileSync('./functions/antipv.json'))
@@ -58,11 +58,14 @@ const dataz = moment.tz('America/Sao_Paulo').format('DD/MM/YYYY')
 const _registered = JSON.parse(fs.readFileSync('./database/user/registered.json'));
 const { getRegisterNo, getRegisterName, getRegisterSerial, getRegisterAge, getRegisterTime, getRegisteredRandomId, addRegisteredUser, createSerial, checkRegisteredUser } = require('./lib/register.js')
 
+
 /* Música **/ 
 const { play, play1, play2 } = require("./functions/lib/scraper-play.js");
+const { NoticiasAoMinuto } = require('./functions/lib/scraper2.js')
+const { LetradaMusica } = require('./functions/lib/letraMusic.js')
 /* Respostas **/
-const { ptbr } = require('./mess');
-
+const { ptbr } = require('./mess/index.js');
+const { dono } = require('./mess/ptbr.js');
 module.exports = client = async (client, info, connection, prefix, nomeBot, NomeBot, NomeDoBot, nomeDono, numeroDono, color, DLT_FL) => {
     const cliente = client;
     try {
@@ -996,18 +999,16 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
                 })
             } break
 
+            /////
+                
 
-
-            // comandos que utilizam a Api \\
-         
-
-                    case 'play': 
+                case 'play': 
                     if(!isGroup) return reply(ptbr.grupo())
                     if (!isUser) return reply (ptbr.user())
                     if (!q) return reply('coloque algo para pesquisar');
                     reply(ptbr.waitmusic());
-                    play2(q).then(res => { 
-                    infomidia = `\n **canal: ${res.canal}**\n\ **Views: ${res.views}**\n\ **Publicado em: ${res.publicado}**`;
+                    play1(q).then(res => { 
+                    infomidia = `\n *Titulo: ${res.titulo}*\n *Canal: ${res.canal}*\n\ *Views: ${res.views}*\n\ *Publicado em: ${res.postado_em}*`;
                     client.sendMessage(from, {image: {url: res.thumb}, caption: infomidia }, {quoted: info});
                     client.sendMessage(from, {audio: {url: res.download}, mimetype: 'audio/mpeg', fileName: res.titulo}, {quoted: info});
                     }).catch(() => {
@@ -1015,24 +1016,71 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
                     }); 
                     break
                     
-                    case 'play2':
+                case 'play2':
                     if(!isGroup) return reply(ptbr.grupo())
                     if (!isUser) return reply (ptbr.user())
                     if (!q) return reply('coloque algo para pesquisar');
                     reply(ptbr.waitvideo());
                     play2(q).then(res => { 
-                    infomidia2 = `\n **canal: ${res.canal}**\n\ **Views: ${res.views}**\n\ **Publicado em: ${res.publicado}**`;
-                    client.sendMessage(from, {video: {url: res.download}}, {caption: infomidia2}, {quoted: info});
+                    infomidia2 = `\n *Titulo: ${res.titulo}*\n *Canal: ${res.canal}*\n\ *Views: ${res.views}*\n\ *Publicado em: ${res.publicado}*`;
+                    client.sendMessage(from, {video: {url: res.download}, caption: infomidia2}, {quoted: info})
                     }).catch(() => {
                     return reply(ptbr.restriçãodownload());
                     });
                     break
-            /// lembre-se de fazer as adaptações necessárias para funcionar 
-            // TROQUE O USERNAME E A KEY 
+                    
+                case 'ttk':
+                    if(!isGroup) return reply(ptbr.grupo())
+                    if (!isUser) return reply (ptbr.user())
+                    try {
+                    if(!q) return reply('cadê o link?')
+                    if (!q.includes('tiktok')) return reply(`Link Invalido..!!`)
+                    require('./functions/lib/tiktok').Tiktok(q).then( data => {
+                    ttkinfo = `*Titulo:* ${result.title} \n\n *Autor: ${result.author}*`
+                    client.sendMessage(from, {video: { url: data.nowm }, caption: ttkinfo}, { quoted: info })
+                    })
+                    } catch {
+                    reply(ptbr.erro())
+                    }
+                    break
 
-            // clover-t-bot.onrender.com
+                case 'ttk2':
+                    if(!isGroup) return reply(ptbr.grupo())
+                    if (!isUser) return reply (ptbr.user())
+                    try {///TIK TOK AUDIO
+                    if(!q) return reply('cadê o link?')
+                    if (!q.includes('tiktok')) return reply(`Link Invalido..!!`)
+                    require('./functions/lib/tiktok').Tiktok(q).then( data => {
+                    client.sendMessage(from, { audio: { url: data.audio }, mimetype: 'audio/mp4' }, { quoted: info })
+                    })
+                    } catch {
+                    reply(ptbr.erro())
+                    }
+                    break
 
-
+                case 'noticias':
+                    if (!isGroup) return reply(ptbr.grupo())
+                    if (!isUser) return reply(ptbr.user())
+                    reply(ptbr.wait())
+                    try {
+                        const data = await NoticiasAoMinuto();
+                        if (data.resultado.length > 0) {
+                        const noticias = data.resultado.slice(0, 2);
+                        let resposta = `Aqui estão as últimas notícias do Notícias ao Minuto:\n\n`;
+                        for (let i = 0; i < noticias.length; i++) {
+                            resposta += `Título: ${noticias[i].noticia}\n`;
+                            resposta += `Postado em: ${noticias[i].postado}\n`;
+                            resposta += `Categoria: ${noticias[i].categoria}\n`;
+                            resposta += `Link: ${noticias[i].link}\n\n`;}
+                            client.sendMessage(from, {image: {url: noticias[0].imagem}, caption: resposta}, {quoted: info});
+                        } else {
+                        reply('Não foi possível encontrar notícias do Notícias ao Minuto no momento.');}
+                    } catch (error) {
+                        console.error('Erro ao obter notícias do Notícias ao Minuto:', error);
+                        enviar(ptbr.erro());}
+                    break
+                    
+            
             case "cosplay":
             case "waifu":
             case "waifu2":
@@ -2554,8 +2602,8 @@ tem que ter a / e o id do grupo destinado senão não vai.`)
                                 fs.unlinkSync(rane)
                                 // "android-app-store-link": "https://play.google.com/store/search?q=%2B55%2094%209147-2796%20%F0%9F%94%A5%F0%9F%94%A5%F0%9F%94%A5%F0%9F%94%A5%F0%9F%94%A5&c=apps",
                                 var json = {
-                                    "sticker-pack-name": legenda,
-                                    "sticker-pack-publisher": autor
+                                    "sticker-pack-name": `*Feito em ${nomeBot}*`,
+                                    "sticker-pack-publisher": `*Solicitado por ${pushname}*\n *Dia: ${dataz}\Hora: ${hora}*\n *Dono: ${donoOficial}*`
                                 }
                                 var exifAttr = Buffer.from([0x49, 0x49, 0x2A, 0x00, 0x08, 0x00, 0x00, 0x00, 0x01, 0x00, 0x41, 0x57, 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x16, 0x00, 0x00, 0x00])
                                 var jsonBuff = Buffer.from(JSON.stringify(json), "utf-8")
@@ -2580,8 +2628,8 @@ tem que ter a / e o id do grupo destinado senão não vai.`)
                             exec(`ffmpeg -i ${rane} -vcodec libwebp -filter:v fps=fps=15 -lossless 1 -loop 0 -preset default -an -vsync 0 -s 200:200 ${rano}`, (err) => {
                                 fs.unlinkSync(rane)
                                 let json = {
-                                    "sticker-pack-name": legenda,
-                                    "sticker-pack-publisher": autor
+                                    "sticker-pack-name": `Feito em ${nomeBot}`,
+                                    "sticker-pack-publisher": `*Solicitado por ${pushname}*\n *Dia: ${dataz}\Hora: ${hora}*\n *Dono: ${donoOficial}*`
                                 }
                                 let exifAttr = Buffer.from([0x49, 0x49, 0x2A, 0x00, 0x08, 0x00, 0x00, 0x00, 0x01, 0x00, 0x41, 0x57, 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x16, 0x00, 0x00, 0x00])
                                 let jsonBuff = Buffer.from(JSON.stringify(json), "utf-8")
@@ -2600,7 +2648,7 @@ tem que ter a / e o id do grupo destinado senão não vai.`)
                         }
                     })().catch(e => {
                         console.log(e)
-                        reply("Hmm deu erro")
+                        reply(ptbr.erro())
                         try {
                             if (fs.existsSync("temp.exif")) fs.unlinkSync("temp.exif");
                             if (fs.existsSync(rano)) fs.unlinkSync(rano);
@@ -3782,45 +3830,11 @@ ${conselho}`
                 }
                 break
 
-            case "play4": 
-            if (!isGroup) return reply(ptbr.grupo())
-            if (!userB) return reply(ptbr.user())
-            try {    
-                client.sendMessage(from, { react: { text: '🌸️', key: info.key } })
-                if (!q) return reply("digite o nome da música que você deseja exemplo: /play teto m4")
-                ytttts = require('yt-search')
-                ab = args.join(" ")
-                res = await ytttts(ab)
-                reply(ptbr.wait())
-                blaimg = await getBuffer(res.all[0].image)
-
-                bla = `
-𝑻𝑰𝑻𝑼𝑳𝑶: ${res.all[0].title}
-𝑽𝑰𝑺𝑼𝑨𝑳𝑰𝒁𝑨𝑪̧𝑶̃𝑬𝑺: ${res.all[0].views}\n
-𝑻𝑬𝑴𝑷𝑶: ${res.all[0].timestamp}
-𝑪𝑨𝑵𝑨𝑳: ${res.all[0].author.name}
-𝘚𝘦 𝘷𝘰𝘤𝘦̂ 𝘯𝘢̃𝘰 𝘤𝘰𝘯𝘴𝘦𝘨𝘶𝘪𝘳 𝘷𝘪𝘴𝘶𝘢𝘭𝘪𝘻𝘢𝘳 𝘰𝘴 𝘣𝘰𝘵𝘰̃𝘦𝘴,𝘦𝘹𝘦𝘤𝘶𝘵𝘦 𝘰 𝘱𝘭𝘢𝘺𝘢𝘶𝘥𝘪𝘰, 𝘱𝘭𝘢𝘺𝘷𝘪𝘥𝘦𝘰 𝘤𝘰𝘮𝘰 𝘴𝘦𝘨𝘶𝘯𝘥𝘢 𝘰𝘱𝘤̧𝘢̃𝘰.`
-
-                sendBimg(from, `${res.all[0].image}`, bla, nomeBot, [
-                    { buttonId: `${prefix}playmp3 ${res.all[0].url}`, buttonText: { displayText: '『𝐀𝐔𝐃𝐈𝐎』' }, type: 1 }, { buttonId: `${prefix}playmp4 ${res.all[0].url}`, buttonText: { displayText: '『𝐕𝐈́𝐃𝐄𝐎』' }, type: 1 }], live)
-            } catch (e) {
-                reply('erro')
-                console.log(e)
-            }
-                break
-
-            case 'audio': case 'ytaudio':
-                enviar('*enviando ✨*')
-                bla = await fetchJson(`https://api.brizaloka-api.tk/sociais/v2/ytplaymp3?apikey=brizaloka&query=${q}`)
-                audbla = bla.link_src
-                client.sendMessage(from, { audio: { url: audbla }, mimetype: 'audio/mp4' }, { quoted: live })
-                break
-
             case 'tiktok':
                 if (!q.includes("tiktok")) return reply(`Ops, insira o link, só baixo vídeos / audios do ${command} com link`)
                 sendBtext(from, "𝐃𝐨𝐰𝐧𝐥𝐨𝐚𝐝 𝐃𝐞 𝐕𝐢́𝐝𝐞𝐨 / 𝐀𝐮𝐝𝐢𝐨 [ 𝐓𝐈𝐊𝐓𝐎𝐊 ]\n𝐄𝐬𝐜𝐨𝐥𝐡𝐚 𝐮𝐦𝐚 𝐝𝐚𝐬 𝐨𝐩𝐜̧𝐨̃𝐞𝐬 𝐪𝐮𝐞 𝐝𝐞𝐬𝐞𝐣𝐚", `✨`, [
-                    { buttonId: `${prefix}tiktokaud ${q}`, buttonText: { displayText: `𝐀𝐔𝐃𝐈𝐎` }, type: 100 },
-                    { buttonId: `${prefix}tiktokvd ${q}`, buttonText: { displayText: `𝐕𝐈𝐃𝐄𝐎` }, type: 100 }
+                    { buttonId: `${prefix}ttk ${q}`, buttonText: { displayText: `𝐀𝐔𝐃𝐈𝐎` }, type: 100 },
+                    { buttonId: `${prefix}ttk2 ${q}`, buttonText: { displayText: `𝐕𝐈𝐃𝐄𝐎` }, type: 100 }
                 ], live)
                 break;
 
