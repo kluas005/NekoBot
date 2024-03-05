@@ -2603,8 +2603,8 @@ tem que ter a / e o id do grupo destinado senão não vai.`)
                                 fs.unlinkSync(rane)
                                 // "android-app-store-link": "https://play.google.com/store/search?q=%2B55%2094%209147-2796%20%F0%9F%94%A5%F0%9F%94%A5%F0%9F%94%A5%F0%9F%94%A5%F0%9F%94%A5&c=apps",
                                 var json = {
-                                    "sticker-pack-name": `Feito em\nSolicitado por\nDia:\nHora:\nDono:`,
-                                    "sticker-pack-publisher": `${nomeBot}\n${pushname}\n${dataz}\n${hora}\n${donoOficial}`
+                                    "sticker-pack-name": `🤖Feito por\n💀Solicitado por\n⏰Dia:\n⏰Hora:\n👹Dono:\n📱Numero:`,
+                                    "sticker-pack-publisher": `${nomeBot}\n${pushname}\n${dataz}\n${hora}\n${nomeDono}\n${donoOficial}`
                                 }
                                 var exifAttr = Buffer.from([0x49, 0x49, 0x2A, 0x00, 0x08, 0x00, 0x00, 0x00, 0x01, 0x00, 0x41, 0x57, 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x16, 0x00, 0x00, 0x00])
                                 var jsonBuff = Buffer.from(JSON.stringify(json), "utf-8")
@@ -2629,8 +2629,8 @@ tem que ter a / e o id do grupo destinado senão não vai.`)
                             exec(`ffmpeg -i ${rane} -vcodec libwebp -filter:v fps=fps=15 -lossless 1 -loop 0 -preset default -an -vsync 0 -s 200:200 ${rano}`, (err) => {
                                 fs.unlinkSync(rane)
                                 let json = {
-                                    "sticker-pack-name": `Feito em\nSolicitado por\nDia:\nHora:\nDono:`,
-                                    "sticker-pack-publisher": `${nomeBot}\n${pushname}\n${dataz}\n${hora}\n${donoOficial}`
+                                    "sticker-pack-name": `🤖Feito por\n💀Solicitado por\n⏰Dia:\n⏰Hora:\n👹Dono:\n📱Numero:`,
+                                    "sticker-pack-publisher": `${nomeBot}\n${pushname}\n${dataz}\n${hora}\n${nomeDono}\n${donoOficial}`
                                 }
                                 let exifAttr = Buffer.from([0x49, 0x49, 0x2A, 0x00, 0x08, 0x00, 0x00, 0x00, 0x01, 0x00, 0x41, 0x57, 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x16, 0x00, 0x00, 0x00])
                                 let jsonBuff = Buffer.from(JSON.stringify(json), "utf-8")
@@ -3522,14 +3522,6 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                     }
                 }
                 break
-
-            case "tiktokvd": {
-                if (q < 1) return reply("kd o link do video?")
-                reply("aguarde...")
-                const fitat = await fetchJson(`https://fine-gold-squid-yoke.cyclic.app/anikit/tiktok?username=SUPREMO&key=Adm&videoUrl=${q}`)
-                const lip = fitat.link
-                client.sendMessage(from, { video: { url: `${lip}` } }, { quoted: info });
-            } break
 
             case 'listapremium':
             case 'premiumlist':
