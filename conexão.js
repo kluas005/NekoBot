@@ -379,7 +379,7 @@ try {
                             client.sendMessage(anu.id,
                                 {
                                     image: { url: 'https://telegra.ph/file/91734dc02ee089ecc883b.jpg' },
-                                    caption: `❤Bem♤vindo(a) 𝘢𝘰 𝘨𝘳𝘶𝘱𝘰:\n*${metadata.subject}*\nLEIA REGRAS E SEJA BEM VINDO(A)\n\n\n${NomeDoBot}`,
+                                    caption: `❤Bem♤vindo(a) 𝘢𝘰 𝘨𝘳𝘶𝘱𝘰: ${pushName}\n*${metadata.subject}*\nLEIA REGRAS E SEJA BEM VINDO(A)\n\n\n${NomeDoBot}`,
                                     headerType: 4
                                 })
 
@@ -392,7 +392,7 @@ try {
                             client.sendMessage(anu.id,
                                 {
                                     image: { url: 'https://telegra.ph/file/91734dc02ee089ecc883b.jpg' },
-                                    caption: `OLA POVO DO GRUPO:\n*${metadata.subject}*\n\nO Membro: @${num.split('@')[0]}\n\nSaiu do Grp ou foi Banido.`,
+                                    caption: `OLA POVO DO GRUPO:\n*${metadata.subject}*\n\nO Membro: ${pushName} @${num.split('@')[0]}\n\nSaiu do Grp ou foi Banido.`,
                                     headerType: 4
                                 })
 
