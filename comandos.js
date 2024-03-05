@@ -53,12 +53,18 @@ const antipv = JSON.parse(fs.readFileSync('./functions/antipv.json'))
 const antilinkgp = JSON.parse(fs.readFileSync('./functions/antilinkgp.json'))
 const progp = JSON.parse(fs.readFileSync('./functions/pro.json'))
 const welkom = JSON.parse(fs.readFileSync('./functions/welkom.json'));
-const hora = moment.tz('America/Sao_Paulo').format('HH:mm:ss');
+const hora = moment.tz('America/Sao_Paulo').format('HH:mm');
 const dataz = moment.tz('America/Sao_Paulo').format('DD/MM/YYYY')
 const _registered = JSON.parse(fs.readFileSync('./database/user/registered.json'));
 const { getRegisterNo, getRegisterName, getRegisterSerial, getRegisterAge, getRegisterTime, getRegisteredRandomId, addRegisteredUser, createSerial, checkRegisteredUser } = require('./lib/register.js')
 
+const { init, askAI, Chat } = require("bard-ai")
 
+const token = {//SEU TOKEN IA
+    bard: "PRÓXIMO VÍDEO ENSINO A PEGAR",
+    gpt : '',
+    bing : "",
+   }
 /* Música **/ 
 const { play, play1, play2 } = require("./functions/lib/scraper-play.js");
 const { NoticiasAoMinuto } = require('./functions/lib/scraper2.js')
@@ -227,6 +233,7 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
             }
         }
 
+        
 
         const addLevelingLevel = (userId, amount) => {
             let position = false
@@ -621,8 +628,8 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
                 if (!budy2.includes("http")) return
                 if (isBot) return
                 linkgpp = await client.groupInviteCode(from)
-                if (budy.match(`${linkgpp}`)) return reply('*Link do nosso grupo, não irei remover.. *')
-                if (isGroupAdmins) return reply("*Link detectado, porém usuário é admin*")
+                if (budy.match(`${linkgpp}`)) return
+                if (isGroupAdmins) return
                 if (!JSON.stringify(groupMembers).includes(sender)) return
                 client.sendMessage(from, { delete: { remoteJid: from, fromMe: false, id: info.key.id, participant: [sender] } })
                 client.groupParticipantsUpdate(from, [sender], 'remove')
@@ -1035,6 +1042,7 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
                     try {
                     if(!q) return reply('cadê o link?')
                     if (!q.includes('tiktok')) return reply(`Link Invalido..!!`)
+                    reply(ptbr.wait())
                     require('./functions/lib/tiktok').Tiktok(q).then( data => {
                     ttkinfo = `*Titulo:* ${result.title} \n\n *Autor: ${result.author}*`
                     client.sendMessage(from, {video: { url: data.nowm }, caption: ttkinfo}, { quoted: info })
@@ -1050,12 +1058,26 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
                     try {///TIK TOK AUDIO
                     if(!q) return reply('cadê o link?')
                     if (!q.includes('tiktok')) return reply(`Link Invalido..!!`)
+                    reply(ptbr.wait())
                     require('./functions/lib/tiktok').Tiktok(q).then( data => {
                     client.sendMessage(from, { audio: { url: data.audio }, mimetype: 'audio/mp4' }, { quoted: info })
                     })
                     } catch {
                     reply(ptbr.erro())
                     }
+                    break
+
+                    case 'bard':
+                    case 'ask':
+                    if(!isGroup) return reply(ptbr.grupo())
+                    if(!isUser) return reply(ptbr.user())
+                    try{
+                    await init(token.bard);
+                    let pao = await askAI(q)
+
+                    await client.sendMessage(from,{ text: pao }, {quoted: info})
+                    }catch (erro) {
+                    console.log(erro)}
                     break
 
                 case 'noticias':
@@ -1080,6 +1102,23 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
                         enviar(ptbr.erro());}
                     break
                     
+                case 'letra':
+                    if (!isGroup) return reply(ptbr.grupo())
+                    if (!isUser) return reply(ptbr.user())
+                    if (!q) return reply('cadê o nome?');
+                    reply(ptbr.wait())
+                    try {
+                        const musicaInfo = await LetradaMusica(q);
+                        if (musicaInfo.LetraDaMusica && musicaInfo.ImagemMusic) {
+                        client.sendMessage(from, { image: { url: musicaInfo.ImagemMusic }, caption: `\n\n${musicaInfo.LetraDaMusica}`});
+                        } else {
+                        reply(ptbr.erro);
+                        }
+                    } catch (error) {
+                        console.error(error);
+                        reply(ptbr.erro);
+                    }
+                    break;
             
             case "cosplay":
             case "waifu":
@@ -1112,7 +1151,6 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
             case "deidara":
             case "sakura":
             case "tsunade":
-                //reply("off no momento")
                 try {
                     client.sendMessage(from, { react: { text: '🕚', key: info.key } })
                     fetch(encodeURI(`https://clover-t-bot.onrender.com/nime/${command}?username=Lady-Bot&key=Lady-Bot`))
@@ -1184,55 +1222,7 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
                     console.log(e)
                     reply("não achei a foto, tente novamente mais tarde")
                 }
-
                 break
-
-
-
-            case "tiktokvd": {
-                if (q.length < 1) return reply("Por favor, coloque o link do vídeo após o comando.");
-                const url = q;
-                const apiUrl = `https://clover-t-bot.onrender.com/download/tiktok?url=${url}&key=Lady-Bot&username=Lady-Bot`;
-                fetch(apiUrl)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.videoSemWt) {
-                            client.sendMessage(from, {
-                                video: { url: data.videoSemWt },
-                                mimetype: 'video/mp4'
-                            });
-                        } else {
-                            return reply("Não foi possível obter o vídeo. Verifique o link e tente novamente.");
-                        }
-                    })
-                    .catch(error => {
-                        console.error(error);
-                        return reply("Ocorreu um erro ao processar o pedido. Tente novamente mais tarde.");
-                    });
-            } break
-
-            case "tiktokad": {
-                if (q.length < 1) return reply("Por favor, coloque o link do vídeo após o comando.");
-                const url = q;
-                const apiUrl = `https://clover-t-bot.onrender.com/download/tiktok?url=${url}&key=Lady-Bot&username=Lady-Bot`;
-                fetch(apiUrl)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.videoSemWt) {
-                            client.sendMessage(from, {
-                                audio: { url: data.audio },
-                                mimetype: 'audio/mpeg'
-                            });
-                        } else {
-                            reply("Não foi possível obter o vídeo. Verifique o link e tente novamente.");
-                        }
-                    })
-                    .catch(error => {
-                        console.error(error);
-                        return reply("Ocorreu um erro ao processar o pedido. Tente novamente mais tarde.");
-                    });
-            } break
-
             case 'meme': {
                 fetch('https://clover-t-bot.onrender.com/memes?username=SUPREMO&key=SER_SUPREMO').then(response => response.json()).then(data => {
                 client.sendMessage(from, { video: { url: `${data.url}` } }, { quoted: info })
