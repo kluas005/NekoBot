@@ -5,7 +5,7 @@ return `
 ╭─⊣〘 ${nomeBot} 〙
 ║
 ╠➽User: ${pushname}
-╠➽Versão: NekoBotV4
+╠➽Versão: ${nomeBot}
 ╠➽𝐍ome: ${pushname}
 ║
 ║╭─⊣〘 MENUS 〙
@@ -16,10 +16,10 @@ return `
 ║
 ║╭─⊣〘 DOWNLOADER 〙
 ║
-╠➽${prefix}tiktokvd (link)
-╠➽${prefix}tiktokad (link)
+╠➽${prefix}ttk (link)
+╠➽${prefix}ttk2 apenas audio (link)
 ╠➽${prefix}Play (nome da musica)
-╠➽${prefix}Playvideo (nome do video)
+╠➽${prefix}play2 (nome do video)
 ║
 ║╭─⊣〘 ADICIONAIS 〙
 ║
@@ -44,6 +44,7 @@ return `
 ╠➽${prefix}avalie
 ╠➽${prefix}novocmd
 ╠➽${prefix}calcular
+╠➽${prefix}noticias
 ║
 ║╭─⊣〘 MENUS ADM 〙
 ║
@@ -181,8 +182,6 @@ return `
 ╚════• 〘${nomeBot}〙•═════╝
 `
 }
-
-
 
 function menudono(prefix, nomeBot, pushname) {
 
