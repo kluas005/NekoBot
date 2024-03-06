@@ -1071,13 +1071,14 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
                     case 'ask':
                     if(!isGroup) return reply(ptbr.grupo())
                     if(!isUser) return reply(ptbr.user())
+                    reply(ptbr.wait())
                     try{
                     await init(token.bard);
                     let pao = await askAI(q)
-
-                    await client.sendMessage(from,{ text: pao }, {quoted: info})
+                    await delay(1000)
+                    await cliente.sendMessage(from, { text: pao }, { quoted: info })
                     }catch (erro) {
-                    console.log(erro)}
+                    reply(erro)}
                     break
 
                 case 'noticias':
