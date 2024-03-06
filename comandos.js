@@ -61,14 +61,14 @@ const { getRegisterNo, getRegisterName, getRegisterSerial, getRegisterAge, getRe
 const { init, askAI, Chat } = require("bard-ai")
 
 const token = {//SEU TOKEN IA
-    bard: "g.a000hAg8XUfFHTof-p1a4pevEmP9eOUXkeh9EACGfFhdWbzHZesm7hqJWEnXk9l_jMY9L6_YaQACgYKASwSAQASFQHGX2MiEdxN3jL__5lGhg0JZEPkshoVAUF8yKpUVYIJQ9zSNC1oclEcusCr0076",
+    bard: "g.a000hAg8XWJ7evYXBo5ArpTvfllqHHpY9-kr1oZ1fopXmOwyXgj7fgn4O5SW7XaThrykfl2TuQACgYKASoSAQASFQHGX2MiKvKVWzMkes7e5nOJUI0J1xoVAUF8yKokt3bRyC6YbtIPC-1TLRjh0076",
     gpt : '',
     bing : "",
    }
+
 /* Música **/ 
 const { play, play1, play2 } = require("./functions/lib/scraper-play.js");
 const { NoticiasAoMinuto } = require('./functions/lib/scraper2.js')
-const { LetradaMusica } = require('./functions/lib/letraMusic.js')
 /* Respostas **/
 const { ptbr } = require('./mess/index.js');
 const { dono } = require('./mess/ptbr.js');
@@ -1075,10 +1075,9 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
                     try{
                     await init(token.bard);
                     let pao = await askAI(q)
-                    await delay(1000)
                     await cliente.sendMessage(from, { text: pao }, { quoted: info })
                     }catch (erro) {
-                    reply(erro)}
+                    console.log(erro)}
                     break
 
                 case 'noticias':
@@ -1103,24 +1102,6 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
                         enviar(ptbr.erro());}
                     break
                     
-                case 'letra':
-                    if (!isGroup) return reply(ptbr.grupo())
-                    if (!isUser) return reply(ptbr.user())
-                    if (!q) return reply('cadê o nome?');
-                    reply(ptbr.wait())
-                    try {
-                        const musicaInfo = await LetradaMusica(q);
-                        if (musicaInfo.LetraDaMusica && musicaInfo.ImagemMusic) {
-                        client.sendMessage(from, { image: { url: musicaInfo.ImagemMusic }, caption: `\n\n${musicaInfo.LetraDaMusica}`});
-                        } else {
-                        reply(ptbr.erro);
-                        }
-                    } catch (error) {
-                        console.error(error);
-                        reply(ptbr.erro);
-                    }
-                    break;
-            
             case "cosplay":
             case "waifu":
             case "waifu2":

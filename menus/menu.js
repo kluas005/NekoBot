@@ -6,7 +6,6 @@ return `
 ║
 ╠➽User: ${pushname}
 ╠➽Versão: ${nomeBot}
-╠➽𝐍ome: ${pushname}
 ║
 ║╭─⊣〘 MENUS 〙
 ║
@@ -45,6 +44,7 @@ return `
 ╠➽${prefix}novocmd
 ╠➽${prefix}calcular
 ╠➽${prefix}noticias
+╠➽${prefix}bard [pergunte]
 ║
 ║╭─⊣〘 MENUS ADM 〙
 ║
@@ -134,7 +134,6 @@ return `
 ║
 ╠➽User: ${pushname}
 ╠➽Versão: NekoBotV4
-╠➽𝐍ome: ${pushname}
 ║
 ║╭─⊣〘 ADMS 〙
 ║
@@ -190,7 +189,6 @@ return `
 ║
 ╠➽User: ${pushname}
 ╠➽Versão: NekoBotV4
-╠➽𝐍ome: ${pushname}
 ║
 ║╭─⊣〘 MENUS 〙
 ║
@@ -222,7 +220,6 @@ return `
 ║
 ╠➽User: ${pushname}
 ╠➽Versão: NekoBotV4
-╠➽𝐍ome: ${pushname}
 ║
 ║╭─⊣〘 MENUS 〙
 ║
@@ -295,7 +292,6 @@ function wallpaper(prefix, nomeBot, pushname) {
     ║
     ╠➽User: ${pushname}
     ╠➽Versão: NekoBotV4
-    ╠➽𝐍ome: ${pushname}
     ║
     ║╭─⊣〘 MENUS 〙
     ║
