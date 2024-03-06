@@ -1067,8 +1067,8 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
                     }
                     break
 
-                    case 'bard':
-                    case 'ask':
+                case 'bard':
+                case 'ask':
                     if(!isGroup) return reply(ptbr.grupo())
                     if(!isUser) return reply(ptbr.user())
                     reply(ptbr.wait())
