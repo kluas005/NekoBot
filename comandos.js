@@ -61,7 +61,7 @@ const { getRegisterNo, getRegisterName, getRegisterSerial, getRegisterAge, getRe
 const { init, askAI, Chat } = require("bard-ai")
 
 const token = {//SEU TOKEN IA
-    bard: "PRÓXIMO VÍDEO ENSINO A PEGAR",
+    bard: "g.a000hAg8XUfFHTof-p1a4pevEmP9eOUXkeh9EACGfFhdWbzHZesm7hqJWEnXk9l_jMY9L6_YaQACgYKASwSAQASFQHGX2MiEdxN3jL__5lGhg0JZEPkshoVAUF8yKpUVYIJQ9zSNC1oclEcusCr0076",
     gpt : '',
     bing : "",
    }
