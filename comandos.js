@@ -25,22 +25,23 @@ const { fromBuffer } = require("file-type");
 const bye_group2 = JSON.parse(fs.readFileSync('./functions/byegp.json'));
 const { insert, response } = require('./functions/simi.js');
 const premium = JSON.parse(fs.readFileSync('./functions/premium.json'));
-const antidoc = JSON.parse(fs.readFileSync('./functions/antidoc.json'))
-const antiimg = JSON.parse(fs.readFileSync('./functions/antiimg.json'))
+const antidoc = JSON.parse(fs.readFileSync('./database/group/ativadores/antidoc.json'))
+const antiimg = JSON.parse(fs.readFileSync('./database/group/ativadores/antiimg.json'))
 const lista = JSON.parse(fs.readFileSync('./functions/lista.json'))
 const sotoy = JSON.parse(fs.readFileSync('./functions/sotoy.json'))
-const antiaudio = JSON.parse(fs.readFileSync('./functions/antiaudio.json'))
-const antisticker = JSON.parse(fs.readFileSync('./functions/antisticker.json'))
-const antivid = JSON.parse(fs.readFileSync('./functions/antivideo.json'))
-const autoreact = JSON.parse(fs.readFileSync('./functions/autoreact.json'))
+const antiaudio = JSON.parse(fs.readFileSync('./database/group/ativadores/antiaudio.json'))
+const antisticker = JSON.parse(fs.readFileSync('./database/group/ativadores/antisticker.json'))
+const antivid = JSON.parse(fs.readFileSync('./database/group/ativadores/antivideo.json'))
+const autoreact = JSON.parse(fs.readFileSync('./database/group/ativadores/autoreact.json'))
+const muted = JSON.parse(fs.readFileSync('./database/user/muted.json'))
 const { menu, menuadm, menudono, menuanime, wallpaper } = require('./menus/menu.js')
 const { runtime } = require("./functions/myfunc.js")
 const { convertSticker } = require("./functions/swm.js");
 const { isUrl } = require("./functions/lib/myfunc.js")
 const { EmojiAPI } = require("emoji-api")
-const autofigu = JSON.parse(fs.readFileSync('./functions/autofigu.json'))
+const autofigu = JSON.parse(fs.readFileSync('./database/group/ativadores/autofigu.json'))
 const usedCommandRecently = new Set()
-let autosticker = JSON.parse(fs.readFileSync('./functions/autosticker.json'));
+let autosticker = JSON.parse(fs.readFileSync('./database/group/ativadores/autosticker.json'));
 const { menuprem } = require("./functions/menuprem.js")
 const { palavrasANA, quizanime, quizanimais } = require('./functions/jogos.js');
 const speed = require("performance-now");
@@ -49,26 +50,47 @@ const sleep = async (ms) => { return new Promise(resolve => setTimeout(resolve, 
 const { fetchJson } = require("./functions/lib/fetcher.js")
 const { Error } = JSON.parse(fs.readFileSync('./functions/Erro.json'));
 const welcome_group = JSON.parse(fs.readFileSync('./functions/welcomegp.json'));
-const antipv = JSON.parse(fs.readFileSync('./functions/antipv.json'))
-const antilinkgp = JSON.parse(fs.readFileSync('./functions/antilinkgp.json'))
+const antipv = JSON.parse(fs.readFileSync('./database/group/ativadores/antipv.json'))
+const antilinkgp = JSON.parse(fs.readFileSync('./database/group/ativadores/antilinkgp.json'))
 const progp = JSON.parse(fs.readFileSync('./functions/pro.json'))
-const welkom = JSON.parse(fs.readFileSync('./functions/welkom.json'));
+const welkom = JSON.parse(fs.readFileSync('./database/group/ativadores/welkom.json'));
 const hora = moment.tz('America/Sao_Paulo').format('HH:mm');
 const dataz = moment.tz('America/Sao_Paulo').format('DD/MM/YYYY')
 const _registered = JSON.parse(fs.readFileSync('./database/user/registered.json'));
-const { getRegisterNo, getRegisterName, getRegisterSerial, getRegisterAge, getRegisterTime, getRegisteredRandomId, addRegisteredUser, createSerial, checkRegisteredUser } = require('./lib/register.js')
+const { getRegisterNo, getRegisterName, getRegisterSerial, getRegisterAge, getRegisterTime, getRegisteredRandomId, addRegisteredUser, createSerial, checkRegisteredUser } = require('./funções/registro/register.js')
+const { isFiltered, addFilter } = require('./funções/lib/spam.js')
 
+/// transforma figurinha em gif
+const webp_mp4 = require("./funções/lib/webp_mp4.js")
+
+/// importação atm
+
+const {checkATMuser, confirmATM, addKoinUser, addATM } = require('./funções/rpg/atm.js')
+
+/// função rpg
+
+const dinheiro = JSON.parse(fs.readFileSync("./database/user/dinheiro/dinheiro.json"));
+const roupab = JSON.parse(fs.readFileSync('./database/user/roupa/roupa.json'));
+const casa = JSON.parse(fs.readFileSync('./database/user/casa/casa.json'));
+const aguacoco = JSON.parse(fs.readFileSync('./database/user/compras/aguacoco.json'));
+const calça = JSON.parse(fs.readFileSync('./database/user/compras/calça.json'));
+const carab = JSON.parse(fs.readFileSync('./database/user/compras/carab.json'));
+const tagrico = JSON.parse(fs.readFileSync('./database/user/compras/tagrico.json'));
+const sapato = JSON.parse(fs.readFileSync('./database/user/compras/sapato.json'));
+const palitor = JSON.parse(fs.readFileSync('./database/user/compras/palitor.json'));
+const espada = JSON.parse(fs.readFileSync('./database/user/compras/espada.json'));
+////
 const { init, askAI, Chat } = require("bard-ai")
 
 const token = {//SEU TOKEN IA
-    bard: "g.a000hAg8XWJ7evYXBo5ArpTvfllqHHpY9-kr1oZ1fopXmOwyXgj7fgn4O5SW7XaThrykfl2TuQACgYKASoSAQASFQHGX2MiKvKVWzMkes7e5nOJUI0J1xoVAUF8yKokt3bRyC6YbtIPC-1TLRjh0076",
+    bard: "AIzaSyBjYlS76GBkkzx0zR9qZkP-WmaMMHSh8Jk",
     gpt : '',
     bing : "",
    }
 
 /* Música **/ 
-const { play, play1, play2 } = require("./functions/lib/scraper-play.js");
-const { NoticiasAoMinuto } = require('./functions/lib/scraper2.js')
+const { play, play1, play2 } = require("./funções/música/scraper-play.js");
+const { NoticiasAoMinuto } = require('./funções/lib/scraper2.js')
 /* Respostas **/
 const { ptbr } = require('./mess/index.js');
 const { dono } = require('./mess/ptbr.js');
@@ -172,6 +194,37 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
                 }, 5000)
             }
         }
+
+        //// sistema rpg
+
+const isRoupab = roupab.includes(sender)
+
+const iscasa = casa.includes(sender)
+
+const isaguacoco = aguacoco.includes(sender)
+
+const isCarab = carab.includes(sender) 
+
+const isCaussa = calça.includes(sender)
+
+const istagrico = tagrico.includes(sender)
+
+const isSapato = sapato.includes(sender)
+
+const isPalitor = palitor.includes(sender) 
+
+const isespada = espada.includes(sender)
+
+/// adiciona dinheiro 
+
+const checkATM = checkATMuser(sender)
+            try {
+                if (checkATM === undefined) addATM(sender)
+                const dinheirosaku = Math.floor((Math.random() * 10) * 50) //GANHA ENTRA 10 * 50 POR CADA MSG
+                addKoinUser(from, dinheirosaku)
+            } catch (err) {
+                console.error(err)
+            }
         ///////////////////////////////////////////////
         //DEFINIÇÕES DO LEVELING
         ///////////////////////////////////////////////
@@ -399,6 +452,7 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
             }
         }
         
+       
         const getLevel = getLevelingLevel(sender)
         const tictactoe = JSON.parse(fs.readFileSync('./functions/database/tictactoe.json'));
 
@@ -442,12 +496,6 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
         const mentions = (teks, memberr, id) => {
             (id == null || id == undefined || id == false) ? client.sendMessage(from, { text: teks.trim(), mentions: memberr }) : client.sendMessage(from, { text: teks.trim(), mentions: memberr })
         }
-
-        const addFilter = (sender) => {
-            usedCommandRecently.add(sender)
-            setTimeout(() => usedCommandRecently.delete(sender), 4000)
-        }
-
 
         const groupIdWelcomed = []
         for (let obj of welcome_group) groupIdWelcomed.push(obj.id)
@@ -818,7 +866,28 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
             }
         }
 
+        const GroupsMutedActived = []
+for(let obj of muted) {
+    GroupsMutedActived.push(obj.jid)
+}
+const isMuted = (isGroup && GroupsMutedActived.indexOf(from) >= 0) ? true : false
+const NumbersMuted = isMuted ? muted[GroupsMutedActived.indexOf(from)].numbers : []
+if(isMuted && NumbersMuted.indexOf(sender) >= 0){
+reply(`🐤😡 *Você deu um piu?* - Agora prepare-se para o seu julgamento!`)
+setTimeout(async () => {
+    client.groupParticipantsUpdate(from, [sender], 'remove')
+}, 1000)
+return
+}
 
+if (isCmd) {
+    if (isFiltered(sender)) {
+    return reply(ptbr.flood(pushname))
+    } else {
+    addFilter(sender)
+    }
+    } 
+            
 
         switch (command) {
 
@@ -851,12 +920,6 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
 					addRegisteredUser(sender, namaUser, umurUser, dataz, serialUser)
 					client.sendMessage(from, { image: daftarimg, quoted: info, caption: captionnya, contextInfo: {mentionedJid: [sender]}})                    
 					break
-
-                    case 'registro':
-                        serialUser.push()
-                        regix = 
-                        `Olá`
-                        break
 
             case 'menu': {
                 if (!isUser) return reply(ptbr.user())
@@ -1008,7 +1071,7 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
 
             /////
                 
-
+            /* Downloader */
                 case 'play': 
                     if(!isGroup) return reply(ptbr.grupo())
                     if (!isUser) return reply (ptbr.user())
@@ -1066,7 +1129,8 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
                     reply(ptbr.erro())
                     }
                     break
-
+                    /// fim da aba de download
+                    
                 case 'bard':
                 case 'ask':
                     if(!isGroup) return reply(ptbr.grupo())
@@ -1504,12 +1568,12 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
                 if (Number(args[0]) === 1) {
                     if (isAntiImg) return reply('Já Esta ativo')
                     antiimg.push(from)
-                    fs.writeFileSync('./functions/antiimg.json', JSON.stringify(antiimg))
+                    fs.writeFileSync('./database/group/ativadores/antiimg.json', JSON.stringify(antiimg))
                     reply('🌸ativou com sucesso o recurso de anti imagem nesse grupo🌸')
                 } else if (Number(args[0]) === 0) {
                     if (!isAntiImg) return reply('Ja esta Desativado.')
                     antiimg.splice(from, 1)
-                    fs.writeFileSync('./functions/antiimg.json', JSON.stringify(antiimg))
+                    fs.writeFileSync('./database/group/ativadores/antiimg.json', JSON.stringify(antiimg))
                     reply('🌸Desativou com sucesso o recurso de anti imagem nesse grupo🌸')
                 } else {
                     if (isAntiImg) {
@@ -1547,7 +1611,7 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
                 if (Number(args[0]) === 1) {
                     if (isAntilinkgp) return reply('Ja esta ativo')
                     antilinkgp.push(from)
-                    fs.writeFileSync('./functions/antilinkgp.json', JSON.stringify(antilinkgp))
+                    fs.writeFileSync('./database/group/ativadores/antilinkgp.json', JSON.stringify(antilinkgp))
                     reply('🌸Ativou com sucesso o recurso de antilinkgp🌸')
                 } else if (Number(args[0]) === 0) {
                     if (!isAntilinkgp) return reply('Ja esta Desativado')
@@ -1557,7 +1621,7 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
                         antilinkgp.splice(processo, 1)
                         processo = antilinkgp.indexOf(pesquisar)
                     }
-                    fs.writeFileSync('./functions/antilinkgp.json', JSON.stringify(antilinkgp))
+                    fs.writeFileSync('./database/group/ativadores/antilinkgp.json', JSON.stringify(antilinkgp))
                     reply('🌸Desativou com sucesso o recurso de antilink de grupo🌸')
                 } else {
                     if (isAntilinkgp) {
@@ -1647,7 +1711,7 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
                 if (Number(args[0]) === 1) {
                     if (isAntiPv) return reply('Ja esta ativo')
                     antipv.push('Ativado')
-                    fs.writeFileSync('./functions/antipv.json', JSON.stringify(antipv))
+                    fs.writeFileSync('./database/group/ativadores/antipv.json', JSON.stringify(antipv))
                     reply('🌀 Ativou com sucesso o recurso de Anti Privado 📝')
                 } else if (Number(args[0]) === 0) {
                     if (!isAntiPv) return reply('Ja esta Desativado')
@@ -1657,7 +1721,7 @@ parabéns ${pushname} 🥳 você ganhou o jogo\nPalavra : ${dataAnagrama.origina
                         antipv.splice(processo, 1)
                         processo = antipv.indexOf(pesquisar)
                     }
-                    fs.writeFileSync('./functions/antipv.json', JSON.stringify(welkom))
+                    fs.writeFileSync('./database/group/ativadores/antipv.json', JSON.stringify(antipv))
                     reply('‼️ Desativou com sucesso o recurso De ANTIPV✔️')
                 } else {
                     enviar('1 para ativar, 0 para desativar')
@@ -1869,7 +1933,7 @@ ${epa}`,
 
 
 
-
+            //// Ativadores
 
             case 'bemvindo':
                 if (!isGroup) return reply(ptbr.grupo())
@@ -1878,7 +1942,7 @@ ${epa}`,
                 if (Number(args[0]) === 1) {
                     if (isWelkom) return reply('Ja esta ativo')
                     welkom.push(from)
-                    fs.writeFileSync('./functions/welkom.json', JSON.stringify(welkom))
+                    fs.writeFileSync('./database/group/ativadores/welkom.json', JSON.stringify(welkom))
                     reply(' Ativou com sucesso o recurso de bem vindo neste grupo 📝')
                 } else if (Number(args[0]) === 0) {
                     if (!isWelkom) return reply('Ja esta Desativado')
@@ -1888,10 +1952,248 @@ ${epa}`,
                         welkom.splice(processo, 1)
                         processo = welkom.indexOf(pesquisar)
                     }
-                    fs.writeFileSync('./functions/welkom.json', JSON.stringify(welkom))
+                    fs.writeFileSync('./database/group/ativadores/welkom.json', JSON.stringify(welkom))
                     reply('‼️ Desativou com sucesso o recurso de bemvindo neste grupo✔️')
                 } else {
                     reply("1 para ativar, 0 para desativar")
+                }
+                break
+
+            case 'antisticker':
+                if (!isGroup) return reply(ptbr.grupo())
+                if (!isGroupAdmins) return reply(ptbr.admin())
+                if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
+                if (Number(args[0]) === 1) {
+                    if (isAntiSticker) return reply('Já Esta ativo')
+                    antisticker.push(from)
+                    fs.writeFileSync('./database/group/ativadores/antisticker.json', JSON.stringify(antisticker))
+                    reply('🌸Ativou com sucesso o recurso de anti-sticker nesse grupo🌸')
+                } else if (Number(args[0]) === 0) {
+                    if (!isAntiSticker) return reply('Ja esta Desativado.')
+                    antisticker.splice(from, 1)
+                    fs.writeFileSync('./database/group/ativadores/antisticker.json', JSON.stringify(antisticker))
+                    reply('🌸Desativou com sucesso o recurso de anti-sticker nesse grupo 🌸')
+                } else {
+                    if (isAntiSticker) {
+                        buttons02 = [
+                            { buttonId: `${prefix + command} 0`, buttonText: { displayText: '[🌸] DESATIVAR [🌸]' }, type: 1 }
+                        ]
+                    } else {
+                        buttons02 = [
+                            { buttonId: `${prefix + command} 1`, buttonText: { displayText: '[🌸] ATIVAR [🌸]' }, type: 1 }
+                        ]
+                    }
+                    buttonMessage02 = {
+                        text: `╭═─────═⌘═────═╮   
+👑 𝐀𝐍𝐓𝐈 STICKER 👑
+
+𝐔𝐒𝐔Á𝐑𝐈𝐎: ${pushname}
+
+𝐆𝐑𝐔𝐏𝐎: ${groupName}
+╰═─────═⌘═────═╯
+`,
+                        footer: `STATUS DO ANTI-STICKER AGORA:${isAntiSticker ? 'ATIVADO' : 'DESATIVAR'}\n`,
+                        //buttons: buttons02,
+                        headerType: 4,
+                        contextInfo: { forwardingScore: 999, isForwarded: true }
+                    }
+                    client.sendMessage(from, buttonMessage02, { quoted: info })
+                }
+                break
+
+            case 'antiimg':
+                if (!isGroup) return reply(ptbr.grupo())
+                if (!isGroupAdmins) return reply(ptbr.admin())
+                if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
+                if (Number(args[0]) === 1) {
+                    if (isAntiImg) return reply('Já Esta ativo')
+                    antiimg.push(from)
+                    fs.writeFileSync('./database/group/ativadores/antiimg.json', JSON.stringify(antiimg))
+                    reply('🌸ativou com sucesso o recurso de anti imagem nesse grupo🌸')
+                } else if (Number(args[0]) === 0) {
+                    if (!isAntiImg) return reply('Ja esta Desativado.')
+                    antiimg.splice(from, 1)
+                    fs.writeFileSync('./database/group/ativadores/antiimg.json', JSON.stringify(antiimg))
+                    reply('🌸Desativou com sucesso o recurso de anti imagem nesse grupo🌸')
+                } else {
+                    if (isAntiImg) {
+                        buttons002 = [
+                            { buttonId: `${prefix + command} 0`, buttonText: { displayText: '[🌸] DESATIVAR [🌸]' }, type: 1 }
+                        ]
+                    } else {
+                        buttons002 = [
+                            { buttonId: `${prefix + command} 1`, buttonText: { displayText: '[🌸] ATIVAR [🌸]' }, type: 1 }
+                        ]
+                    }
+                    buttonMessage02 = {
+                        text: `╭═─────═⌘═────═╮   
+👑 𝐀𝐍𝐓𝐈 𝐈𝐌𝐀𝐆𝐄𝐌 👑
+
+𝐔𝐒𝐔Á𝐑𝐈𝐎: ${pushname}
+
+𝐆𝐑𝐔𝐏𝐎: ${groupName}
+╰═─────═⌘═────═╯`,
+                        footer: `STATUS DO ANTI-IMG AGORA:${isAntiImg ? 'ATIVADO' : 'DESATIVADO'}\n`,
+                        //buttons: buttons002,
+                        headerType: 4,
+                        contextInfo: { forwardingScore: 999, isForwarded: true }
+                    }
+                    client.sendMessage(from, buttonMessage02, { quoted: info })
+                }
+                break
+
+                case 'antivideo':
+                if (!isGroup) return reply(ptbr.grupo())
+                if (!isGroupAdmins) return reply(ptbr.admin())
+                if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
+                if (Number(args[0]) === 1) {
+                    if (isAntiVid) return reply('Ja esta ativo🤝')
+                    antivid.push(from)
+                    fs.writeFileSync('./database/group/ativadores/antivideo.json', JSON.stringify(antivid))
+                    reply('🌸Ativou com sucesso o recurso de anti video neste grupo✔🌸')
+                } else if (Number(args[0]) === 0) {
+                    if (!isAntiVid) return reply('Ja esta Desativado')
+                    antivid.splice(from, 1)
+                    fs.writeFileSync('./database/group/ativadores/antivideo.json', JSON.stringify(antivid))
+                    reply('🌸Desativou com sucesso o recurso de anti video neste grupo🌸️')
+                } else {
+                    if (isAntiVid) {
+                        buttons02 = [
+                            { buttonId: `${prefix + command} 0`, buttonText: { displayText: '[🌸] DESATIVAR [🌸]' }, type: 1 }
+                        ]
+                    } else {
+                        buttons02 = [
+                            { buttonId: `${prefix + command} 1`, buttonText: { displayText: '[🌸] ATIVAR [🌸]' }, type: 1 }
+                        ]
+                    }
+                    buttonMessage02 = {
+                        text: `╭═─────═⌘═────═╮   
+👑 𝐀𝐍𝐓𝐈 𝐕𝐈𝐃𝐄𝐎 👑
+
+𝐔𝐒𝐔Á𝐑𝐈𝐎: ${pushname}
+
+𝐆𝐑𝐔𝐏𝐎: ${groupName}
+╰═─────═⌘═────═╯ `,
+                        footer: `STATUS DO ANTIVIDEO AGORA: ${isAntiVid ? 'ATIVADO' : 'DESATIVADO'}\n`,
+                        //buttons: buttons02,
+                        headerType: 4,
+                        contextInfo: { forwardingScore: 999, isForwarded: true }
+                    }
+                    client.sendMessage(from, buttonMessage02, { quoted: info })
+                }
+                break
+
+            case 'antiaudio':
+                if (!isGroup) return reply(ptbr.grupo())
+                if (!isGroupAdmins) return reply(ptbr.admin())
+                if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
+                if (Number(args[0]) === 1) {
+                    if (isAntiAudio) return reply('🤝Ja esta ativo🤝')
+                    antiaudio.push(from)
+                    fs.writeFileSync('./database/group/ativadores/antiaudio.json', JSON.stringify(antiaudio))
+                    reply('🌸Ativou com sucesso o recurso de anti audio neste grupo🌸️')
+                } else if (Number(args[0]) === 0) {
+                    if (!isAntiAudio) return reply('🤝Ja esta Desativado🤝')
+                    antiaudio.splice(from, 1)
+                    fs.writeFileSync('./database/group/ativadores/antiaudio.json', JSON.stringify(antiaudio))
+                    reply('🌸Desativou com sucesso o recurso de anti audio neste grupo🌸')
+                } else {
+                    if (isAntiAudio) {
+                        buttons02 = [
+                            { buttonId: `${prefix + command} 0`, buttonText: { displayText: '[🌸] DESATIVAR [🌸]' }, type: 1 }
+                        ]
+                    } else {
+                        buttons02 = [
+                            { buttonId: `${prefix + command} 1`, buttonText: { displayText: '[🌸] ATIVAR [🌸]' }, type: 1 }
+                        ]
+                    }
+                    buttonMessage02 = {
+                        text: `╭═──────═⌘═────═╮   
+👑 𝐀𝐍𝐓𝐈 𝐀𝐔𝐃𝐈𝐎👑
+
+𝐔𝐒𝐔Á𝐑𝐈𝐎: ${pushname}
+
+𝐆𝐑𝐔𝐏𝐎: ${groupName}
+╰═──────═⌘═────═╯
+`,
+                        footer: `STATUS DO ANTI-AUDIO: AGORA ${isAntiAudio ? 'ATIVADO' : 'DESATIVADO'}\n`,
+                        //buttons: buttons02,
+                        headerType: 4,
+                        contextInfo: { forwardingScore: 999, isForwarded: true }
+                    }
+                    client.sendMessage(from, buttonMessage02, { quoted: info })
+                }
+                break
+
+            case 'antidocumento':
+            case 'antidoc':
+                if (!isGroup) return reply(ptbr.grupo())
+                if (!isGroupAdmins) return reply(ptbr.admin())
+                if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
+                if (Number(args[0]) === 1) {
+                    if (Antidoc) return reply('🌸Ja esta ativo🌸')
+                    antidoc.push(from)
+                    fs.writeFileSync('./database/group/ativadores/antidoc.json', JSON.stringify(antidoc))
+                    reply('🌸Ativou com sucesso o recurso de anti documento neste grupo 🌸')
+                } else if (Number(args[0]) === 0) {
+                    if (!Antidoc) return reply('🌸Ja esta Desativado🌸')
+                    pesquisar = from
+                    processo = antidoc.indexOf(pesquisar)
+                    while (processo >= 0) {
+                        antidoc.splice(processo, 1)
+                        processo = antidoc.indexOf(pesquisar)
+                    }
+                    fs.writeFileSync('./database/group/ativadores/antidoc.json', JSON.stringify(antidoc))
+                    reply('🌸Desativou com sucesso o recurso de anti documento neste grupo🌸')
+                } else {
+                    if (Antidoc) {
+                        buttons02 = [
+                            { buttonId: `${prefix + command} 0`, buttonText: { displayText: '[🌸] DESATIVAR [🌸]' }, type: 1 }
+                        ]
+                    } else {
+                        buttons02 = [
+                            { buttonId: `${prefix + command} 1`, buttonText: { displayText: '[🌸] ATIVAR [🌸]' }, type: 1 }
+                        ]
+                    }
+                    buttonMessage02 = {
+                        text: `╭═──────═⌘═────═╮   
+👑 𝐀𝐍𝐓𝐈 𝐃𝐎𝐂𝐔𝐌𝐄𝐍𝐓𝐎 👑
+
+𝐔𝐒𝐔Á𝐑𝐈𝐎: ${pushname}
+
+
+𝐆𝐑𝐔𝐏𝐎: ${groupName}
+╰═──────═⌘═────═╯
+`,
+                        footer: `STATUS DO ANTIDOC AGORA:${Antidoc ? 'ATIVADO' : 'DESATIVADO'}\n`,
+                        //buttons: buttons02,
+                        headerType: 4,
+                        contextInfo: { forwardingScore: 999, isForwarded: true }
+                    }
+                    client.sendMessage(from, buttonMessage02, { quoted: info })
+                }
+                break
+
+            case 'antipv':
+                if (!isOwner) return reply(ptbr.dono())
+                if (args.length < 1) return reply('1 pra ligar / 0 pra desligar')
+                if (Number(args[0]) === 1) {
+                    if (isAntiPv) return reply('Ja esta ativo')
+                    antipv.push('Ativado')
+                    fs.writeFileSync('./database/group/ativadores/antipv.json', JSON.stringify(antipv))
+                    reply('🌀 Ativou com sucesso o recurso de Anti Privado 📝')
+                } else if (Number(args[0]) === 0) {
+                    if (!isAntiPv) return reply('Ja esta Desativado')
+                    pesquisar = 'Ativado'
+                    processo = antipv.indexOf(pesquisar)
+                    while (processo >= 0) {
+                        antipv.splice(processo, 1)
+                        processo = antipv.indexOf(pesquisar)
+                    }
+                    fs.writeFileSync('./database/group/ativadores/antipv.json', JSON.stringify(antipv))
+                    reply('‼️ Desativou com sucesso o recurso De ANTIPV✔️')
+                } else {
+                    enviar('1 para ativar, 0 para desativar')
                 }
                 break
 
@@ -2238,48 +2540,6 @@ ${epa}`,
                 }
                 break
 
-            case 'antisticker':
-                if (!isGroup) return reply(ptbr.grupo())
-                if (!isGroupAdmins) return reply(ptbr.admin())
-                if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
-                if (Number(args[0]) === 1) {
-                    if (isAntiSticker) return reply('Já Esta ativo')
-                    antisticker.push(from)
-                    fs.writeFileSync('./functions/antisticker.json', JSON.stringify(antisticker))
-                    reply('🌸Ativou com sucesso o recurso de anti-sticker nesse grupo🌸')
-                } else if (Number(args[0]) === 0) {
-                    if (!isAntiSticker) return reply('Ja esta Desativado.')
-                    antisticker.splice(from, 1)
-                    fs.writeFileSync('./functions/antisticker.json', JSON.stringify(antisticker))
-                    reply('🌸Desativou com sucesso o recurso de anti-sticker nesse grupo 🌸')
-                } else {
-                    if (isAntiSticker) {
-                        buttons02 = [
-                            { buttonId: `${prefix + command} 0`, buttonText: { displayText: '[🌸] DESATIVAR [🌸]' }, type: 1 }
-                        ]
-                    } else {
-                        buttons02 = [
-                            { buttonId: `${prefix + command} 1`, buttonText: { displayText: '[🌸] ATIVAR [🌸]' }, type: 1 }
-                        ]
-                    }
-                    buttonMessage02 = {
-                        text: `╭═─────═⌘═────═╮   
-👑 𝐀𝐍𝐓𝐈 STICKER 👑
-
-𝐔𝐒𝐔Á𝐑𝐈𝐎: ${pushname}
-
-𝐆𝐑𝐔𝐏𝐎: ${groupName}
-╰═─────═⌘═────═╯
-`,
-                        footer: `STATUS DO ANTI-STICKER AGORA:${isAntiSticker ? 'ATIVADO' : 'DESATIVAR'}\n`,
-                        //buttons: buttons02,
-                        headerType: 4,
-                        contextInfo: { forwardingScore: 999, isForwarded: true }
-                    }
-                    client.sendMessage(from, buttonMessage02, { quoted: info })
-                }
-                break
-
             case 'leave':
                 if (!isGroup) return reply(ptbr.grupo())
                 if (!isGroupAdmins) return reply(ptbr.admin())
@@ -2321,46 +2581,7 @@ ${epa}`,
                 client.sendMessage(from, unmuteMessage)
                 client.groupSettingChange(groupId, GroupSettingChange.messageSend, true)
                 break
-            case 'antiimg':
-                if (!isGroup) return reply(ptbr.grupo())
-                if (!isGroupAdmins) return reply(ptbr.admin())
-                if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
-                if (Number(args[0]) === 1) {
-                    if (isAntiImg) return reply('Já Esta ativo')
-                    antiimg.push(from)
-                    fs.writeFileSync('./functions/antiimg.json', JSON.stringify(antiimg))
-                    reply('🌸ativou com sucesso o recurso de anti imagem nesse grupo🌸')
-                } else if (Number(args[0]) === 0) {
-                    if (!isAntiImg) return reply('Ja esta Desativado.')
-                    antiimg.splice(from, 1)
-                    fs.writeFileSync('./functions/antiimg.json', JSON.stringify(antiimg))
-                    reply('🌸Desativou com sucesso o recurso de anti imagem nesse grupo🌸')
-                } else {
-                    if (isAntiImg) {
-                        buttons002 = [
-                            { buttonId: `${prefix + command} 0`, buttonText: { displayText: '[🌸] DESATIVAR [🌸]' }, type: 1 }
-                        ]
-                    } else {
-                        buttons002 = [
-                            { buttonId: `${prefix + command} 1`, buttonText: { displayText: '[🌸] ATIVAR [🌸]' }, type: 1 }
-                        ]
-                    }
-                    buttonMessage02 = {
-                        text: `╭═─────═⌘═────═╮   
-👑 𝐀𝐍𝐓𝐈 𝐈𝐌𝐀𝐆𝐄𝐌 👑
-
-𝐔𝐒𝐔Á𝐑𝐈𝐎: ${pushname}
-
-𝐆𝐑𝐔𝐏𝐎: ${groupName}
-╰═─────═⌘═────═╯`,
-                        footer: `STATUS DO ANTI-IMG AGORA:${isAntiImg ? 'ATIVADO' : 'DESATIVADO'}\n`,
-                        //buttons: buttons002,
-                        headerType: 4,
-                        contextInfo: { forwardingScore: 999, isForwarded: true }
-                    }
-                    client.sendMessage(from, buttonMessage02, { quoted: info })
-                }
-                break
+            
 
             case "gp":
             case "msgdiretagp": {
@@ -2395,160 +2616,7 @@ tem que ter a / e o id do grupo destinado senão não vai.`)
             }
                 break
 
-            case 'antivideo':
-                if (!isGroup) return reply(ptbr.grupo())
-                if (!isGroupAdmins) return reply(ptbr.admin())
-                if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
-                if (Number(args[0]) === 1) {
-                    if (isAntiVid) return reply('Ja esta ativo🤝')
-                    antivid.push(from)
-                    fs.writeFileSync('./functions/antivideo.json', JSON.stringify(antivid))
-                    reply('🌸Ativou com sucesso o recurso de anti video neste grupo✔🌸')
-                } else if (Number(args[0]) === 0) {
-                    if (!isAntiVid) return reply('Ja esta Desativado')
-                    antivid.splice(from, 1)
-                    fs.writeFileSync('./functions/antivideo.json', JSON.stringify(antivid))
-                    reply('🌸Desativou com sucesso o recurso de anti video neste grupo🌸️')
-                } else {
-                    if (isAntiVid) {
-                        buttons02 = [
-                            { buttonId: `${prefix + command} 0`, buttonText: { displayText: '[🌸] DESATIVAR [🌸]' }, type: 1 }
-                        ]
-                    } else {
-                        buttons02 = [
-                            { buttonId: `${prefix + command} 1`, buttonText: { displayText: '[🌸] ATIVAR [🌸]' }, type: 1 }
-                        ]
-                    }
-                    buttonMessage02 = {
-                        text: `╭═─────═⌘═────═╮   
-👑 𝐀𝐍𝐓𝐈 𝐕𝐈𝐃𝐄𝐎 👑
-
-𝐔𝐒𝐔Á𝐑𝐈𝐎: ${pushname}
-
-𝐆𝐑𝐔𝐏𝐎: ${groupName}
-╰═─────═⌘═────═╯ `,
-                        footer: `STATUS DO ANTIVIDEO AGORA: ${isAntiVid ? 'ATIVADO' : 'DESATIVADO'}\n`,
-                        //buttons: buttons02,
-                        headerType: 4,
-                        contextInfo: { forwardingScore: 999, isForwarded: true }
-                    }
-                    client.sendMessage(from, buttonMessage02, { quoted: info })
-                }
-                break
-
-            case 'antiaudio':
-                if (!isGroup) return reply(ptbr.grupo())
-                if (!isGroupAdmins) return reply(ptbr.admin())
-                if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
-                if (Number(args[0]) === 1) {
-                    if (isAntiAudio) return reply('🤝Ja esta ativo🤝')
-                    antiaudio.push(from)
-                    fs.writeFileSync('./functions/antiaudio.json', JSON.stringify(antiaudio))
-                    reply('🌸Ativou com sucesso o recurso de anti audio neste grupo🌸️')
-                } else if (Number(args[0]) === 0) {
-                    if (!isAntiAudio) return reply('🤝Ja esta Desativado🤝')
-                    antiaudio.splice(from, 1)
-                    fs.writeFileSync('./functions/antiaudio.json', JSON.stringify(antiaudio))
-                    reply('🌸Desativou com sucesso o recurso de anti audio neste grupo🌸')
-                } else {
-                    if (isAntiAudio) {
-                        buttons02 = [
-                            { buttonId: `${prefix + command} 0`, buttonText: { displayText: '[🌸] DESATIVAR [🌸]' }, type: 1 }
-                        ]
-                    } else {
-                        buttons02 = [
-                            { buttonId: `${prefix + command} 1`, buttonText: { displayText: '[🌸] ATIVAR [🌸]' }, type: 1 }
-                        ]
-                    }
-                    buttonMessage02 = {
-                        text: `╭═──────═⌘═────═╮   
-👑 𝐀𝐍𝐓𝐈 𝐀𝐔𝐃𝐈𝐎👑
-
-𝐔𝐒𝐔Á𝐑𝐈𝐎: ${pushname}
-
-𝐆𝐑𝐔𝐏𝐎: ${groupName}
-╰═──────═⌘═────═╯
-`,
-                        footer: `STATUS DO ANTI-AUDIO: AGORA ${isAntiAudio ? 'ATIVADO' : 'DESATIVADO'}\n`,
-                        //buttons: buttons02,
-                        headerType: 4,
-                        contextInfo: { forwardingScore: 999, isForwarded: true }
-                    }
-                    client.sendMessage(from, buttonMessage02, { quoted: info })
-                }
-                break
-
-            case 'antidocumento':
-            case 'antidoc':
-                if (!isGroup) return reply(ptbr.grupo())
-                if (!isGroupAdmins) return reply(ptbr.admin())
-                if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
-                if (Number(args[0]) === 1) {
-                    if (Antidoc) return reply('🌸Ja esta ativo🌸')
-                    antidoc.push(from)
-                    fs.writeFileSync('./functions/antidoc.json', JSON.stringify(antidoc))
-                    reply('🌸Ativou com sucesso o recurso de anti documento neste grupo 🌸')
-                } else if (Number(args[0]) === 0) {
-                    if (!Antidoc) return reply('🌸Ja esta Desativado🌸')
-                    pesquisar = from
-                    processo = antidoc.indexOf(pesquisar)
-                    while (processo >= 0) {
-                        antidoc.splice(processo, 1)
-                        processo = antidoc.indexOf(pesquisar)
-                    }
-                    fs.writeFileSync('./functions/antidoc.json', JSON.stringify(antidoc))
-                    reply('🌸Desativou com sucesso o recurso de anti documento neste grupo🌸')
-                } else {
-                    if (Antidoc) {
-                        buttons02 = [
-                            { buttonId: `${prefix + command} 0`, buttonText: { displayText: '[🌸] DESATIVAR [🌸]' }, type: 1 }
-                        ]
-                    } else {
-                        buttons02 = [
-                            { buttonId: `${prefix + command} 1`, buttonText: { displayText: '[🌸] ATIVAR [🌸]' }, type: 1 }
-                        ]
-                    }
-                    buttonMessage02 = {
-                        text: `╭═──────═⌘═────═╮   
-👑 𝐀𝐍𝐓𝐈 𝐃𝐎𝐂𝐔𝐌𝐄𝐍𝐓𝐎 👑
-
-𝐔𝐒𝐔Á𝐑𝐈𝐎: ${pushname}
-
-
-𝐆𝐑𝐔𝐏𝐎: ${groupName}
-╰═──────═⌘═────═╯
-`,
-                        footer: `STATUS DO ANTIDOC AGORA:${Antidoc ? 'ATIVADO' : 'DESATIVADO'}\n`,
-                        //buttons: buttons02,
-                        headerType: 4,
-                        contextInfo: { forwardingScore: 999, isForwarded: true }
-                    }
-                    client.sendMessage(from, buttonMessage02, { quoted: info })
-                }
-                break
-
-            case 'antipv':
-                if (!isOwner) return reply(ptbr.dono())
-                if (args.length < 1) return reply('1 pra ligar / 0 pra desligar')
-                if (Number(args[0]) === 1) {
-                    if (isAntiPv) return reply('Ja esta ativo')
-                    antipv.push('Ativado')
-                    fs.writeFileSync('./functions/antipv.json', JSON.stringify(antipv))
-                    reply('🌀 Ativou com sucesso o recurso de Anti Privado 📝')
-                } else if (Number(args[0]) === 0) {
-                    if (!isAntiPv) return reply('Ja esta Desativado')
-                    pesquisar = 'Ativado'
-                    processo = antipv.indexOf(pesquisar)
-                    while (processo >= 0) {
-                        antipv.splice(processo, 1)
-                        processo = antipv.indexOf(pesquisar)
-                    }
-                    fs.writeFileSync('./functions/antipv.json', JSON.stringify(welkom))
-                    reply('‼️ Desativou com sucesso o recurso De ANTIPV✔️')
-                } else {
-                    enviar('1 para ativar, 0 para desativar')
-                }
-                break
+            
 
                 /// sticker 
             case 'fstiker':
@@ -2628,6 +2696,25 @@ tem que ter a / e o id do grupo destinado senão não vai.`)
                             if (fs.existsSync(media)) fs.unlinkSync(media);
                         } catch { }
                     })
+                }
+                break
+
+            case 'togif':
+                if (!isGroup) return reply(ptbr.grupo(pushname))
+                if (!isUser) return reply(ptbr.user(pushname))
+                if(!isQuotedSticker) return reply('Marque a figurinha animada!')
+                try {
+                if((isMedia && !info.message.videoMessage || isQuotedSticker) && !q.length <= 1) {
+                buff = await getFileBuffer(info.message.extendedTextMessage.contextInfo.quotedMessage.stickerMessage, 'sticker')
+                reply('Aguarde, estou convertendo a figurinha para o formato gif.')
+                a = await webp_mp4(buff)
+                client.sendMessage(from, {video: {url: a}, gifPlayback: true, fileName: `stick.gif`}, {quoted: live}).catch(e => {
+                reply("Erro ao realizar o envio do sticker!") 
+                })
+                DLT_FL(buff)
+                }
+                } catch {
+                reply(ptbr.erro())
                 }
                 break
 
@@ -2974,7 +3061,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
             }
                 break
 
-            //CASSINO
+            //CASSINO E JOGOS
             case 'cassino':
                 const soto = [
                     '🍊 : 🍒 : 🍐',
@@ -3065,6 +3152,189 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 var kl = ti[Math.floor(Math.random() * ti.length)]
                 reply('COMO VOCÊ É GAY: *' + rate + '*\n\nSUA PORCENTAGEM GAY : ' + kl + '%\n ESSE AÍ AMA DÁ O CU')
                 break
+
+            case 'minerardima':
+            case 'minerardiamante':
+                if (!isGroup) return reply(ptbr.grupo())
+                if (!isUser) return reply(ptbr.user())
+                const minerardima = `${Math.floor(Math.random() * 105)}`
+
+                client.sendMessage(from, {image: fs.readFileSync('./funções/rpg/image/diamante.jpg'), caption: `
+
+                    *┏ 「️ ⛏️ MINERIOS ⛏️* 」  
+                    *│*
+                    *│▢ 💎 DIAMANTE* [${minerardima}]
+                *│*
+                    *┗ 「️⛏️ MINERIOS ⛏️*」  
+                    `},{quoted: info})
+                break
+
+                /// rpg
+
+            case 'banco': { 
+                if (!isGroup) return reply(ptbr.grupo(pushname))
+                if (!isUser) return reply(ptbr.user(pushname))
+                var saldo = checkATMuser(sender)
+                client.sendMessage(from, {image: fs.readFileSync('./funções/rpg/image/banco.jpg'), caption: `
+                『 👤 』 *NOME: ${pushname}*
+                『 🏛️ 』 *BANCO: NUBANK*
+                『 💵 』 *DINHEIRO: ${saldo}*
+                『 🏡 』 *CASA: ${iscasa? "SIM ✅" : "NÃO ❌"}*
+                『 🤑 』 *RICO: ${istagrico? "SIM ✅" : "NÃO ❌"}*
+                `},{quoted: info})
+                }
+                break
+
+            case 'pix':
+                        if (!isGroup) return reply(ptbr.grupo(pushname))
+                        if (!isUser) return reply(ptbr.user(pushname))
+                        if (args.length < 1) return reply(`Modo certo de se usar ${prefix}pix @ | valor`)
+                        if (!q.includes('/')) return reply(`Você precisa colocar o valor que deseja transferir.\n\nExemplo:\n\n*${prefix}Pix @pessoa / 3000*`)
+                        const tujuan = q.substring(0, q.indexOf('/') - 1)
+                        const jumblah = q.substring(q.lastIndexOf('/') + 1)
+                        if(isNaN(jumblah)) return await reply('O valor precisa está em números...')
+                        if (jumblah < 50 ) return reply(`transfrência mínima e de 50 Coins`)
+                        if (checkATMuser(sender) < jumblah) return reply(`Você não tem Coins suficiente para fazer uma transferência, você precisa ter no minímo 1000 de Coins`)
+                        const tujuantf = `${tujuan.replace("@", '')}@s.whatsapp.net`
+                        fee = 0.00 *  jumblah //IMPOSTO CADA 1 DE DINHERO, ALMENTA E CAI NA SUA CONTA, TODA VEZ QUÊ ALGUÉM FAZER TRANSFERENCIA
+                        hasiltf = jumblah - fee
+                        addKoinUser(tujuantf, hasiltf)
+                        confirmATM(sender, jumblah)
+                        addKoinUser('5524999304661@s.whatsapp.net', fee)
+                                
+                                pingaa = `*TRANSFERÊNCIA REALIZADA*
+
+                [🚹]> ORIGEM: *${sender.split("@")[0]}*
+                [🗽]> DESTINARIO: *${tujuan}*
+                [💵]> VALOR DA TRANSFERÊNCIA: *${jumblah}*
+                [🗒]> BANCO: ${nomeBot}
+                [⚠]> TARIFA: *0,00*
+                `;
+                            
+                client.sendMessage(from, {image: fs.readFileSync('./funções/rpg/image/banco.jpg'), caption: pingaa}, {quoted: info})
+                break
+
+                case 'minerar': {
+                    if (!isGroup) return reply(ptbr.grupo(pushname))
+                    if (!isUser) return reply(ptbr.user(pushname))
+                    // Verificar se o arquivo JSON existe, e criar se não existir
+                    if (!fs.existsSync('./database/user/cooldown/pescarCooldown.json')) {
+                        fs.writeFileSync('./database/user/cooldown/pescarCooldown.json', JSON.stringify({}));
+                    }
+                
+                    // Carregar o objeto pescarCooldown do arquivo JSON
+                    const pescarCooldown = JSON.parse(fs.readFileSync('./database/user/cooldown/pescarCooldown.json', 'utf8'));
+                
+                    const currentTimePescar = Date.now();
+                    const lastPescarTime = pescarCooldown[sender] || 0;
+                    const timeSinceLastPescar = currentTimePescar - lastPescarTime;
+                    const pescarCooldownTime = 5 * 60 * 1000; // 5 minutos em milissegundos
+                
+                    if (timeSinceLastPescar < pescarCooldownTime) {
+                        const remainingTime = (pescarCooldownTime - timeSinceLastPescar) / 1000;
+                        return reply(`Aguarde ${remainingTime.toFixed(0)} segundos antes de minerar novamente.`);
+                    }
+                
+                    reply(`*OLÁ ${pushname}, AGUARDE 5 SEGUNDOS PARA CONCLUÍR A MINERAÇÃO**`);
+                        // Atualizar o tempo da última pescaria no arquivo JSON
+                    pescarCooldown[sender] = currentTimePescar;
+                    fs.writeFileSync('./database/user/cooldown/pescarCooldown.json', JSON.stringify(pescarCooldown));
+                    await sleep(5000);
+                    lagoostas = Math.floor((Math.random() * 150) + 40);
+                    carranguejos = Math.floor((Math.random() * 150) + 30);
+                    camaroes = Math.floor((Math.random() * 150) + 40);
+                    mexilhao = Math.floor((Math.random() * 150) + 50);
+                    var resultadoresultadoo = lagoostas + carranguejos + camaroes + mexilhao;
+                
+                    try {
+                        picc = await client.profilePictureUrl(from, "image");
+                    } catch(e) {
+                        picc = 'https://telegra.ph/file/9651f2a3a24c15ef71dd1.mp4';
+                    }
+                
+                    ds = await getBuffer(picc);
+                
+                    let thumbInfo = `
+                *┏━── *「️ 🔰  M I N E  🔰 」*  ─━┓*
+                *│▢ Total de PEDRAS: ${lagoostas}*
+                *│▢ Total de DIAMANTES: ${carranguejos}*
+                *│▢ Total de OUROS: ${camaroes}*
+                *│▢ Total de FERRO: ${mexilhao}*
+                *│▢ *Resultado Final: ${resultadoresultadoo}*
+                *┗━── *「️ 🔰  M I N E  🔰 」*  ─━┛*
+                [㕚] *Isso significa que foi adicionado em sua carteira R$${resultadoresultadoo},00 em coins!*
+                `;
+                
+             client.sendMessage(from,  {image: ds, caption: `${thumbInfo}`}, {quoted: info});
+                    addKoinUser(sender, +resultadoresultadoo);
+                
+                
+                }
+                    break
+
+            case 'trabalhar':
+                if (!isGroup) return reply(ptbr.grupo(pushname))
+                if (!isUser) return reply(ptbr.user(pushname))
+                minerag = Math.floor((Math.random() * 10) * 150);
+                client.sendMessage(from, {image: fs.readFileSync('./funções/rpg/image/trabalhar.jpg'), caption: `
+
+                *Você Trabalhou e ganhou R$${minerag} Reais*
+
+                `},{quoted: info})
+                addKoinUser(sender, + minerag)
+                break
+
+            case 'pescar':
+                if (!isGroup) return reply(ptbr.grupo(pushname))
+                if (!isUser) return reply(ptbr.user(pushname))
+                pescando = Math.floor((Math.random() * 10) * 150);
+                const lagostas = `${Math.floor(Math.random() * 105)}`
+                const caranguejos = `${Math.floor(Math.random() * 105)}`
+                const mexilhão = `${Math.floor(Math.random() * 105)}`
+                const peixe = `${Math.floor(Math.random() * 105)}`
+
+                client.sendMessage(from, {image: fs.readFileSync('./funções/rpg/image/pescar.jpg'), caption: `
+                ┏━── *「️ 🎣️ 𝐏 𝐄 𝐒 𝐂 𝐀 🎣 」*  ─━┓
+                │▢ Total de Lagostas: ${lagostas}
+                │▢ Total de Caranguejos: ${caranguejos}
+                │▢ Total de peixe:${peixe}
+                │▢ Total de Mexilhão: ${mexilhão}
+                ┗━── *「️ 🎣️ 𝐏 𝐄 𝐒 𝐂 𝐀 🎣 」*  ─━┛
+
+
+
+                E GANHOU ${pescando}R$ 😉 🎣 `},{quoted: info})
+
+                addKoinUser(sender, + pescando)
+
+                break
+
+            case 'alugarcasa':
+                if (!isGroup) return reply(ptbr.grupo(pushname))
+                if (!isUser) return reply(ptbr.user(pushname))
+                if(!JSON.stringify(casa).includes(sender)) return reply(`VOCE NAO TEM UMA CASA USE  ${prefix}casa`)
+                casaluge = Math.floor((Math.random() * 10) * 30);
+                casapronta = Math.floor((Math.random() * 10) * 500);
+                reply(`VOCE ALUGOU A CASA POR ${casaluge} DIAS\n\nVOCE GANHOU  R$${casapronta}`)
+                addKoinUser(sender, + casapronta)
+                break
+
+            case 'casa':{
+                if (!isGroup) return reply(ptbr.grupo(pushname))
+                if (!isUser) return reply(ptbr.user(pushname))
+                const dinheiro = checkATMuser(sender)
+                const checkxpr = checkATMuser(sender, dinheiro) 
+                const quantidader = `300000`
+                if (checkxpr < quantidader) return reply(`*${pushname} VC NAO TEM DINHEIRO SUFICIENTE PARA COMPRAR CASA*\n\n*PREÇO: ${quantidader}*`)
+                var [comprar] = q.split("")
+                if(!q.includes("")) return reply(`Cade a espaço mano?\nExemplo: ${prefix + command} comprar`)  
+                casa.push(`${sender}`)
+                fs.writeFileSync('./database/user/casa/casa.json', JSON.stringify(casa))
+                addKoinUser(sender, - quantidader)
+                reply(`*CASA COMPRADO COM SUCESSO* 😃\n\n*CUSTO 💰: ${quantidader}*`)
+                }
+                break
+                
 
             case 'Fazernick':
             case 'fazernick':

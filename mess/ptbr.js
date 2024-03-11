@@ -147,3 +147,7 @@ exports.sucesso = () => {
 	return `Concluido sz`
 }
 
+exports.flood = (pushname) => {
+	return `para de floodar ${pushname}`
+}
+
