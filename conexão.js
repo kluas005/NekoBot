@@ -1,4 +1,5 @@
 const { match } = require('assert');
+const { clear } = require('console');
 const { connected } = require('process');
 try {
 
@@ -30,7 +31,7 @@ try {
     const antisticker = JSON.parse(fs.readFileSync('./database/group/ativadores/antisticker.json'))
     const antivid = JSON.parse(fs.readFileSync('./database/group/ativadores/antivideo.json'))
     const autoreact = JSON.parse(fs.readFileSync('./database/group/ativadores/autoreact.json'))
-    const { menu, menuadm, menudono, menuanime, wallpaper } = require('./menus/menu.js')
+    const { menu, menuadm, menudono, menuanime, wallpaper, menurpg, lojarpg } = require('./menus/menu.js')
     const { runtime } = require("./functions/myfunc.js")
     const { convertSticker } = require("./functions/swm.js");
     const { isUrl } = require("./functions/lib/myfunc.js")
@@ -152,6 +153,7 @@ try {
         }
 
         if (!client.authState.creds.registered) {
+            console.log(clear)
             const phoneNumber = await question(`\nDigite seu número do WhatsApp:\nEx: ("+55 75 9865-6060")\n `);
             const numeroLimpo = limparNumero(phoneNumber);
             const code = await client.requestPairingCode(numeroLimpo);
@@ -288,6 +290,44 @@ try {
                                 client.sendMessage(from, {
                                     image: fotomenus,
                                     caption: menuanime(prefix, nomeBot, pushname)
+                                })
+                            } break
+
+                            case prefix + "rpg": {
+                                const imagens = [
+                                    './menus/fotos/foto1.jpg',
+                                    './menus/fotos/foto2.jpg',
+                                    './menus/fotos/foto3.jpg',
+                                    './menus/fotos/foto4.jpg',
+                                    './menus/fotos/foto5.jpg',
+                                    './menus/fotos/foto6.jpg'
+                                ];
+                                const randomIndex = Math.floor(Math.random() * imagens.length);
+                                const randomFoto = imagens[randomIndex];
+                                const fotomenus = fs.readFileSync(randomFoto);
+                                client.sendMessage(from, { react: { text: '🕚', key: info.key } })
+                                client.sendMessage(from, {
+                                    image: fotomenus,
+                                    caption: menurpg(prefix, pushname, nomeBot)
+                                })
+                            } break
+
+                            case prefix + "loja rpg": {
+                                const imagens = [
+                                    './menus/fotos/foto1.jpg',
+                                    './menus/fotos/foto2.jpg',
+                                    './menus/fotos/foto3.jpg',
+                                    './menus/fotos/foto4.jpg',
+                                    './menus/fotos/foto5.jpg',
+                                    './menus/fotos/foto6.jpg'
+                                ];
+                                const randomIndex = Math.floor(Math.random() * imagens.length);
+                                const randomFoto = imagens[randomIndex];
+                                const fotomenus = fs.readFileSync(randomFoto);
+                                client.sendMessage(from, { react: { text: '🕚', key: info.key } })
+                                client.sendMessage(from, {
+                                    image: fotomenus,
+                                    caption: lojarpg(prefix, pushname, nomeBot)
                                 })
                             } break
 

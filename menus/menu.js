@@ -93,6 +93,31 @@ return `
 ╠➽${prefix}clima
 ╠➽${prefix}premiumlist
 ║
+║╭─⊣〘 LOJA RPG 〙
+║
+╠➽${prefix}capacete
+╠➽${prefix}paleto
+╠➽${prefix}calça
+╠➽${prefix}sapato
+╠➽${prefix}espada
+╠➽${prefix}tagrico
+╠➽${prefix}casa
+╠➽${prefix}alugarcasa
+╠➽${prefix}aguacoco
+║
+║╭─⊣〘 MENU RPG 〙
+║
+╠➽${prefix}Trabalhar
+╠➽${prefix}Minerar
+╠➽${prefix}Churrasco
+╠➽${prefix}Pescar
+╠➽${prefix}Pix (marca a pessoa) / valor
+╠➽${prefix}Banco
+╠➽${prefix}Money
+╠➽${prefix}tomaraguacoco
+╠➽${prefix}hero (para ver o inventário)
+╠➽${prefix}level
+║
 ║╭─⊣〘 BRINCADEIRAS 〙
 ║
 ┃➽${prefix}fazernick
@@ -114,7 +139,7 @@ return `
 ┃➽${prefix}rankgay
 ┃➽${prefix}rankgado
 ┃➽${prefix}rankcorno
-➽${prefix}gtts PT (alguma coisa)
+┃➽${prefix}gtts pt (alguma coisa)
 ║
 ║╭─⊣〘 FIGURINHAS 〙
 ║
@@ -309,11 +334,62 @@ function wallpaper(prefix, nomeBot, pushname) {
     `
     }
 
+function lojarpg(prefix, pushname, nomeBot) {
+
+    return `
+    ╭─⊣〘 ${nomeBot} 〙
+    ║
+    ╠➽User: ${pushname}
+    ╠➽Versão: NekoBotV4
+    ║
+    ║╭─⊣〘 LOJA RPG 〙
+    ║
+    ╠➽${prefix}capacete
+    ╠➽${prefix}paleto
+    ╠➽${prefix}calça
+    ╠➽${prefix}sapato
+    ╠➽${prefix}espada
+    ╠➽${prefix}tagrico
+    ╠➽${prefix}casa
+    ╠➽${prefix}alugarcasa
+    ╠➽${prefix}aguacoco
+    ║
+    ╚════• 〘${nomeBot}〙•═════╝
+    `
+}
+
+function menurpg(prefix, pushname, nomeBot) {
+    return `
+    ╭─⊣〘 ${nomeBot} 〙
+    ║
+    ╠➽User: ${pushname}
+    ╠➽Versão: NekoBotV4
+    ║
+    ║╭─⊣〘 MENU RPG 〙
+    ║
+    ╠➽${prefix}Trabalhar
+    ╠➽${prefix}Minerar
+    ╠➽${prefix}Churrasco
+    ╠➽${prefix}Pescar
+    ╠➽${prefix}Pix (marca a pessoa) / valor
+    ╠➽${prefix}Banco
+    ╠➽${prefix}Money
+    ╠➽${prefix}tomaraguacoco
+    ╠➽${prefix}hero (para ver o inventário)
+    ╠➽${prefix}level
+    ║
+    ╚════• 〘${nomeBot}〙•═════╝
+    `
+    }
+
+
 
 module.exports = {
 menu,
 menuanime,
 menuadm,
 menudono,
-wallpaper
+wallpaper,
+menurpg,
+lojarpg
 }

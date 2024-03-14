@@ -25,6 +25,7 @@ const { fromBuffer } = require("file-type");
 const bye_group2 = JSON.parse(fs.readFileSync('./functions/byegp.json'));
 const { insert, response } = require('./functions/simi.js');
 const premium = JSON.parse(fs.readFileSync('./functions/premium.json'));
+const nivel = JSON.parse(fs.readFileSync("./database/user/nivel/nivel.json"));
 const antidoc = JSON.parse(fs.readFileSync('./database/group/ativadores/antidoc.json'))
 const antiimg = JSON.parse(fs.readFileSync('./database/group/ativadores/antiimg.json'))
 const lista = JSON.parse(fs.readFileSync('./functions/lista.json'))
@@ -34,7 +35,7 @@ const antisticker = JSON.parse(fs.readFileSync('./database/group/ativadores/anti
 const antivid = JSON.parse(fs.readFileSync('./database/group/ativadores/antivideo.json'))
 const autoreact = JSON.parse(fs.readFileSync('./database/group/ativadores/autoreact.json'))
 const muted = JSON.parse(fs.readFileSync('./database/user/muted.json'))
-const { menu, menuadm, menudono, menuanime, wallpaper } = require('./menus/menu.js')
+const { menu, menuadm, menudono, menuanime, wallpaperm, menurpg, lojarpg } = require('./menus/menu.js')
 const { runtime } = require("./functions/myfunc.js")
 const { convertSticker } = require("./functions/swm.js");
 const { isUrl } = require("./functions/lib/myfunc.js")
@@ -56,8 +57,14 @@ const progp = JSON.parse(fs.readFileSync('./functions/pro.json'))
 const welkom = JSON.parse(fs.readFileSync('./database/group/ativadores/welkom.json'));
 const hora = moment.tz('America/Sao_Paulo').format('HH:mm');
 const dataz = moment.tz('America/Sao_Paulo').format('DD/MM/YYYY')
+
+/// database registro
 const _registered = JSON.parse(fs.readFileSync('./database/user/registered.json'));
+
+/// registro 
 const { getRegisterNo, getRegisterName, getRegisterSerial, getRegisterAge, getRegisterTime, getRegisteredRandomId, addRegisteredUser, createSerial, checkRegisteredUser } = require('./funções/registro/register.js')
+
+/// antispam
 const { isFiltered, addFilter } = require('./funções/lib/spam.js')
 
 /// transforma figurinha em gif
@@ -66,6 +73,7 @@ const webp_mp4 = require("./funções/lib/webp_mp4.js")
 /// importação atm
 
 const {checkATMuser, confirmATM, addKoinUser, addATM } = require('./funções/rpg/atm.js')
+const countMessage = JSON.parse(fs.readFileSync('./database/group/countmessage.json'));
 
 /// função rpg
 
@@ -74,12 +82,18 @@ const roupab = JSON.parse(fs.readFileSync('./database/user/roupa/roupa.json'));
 const casa = JSON.parse(fs.readFileSync('./database/user/casa/casa.json'));
 const aguacoco = JSON.parse(fs.readFileSync('./database/user/compras/aguacoco.json'));
 const calça = JSON.parse(fs.readFileSync('./database/user/compras/calça.json'));
-const carab = JSON.parse(fs.readFileSync('./database/user/compras/carab.json'));
+const carab = JSON.parse(fs.readFileSync('./database/user/compras/capacete.json'));
 const tagrico = JSON.parse(fs.readFileSync('./database/user/compras/tagrico.json'));
 const sapato = JSON.parse(fs.readFileSync('./database/user/compras/sapato.json'));
 const palitor = JSON.parse(fs.readFileSync('./database/user/compras/palitor.json'));
 const espada = JSON.parse(fs.readFileSync('./database/user/compras/espada.json'));
 ////
+
+/// função level
+
+const { addLevelingXp, getLevelingXp, getLevelingLevel, getLevelingId, addLevelingLevel, addLevelingId } = require('./funções/rpg/level.js')
+
+
 const { init, askAI, Chat } = require("bard-ai")
 
 const token = {//SEU TOKEN IA
@@ -137,19 +151,6 @@ module.exports = client = async (client, info, connection, prefix, nomeBot, Nome
         const isAntiPv = (antipv.indexOf('Ativado') >= 0) ? true : false
         const pushname = info.pushName ? info.pushName : ''
         const username = info.username ? info.username : ''
-        const _level = JSON.parse(fs.readFileSync('./functions/level.json'))
-        const addLevelingXp = (userId, amount) => {
-            let position = false
-            Object.keys(_level).forEach((i) => {
-                if (_level[i].jid === userId) {
-                    position = i
-                }
-            })
-            if (position !== false) {
-                _level[position].xp += amount
-                fs.writeFileSync('./functions/level.json', JSON.stringify(_level))
-            }
-        }
         const isGroup = info.key.remoteJid.endsWith('@g.us')
         const sender = isGroup ? info.key.participant : info.key.remoteJid
         if (isGroup && fs.existsSync(`./functions/anagrama-${from}.json`)) {
@@ -220,8 +221,8 @@ const isespada = espada.includes(sender)
 const checkATM = checkATMuser(sender)
             try {
                 if (checkATM === undefined) addATM(sender)
-                const dinheirosaku = Math.floor((Math.random() * 10) * 50) //GANHA ENTRA 10 * 50 POR CADA MSG
-                addKoinUser(from, dinheirosaku)
+                dinheirosaku = Math.floor(Math.random() * 10) + 50 //GANHA ENTRA 10 * 50 POR CADA MSG
+                addKoinUser(sender, dinheirosaku)
             } catch (err) {
                 console.error(err)
             }
@@ -248,64 +249,13 @@ const checkATM = checkATMuser(sender)
             })
         }
 
-        const _leveling = JSON.parse(fs.readFileSync('./functions/lib/leveling.json'))
-        const levelingOn = JSON.parse(fs.readFileSync('./functions/lib/leveling.json'))
+        const _leveling = JSON.parse(fs.readFileSync('./database/group/ativadores/nivel.json'))
+        const levelingOn = JSON.parse(fs.readFileSync('./database/group/ativadores/nivel.json'))
         const isLevelingOn = isGroup ? _leveling.includes(from) : true
         const { getUserRank, addCooldown, leveltab } = require('./functions/lib/leveling.js')
-        const getLevelingXp = (userId) => {
-            let position = false
-            Object.keys(_level).forEach((i) => {
-                if (_level[i].jid === userId) {
-                    position = i
-                }
-            })
-            if (position !== false) {
-                return _level[position].xp
-            }
-        }
-        const getLevelingLevel = (userId) => {
-            let position = false
-            Object.keys(_level).forEach((i) => {
-                if (_level[i].jid === userId) {
-                    position = i
-                }
-            })
-            if (position !== false) {
-                return _level[position].level
-            }
-        }
-        const getLevelingId = (userId) => {
-            let position = false
-            Object.keys(_level).forEach((i) => {
-                if (_level[i].jid === userId) {
-                    position = i
-                }
-            })
-            if (position !== false) {
-                return _level[position].jid
-            }
-        }
-
         
+        /********** FUNCTION RANK **********/
 
-        const addLevelingLevel = (userId, amount) => {
-            let position = false
-            Object.keys(_level).forEach((i) => {
-                if (_level[i].jid === userId) {
-                    position = i
-                }
-            })
-            if (position !== false) {
-                _level[position].level += amount
-                fs.writeFileSync('./functions/level.json', JSON.stringify(_level))
-            }
-        }
-        const addLevelingId = (userId) => {
-            const obj = { jid: userId, xp: 1, level: 1 }
-            _level.push(obj)
-            fs.writeFileSync('./functions/level.json', JSON.stringify(_level))
-        }
-        /********** FUCTION LEVELING **********/
         var per = '*[▒▒▒▒▒▒▒▒▒▒] 0%*'
         const peri = 5000 * (Math.pow(2, getLevelingLevel(sender)) - 1)
         const perl = peri - getLevelingXp(sender)
@@ -576,6 +526,123 @@ const checkATM = checkATMuser(sender)
         }
         //*******************************************//
 
+        const groupIdscount = []
+const numbersIds = []
+for(let obj of countMessage) {
+groupIdscount.push(obj.groupId)
+}
+if(isGroup && groupIdscount.indexOf(from) >= 0) {
+var ind = groupIdscount.indexOf(from)
+for(let obj of countMessage[ind].numbers) {numbersIds.push(obj.id)}
+if(numbersIds.indexOf(sender) >=0) {
+var indnum = numbersIds.indexOf(sender)
+countMessage[ind].numbers[indnum].messages += 1
+countMessage[ind].numbers[indnum].cmd_messages += isCmd ? 1 : 0
+fs.writeFileSync('./database/group/countmessage.json', JSON.stringify(countMessage, null, 2)+ '\n')
+} else {
+const messages = 1
+const cmd_messages = isCmd ? 1 : 0
+countMessage[ind].numbers.push({
+id: sender,
+messages: messages,
+cmd_messages: cmd_messages
+})
+fs.writeFileSync('./database/group/countmessage.json', JSON.stringify(countMessage, null, 2) + '\n')
+}
+} else if(isGroup) {
+countMessage.push({
+groupId: from,
+numbers: [{
+id: sender,
+messages: 2,
+cmd_messages: isCmd ? 1 : 0
+}]
+})
+fs.writeFileSync('./database/group/countmessage.json', JSON.stringify(countMessage, null, 2) + '\n')
+}
+
+        async function LIMPARDOCNT_QUEMJASAIU() {
+            var RD_CNT = countMessage[countMessage.map(i => i.groupId).indexOf(from)].numbers
+            CNT1 = []; for ( i of groupMembers) {CNT1.push(i.id)} 
+            CNT = []; for ( i of RD_CNT) {
+            if(!CNT1.includes(i.id)) CNT.push(i)}
+            for ( i of CNT) {
+            RD_CNT.splice(RD_CNT.map(i => i.id).indexOf(i.id), 1)}
+            fs.writeFileSync("./database/group/countmessage.json", JSON.stringify(countMessage, null, 2))
+            }
+
+
+            
+
+            const dirGroup = `./database/group/grupos/${from}.json`;
+
+            const data_IDGP = [{
+                groupId: from, x9: false, 
+                antiimg: false, antivideo: false,
+                antiaudio: false, antisticker: false,
+                antidoc: false, antictt: false,
+                antiloc: false, antilinkgp: false,
+                antilinkhard: false,
+                Odelete: false, antispam: false, 
+                antinotas: false, anticatalogo: false,
+                sistemGold: false, visuUnica: false, 
+                registrarFIGUS: false, soadm: false,
+                rg_aluguel: false,
+                listanegra: [], advertir: [], prefixos: ["!"],
+                advertir2: [], legenda_estrangeiro: "0",
+                legenda_documento: "0", legenda_video: "0",
+                legenda_imagem: "0", multiprefix: false, 
+                forca_ofc: [{acertos: 0, erros: 0, palavra: [], escreveu: [], palavra_ofc: 0, dica: 0, tema: 0}],
+                minerar_gold: [], ausentes: [], forca_inc: false, 
+                antipalavrao: {
+                active: false,
+                palavras: []
+                },
+                limitec: {
+                active: false,
+                quantidade: null
+                },
+                wellcome: [{
+                bemvindo1: false,
+                legendabv: "Olá #numerodele#, seja bem vindo (a)",
+                legendasaiu: 0
+                },
+                {
+                bemvindo2: false,
+                legendabv: "Olá #numerodele#, seja bem vindo (a)",
+                legendasaiu: 0
+                }],
+                simi1: false, simi2: false,
+                autosticker: false, autoresposta: false,
+                jogos: false, level: false,
+                bangp: false, nsfw: false
+                }];
+                
+                if(isGroup && !fs.existsSync(dirGroup)){
+                fs.writeFileSync(dirGroup, JSON.stringify(data_IDGP, null, 2) + '\n');
+                }
+                
+                try {
+                var dataGp = isGroup ? JSON.parse(fs.readFileSync(dirGroup)) : undefined;
+                } catch (e){
+                fs.writeFileSync(dirGroup, JSON.stringify(data_IDGP));
+                }
+                
+                function setGp(index){
+                fs.writeFileSync(dirGroup, JSON.stringify(index, null, 2) + '\n')}
+                
+                function setNes(index){
+                fs.writeFileSync(nescj, JSON.stringify(index, null, 2))}
+                
+                const reagir = async (idgp, emj) => {
+                    var reactionMessage = {
+                    react: {
+                    text: emj, 
+                    key: info.key
+                    }
+                    } 
+                    client.sendMessage(idgp, reactionMessage)
+                    }
 
         // VERIFICADOS ⭐️
         const live = info
@@ -826,7 +893,7 @@ const checkATM = checkATMuser(sender)
                 client.groupParticipantsUpdate(from, [sender], 'remove')
             }, 1000)
         }
-
+        
 
         /** Console log de comandos */
         comando = command
@@ -880,9 +947,9 @@ setTimeout(async () => {
 return
 }
 
-if (isCmd) {
+if (isCmd && !isOwner && !isGroupAdmins) {
     if (isFiltered(sender)) {
-    return reply(ptbr.flood(pushname))
+    return reagir(from, '👺')
     } else {
     addFilter(sender)
     }
@@ -896,7 +963,6 @@ if (isCmd) {
                 break
 
                 case 'registrar':
-				case 'registro':
                 if(!isGroup) return reply(ptbr.grupo())
                 if (isUser) return reply ('**Você já está registrado**')
 				if (!q.includes('|')) return reply(`𝗗𝗶𝗴𝗶𝘁𝗲 𝗱𝗮 𝗳𝗼𝗿𝗺𝗮 𝗰𝗲𝗿𝘁𝗮:\n𝗖𝗼𝗺𝗮𝗻𝗱𝗼: ${prefix}𝗥𝗲𝗴𝗶𝘀𝘁𝗿𝗮𝗿 𝗻𝗼𝗺𝗲|𝗶𝗱𝗮𝗱𝗲\n𝗘𝘅𝗲𝗺𝗽𝗹𝗼: ${prefix}𝗥𝗲𝗴𝗶𝘀𝘁𝗿𝗮𝗿 𝗸𝗹𝗮𝘂𝘀|𝟮𝟬`)
@@ -922,7 +988,7 @@ if (isCmd) {
 					break
 
             case 'menu': {
-                if (!isUser) return reply(ptbr.user())
+                if (!isUser) return reply(ptbr.user(prefix, pushname, nomeBot))
                 client.sendMessage(from, {
                     react: {
                         text: "🥁",
@@ -959,7 +1025,7 @@ if (isCmd) {
 ╚════• 〘${nomeBot}〙•═════╝
 `
 
-                client.sendMessage(from, { poll: { name: menutxt, values: [`menu`, 'adms', 'anime', 'dono', 'wallpaper'], selectableCount: 1 } }, { quoted: info });
+                client.sendMessage(from, { poll: { name: menutxt, values: [`menu`, 'adms', 'dono', 'rpg', 'loja rpg', 'modificadores', 'downloader', 'premium', 'anime', 'wallpaper'], selectableCount: 1 } }, { quoted: info });
             } break
 
             case "Menu":
@@ -1030,7 +1096,7 @@ if (isCmd) {
                     caption: menuanime(prefix, nomeBot, pushname)
                 })
             } break
-
+            
             case "Menu_Dono":
             case "menudono": {
                 const imagens = [
@@ -1074,7 +1140,7 @@ if (isCmd) {
             /* Downloader */
                 case 'play': 
                     if(!isGroup) return reply(ptbr.grupo())
-                    if (!isUser) return reply (ptbr.user())
+                    if (!isUser) return reply (ptbr.user(prefix, pushname, nomeBot))
                     if (!q) return reply('coloque algo para pesquisar');
                     reply(ptbr.waitmusic());
                     play1(q).then(res => { 
@@ -1088,12 +1154,12 @@ if (isCmd) {
                     
                 case 'play2':
                     if(!isGroup) return reply(ptbr.grupo())
-                    if (!isUser) return reply (ptbr.user())
+                    if (!isUser) return reply (ptbr.user(prefix, pushname, nomeBot))
                     if (!q) return reply('coloque algo para pesquisar');
                     reply(ptbr.waitvideo());
                     play2(q).then(res => { 
                     infomidia2 = `\n *Titulo: ${res.titulo}*\n *Canal: ${res.canal}*\n\ *Views: ${res.views}*\n\ *Publicado em: ${res.publicado}*`;
-                    client.sendMessage(from, {video: {url: res.download}, caption: infomidia2}, {quoted: info})
+                    client.sendMessage(from, {video: {url: res.download}, filename: res.titulo, caption: infomidia2}, {quoted: info})
                     }).catch(() => {
                     return reply(ptbr.restriçãodownload());
                     });
@@ -1101,7 +1167,7 @@ if (isCmd) {
                     
                 case 'ttk':
                     if(!isGroup) return reply(ptbr.grupo())
-                    if (!isUser) return reply (ptbr.user())
+                    if (!isUser) return reply (ptbr.user(prefix, pushname, nomeBot))
                     try {
                     if(!q) return reply('cadê o link?')
                     if (!q.includes('tiktok')) return reply(`Link Invalido..!!`)
@@ -1117,7 +1183,7 @@ if (isCmd) {
 
                 case 'ttk2':
                     if(!isGroup) return reply(ptbr.grupo())
-                    if (!isUser) return reply (ptbr.user())
+                    if (!isUser) return reply (ptbr.user(prefix, pushname, nomeBot))
                     try {///TIK TOK AUDIO
                     if(!q) return reply('cadê o link?')
                     if (!q.includes('tiktok')) return reply(`Link Invalido..!!`)
@@ -1131,10 +1197,30 @@ if (isCmd) {
                     break
                     /// fim da aba de download
                     
+                    /// modificador de voz
+                case 'esquilo':
+                    if (!isGroup) return reply(ptbr.grupo(pushname))
+                    if (!isUser) return reply(ptbr.user(pushname))
+                    if (!isQuotedAudio) return reply('Marque um áudio')
+                    reply(ptbr.wait())
+                    muk = isQuotedAudio ? info.message.extendedTextMessage.contextInfo.quotedMessage.audioMessage : info.message.audioMessage
+                    rane = getRandom('.'+await getExtension(muk, mimetype))
+                    buffimg = await getFileBuffer(muk, 'audio')
+                    fs.writeFileSync(rane, buffimg)
+                    gem = rane
+                    ran = getRandom('.mp3')
+                    exec(`ffmpeg -i ${gem} -filter:a "atempo=0.7,asetrate=65100" ${ran}`, (err, stderr, stdout) => {
+                    fs.unlinkSync(gem)
+                    if (err) return reply('Error!')
+                    hah = fs.readFileSync(ran)
+                    client.sendMessage(from, {audio: hah, mimetype: 'audio/mp4', ptt:true}, {quoted: info})
+                    fs.unlinkSync(ran)
+                    })
+                    break
                 case 'bard':
                 case 'ask':
                     if(!isGroup) return reply(ptbr.grupo())
-                    if(!isUser) return reply(ptbr.user())
+                    if(!isUser) return reply(ptbr.user(prefix, pushname, nomeBot))
                     reply(ptbr.wait())
                     try{
                     await init(token.bard);
@@ -1144,9 +1230,154 @@ if (isCmd) {
                     console.log(erro)}
                     break
 
+                case 'audiolento': 
+                case 'slow':
+                    if (!isQuotedAudio) return reply('Marque um áudio')
+                    reply(ptbr.wait())
+                    muk = isQuotedAudio ? info.message.extendedTextMessage.contextInfo.quotedMessage.audioMessage : info.message.audioMessage
+                    rane = getRandom('.'+await getExtension(muk, mimetype))
+                    buffimg = await getFileBuffer(muk, 'audio')
+                    fs.writeFileSync(rane, buffimg)
+                    gem = rane
+                    ran = getRandom('.mp3')
+                    exec(`ffmpeg -i ${gem} -filter:a "atempo=0.9,asetrate=44100" ${ran}`, (err, stderr, stdout) => {
+                    fs.unlinkSync(gem)
+                    if (err) return reply('Error!')
+                    hah = fs.readFileSync(ran)
+                    client.sendMessage(from, {audio: hah, mimetype: 'audio/mp4', ptt:true}, {quoted: info})
+                    fs.unlinkSync(ran)
+                    })
+                    break
+
+                case 'audiorapido':  
+                    if (!isQuotedAudio) return reply('Marque um áudio')
+                    reply(ptbr.wait())
+                    muk = isQuotedAudio ? info.message.extendedTextMessage.contextInfo.quotedMessage.audioMessage : info.message.audioMessage
+                    rane = getRandom('.'+await getExtension(muk, mimetype))
+                    buffimg = await getFileBuffer(muk, 'audio')
+                    fs.writeFileSync(rane, buffimg)
+                    gem = rane
+                    ran = getRandom('.mp3')
+                    exec(`ffmpeg -i ${gem} -filter:a "atempo=0.9,asetrate=95100" ${ran}`, (err, stderr, stdout) => {
+                    fs.unlinkSync(gem)
+                    if (err) return reply('Erro')
+                    hah = fs.readFileSync(ran)
+                    client.sendMessage(from, {audio: hah, mimetype: 'audio/mp4', ptt:true}, {quoted: info})
+                    fs.unlinkSync(ran)
+                    })
+                    break
+
+                    case 'grave2':
+                    if (!isQuotedAudio) return reply('Marque um áudio')
+                    reply(ptbr.wait())
+                    muk = isQuotedAudio ? info.message.extendedTextMessage.contextInfo.quotedMessage.audioMessage : info.message.audioMessage
+                    rane = getRandom('.'+await getExtension(muk, mimetype))
+                    buffimg = await getFileBuffer(muk, 'audio')
+                    fs.writeFileSync(rane, buffimg)
+                    gem = rane
+                    ran = getRandom('.mp3')
+                    exec(`ffmpeg -i ${gem} -filter:a "atempo=1.6,asetrate=22100" ${ran}`, (err, stderr, stdout) => {
+                    fs.unlinkSync(gem)
+                    if (err) return reply('Error!')
+                    hah = fs.readFileSync(ran)
+                    client.sendMessage(from, {audio: hah, mimetype: 'audio/mp4', ptt:true}, {quoted: info})
+                    fs.unlinkSync(ran)
+                    })
+                    break
+
+                    case 'grave':
+                    if (!isQuotedAudio) return reply('Marque um áudio')
+                    reply(ptbr.wait())
+                    muk = isQuotedAudio ? info.message.extendedTextMessage.contextInfo.quotedMessage.audioMessage : info.message.audioMessage
+                    rane = getRandom('.'+await getExtension(muk, mimetype))
+                    buffimg = await getFileBuffer(muk, 'audio')
+                    fs.writeFileSync(rane, buffimg)
+                    gem = rane
+                    ran = getRandom('.mp3')
+                    exec(`ffmpeg -i ${gem} -filter:a "atempo=0.9,asetrate=44100" ${ran}`, (err, stderr, stdout) => {
+                    fs.unlinkSync(gem)
+                    if (err) return reply('Error!')
+                    hah = fs.readFileSync(ran)
+                    client.sendMessage(from, {audio: hah, mimetype: 'audio/mp4', ptt:true}, {quoted: info})
+                    fs.unlinkSync(ran)
+                    })
+                    break
+
+                case 'estourar': 
+                    if (!isQuotedAudio) return reply('Marque um áudio')
+                    reply(ptbr.wait())
+                    muk = isQuotedAudio ? info.message.extendedTextMessage.contextInfo.quotedMessage.audioMessage : info.message.audioMessage
+                    rane = getRandom('.'+await getExtension(muk, mimetype))
+                    buffimg = await getFileBuffer(muk, 'audio')
+                    fs.writeFileSync(rane, buffimg)
+                    gem = rane
+                    ran = getRandom('.mp3')
+                    exec(`ffmpeg -i ${gem} -af equalizer=f=90:width_type=o:width=2:g=30 ${ran}`, (err, stderr, stdout) => {
+                    fs.unlinkSync(gem)
+                    if (err) return reply('Error!')
+                    hah = fs.readFileSync(ran)
+                    client.sendMessage(from, {audio: hah, mimetype: 'audio/mp4', ptt:true}, {quoted: info})
+                    fs.unlinkSync(ran)
+                    })
+                    break
+
+                case 'bass': 
+                    if (!isQuotedAudio) return reply('Marque um áudio')
+                    reply(ptbr.wait())
+                    muk = isQuotedAudio ? info.message.extendedTextMessage.contextInfo.quotedMessage.audioMessage : info.message.audioMessage
+                    rane = getRandom('.'+await getExtension(muk, mimetype))
+                    buffimg = await getFileBuffer(muk, 'audio')
+                    fs.writeFileSync(rane, buffimg)
+                    gem = rane
+                    ran = getRandom('.mp3')
+                    exec(`ffmpeg -i ${gem} -af equalizer=f=20:width_type=o:width=2:g=15 ${ran}`, (err, stderr, stdout) => {
+                    fs.unlinkSync(gem)
+                    if (err) return reply('Error!')
+                    hah = fs.readFileSync(ran)
+                    client.sendMessage(from, {audio: hah, mimetype: 'audio/mp4', ptt:true}, {quoted: info})
+                    fs.unlinkSync(ran)
+                    })
+                    break
+
+                case 'bass2': 
+                    if (!isQuotedAudio) return reply('Marque um áudio')
+                    reply(ptbr.wait())
+                    muk = isQuotedAudio ? info.message.extendedTextMessage.contextInfo.quotedMessage.audioMessage : info.message.audioMessage
+                    rane = getRandom('.'+await getExtension(muk, mimetype))
+                    buffimg = await getFileBuffer(muk, 'audio')
+                    fs.writeFileSync(rane, buffimg)
+                    gem = rane
+                    ran = getRandom('.mp3')
+                    exec(`ffmpeg -i ${gem} -af equalizer=f=94:width_type=o:width=2:g=30 ${ran}`, (err, stderr, stdout) => {
+                    fs.unlinkSync(gem)
+                    if (err) return reply('Error!')
+                    hah = fs.readFileSync(ran)
+                    client.sendMessage(from, {audio: hah, mimetype: 'audio/mp4', ptt:true}, {quoted: info})
+                    fs.unlinkSync(ran)
+                    })
+                    break
+
+                case 'vozmenino':  
+                    if (!isQuotedAudio) return reply('Marque um áudio')
+                    reply(ptbr.wait())
+                    muk = isQuotedAudio ? info.message.extendedTextMessage.contextInfo.quotedMessage.audioMessage : info.message.audioMessage
+                    rane = getRandom('.'+await getExtension(muk, mimetype))
+                    buffimg = await getFileBuffer(muk, 'audio')
+                    fs.writeFileSync(rane, buffimg)
+                    gem = rane
+                    ran = getRandom('.mp3')
+                    exec(`ffmpeg -i ${gem} -filter:a atempo=1.06,asetrate=44100*1.25 ${ran}`, (err, stderr, stdout) => {
+                    fs.unlinkSync(gem)
+                    if (err) return reply('Error!')
+                    hah = fs.readFileSync(ran)
+                    client.sendMessage(from, {audio: hah, mimetype: 'audio/mp4', ptt:true}, {quoted: info})
+                    fs.unlinkSync(ran)
+                    })
+                    break
+
                 case 'noticias':
                     if (!isGroup) return reply(ptbr.grupo())
-                    if (!isUser) return reply(ptbr.user())
+                    if (!isUser) return reply(ptbr.user(prefix, pushname, nomeBot))
                     reply(ptbr.wait())
                     try {
                         const data = await NoticiasAoMinuto();
@@ -1276,7 +1507,7 @@ if (isCmd) {
             } break
 
             case 'wallpaper1':
-                if (!isPremium) return reply(ptbr.premium())
+                if (!isPremium) return reply(ptbr.premium(prefix, pushname))
                 reply("「🐸」ja to enviando no teu pv")
                 google = await fetchJson(`https://clover-t-bot.onrender.com/wallpaper/satanic?key=Lady-Bot&username=Lady-Bot`)
                 client.sendMessage(sender, { image: { url: google.url } }, { quoted: info })
@@ -1284,7 +1515,7 @@ if (isCmd) {
 
 
             case 'wallpaper2':
-                if (!isPremium) return reply(ptbr.premium())
+                if (!isPremium) return reply(ptbr.premium(prefix, pushname))
                 reply("「🐸」ja to enviando no teu pv")
                 google = await fetchJson(`https://clover-t-bot.onrender.com/wallpaper/cyberspace?key=Lady-Bot&username=Lady-Bot`)
                 client.sendMessage(sender, { image: { url: google.url } }, { quoted: info })
@@ -1292,7 +1523,7 @@ if (isCmd) {
 
 
             case 'wallpaper3':
-                if (!isPremium) return reply(ptbr.premium())
+                if (!isPremium) return reply(ptbr.premium(prefix, pushname))
                 reply("「🐸」ja to enviando no teu pv")
                 google = await fetchJson(`https://clover-t-bot.onrender.com/wallpaper/gaming?key=Lady-Bot&username=Lady-Bot`)
                 client.sendMessage(sender, { image: { url: google.url } }, { quoted: info })
@@ -1300,7 +1531,7 @@ if (isCmd) {
 
 
             case 'wallpaper4':
-                if (!isPremium) return reply(ptbr.premium())
+                if (!isPremium) return reply(ptbr.premium(prefix, pushname))
                 reply("「🐸」ja to enviando no teu pv")
                 google = await fetchJson(`https://clover-t-bot.onrender.com/wallpaper/wallpapertec?key=Lady-Bot&username=Lady-Bot`)
                 client.sendMessage(sender, { image: { url: google.url } }, { quoted: info })
@@ -1308,7 +1539,7 @@ if (isCmd) {
 
 
             case 'wallpaper5':
-                if (!isPremium) return reply(ptbr.premium())
+                if (!isPremium) return reply(ptbr.premium(prefix, pushname))
                 reply("「🐸」ja to enviando no teu pv")
                 google = await fetchJson(`https://clover-t-bot.onrender.com/wallpaper/ppcouple?key=Lady-Bot&username=Lady-Bot`)
                 client.sendMessage(sender, { image: { url: google.url } }, { quoted: info })
@@ -1316,14 +1547,14 @@ if (isCmd) {
 
 
             case 'wallpaper6':
-                if (!isPremium) return reply(ptbr.premium())
+                if (!isPremium) return reply(ptbr.premium(prefix, pushname))
                 reply("「🐸」ja to enviando no teu pv")
                 google = await fetchJson(`https://clover-t-bot.onrender.com/wallpaper/pubg?key=Lady-Bot&username=Lady-Bot`)
                 client.sendMessage(sender, { image: { url: google.url } }, { quoted: info })
                 break
 
             case 'wallpaper7':
-                if (!isPremium) return reply(ptbr.premium())
+                if (!isPremium) return reply(ptbr.premium(prefix, pushname))
                 reply("「🐸」ja to enviando no teu pv")
                 google = await fetchJson(`https://clover-t-bot.onrender.com/wallpaper/aesthetic?key=Lady-Bot&username=Lady-Bot`)
                 client.sendMessage(sender, { image: { url: google.url } }, { quoted: info })
@@ -1331,14 +1562,14 @@ if (isCmd) {
 
 
             case 'wallpaper8':
-                if (!isPremium) return reply(ptbr.premium())
+                if (!isPremium) return reply(ptbr.premium(prefix, pushname))
                 reply("「🐸」ja to enviando no teu pv")
                 google = await fetchJson(`https://clover-t-bot.onrender.com/wallpaper/aesthetic?key=Lady-Bot&username=Lady-Bot`)
                 client.sendMessage(sender, { image: { url: google.url } }, { quoted: info })
                 break
 
             case 'wallpaper9':
-                if (!isPremium) return reply(ptbr.premium())
+                if (!isPremium) return reply(ptbr.premium(prefix, pushname))
                 reply("「🐸」ja to enviando no teu pv")
                 google = await fetchJson(`https://clover-t-bot.onrender.com/nime/anime?key=Lady-Bot&username=Lady-Bot`)
                 client.sendMessage(sender, { image: { url: google.url } }, { quoted: info })
@@ -2496,6 +2727,15 @@ ${epa}`,
                 }
                 break;
 
+            case 'criargp':          //case by: Bielzinho-bot
+                if (!isOwner) return reply(ptbr.dono())
+                const gp = args.join(' ')
+                if (!gp) return reply('*Escreva o nome do grupo que vc quer criar....*')
+                var group = await client.groupCreate(`${gp}`, [sender])
+                reply(`*Grupo criado com sucesso*\n*Nome do grupo :* *${gp}*`)
+                client.sendMessage(group.gid, `Bem vindo ao grupo amigo(a)`, MessageType.text, {quoted: info})
+                break
+
 
             case 'autoreação':
             case 'autoreacao':
@@ -2717,6 +2957,25 @@ tem que ter a / e o id do grupo destinado senão não vai.`)
                 reply(ptbr.erro())
                 }
                 break
+
+            case 'toimg':
+                if (!isQuotedSticker) return reply('Marca uma Figurinha!!')
+                buff = await getFileBuffer(info.message.extendedTextMessage.contextInfo.quotedMessage.stickerMessage, 'sticker')
+                try {
+                client.sendMessage(from, {image: buff}, {quoted: info})
+                } catch(e) {
+                console.log(e)
+                reply('erro...')
+                }
+                break
+
+                case 'attp':
+                    if(!q.trim()) return reply(`*_❕Coloque o texto que você quiser!_*\n- *🧑‍🏫 Por exemplo:* ${prefix + command} klaus`)
+                    reply(`fazendo`)
+                    client.sendMessage(from, {sticker: {url: `http://yurimodz-apis.xyz:44040/api/attp?texto=${q}&apikey=Yurizinn200`}}, {quoted: info}).catch(e => {
+                    return reply(ptbr.erro());
+                    })
+                    break
 
             case 'rankgostosos':
             case 'rankgostoso':
@@ -3115,7 +3374,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
 
             case 'chance':
                 if (!isGroup) return reply(ptbr.grupo())
-                if (!isUser) return reply(ptbr.user())
+                if (!isUser) return reply(ptbr.user(prefix, pushname, nomeBot))
                 var avb = body.slice(7)
                 if (args.length < 1) return client.sendMessage(from, { text: `Você precisa digitar da forma correta\nExemplo: ${prefix}chance do luuck ser gay` }, { quoted: info })
                 random = `${Math.floor(Math.random() * 100)}`
@@ -3156,7 +3415,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
             case 'minerardima':
             case 'minerardiamante':
                 if (!isGroup) return reply(ptbr.grupo())
-                if (!isUser) return reply(ptbr.user())
+                if (!isUser) return reply(ptbr.user(prefix, pushname, nomeBot))
                 const minerardima = `${Math.floor(Math.random() * 105)}`
 
                 client.sendMessage(from, {image: fs.readFileSync('./funções/rpg/image/diamante.jpg'), caption: `
@@ -3182,6 +3441,168 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 『 🏡 』 *CASA: ${iscasa? "SIM ✅" : "NÃO ❌"}*
                 『 🤑 』 *RICO: ${istagrico? "SIM ✅" : "NÃO ❌"}*
                 `},{quoted: info})
+                }
+                break
+
+            case 'money':
+                if (!isGroup) return reply(ptbr.grupo(pushname))
+                if (!isUser) return reply(ptbr.user(pushname))
+                client.sendMessage(from, {react: {text: `💵`, key: info.key}}) 
+                client.sendMessage(from, {video: {url: `https://telegra.ph/file/7d1a76c9d628836f27e8d.mp4`}, gifPlayback: true, caption: `
+                ╭━➪_MONEY_
+                │◦➛𝗡𝗼𝗺𝗲 : ${pushname}
+                │◦➛𝗡𝘂𝗺𝗲𝗿𝗼 : ${sender.split("@")[0]}
+                │◦➛𝗗𝗶𝗻𝗵𝗲𝗶𝗿𝗼 : ${checkATMuser(sender)}
+                ╰━━━━━━━━
+                `
+                },{quoted: info})
+                break
+
+                case 'hero': case 'lot':
+                    if (!isGroup) return reply(ptbr.grupo(pushname))
+                    if (!isUser) return reply(ptbr.user(pushname))
+                    try {
+                    ppimg = await client.profilePictureUrl(`${sender.split('@')[0]}@c.us`, 'image')
+                    } catch {
+                    ppimg = 'https://telegra.ph/file/b5427ea4b8701bc47e751.jpg'
+                    }
+                    try {
+                    client.sendMessage(from, {video: {url: `https://telegra.ph/file/b1febb2db7a727eee9d7d.mp4`}, gifPlayback: true, caption: ` 
+                    ┏━──────「🕴️」──────━┓
+                    │          *SEU INVENTÁRIO*
+                    │
+                    │ *${isCarab? "⛑️" : "❌"} : CAPACETE*
+                    │
+                    │ *${isPalitor? "👔" : "❌"} : PALETÓ*
+                    │
+                    │ *${iscasa? "🏡" : "❌"} : CASA*
+                    │
+                    │ *${isCaussa? "👖" : "❌"} : CALÇA*
+                    │
+                    │ *${isaguacoco? "💧" : "❌"} : AGUA DE COCO*
+                    │
+                    │ *${isSapato? "👞" : "❌"} : SAPATO*
+                    │
+                    │ *${isespada? "⚔" : "❌"} : ESPADA*
+                    │
+                    │
+                    │
+                    ╠━━━━━━━━━━━━━━━━━━━━━━━
+                    │             *TAGS*
+                    ╠━━━━━━━━━━━━━━━━━━━━━━━
+                    │
+                    │
+                    │> RICO: ${istagrico? "SIM ✅" : "NÃO ❌"}
+                    │
+                    │
+                    ┗━──────「🕴️」──────━┛
+                    `},{quoted: info})
+                    } catch (e) {
+                    console.log(e)
+                    }
+                    break
+
+            case 'tomaraguacoco':
+                if (!isGroup) return reply(ptbr.grupo(pushname))
+                if (!isUser) return reply(ptbr.user(pushname))
+                if(!JSON.stringify(aguacoco).includes(sender)) return reply(`VOCE NAO TEM AGUA DE COCO INFINITO USE  ${prefix}aguacoco`)
+                aguadd = Math.floor((Math.random() * 4) * 3);
+                reply(`VOCE TOMOU UMA AGUA DE COCO\n\nMATOU [ ${aguadd}% ] DA SUA SEDE `)
+                break
+
+            case 'aguacoco':{
+                if (!isGroup) return reply(ptbr.grupo(pushname))
+                if (!isUser) return reply(ptbr.user(pushname))
+                const dinheiro = checkATMuser(sender)
+                const checkxpr = checkATMuser(sender, dinheiro) 
+                const quantidader = `100`
+                if (checkxpr < quantidader) return reply(`*${pushname} VC NAO TEM DINHEIRO SUFICIENTE PARA COMPRAR AGUA DE COCO INFINITO*\n\n*PREÇO: ${quantidader}*`)
+                var [comprar] = q.split("")
+                if(!q.includes("")) return reply(`Cade a espaço mano?\nExemplo: ${prefix + command} comprar`)  
+                aguacoco.push(`${sender}`)
+                fs.writeFileSync('./database/user/compras/aguacoco.json', JSON.stringify(aguacoco))
+                addKoinUser(sender, - quantidader)
+                reply(`AGUA DE COCO COMPRADA COM SUCESSO* 🌍\n\n*CUSTO 💰: ${quantidader}*`)
+                }
+                break
+            
+            case 'capacete':{
+                if (!isGroup) return reply(ptbr.grupo(pushname))
+                if (!isUser) return reply(ptbr.user(pushname))
+                const dinheiro = checkATMuser(sender)
+                const checkxpr = checkATMuser(sender, dinheiro) 
+                const quantidader = `400`
+                var [comprar] = q.split("")
+                if(!q.includes("")) return reply(`Cade a espaço mano?\nExemplo: ${prefix + command} comprar`)  
+                if (checkxpr < quantidader) return reply(`*${pushname} VC NAO TEM DINHEIRO SUFICIENTE PARA COMPRAR A CAPACETE DE TRABALHO*\n\n*PREÇO: ${quantidader}*`)
+                carab.push(`${sender}`)
+                fs.writeFileSync('./database/user/compras/carab.json', JSON.stringify(carab))
+                addKoinUser(sender, - quantidader)
+                reply(`*CAPACETE COMPRADO COM SUCESSO*\n\n*CUSTO 💰: ${quantidader}*`)
+                }
+                break
+                
+            case 'calça':{
+                if (!isGroup) return reply(ptbr.grupo(pushname))
+                if (!isUser) return reply(ptbr.user(pushname))
+                const dinheiro = checkATMuser(sender)
+                const checkxpr = checkATMuser(sender, dinheiro) 
+                const quantidader = `200`
+                if (checkxpr < quantidader) return reply(`*${pushname} VC NAO TEM DINHEIRO SUFICIENTE PARA COMPRAR CALÇA DE TRABALHO*\n\n*PREÇO: ${quantidader}*`)
+                var [comprar] = q.split("")
+                if(!q.includes("")) return reply(`Cade a espaço mano?\nExemplo: ${prefix + command} comprar`)  
+                caussa.push(`${sender}`)
+                fs.writeFileSync('./database/user/compras/calça.json', JSON.stringify(caussa))
+                addKoinUser(sender, - quantidader)
+                reply(`*CALÇA COMPRADA COM SUCESSO*\n\n*CUSTO 💰: ${quantidader}*`)
+                }
+                break
+                
+            case 'sapatos':
+            case 'sapato': 
+                {
+                if (!isGroup) return reply(ptbr.grupo(pushname))
+                if (!isUser) return reply(ptbr.user(pushname))
+                const dinheiro = checkATMuser(sender)
+                const checkxpr = checkATMuser(sender, dinheiro) 
+                const quantidader = `100`
+                if (checkxpr < quantidader) return reply(`*${pushname} VC NAO TEM DINHEIRO SUFICIENTE PARA COMPRAR SAPATOS DE TRABALHO*\n\n*PREÇO: ${quantidader}*`)
+                var [comprar] = q.split("")
+                if(!q.includes("")) return reply(`Cade a espaço mano?\nExemplo: ${prefix + command} comprar`)  
+                sapato.push(`${sender}`)
+                fs.writeFileSync('./database/user/compras/sapato.json', JSON.stringify(sapato))
+                addKoinUser(sender, - quantidader)
+                reply(`*SAPATO COMPRADO COM SUCESSO*\n\n*CUSTO 💰: ${quantidader}*`)
+                }
+                break
+                
+            case 'paleto':{
+                if (!isGroup) return reply(ptbr.grupo(pushname))
+                if (!isUser) return reply(ptbr.user(pushname))
+                const dinheiro = checkATMuser(sender)
+                const checkxpr = checkATMuser(sender, dinheiro) 
+                const quantidader = `700`
+                if (checkxpr < quantidader) return reply(`*${pushname} VC NAO TEM DINHEIRO SUFICIENTE PARA COMPRAR PALITOR DE TRABALHO*\n\n*PREÇO: ${quantidader}*`)
+                var [comprar] = q.split("")
+                if(!q.includes("")) return reply(`Cade a espaço mano?\nExemplo: ${prefix + command} comprar`)  
+                palitor.push(`${sender}`)
+                fs.writeFileSync('./database/user/compras/palitor.json', JSON.stringify(palitor))
+                addKoinUser(sender, - quantidader)
+                reply(`*paletó COMPRADO COM SUCESSO*\n\n*CUSTO 💰: ${quantidader}*`)
+                }
+                break
+
+            case 'espada':   case 'comprarespada':{
+                const dinheiro = checkATMuser(sender)
+                const checkxpr = checkATMuser(sender, dinheiro) 
+                const quantidader = `7000`
+                if (checkxpr < quantidader) return reply(`*${pushname} VC NAO TEM DINHEIRO SUFICIENTE PARA COMPRAR UMA ESPADA*\n\n*PREÇO: ${quantidader}*`)
+                var [comprar] = q.split("")
+                if(!q.includes("")) return reply(`Cade a espaço mano?\nExemplo: ${prefix + command} comprar`)  
+                espada.push(`${sender}`)
+                fs.writeFileSync('./database/user/compras/espada.json', JSON.stringify(espada))
+                addKoinUser(sender, - quantidader)
+                reply(`*ESPADA COMPRADA COM SUCESSO*\n\n*CUSTO 💰: ${quantidader}*`)
                 }
                 break
 
@@ -3267,8 +3688,6 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 
              client.sendMessage(from,  {image: ds, caption: `${thumbInfo}`}, {quoted: info});
                     addKoinUser(sender, +resultadoresultadoo);
-                
-                
                 }
                     break
 
@@ -3309,6 +3728,98 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
 
                 break
 
+            case 'churrasco': {
+                if (!isGroup) return reply(ptbr.grupo(pushname))
+                if (!isUser) return reply(ptbr.user(pushname))
+                // Verificar se o arquivo JSON existe, e criar se não existir
+                    if (!fs.existsSync('./database/user/cooldown/prenderCooldown.json')) {
+                        fs.writeFileSync('prenderCooldown.json', JSON.stringify({}));
+                    }
+                
+                    // Carregar o objeto prenderCooldown do arquivo JSON
+                    const prenderCooldown = JSON.parse(fs.readFileSync('./database/user/cooldown/prenderCooldown.json', 'utf8'));
+                
+                    const currentTimeprender = Date.now();
+                    const lastprenderTime = prenderCooldown[sender] || 0;
+                    const timeSinceLastprender = currentTimeprender - lastprenderTime;
+                    const prenderCooldownTime = 5 * 60 * 1000; // 5 minutos em milissegundos
+                
+                    if (timeSinceLastprender < prenderCooldownTime) {
+                        const remainingTime = (prenderCooldownTime - timeSinceLastprender) / 1000;
+                        return reply(`Aguarde ${remainingTime.toFixed(0)} segundos vc estar preso`);
+                    }
+                    // Verificar se o arquivo JSON existe, e criar se não existir
+                    if (!fs.existsSync('./database/user/cooldown/churrascoCooldown.json')) {
+                        fs.writeFileSync('./database/user/cooldown/churrascoCooldown.json', JSON.stringify({}));
+                    }
+                
+                    // Carregar o objeto churrascoCooldown do arquivo JSON
+                    const churrascoCooldown = JSON.parse(fs.readFileSync('./database/user/cooldown/churrascoCooldown.json', 'utf8'));
+                
+                    const currentTimeChurrasco = Date.now();
+                    const lastChurrascoTime = churrascoCooldown[sender] || 0;
+                    const timeSinceLastChurrasco = currentTimeChurrasco - lastChurrascoTime;
+                    const churrascoCooldownTime = 5 * 60 * 1000; // 5 minutos em milissegundos
+                
+                    if (timeSinceLastChurrasco < churrascoCooldownTime) {
+                        const remainingTime = (churrascoCooldownTime - timeSinceLastChurrasco) / 1000;
+                        return reply(`Aguarde ${remainingTime.toFixed(0)} segundos antes de fazer outro churrasco.`);
+                    }
+                
+                    reply(`*OLÁ [ ${pushname} ] AGUARDE 5 SEGUNDOS*`)
+                    await sleep (5000);
+                    contrafile = Math.floor((Math.random() * 150) + 50);
+                    assinhadefrango = Math.floor((Math.random() * 150) + 30);
+                    filebigno = Math.floor((Math.random() * 150) + 40);
+                    pikanha = Math.floor((Math.random() * 150) + 50);
+                    var resultado1 = contrafile + assinhadefrango + filebigno + pikanha;
+                
+                    addFilter(from);
+                
+                    try {
+                        picc = await zenitsu.profilePictureUrl(m.chat, "image");
+                    } catch(e) {
+                        picc = 'https://telegra.ph/file/2bf2e198407f9b8bfbcd0.jpg';
+                    }
+                
+                    ds = await getBuffer(picc);
+                
+                    let thumbInfo = `
+                *┏ *「️🍖 𝐂 𝐇 𝐔 𝐑 𝐑 𝐀 𝐒 𝐂 𝐎 🍖」  ┓*
+                *│▢ Carne - Picanha Argentina: ${contrafile}*
+                *│▢ Carne - Contra Filé: ${assinhadefrango}*
+                *│▢ Carne - Asinhas de Frango: ${filebigno}*
+                *│▢ Carne - Filé Mignon: ${pikanha}*
+                *┗ 「️🍖 𝐂 𝐇 𝐔 𝐑 𝐑 𝐀 𝐒 𝐂 𝐎 🍖」  ┛*
+                [㕚] *Foram vendidas hoje por você em nosso açougue: ${resultado1} peças de carne por você. Parabéns!*
+                [㕚] *Isso significa que foi adicionado em sua carteira R$${resultado1},00 em coins!*
+                `;
+                
+                    client.sendMessage(from,  {image: ds, caption: `${thumbInfo}`}, {quoted: info});
+                    addKoinUser(sender, +resultado1);
+                
+                    // Atualizar o tempo do último churrasco no arquivo JSON
+                    churrascoCooldown[sender] = currentTimeChurrasco;
+                    fs.writeFileSync('./database/user/cooldown/churrascoCooldown.json', JSON.stringify(churrascoCooldown));
+            }
+                    break
+
+            case 'tagrico':{
+                if (!isGroup) return reply(ptbr.grupo(pushname))
+                if (!isUser) return reply(ptbr.user(pushname))
+                const dinheiro = checkATMuser(sender)
+                const checkxpr = checkATMuser(sender, dinheiro) 
+                const quantidader = `6000`
+                if (checkxpr < quantidader) return reply(`*${pushname} VC NAO TEM DINHEIRO SUFICIENTE PARA COMPRAR TAG DE RICO*\n\n*PREÇO: ${quantidader}*`)
+                var [comprar] = q.split("")
+                if(!q.includes("")) return reply(`Cade a espaço mano?\nExemplo: ${prefix + command} comprar`)  
+                tagrico.push(`${sender}`)
+                fs.writeFileSync('./database/user/compras/tagrico.json', JSON.stringify(tagrico))
+                addKoinUser(sender, - quantidader)
+                reply(`*TAG RICO COMPRADO  COM SUCESSO* 💰💲💵\n\n*CUSTO 💰: ${quantidader}*`)
+                }
+                break
+
             case 'alugarcasa':
                 if (!isGroup) return reply(ptbr.grupo(pushname))
                 if (!isUser) return reply(ptbr.user(pushname))
@@ -3335,6 +3846,8 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 }
                 break
                 
+/////
+
 
             case 'Fazernick':
             case 'fazernick':
@@ -3351,12 +3864,12 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
             case 'getquoted':
             case 'getinfo':
             case 'get':
-                if (!isPremium) return reply(ptbr.premium())
+                if (!isPremium) return reply(ptbr.premium(prefix, pushname))
                 reply(JSON.stringify(info.message.extendedTextMessage.contextInfo, null, 3))
                 break
 
             case 'encurtalink':
-                if (!isPremium) return reply(ptbr.premium())
+                if (!isPremium) return reply(ptbr.premium(prefix, pushname))
                 if (args.length < 1) return reply(`Exemplo:\n${prefix}encurtalink https://www.youtube.com/channel/UCgKrNnrbNPJIOjJOgIXe1vQ`)
                 try {
                     link = args[0]
@@ -3370,7 +3883,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 break
 
             case 'ddd':
-                if (!isPremium) return reply(ptbr.premium())
+                if (!isPremium) return reply(ptbr.premium(prefix, pushname))
                 if (args.length < 1) return reply(`Use ${prefix + command} 21`)
                 ddd = body.slice(5)
                 ddds = await axios.get(`https://brasilapi.com.br/api/ddd/v1/${ddd}`)
@@ -3469,6 +3982,47 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 }
                 setInterval(banghst, 1000)
                 break
+
+                case 'inativo':  
+                    if(!isGroup) return reply(ptbr.grupo())
+                    if(!isGroupAdmins) return reply(ptbr.grupo())
+                    if(q.match(/[a-z]/i) || !q) return reply(`Exemplo: ${prefix+command} 0\nIsso mostrará quantas pessoas tem 0 mensagens no grupo, e se usar 5, vai mostrar quantos usuários tem 5 mensagens ou menos..`)
+                    await LIMPARDOCNT_QUEMJASAIU()
+                    var i2 = countMessage?.map(x => x.groupId)?.indexOf(from)
+                    blue = []; for (i of countMessage[i2].numbers) {
+                    if(i.messages <= q.trim())
+                    if(i.figus <= q.trim())
+                    if(i.cmd_messages <= q.trim())
+                    if(!groupAdmins.includes(i.id))
+                    if(!numerodono.includes(i.id))
+                    if(i.id != numeroBot)
+                    if(groupMembers.map(i => i.id).includes(i.id))
+                    blue.push(i.id)}; for ( i of countMessage[i2].numbers) {
+                    if(!groupMembers.map(a => a.id == i.id))
+                    if(i.id.length > 5)
+                    blue.push(i.id)}
+                    if(blue.length == 0) return reply(`Não tem pessoas com ${q}  mensagens..`)
+                    bli = `Usuários com ${q.trim()} mensagem(ns) pra baixo..\n\n`
+                    for (ac = 0; ac < blue.length; ac++) {
+                    bli += `${ac +1} - _ Usuário: @${blue[ac].split("@")[0]}\n\n`
+                    }
+                    mention(bli)
+                    break
+
+                case 'check':
+                    if (!isGroup) return reply(ptbr.grupo())
+                    if(groupIdscount.indexOf(from) < 0) return reply('O bot não tem ainda dados sobre o grupo')
+                    var ind = groupIdscount.indexOf(from)
+                    if (info.message.extendedTextMessage === undefined || info.message.extendedTextMessage === null) return reply('Marque o número que deseja puxar a atividade')
+                    mentioned = info.message.extendedTextMessage.contextInfo.mentionedJid
+                    if(numbersIds.indexOf(mentioned[0]) >= 0) {
+                    var indnum = numbersIds.indexOf(mentioned[0])
+                    mentions(`𖣘⃟ᗒ Consulta das atividade de\n𖣘⃟ᗒ @${mentioned[0].split('@')[0]} no grupo\n𖣘⃟ᗒ Mensagens: ${countMessage[ind].numbers[indnum].messages}\n𖣘⃟ᗒ Comandos dados: ${countMessage[ind].numbers[indnum].cmd_messages}`, mentioned, true)
+                    }
+                    else {
+                    mentions(`⋆⃟ۣۜ᭪➣ Consulta da atividade de ⋆⃟ۣۜ᭪➣ @${mentioned[0].split('@')[0]} no grupo\n⋆⃟ۣۜ᭪➣ Mensagens: 0\n⋆⃟ۣۜ᭪➣ Comandos dados: 0`, mentioned, true)
+                    }
+                    break
 
             case 'seradm': {
                 if (!isOwner) return reply(ptbr.dono())
@@ -3569,7 +4123,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 break
 
             case 'gerarcpf':
-                if (!isPremium) return reply(ptbr.premium())
+                if (!isPremium) return reply(ptbr.premium(prefix, pushname))
                 cp1 = `${Math.floor(Math.random() * 300) + 600}`
                 cp2 = `${Math.floor(Math.random() * 300) + 600}`
                 cp3 = `${Math.floor(Math.random() * 300) + 600}`
@@ -3609,7 +4163,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 break
 
             case 'ddd':
-                if (!isPremium) return reply(ptbr.premium())
+                if (!isPremium) return reply(ptbr.premium(prefix, pushname))
                 if (args.length < 1) return reply(`Use ${prefix + command} 21`)
                 ddd = body.slice(5)
                 ddds = await axios.get(`https://brasilapi.com.br/api/ddd/v1/${ddd}`)
@@ -3619,7 +4173,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 break
 
             case 'encurtalink':
-                if (!isPremium) return reply(ptbr.premium())
+                if (!isPremium) return reply(ptbr.premium(prefix, pushname))
                 if (args.length < 1) return reply(`Exemplo:\n${prefix}encurtalink https://www.youtube.com/channel/UCgKrNnrbNPJIOjJOgIXe1vQ`)
                 try {
                     link = args[0]
@@ -3767,7 +4321,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
 
             case 'listapremium':
             case 'premiumlist':
-                if (!isPremium) return reply(ptbr.premium())
+                if (!isPremium) return reply(ptbr.premium(prefix, pushname))
                 tkks = '╭────*「 *PREMIUM USER👑* 」\n'
                 for (let V of premium) {
                     tkks += `│+  @${V.split('@')[0]}\n`
@@ -3798,11 +4352,11 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 if (Number(args[0]) === 1) {
                     if (isLevelingOn) return reply('o level está ativo')
                     levelingOn.push(from)
-                    fs.writeFileSync('./functions/lib/leveling.json', JSON.stringify(levelingOn))
+                    fs.writeFileSync('./database/group/ativadores/nivel.json', JSON.stringify(levelingOn))
                     reply('O level foi ativo no grupo ✔️')
                 } else if (Number(args[0]) === 0) {
                     levelingOn.splice(from, 1)
-                    fs.writeFileSync('./functions/lib/leveling.json', JSON.stringify(levelingOn))
+                    fs.writeFileSync('./database/group/ativadores/nivel.json', JSON.stringify(levelingOn))
                     reply('O level foi desativado com sucesso neste grupo✔️')
                 } else {
                     reply('1 para ativar, 0 para desativar ')
@@ -3851,7 +4405,7 @@ dica: ${dataAnagrama2.dica}
 
              //   case 'ttc': case 'ttt': case 'tictactoe': {
                     if(!isGroup) reply(ptbr.grupo())
-                    if(!isUser) reply(ptbr.user())
+                    if(!isUser) reply(ptbr.user(prefix, pushname, nomeBot))
                     let TicTacToe = require("./lib/tictactoe.js")
                     this.game = this.game ? this.game : {}
                     if (Object.values(this.game).find(room => room.id.startsWith('tictactoe') && [room.game.playerX, room.game.playerO].includes(sender))) reply ('Você ainda está no jogo')
@@ -3904,7 +4458,7 @@ dica: ${dataAnagrama2.dica}
 
              //   case 'delttc': case 'delttt': {
                     if(!isGroup) return reply(ptbr.grupo())
-                    if(!isUser) return reply(ptbr.user())
+                    if(!isUser) return reply(ptbr.user(prefix, pushname, nomeBot))
                     this.game = this.game ? this.game : {}
                     try {
                     if (this.game) {
@@ -4114,7 +4668,7 @@ ${conselho}`
             case 'gpwhatsapp':
             case 'gruposwhats':
             case 'gruposwa':
-                if (!isPremium) return reply(ptbr.premium())
+                if (!isPremium) return reply(ptbr.premium(prefix, pushname))
                 if (!q) return reply("Cadê o título da pesquisa?")
                 axios.get(`https://marcos025.onrender.com/api/pesquisa/gpwhatsapp?nome=${q}&apikey=XANAX-VNCS$`)
                     .then(e => {
@@ -4228,7 +4782,7 @@ ${conselho}`
             case 'ranklevel':
             case 'rl':
             case 'rank':
-                _level.sort((a, b) => (a.xp < b.xp) ? 1 : -1)
+                nivel.sort((a, b) => (a.xp < b.xp) ? 1 : -1)
                 let leaderboardlvl = '    🏆《 Rank Niveis 》🏆\n\n'
                 let nom = 0
                 try {
@@ -4237,9 +4791,9 @@ ${conselho}`
                         leaderboardlvl += `
 ┏ ✘🌖 ${nomeBot} 🌘✘┓
 ┃•────•───────•───•
-┣❲🏆❳ [${nom}] ϟ➠ ${_level[i].id.replace('@s.whatsapp.net', '')}
-┣❲🏆❳「xp」: ϟ${_level[i].xp}
-┣❲🏆❳「Level」 :ϟ➠ ${_level[i].level}
+┣❲🏆❳ [${nom}] ϟ➠ ${nivel[i].id.replace('@s.whatsapp.net', '')}
+┣❲🏆❳「xp」: ϟ${nivel[i].xp}
+┣❲🏆❳「Level」 :ϟ➠ ${nivel[i].level}
 ┗ ──────「★」──────┚\n`
 
                     }
@@ -4289,15 +4843,14 @@ Solicitado por: ${pushname}`
                 reply(`Grupo desbanido com sucesso...`)
                 break
 
-            case "limpar":
-            case "clear":
+            case "limpar": case "clear":
                 if (!isGroup) return reply(ptbr.grupo())
                 if (!isGroupAdmins) return reply('comando apenas para admins')
                 reply(`L I M P A N D U 😎🤙\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n ${nomeBot}`)
                 break
 
             case 'wallpaperanime':
-                if (!isPremium) return reply(ptbr.premium())
+                if (!isPremium) return reply(ptbr.premium(prefix, pushname))
                 {
                     json = JSON.parse(fs.readFileSync('./functions/fotos/wall.json').toString())
                     random = json[Math.floor(Math.random() * json.length)]
@@ -4316,14 +4869,13 @@ Solicitado por: ${pushname}`
                 }
                 break
 
-            case 'deletar': case 'apagar': case 'delete': case 'del': case 'd':
-                if (!isGroup) return reply(ptbr.grupo())
-                if (!isOwner && !isGroupAdmins && !isPremium) return reply(ptbr.admin())
-                client.sendMessage(from, { delete: { remoteJid: from, fromMe: true, id: info.message.extendedTextMessage.contextInfo.stanzaId, participant: sender } })
-                    .catch((err) => {
-                        console.log(err)
-                        reply('A mensagem não foi enviada pelo bot...')
-                    })
+            case 'deletar': case 'delete': case 'del':  case 'd': case 'apagar':
+                if(!isGroupAdmins) return reply(ptbr.admin(pushname))
+                if (!isUser) return reply(ptbr.user(pushname))
+                if(!menc_prt) return reply("❕Marque a mensagem do usuário que deseja apagar...")
+                client.sendMessage(from, { delete: { remoteJid: from, fromMe: false, id: info.message.extendedTextMessage.contextInfo.stanzaId, participant: menc_prt}})
+                await sleep(1000)
+                reagir(from, "🧯")
                 break
 
             case 'bc': case 'bcgroup': case 'transmitir': case 'transmissão': {
