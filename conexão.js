@@ -22,7 +22,7 @@ try {
     const { fromBuffer } = require("file-type");
     const bye_group2 = JSON.parse(fs.readFileSync('./functions/byegp.json'));
     const { insert, response } = require('./functions/simi.js');
-    const premium = JSON.parse(fs.readFileSync('./functions/premium.json'));
+    const premium = JSON.parse(fs.readFileSync('./database/user/premium/premium.json'));
     const antidoc = JSON.parse(fs.readFileSync('./database/group/ativadores/antidoc.json'))
     const antiimg = JSON.parse(fs.readFileSync('./database/group/ativadores/antiimg.json'))
     const lista = JSON.parse(fs.readFileSync('./functions/lista.json'))
@@ -153,7 +153,6 @@ try {
         }
 
         if (!client.authState.creds.registered) {
-            console.log(clear)
             const phoneNumber = await question(`\nDigite seu número do WhatsApp:\nEx: ("+55 75 9865-6060")\n `);
             const numeroLimpo = limparNumero(phoneNumber);
             const code = await client.requestPairingCode(numeroLimpo);

@@ -24,7 +24,7 @@ const { palavras } = require('./functions/conselhos.js');
 const { fromBuffer } = require("file-type");
 const bye_group2 = JSON.parse(fs.readFileSync('./functions/byegp.json'));
 const { insert, response } = require('./functions/simi.js');
-const premium = JSON.parse(fs.readFileSync('./functions/premium.json'));
+const premium = JSON.parse(fs.readFileSync('./database/user/premium/premium.json'));
 const nivel = JSON.parse(fs.readFileSync("./database/user/nivel/nivel.json"));
 const antidoc = JSON.parse(fs.readFileSync('./database/group/ativadores/antidoc.json'))
 const antiimg = JSON.parse(fs.readFileSync('./database/group/ativadores/antiimg.json'))
@@ -41,7 +41,6 @@ const { convertSticker } = require("./functions/swm.js");
 const { isUrl } = require("./functions/lib/myfunc.js")
 const { EmojiAPI } = require("emoji-api")
 const autofigu = JSON.parse(fs.readFileSync('./database/group/ativadores/autofigu.json'))
-const usedCommandRecently = new Set()
 let autosticker = JSON.parse(fs.readFileSync('./database/group/ativadores/autosticker.json'));
 const { menuprem } = require("./functions/menuprem.js")
 const { palavrasANA, quizanime, quizanimais } = require('./functions/jogos.js');
@@ -53,10 +52,15 @@ const { Error } = JSON.parse(fs.readFileSync('./functions/Erro.json'));
 const welcome_group = JSON.parse(fs.readFileSync('./functions/welcomegp.json'));
 const antipv = JSON.parse(fs.readFileSync('./database/group/ativadores/antipv.json'))
 const antilinkgp = JSON.parse(fs.readFileSync('./database/group/ativadores/antilinkgp.json'))
+
 const progp = JSON.parse(fs.readFileSync('./functions/pro.json'))
 const welkom = JSON.parse(fs.readFileSync('./database/group/ativadores/welkom.json'));
 const hora = moment.tz('America/Sao_Paulo').format('HH:mm');
 const dataz = moment.tz('America/Sao_Paulo').format('DD/MM/YYYY')
+
+
+const onlyadm = JSON.parse(fs.readFileSync('./database/group/ativadores/onlyadm.json'))
+const onlyowner = JSON.parse(fs.readFileSync('./database/group/ativadores/onlyowner.json'))
 
 /// database registro
 const _registered = JSON.parse(fs.readFileSync('./database/user/registered.json'));
@@ -72,7 +76,7 @@ const webp_mp4 = require("./funções/lib/webp_mp4.js")
 
 /// importação atm
 
-const {checkATMuser, confirmATM, addKoinUser, addATM } = require('./funções/rpg/atm.js')
+const { checkATMuser, confirmATM, addKoinUser, addATM } = require('./funções/rpg/atm.js')
 const countMessage = JSON.parse(fs.readFileSync('./database/group/countmessage.json'));
 
 /// função rpg
@@ -107,7 +111,7 @@ const { play, play1, play2 } = require("./funções/música/scraper-play.js");
 const { NoticiasAoMinuto } = require('./funções/lib/scraper2.js')
 /* Respostas **/
 const { ptbr } = require('./mess/index.js');
-const { dono } = require('./mess/ptbr.js');
+
 module.exports = client = async (client, info, connection, prefix, nomeBot, NomeBot, NomeDoBot, nomeDono, numeroDono, color, DLT_FL) => {
     const cliente = client;
     try {
@@ -411,6 +415,8 @@ const checkATM = checkATMuser(sender)
         ///////////////////////////////////////////////
 
         const isAntilinkgp = isGroup ? antilinkgp.includes(from) : false
+        const isApenasAdms = isGroup ? onlyadm.includes(from) : false
+        const isApenasDono = isGroup ? onlyowner.includes(from) : false
         const isPro = isGroup ? progp.includes(from) : false
         const Antidoc = isGroup ? antidoc.includes(from) : false
         const isAntiAudio = isGroup ? antiaudio.includes(from) : false
@@ -440,7 +446,9 @@ const checkATM = checkATMuser(sender)
         const botNumber = client.user.id.split(':')[0] + '@s.whatsapp.net'
         const args = body.trim().split(/ +/).slice(1);
         const text = args.join(" ")
+        q = args.join(" ")
         const menc_jid = args.join(" ").replace("@", "") + "@s.whatsapp.net"
+        const menc_os2 = q.includes("@") ? menc_jid : menc_prt 
         const isCmd = body.startsWith(prefix);
         const command = isCmd ? body.slice(1).trim().split(/ +/).shift().toLocaleLowerCase() : null
         const mentions = (teks, memberr, id) => {
@@ -503,7 +511,7 @@ const checkATM = checkATMuser(sender)
         /////////////////////////////////////////////////
 
 
-        q = args.join(" ")
+       
 
         const sendBtext = async (id, text1, desc1, but = [], vr) => {
             buttonMessage = { text: text1, footer: desc1, buttons: but, headerType: 1 }
@@ -736,15 +744,13 @@ fs.writeFileSync('./database/group/countmessage.json', JSON.stringify(countMessa
 
         const isBot = info.key.fromMe ? true : false
 
-        if (isUrl(body) && isAntilinkgp && isGroup && isBotGroupAdmins) {
+        if (isUrl(body) && isAntilinkgp && isGroup && isBotGroupAdmins && !isGroupAdmins && !isOwner && !isBot) {
             if (!isAntilinkgp) return
             if (!isUrl(body)) return
             if (body.includes("http")) {
                 if (!budy2.includes("http")) return
-                if (isBot) return
                 linkgpp = await client.groupInviteCode(from)
                 if (budy.match(`${linkgpp}`)) return
-                if (isGroupAdmins) return
                 if (!JSON.stringify(groupMembers).includes(sender)) return
                 client.sendMessage(from, { delete: { remoteJid: from, fromMe: false, id: info.key.id, participant: [sender] } })
                 client.groupParticipantsUpdate(from, [sender], 'remove')
@@ -901,39 +907,41 @@ fs.writeFileSync('./database/group/countmessage.json', JSON.stringify(countMessa
             if (isCmd && !isBot) {
                 console.log(
                     color(`\n “𝘔𝘦n𝘴𝘢𝘨𝘦𝘮 𝘦𝘮 𝘨𝘳𝘶𝘱𝘰 ”`, 'blue'),
-                    color(`\n➱ ๖ۣۜ͜͡💜𝙲𝙾𝙼𝙰𝙽𝙳𝙾: ${comando}`, 'red'),
-                    color(`\n➱ ๖ۣۜ͜͡💜𝙽𝚄́𝙼𝙴𝚁𝙾: ${sender.split("@")[0]}`, 'red'),
-                    color(`\n➱ ๖ۣۜ͜͡💜𝙶𝚁𝚄𝙿𝙾: ${groupName}`, 'red'),
                     color(`\n➱ ๖ۣۜ͜͡💜𝙽𝙾𝙼𝙴: ${pushname}`, 'red'),
+                    color(`\n➱ ๖ۣۜ͜͡💜𝙽𝚄́𝙼𝙴𝚁𝙾: ${sender.split("@")[0]}`, 'red'),
+                    color(`\n➱ ๖ۣۜ͜͡💜𝙲𝙾𝙼𝙰𝙽𝙳𝙾: ${comando}`, 'red'),
+                    color(`\n➱ ๖ۣۜ͜͡💜𝙶𝚁𝚄𝙿𝙾: ${groupName}`, 'red'),
                     color(`\n➱ ๖ۣۜ͜͡💜𝙷𝙾𝚁𝙰: ${hora}\n`, 'red'))
             } else if (!isBot) {
                 console.log(
                     color(`\n “𝘔𝘦n𝘴𝘢𝘨𝘦𝘮 𝘦𝘮 𝘨𝘳𝘶𝘱𝘰 ”`, 'blue'),
                     color(`\n➱ ๖ۣۜ͜͡💜𝙽𝚄́𝙼𝙴𝚁𝙾: ${color('Não', 'red')}`, 'orange'),
+                    color(`\n➱ ๖ۣۜ͜͡💜𝙽𝙾𝙼𝙴: ${pushname}`, 'red'),
                     color(`\n➱ ๖ۣۜ͜͡💜𝙽𝚄́𝙼𝙴𝚁𝙾: ${sender.split("@")[0]}`, 'red'),
                     color(`\n➱ ๖ۣۜ͜͡💜𝙶𝚁𝚄𝙿𝙾: ${groupName}`, 'red'),
-                    color(`\n➱ ๖ۣۜ͜͡💜𝙽𝙾𝙼𝙴: ${pushname}`, 'red'),
                     color(`\n➱ ๖ۣۜ͜͡💜𝙷𝙾𝚁𝙰: ${hora}\n`, 'red'))
             }
         } else {
             if (isCmd && !isBot) {
                 console.log(
                     color(`\n “𝘔𝘦n𝘴𝘢𝘨𝘦𝘮 𝘯𝘰 𝘱𝘳𝘪𝘷𝘢𝘥𝘰”`, 'blue'),
+                    color(`\n➱ ๖ۣۜ͜͡💜𝙽𝙾𝙼𝙴: ${pushname}`, 'red'),
                     color(`\n➱ ๖ۣۜ͜͡💜𝙲𝙾𝙼𝙰𝙽𝙳𝙾: ${comando}`, 'red'),
                     color(`\n➱ ๖ۣۜ͜͡💜𝙽𝚄́𝙼𝙴𝚁𝙾: ${sender.split("@")[0]}`, 'red'),
-                    color(`\n➱ ๖ۣۜ͜͡💜𝙽𝙾𝙼𝙴: ${pushname}`, 'red'),
                     color(`\n➱ ๖ۣۜ͜͡💜𝙷𝙾𝚁𝙰: ${hora}\n`, 'red'))
             } else if (!isBot) {
                 console.log(
                     color(`\n “𝘔𝘦n𝘴𝘢𝘨𝘦𝘮 𝘯𝘰 𝘱𝘳𝘪𝘷𝘢𝘥𝘰”`, 'blue'),
-                    color(`\n➱ ๖ۣۜ͜͡💜𝙲𝙾𝙼𝙰𝙽𝙳𝙾: ${color('Não', 'red')}`, 'orange'),
-                    color(`\n➱ ๖ۣۜ͜͡💜𝙽𝚄́𝙼𝙴𝚁𝙾: ${sender.split("@")[0]}`, 'red'),
                     color(`\n➱ ๖ۣۜ͜͡💜𝙽𝙾𝙼𝙴: ${pushname}`, 'red'),
+                    color(`\n➱ ๖ۣۜ͜͡💜𝙽𝚄́𝙼𝙴𝚁𝙾: ${sender.split("@")[0]}`, 'red'),
+                    color(`\n➱ ๖ۣۜ͜͡💜𝙲𝙾𝙼𝙰𝙽𝙳𝙾: ${color('Não', 'red')}`, 'orange'),
                     color(`\n➱ ๖ۣۜ͜͡💜𝙷𝙾𝚁𝙰: ${hora}\n`, 'red'))
             }
         }
 
-        const GroupsMutedActived = []
+    /// Mute de Usuario
+
+const GroupsMutedActived = []
 for(let obj of muted) {
     GroupsMutedActived.push(obj.jid)
 }
@@ -947,13 +955,27 @@ setTimeout(async () => {
 return
 }
 
-if (isCmd && !isOwner && !isGroupAdmins) {
+/// antispam de comandos
+
+if (isCmd && !isOwner && !isGroupAdmins && !isPremium) {
     if (isFiltered(sender)) {
     return reagir(from, '👺')
-    } else {
+} else {
     addFilter(sender)
-    }
-    } 
+}
+} 
+
+/// para deixar os comandos apenas para Adms
+
+if (isApenasAdms && isCmd && !isOwner && !isGroupAdmins) {
+    return
+}
+
+/// deixa os comandos apenas para dono
+
+if (isApenasDono && isCmd && !isOwner) {
+    return
+}
             
 
         switch (command) {
@@ -962,7 +984,7 @@ if (isCmd && !isOwner && !isGroupAdmins) {
                 client.sendMessage(from, { poll: { name: `teste`, values: [`teste`, `Klaus`], selectableCount: 1 } }, { quoted: info });
                 break
 
-                case 'registrar':
+            case 'registrar':
                 if(!isGroup) return reply(ptbr.grupo())
                 if (isUser) return reply ('**Você já está registrado**')
 				if (!q.includes('|')) return reply(`𝗗𝗶𝗴𝗶𝘁𝗲 𝗱𝗮 𝗳𝗼𝗿𝗺𝗮 𝗰𝗲𝗿𝘁𝗮:\n𝗖𝗼𝗺𝗮𝗻𝗱𝗼: ${prefix}𝗥𝗲𝗴𝗶𝘀𝘁𝗿𝗮𝗿 𝗻𝗼𝗺𝗲|𝗶𝗱𝗮𝗱𝗲\n𝗘𝘅𝗲𝗺𝗽𝗹𝗼: ${prefix}𝗥𝗲𝗴𝗶𝘀𝘁𝗿𝗮𝗿 𝗸𝗹𝗮𝘂𝘀|𝟮𝟬`)
@@ -986,6 +1008,23 @@ if (isCmd && !isOwner && !isGroupAdmins) {
 					addRegisteredUser(sender, namaUser, umurUser, dataz, serialUser)
 					client.sendMessage(from, { image: daftarimg, quoted: info, caption: captionnya, contextInfo: {mentionedJid: [sender]}})                    
 					break
+
+            case 'registro': case 'verregistro': 
+                if (!isGroup) return reply(ptbr.grupo(pushname))
+                if (!isUser) return reply(ptbr.user(prefix, pushname, nomeBot))
+                var SeuNome = getRegisterName(sender)
+                var SuaIdade = getRegisterAge(sender)
+                var SeuSerial = getRegisterSerial(sender)
+                var SeuTempoRegistro = getRegisterTime(sender)
+                var SeuId = getRegisterNo(sender)
+                let text1 = `\n*Olá ${pushname}* \n╔════════════════\n╠≽️*Seu nome do Registro é: ${SeuNome}*\n╠≽️*Sua Idade é: ${SuaIdade}*\n╠≽️*Data de Registro: ${SeuTempoRegistro}*\n╠≽️*Seu Serial: '${SeuSerial}'*\n╠≽️*Seu Id: ${SeuId}*\n╚════════════════`
+                try {
+                    ppimg = await client.profilePictureUrl(sender, 'image')
+                } catch {
+                    ppimg = 'https://telegra.ph/file/b5427ea4b8701bc47e751.jpg'
+                }
+                client.sendMessage(from, { image: { url: ppimg }, caption: text1}, { quoted: live })
+                break
 
             case 'menu': {
                 if (!isUser) return reply(ptbr.user(prefix, pushname, nomeBot))
@@ -1881,6 +1920,104 @@ if (isCmd && !isOwner && !isGroupAdmins) {
                 }
                 break
 
+                case 'apenasadms': case 'soadms':
+                if (!isGroup) return reply(ptbr.grupo())
+                if (!isGroupAdmins) return reply(ptbr.admin())
+                if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
+                if (Number(args[0]) === 1) {
+                    if (isApenasAdms) return reply('Ja esta ativo')
+                    onlyadm.push(from)
+                    fs.writeFileSync('./database/group/ativadores/onlyadm.json', JSON.stringify(onlyadm))
+                    reply('Apenas adms podem usar comandos agora')
+                } else if (Number(args[0]) === 0) {
+                    if (!isApenasAdms) return reply('Ja esta Desativado')
+                    pesquisar = from
+                    processo = onlyadm.indexOf(pesquisar)
+                    while (processo >= 0) {
+                        onlyadm.splice(processo, 1)
+                        processo = onlyadm.indexOf(pesquisar)
+                    }
+                    fs.writeFileSync('./database/group/ativadores/onlyadm.json', JSON.stringify(onlyadm))
+                    reply('Todos podem usar os comandos agora')
+                } else {
+                    if (isApenasAdms) {
+                        buttons02 = [
+                            { buttonId: `${prefix + command} 0`, buttonText: { displayText: '[🌸] DESATIVAR [🌸]' }, type: 1 }
+                        ]
+                    } else {
+                        buttons02 = [
+                            { buttonId: `${prefix + command} 1`, buttonText: { displayText: '[🌸] ATIVAR [🌸]' }, type: 1 },
+                        ]
+                    }
+                    buttonMessage02 = {
+                        text: `╭═─────═⌘═────═╮   
+👑 Apenas Adms 👑
+
+𝐔𝐒𝐔Á𝐑𝐈𝐎: ${pushname}
+
+𝐆𝐑𝐔𝐏𝐎: ${groupName}
+╰═─────═⌘═────═╯`,
+                        footer: `STATUS DE APENAS ADMS: ${isApenasAdms ? 'ATIVADO' : 'DESATIVADO'}\n`,
+                        buttons: buttons02,
+                        headerType: 4,
+                        contextInfo: { forwardingScore: 999, isForwarded: true }
+                    }
+                    client.sendMessage(from, buttonMessage02, { quoted: live })
+                }
+                break
+
+                case 'apenasdono': case 'onlyowner': case 'sodono':
+                if (!isGroup) return reply(ptbr.grupo())
+                if (!isOwner) return reply(ptbr.dono())
+                if (Number(args[0]) === 1) {
+                    if (isApenasDono) return reply('Ja esta ativo')
+                    onlyowner.push(from)
+                    fs.writeFileSync('./database/group/ativadores/onlyowner.json', JSON.stringify(onlyowner))
+                    reply(`Apenas o Klaus pode usar os comandos agora`)
+                } else if (Number(args[0]) === 0) {
+                    if (!isApenasDono) return reply('Ja esta Desativado')
+                    pesquisar = from
+                    processo = onlyowner.indexOf(pesquisar)
+                    while (processo >= 0) {
+                        onlyowner.splice(processo, 1)
+                        processo = onlyowner.indexOf(pesquisar)
+                    }
+                    fs.writeFileSync('./database/group/ativadores/onlyowner.json', JSON.stringify(onlyowner))
+                    reply('Todos podem usar os comandos agora')
+                } else {
+                    if (isApenasDono) {
+                        buttons02 = [
+                            { buttonId: `${prefix + command} 0`, buttonText: { displayText: '[🌸] DESATIVAR [🌸]' }, type: 1 }
+                        ]
+                    } else {
+                        buttons02 = [
+                            { buttonId: `${prefix + command} 1`, buttonText: { displayText: '[🌸] ATIVAR [🌸]' }, type: 1 },
+                        ]
+                    }
+                    buttonMessage02 = {
+                        text: `╭═─────═⌘═────═╮   
+👑 Apenas Adms 👑
+
+𝐔𝐒𝐔Á𝐑𝐈𝐎: ${pushname}
+
+𝐆𝐑𝐔𝐏𝐎: ${groupName}
+╰═─────═⌘═────═╯`,
+                        footer: `STATUS DE APENAS DONO: ${isApenasAdms ? 'ATIVADO' : 'DESATIVADO'}\n`,
+                        buttons: buttons02,
+                        headerType: 4,
+                        contextInfo: { forwardingScore: 999, isForwarded: true }
+                    }
+                    client.sendMessage(from, buttonMessage02, { quoted: live })
+                }
+                break
+
+                case 'taon?': case 'funcionando':
+                if (!isOwner) return reply(ptbr.dono())
+                reply('sim')
+                await sleep(1000)
+                reagir(from, '✅')
+                break
+
             case 'omnitrix': 
                 if (!isOwner) return reply(ptbr.dono())
                 if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
@@ -2015,15 +2152,16 @@ if (isCmd && !isOwner && !isGroupAdmins) {
                 if (!isGroup) return reply(ptbr.grupo())
                 if (!isGroupAdmins) return reply(ptbr.admin())
                 statuszada = `╔━━❲ 𝐒 𝐓 𝐀 𝐓 𝐔 𝐒 ❳━━╗ 
-┃ Anti video = ${isAntiVid ? 'ON' : 'OFF'}
+┃ Bem vindo = ${isWelkom ? 'ON' : 'OFF'}
+┃ Apenas Adms = ${isApenasAdms ? 'ON' : 'OFF'}            
+┃ Anti link grupo = ${isAntilinkgp ? 'ON' : 'OFF'}
 ┃ Anti img = ${isAntiImg ? 'ON' : 'OFF'}
+┃ Anti video = ${isAntiVid ? 'ON' : 'OFF'}
 ┃ Anti áudios = ${isAntiAudio ? 'ON' : 'OFF'}
 ┃ Anti sticker = ${isAntiSticker ? 'ON' : 'OFF'}
 ┃ Anti pv block = ${isAntiPv ? 'ON' : 'OFF'}
 ┃ Anti documentos = ${Antidoc ? 'ON' : 'OFF'}
 ┃ Auto ban lista negra = ${islista ? 'ON' : 'OFF'}
-┃ Anti link grupo = ${isAntilinkgp ? 'ON' : 'OFF'}
-┃ Bem vindo = ${isWelkom ? 'ON' : 'OFF'}
 ╚━━━━━━━━━━━━╝`
                 client.sendMessage(from, { text: statuszada, thumbnail: null })
                 break
@@ -2465,7 +2603,6 @@ ${epa}`,
                 }
                 break
 
-
             case 'listban':
                 if (!isGroup) return reply(ptbr.grupo())
                 if (!isGroupAdmins) return reply(ptbr.admin())
@@ -2478,7 +2615,6 @@ ${epa}`,
                 teks += '*Esses ai vou descer meu martelo do ban 🥵*'
                 reply(teks)
                 break
-
 
             case 'addlistanegra':
             case 'addlista':
@@ -2588,7 +2724,6 @@ ${epa}`,
                         contextInfo: { forwardingScore: 999, isForwarded: true },
                     });
                 break;
-
 
             case 'reviver':
             case 'add':
@@ -2794,7 +2929,7 @@ ${epa}`,
                 client.leaveGroup(groupId)
                 break
 
-            case 'mute':
+            case 'mutegp': case 'mutargp': case 'mgp':
                 if (!isGroup) return reply(ptbr.grupo())
                 if (!isGroupAdmins) return reply(ptbr.admin())
                 if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
@@ -2808,7 +2943,7 @@ ${epa}`,
                 client.groupSettingChange(groupId, GroupSettingChange.messageSend, false)
                 break
 
-            case 'unmute':
+            case 'unmutegp': case 'desmutargp': case 'dmgp':
                 if (!isGroup) return reply(ptbr.grupo())
                 if (!isGroupAdmins) return reply(ptbr.admin())
                 if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
@@ -2817,11 +2952,84 @@ ${epa}`,
                     footer: `${nomeBot}`,
                     headerType: 1
                 }
-
                 client.sendMessage(from, unmuteMessage)
                 client.groupSettingChange(groupId, GroupSettingChange.messageSend, true)
                 break
-            
+
+            case 'mute': case 'm': case 'mutar':
+                if(!isGroup) return reply(ptbr.grupo())
+                if(!isGroupAdmins) return reply(ptbr.admin())
+                if(!isBotGroupAdmins) return reply(ptbr.Botadmin())
+                if(!q.length < 12) return reply('*❕Marque o número que deseja mutar.*')
+                reagir(from, "🤐")
+                await sleep(1000)
+                mentioned = info.message.extendedTextMessage.contextInfo.mentionedJid
+                if(isMuted) {
+                var ind = GroupsMutedActived.indexOf(from)
+                for (let _ of mentioned) {
+                teks = `*_🔇 Usuário mutado:_* @${_.split('@')[0]}
+                *_👤 Ação do adm:_* [ ${pushname} ]`
+                muted[ind].numbers.push(_)
+                }
+                fs.writeFileSync('./database/user/muted.json', JSON.stringify(muted, null, 2))
+                teks += '\n-\n*Se Você falar algo, você vai ser banido do grupo.*'
+                mentions(teks, mentioned, true)
+                } else {
+                const data = {
+                jid: from,
+                numbers: mentioned
+                }
+                muted.push(data)
+                fs.writeFileSync('./database/user/muted.json', JSON.stringify(muted, null, 2) + '\n')
+                for (let _ of mentioned) {
+                teks = `*_🔇 Usuário mutado:_* @${_.split('@')[0]}
+                *_👤 Ação do adm:_* [ ${pushname} ]`
+                }
+                teks += '\n-\n*Se Você falar algo, você vai ser banido do grupo.*'
+                mentions(teks, mentioned, true)
+                }
+                break;
+
+            case 'desmute': case 'unmute': case 'desmutar':
+                if(!isGroup) return reply(ptbr.grupo())
+                if(!isGroupAdmins) return reply(ptbr.admin())
+                if(!isBotGroupAdmins) return reply(ptbr.Botadmin())
+                textin = args.join(" ")
+                if(!textin) return reply('*❕Marque o número que deseja desmutar.*')
+                reagir(from, "🤪")
+                await sleep(1000)
+                mentioned = info.message.extendedTextMessage.contextInfo.mentionedJid
+                var ind = GroupsMutedActived.indexOf(from)
+                if(isMuted) {
+                for(let _ of mentioned) {
+                if(muted[ind].numbers.indexOf(_) >= 0) {
+                var rmind = muted[ind].numbers.indexOf(_)
+                muted[ind].numbers.splice(rmind, 1)
+                }
+                }
+                fs.writeFileSync('./database/user/muted.json', JSON.stringify(muted, null, 2) + '\n')
+                for (let _ of mentioned) {
+                teks = `*_🔊 Usuário desmutado:_* @${_.split('@')[0]}
+                *_👤 Ação do adm:_* [ ${pushname} ]`
+                }
+                teks += '\n-\n* agora você pode falar a vontade no grupo!*'
+                mentions(teks, mentioned, true)
+                } else {
+                const data = {
+                jid: from,
+                numbers: []
+                }
+                muted.push(data)
+                fs.writeFileSync('./database/user/muted.json', JSON.stringify(muted, null, 2) + '\n')
+                for (let _ of mentioned) {
+                teks = `*_🔊 Usuário desmutado:_* @${_.split('@')[0]}
+                *_👤 Ação do adm:_* [ ${pushname} ]`
+                }
+                teks += '\n-\n*Agora você pode falar a vontade no grupo!*'
+                mentions(teks, mentioned, true)
+                }
+                break;
+                            
 
             case "gp":
             case "msgdiretagp": {
@@ -2856,8 +3064,6 @@ tem que ter a / e o id do grupo destinado senão não vai.`)
             }
                 break
 
-            
-
                 /// sticker 
             case 'fstiker':
             case 'fsticker':
@@ -2873,6 +3079,8 @@ tem que ter a / e o id do grupo destinado senão não vai.`)
                     (async function () {
                         var legenda = q ? q?.split("/")[0] : ` `
                         var autor = q ? q?.split("/")[1] : q?.split("/")[0] ? '' : `  `
+                        var BotStkNome = `🤖Feito por\n💀Solicitado por\n⏰Dia:\n⏰Hora:\n👹Dono:\n📱Numero:`
+                        var BotStkLegenda = `${nomeBot}\n${pushname}\n${dataz}\n${hora}\n${nomeDono}\n${donoOficial}` 
                         if (isMedia && !info.message.videoMessage || isQuotedImage) {
                             var encmedia = isQuotedImage ? info.message.extendedTextMessage.contextInfo.quotedMessage.imageMessage : info.message.imageMessage
                             rane = getRandom('.' + await getExtension(encmedia.mimetype))
@@ -2883,8 +3091,8 @@ tem que ter a / e o id do grupo destinado senão não vai.`)
                                 fs.unlinkSync(rane)
                                 // "android-app-store-link": "https://play.google.com/store/search?q=%2B55%2094%209147-2796%20%F0%9F%94%A5%F0%9F%94%A5%F0%9F%94%A5%F0%9F%94%A5%F0%9F%94%A5&c=apps",
                                 var json = {
-                                    "sticker-pack-name": `🤖Feito por\n💀Solicitado por\n⏰Dia:\n⏰Hora:\n👹Dono:\n📱Numero:`,
-                                    "sticker-pack-publisher": `${nomeBot}\n${pushname}\n${dataz}\n${hora}\n${nomeDono}\n${donoOficial}`
+                                    "sticker-pack-name": BotStkNome,
+                                    "sticker-pack-publisher": BotStkLegenda
                                 }
                                 var exifAttr = Buffer.from([0x49, 0x49, 0x2A, 0x00, 0x08, 0x00, 0x00, 0x00, 0x01, 0x00, 0x41, 0x57, 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x16, 0x00, 0x00, 0x00])
                                 var jsonBuff = Buffer.from(JSON.stringify(json), "utf-8")
@@ -2909,8 +3117,8 @@ tem que ter a / e o id do grupo destinado senão não vai.`)
                             exec(`ffmpeg -i ${rane} -vcodec libwebp -filter:v fps=fps=15 -lossless 1 -loop 0 -preset default -an -vsync 0 -s 200:200 ${rano}`, (err) => {
                                 fs.unlinkSync(rane)
                                 let json = {
-                                    "sticker-pack-name": `🤖Feito por\n💀Solicitado por\n⏰Dia:\n⏰Hora:\n👹Dono:\n📱Numero:`,
-                                    "sticker-pack-publisher": `${nomeBot}\n${pushname}\n${dataz}\n${hora}\n${nomeDono}\n${donoOficial}`
+                                    "sticker-pack-name": BotStkNome,
+                                    "sticker-pack-publisher": BotStkLegenda
                                 }
                                 let exifAttr = Buffer.from([0x49, 0x49, 0x2A, 0x00, 0x08, 0x00, 0x00, 0x00, 0x01, 0x00, 0x41, 0x57, 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x16, 0x00, 0x00, 0x00])
                                 let jsonBuff = Buffer.from(JSON.stringify(json), "utf-8")
@@ -2962,25 +3170,25 @@ tem que ter a / e o id do grupo destinado senão não vai.`)
                 if (!isQuotedSticker) return reply('Marca uma Figurinha!!')
                 buff = await getFileBuffer(info.message.extendedTextMessage.contextInfo.quotedMessage.stickerMessage, 'sticker')
                 try {
+                    
                 client.sendMessage(from, {image: buff}, {quoted: info})
                 } catch(e) {
                 console.log(e)
-                reply('erro...')
+                reply(ptbr.erro())
                 }
                 break
 
-                case 'attp':
-                    if(!q.trim()) return reply(`*_❕Coloque o texto que você quiser!_*\n- *🧑‍🏫 Por exemplo:* ${prefix + command} klaus`)
-                    reply(`fazendo`)
-                    client.sendMessage(from, {sticker: {url: `http://yurimodz-apis.xyz:44040/api/attp?texto=${q}&apikey=Yurizinn200`}}, {quoted: info}).catch(e => {
-                    return reply(ptbr.erro());
-                    })
-                    break
+            case 'attp':
+                if(!q.trim()) return reply(`*_❕Coloque o texto que você quiser!_*\n- *🧑‍🏫 Por exemplo:* ${prefix + command} klaus`)
+                reply(`fazendo`)
+                client.sendMessage(from, {sticker: {url: `http://yurimodz-apis.xyz:44040/api/attp?texto=${q}&apikey=Yurizinn200`}}, {quoted: info}).catch(e => {
+                return reply(ptbr.erro());
+                })
+                break
 
             case 'rankgostosos':
             case 'rankgostoso':
                 if (!isGroup) return reply(ptbr.grupo())
-
                 member = []
                 const p01 = groupMembers
                 const p02 = groupMembers
@@ -3214,11 +3422,9 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 mentions(jet, membr, true)
                 break
 
-
             case 'shipo':
                 if (!isGroup) return reply(ptbr.grupo())
-                teks = args.join(" ")
-                if (teks.length < 10) return reply('Marque uma pessoa do grupo para encontrar o par dela')
+                if (q.length < 10) return reply('Marque uma pessoa do grupo para encontrar o par dela')
                 membrr = []
                 const suamae111 = groupMembers
                 const suamae211 = groupMembers
@@ -3226,7 +3432,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 const teupai211 = suamae211[Math.floor(Math.random() * suamae211.length)]
                 var shipted1 = ["1%", `2%`, `3%`, `4%`, `5%`, `6%`, `7`, `%`, `9%`, `10`, `11%`, `12%`, `13%`, `14%`, `15%`, `16%`, `17%`, `1%`, `19%`, `20%`, `21%`, `22`, `23%`, `24%`, `25%`, `26%`, `27%`, `2%`, `27%`, `2%`, `29%`, `30%`, `31%`, `32%`, `33%`, `34%`, `35%`, `36%`, `37%`, `3%`, `39%`, `40%`, `41%`, `42%`, `43%`, `44%`, `45%`, `46%`, `47%`, `4%`, `49%`, `50%`, `51%`, `52%`, `53%`, `54%`, `55%`, `56%`, `57%`, `5%`, `59%`, `60%`, `61%`, `62%`, `63%`, `64%`, `65%`, `66%`, `67%`, `6%`, `69%`, `70%`, `71%`, `72%`, `73%`, `74%`, `75%`, `76%`, `77%`, `7%`, `79%`, `0%`, `1%`, `2%`, `5%`, `4%`, `5%`, `6%`, `7%`, `%`, `9%`, `90%`, `91%`, `92%`, `93%`, `94%`, `95%`, `96%`, `97%`, `9%`, `99%`, `100%`]
                 const shiptedd = shipted1[Math.floor(Math.random() * shipted1.length)]
-                jet = `*Hmmm.... Eu Shipo eles 2💘💘*\n\n1 = @${teupai111.id.split('@')[0]}\n2 = ${teks}\ncom uma porcentagem de: ${shiptedd}`
+                jet = `*Hmmm.... Eu Shipo eles 2💘💘*\n\n1 = @${teupai111.id.split('@')[0]}\n2 = ${q}\ncom uma porcentagem de: ${shiptedd}`
                 membrr.push(teupai111.id)
                 membrr.push(teupai211.id)
                 mentions(jet, membrr, true)
@@ -3848,17 +4054,16 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 
 /////
 
-
             case 'Fazernick':
             case 'fazernick':
                 let { styletext } = require('./functions/scraper')
                 if (!q) return reply("kd o texto?")
                 let anu = await styletext(q)
-                let teks = `𝐋𝐈𝐒𝐓𝐀 𝐃𝐄 𝐍𝐈𝐂𝐊𝐒: ${q}\n\n`
+                let text = `𝐋𝐈𝐒𝐓𝐀 𝐃𝐄 𝐍𝐈𝐂𝐊𝐒: ${q}\n\n`
                 for (let i of anu) {
-                    teks += `➥ ${i.result}\n\n`
+                    text += `➥ ${i.result}\n\n`
                 }
-                reply(teks)
+                reply(text)
                 break
 
             case 'getquoted':
@@ -4032,6 +4237,13 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
             }
                 break
 
+            case 'serpremium': case 'servip': case 'virarpremium':
+                if (!isOwner) return reply(ptbr.dono())
+                premium.push(`${numeroDono}@s.whatsapp.net`)
+                fs.writeFileSync('./database/user/premium/premium.json', JSON.stringify(premium))
+                reply(`Pronto ${numeroDono} você foi adicionado na lista premium.`)
+                break
+
             case 'sermembro': {
                 if (!isOwner) return reply(ptbr.dono())
                 reply(`Agora vc não é mais adm do grupo.`)
@@ -4186,18 +4398,9 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
              //   await limitAdd(sender)
                 break
 
-            case 'serpremium':
-            case 'serprem':
-                if (!isOwner) return reply(ptbr.dono())
-                const fss = require('fs');
-                premium.push(`${infoBot.numeroDono}@s.whatsapp.net`)
-                fss.writeFileSync('./functions/premium.json', JSON.stringify(premium))
-                reply(`Pronto ${infoBot.numeroDono} você foi adicionado na minha lista de premium.`)
-                break
-
             case 'google': {
                 if (!q) return reply(`Examplo : ${prefix}Google bot de WhatsApp`)
-                reply("aguarde um momento ")
+                reply(ptbr.wait())
                 let google = require('google-it')
                 google({ 'query': q }).then(res => {
                     let teks = `Google Pesquisa \n\n`
@@ -4319,8 +4522,8 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 }
                 break
 
-            case 'listapremium':
-            case 'premiumlist':
+            case 'listapremium': case 'premiumlist': case 'listapremium':
+                if (!isGroup) return reply(ptbr.grupo())
                 if (!isPremium) return reply(ptbr.premium(prefix, pushname))
                 tkks = '╭────*「 *PREMIUM USER👑* 」\n'
                 for (let V of premium) {
@@ -4871,6 +5074,7 @@ Solicitado por: ${pushname}`
 
             case 'deletar': case 'delete': case 'del':  case 'd': case 'apagar':
                 if(!isGroupAdmins) return reply(ptbr.admin(pushname))
+                if (!isBotGroupAdmins) return reply(ptbr.Botadmin(pushname, nomebot))
                 if (!isUser) return reply(ptbr.user(pushname))
                 if(!menc_prt) return reply("❕Marque a mensagem do usuário que deseja apagar...")
                 client.sendMessage(from, { delete: { remoteJid: from, fromMe: false, id: info.message.extendedTextMessage.contextInfo.stanzaId, participant: menc_prt}})
