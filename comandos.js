@@ -4186,8 +4186,9 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 break
 
                 case 'inativo':  
-                    if(!isGroup) return reply(ptbr.grupo())
-                    if(!isGroupAdmins) return reply(ptbr.grupo())
+                    if (!isGroup) return reply(ptbr.grupo())
+                    if (!isGroupAdmins) return reply(ptbr.admin())
+                    if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
                     if(q.match(/[a-z]/i) || !q) return reply(`Exemplo: ${prefix+command} 0\nIsso mostrará quantas pessoas tem 0 mensagens no grupo, e se usar 5, vai mostrar quantos usuários tem 5 mensagens ou menos..`)
                     await LIMPARDOCNT_QUEMJASAIU()
                     var i2 = countMessage?.map(x => x.groupId)?.indexOf(from)
@@ -4211,8 +4212,35 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                     mention(bli)
                     break
 
+                case 'atividades':  
+                    try{
+                    if (!isGroup) return reply(ptbr.grupo())
+                    if (!isGroupAdmins) return reply(ptbr.admin())
+                    if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
+                    if(isGroup && groupIdscount.indexOf(from) >= 0) {
+                    var ind = groupIdscount.indexOf(from)
+                    teks = `*Atividade dos membros do grupo:*\n\n`
+                    mem = []
+                    for(let obj of groupMembers) {
+                    if(numbersIds.indexOf(obj.id) >=0) {
+                    var indnum = numbersIds.indexOf(obj.id)
+                    teks += `*• Membro:* @${countMessage[ind].numbers[indnum].id.split('@')[0]}\n*• Comandos:* ${countMessage[ind].numbers[indnum].cmd_messages}\n*• Mensagens:* ${countMessage[ind].numbers[indnum].messages}\n\n----------------------------------\n\n`
+                    } else {
+                    teks += `*• Membro:* @${obj.id.split('@')[0]}\n*• Comandos:* 0\n*• Mensagens:* 0\n\n----------------------------------\n\n`
+                    }
+                    mem.push(obj.id)
+                    }
+                    client.sendMessage(from, {text: teks, contextInfo:{mentionedJid: mem}}, {quoted: info})
+                    } else return reply('*Nada foi encontrado*')
+                    } catch (e){
+                    console.log(e)
+                    }
+                    break;
+
                 case 'check':
                     if (!isGroup) return reply(ptbr.grupo())
+                    if (!isGroupAdmins) return reply(ptbr.admin())
+                    if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
                     if(groupIdscount.indexOf(from) < 0) return reply('O bot não tem ainda dados sobre o grupo')
                     var ind = groupIdscount.indexOf(from)
                     if (info.message.extendedTextMessage === undefined || info.message.extendedTextMessage === null) return reply('Marque o número que deseja puxar a atividade')
@@ -4279,6 +4307,12 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 }, 1000)
                 break
 
+            case 'reiniciar':
+                if (!isOwner) return reply(ptbr.dono())
+                client.sendMessage(from,{text: `_Ok Reiniciando Isso vai levar alguns segundos..._`}, {quoted: info})
+                setTimeout(() => {process.exit(0)}, 3000)
+                break
+
             case 'addpremium':
                 if (!isGroup) return reply(ptbr.grupo())
                 if (!isOwner) return reply(ptbr.dono())
@@ -4288,14 +4322,14 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                     bla = premium.includes(mentioned)
                     if (bla) return reply("*Este número já está incluso..*")
                     premium.push(`${mentioned}`)
-                    fs.writeFileSync('./functions/premium.json', JSON.stringify(premium))
+                    fs.writeFileSync('./database/user/premium/premium.json', JSON.stringify(premium))
                     client.sendMessage(from, { text: `👑@${mentioned.split("@")[0]} foi adicionado à lista de usuários premium com sucesso👑` }, { quoted: info })
                 } else {
                     mentioned = args.join(" ").replace("@", "") + "@s.whatsapp.net"
                     bla = premium.includes(mentioned)
                     if (bla) return reply("*Este número já está incluso..*")
                     premium.push(`${mentioned}`)
-                    fs.writeFileSync('./functions/premium.json', JSON.stringify(premium))
+                    fs.writeFileSync('./database/user/premium/premium.json', JSON.stringify(premium))
                     tedtp = args.join(" ").replace("@", "")
                     client.sendMessage(from, { text: `👑@${tedtp} foi adicionado à lista de usuários premium com sucesso👑`, mentions: [mentioned] }, { quoted: info })
                 }
@@ -4314,7 +4348,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                         premium.splice(processo, 1)
                         processo = premium.indexOf(pesquisar)
                     }
-                    fs.writeFileSync('./functions/premium.json', JSON.stringify(premium))
+                    fs.writeFileSync('./database/user/premium/premium.json', JSON.stringify(premium))
                     client.sendMessage(from, { text: ` ${num.split("@")[0]} foi tirado da lista premium com sucesso..` }, { quoted: info })
                 } else {
                     mentioned = args.join(" ").replace("@", "") + "@s.whatsapp.net"
@@ -4326,7 +4360,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                         premium.splice(processo, 1)
                         processo = premium.indexOf(pesquisar)
                     }
-                    fs.writeFileSync('./functions/premium.json', JSON.stringify(premium))
+                    fs.writeFileSync('./database/user/premium/premium.json', JSON.stringify(premium))
                     client.sendMessage(from, { text: ` @${mentioned.split("@")[0]} foi tirado da lista premium com sucesso..` }, { quoted: info })
                 }
                 break
