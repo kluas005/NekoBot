@@ -16,7 +16,7 @@ const axios = require('axios');
 const ffmpeg = require('fluent-ffmpeg');
 
 ///
-//const thiccysapi = require('textmaker-thiccy');
+
 let bancht = JSON.parse(fs.readFileSync('./functions/banchat.json'));
 const infoBot = JSON.parse(fs.readFileSync('./config/config.json'));
 const imagemdomenu = "https://telegra.ph/file/91734dc02ee089ecc883b.jpg"
