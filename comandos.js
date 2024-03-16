@@ -3081,7 +3081,7 @@ tem que ter a / e o id do grupo destinado senão não vai.`)
                         var legenda = q ? q?.split("/")[0] : ` `
                         var autor = q ? q?.split("/")[1] : q?.split("/")[0] ? '' : `  `
                         var BotStkNome = `🤖Feito por\n💀Solicitado por\n⏰Dia:\n⏰Hora:\n👹Dono:\n📱Numero:`
-                        var BotStkLegenda = `${nomeBot}\n${pushname}\n${dataz}\n${hora}\n${nomeDono}\n${donoOficial}` 
+                        var BotStkLegenda = `${nomeBot}\n${pushname}\n${dataz}\n${hora}\n${nomeDono}\n${numeroDono}` 
                         if (isMedia && !info.message.videoMessage || isQuotedImage) {
                             var encmedia = isQuotedImage ? info.message.extendedTextMessage.contextInfo.quotedMessage.imageMessage : info.message.imageMessage
                             rane = getRandom('.' + await getExtension(encmedia.mimetype))
