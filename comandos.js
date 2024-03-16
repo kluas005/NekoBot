@@ -224,6 +224,7 @@ const isespada = espada.includes(sender)
 
 const checkATM = checkATMuser(sender)
             try {
+                if (info.key.fromMe) return 
                 if (checkATM === undefined) addATM(sender)
                 dinheirosaku = Math.floor(Math.random() * 10) + 50 //GANHA ENTRA 10 * 50 POR CADA MSG
                 addKoinUser(sender, dinheirosaku)
@@ -2960,7 +2961,7 @@ ${epa}`,
                 if(!isGroup) return reply(ptbr.grupo())
                 if(!isGroupAdmins) return reply(ptbr.admin())
                 if(!isBotGroupAdmins) return reply(ptbr.Botadmin())
-                if(!q.length < 12) return reply('*❕Marque o número que deseja mutar.*')
+                if(q.length <= 12) return reply('*❕Marque o número que deseja mutar.*')
                 reagir(from, "🤐")
                 await sleep(1000)
                 mentioned = info.message.extendedTextMessage.contextInfo.mentionedJid
@@ -4054,9 +4055,8 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 
 /////
 
-            case 'Fazernick':
-            case 'fazernick':
-                let { styletext } = require('./functions/scraper')
+            case 'Fazernick': case 'fazernick': case 'gerarnick':
+                let { styletext } = require('./funções/lib/scraper.js')
                 if (!q) return reply("kd o texto?")
                 let anu = await styletext(q)
                 let text = `𝐋𝐈𝐒𝐓𝐀 𝐃𝐄 𝐍𝐈𝐂𝐊𝐒: ${q}\n\n`
@@ -4084,7 +4084,6 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                     emror = String(e)
                     reply(`${e}`)
                 }
-              //  await limitAdd(sender)
                 break
 
             case 'ddd':
@@ -4096,8 +4095,6 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 for (let i = 0; i < ddds.data.cities.length; i++) { dddlist += `${i + 1} ⪧ *${ddds.data.cities[i]}*\n` }
                 client.sendMessage(from, { text: dddlist }, { quoted: info })
                 break
-
-
 
             case 'listagp':
                 try {
