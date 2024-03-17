@@ -1281,26 +1281,6 @@ if (isApenasDono && isCmd && !isOwner) {
                     break
                     /// fim da aba de download
                     
-                    /// modificador de voz
-                case 'esquilo':
-                    if (!isGroup) return reply(ptbr.grupo(pushname))
-                    if (!isUser) return reply(ptbr.user(pushname))
-                    if (!isQuotedAudio) return reply('Marque um áudio')
-                    reply(ptbr.wait())
-                    muk = isQuotedAudio ? info.message.extendedTextMessage.contextInfo.quotedMessage.audioMessage : info.message.audioMessage
-                    rane = getRandom('.'+await getExtension(muk, mimetype))
-                    buffimg = await getFileBuffer(muk, 'audio')
-                    fs.writeFileSync(rane, buffimg)
-                    gem = rane
-                    ran = getRandom('.mp3')
-                    exec(`ffmpeg -i ${gem} -filter:a "atempo=0.7,asetrate=65100" ${ran}`, (err, stderr, stdout) => {
-                    fs.unlinkSync(gem)
-                    if (err) return reply('Error!')
-                    hah = fs.readFileSync(ran)
-                    client.sendMessage(from, {audio: hah, mimetype: 'audio/mp4', ptt:true}, {quoted: info})
-                    fs.unlinkSync(ran)
-                    })
-                    break
                 case 'bard':
                 case 'ask':
                     if(!isGroup) return reply(ptbr.grupo())
@@ -1313,6 +1293,8 @@ if (isApenasDono && isCmd && !isOwner) {
                     }catch (erro) {
                     console.log(erro)}
                     break
+
+                    /// modificadores de voz 
 
                 case 'audiolento': 
                 case 'slow':
@@ -1405,6 +1387,26 @@ if (isApenasDono && isCmd && !isOwner) {
                     })
                     break
 
+                case 'esquilo':
+                    if (!isGroup) return reply(ptbr.grupo(pushname))
+                    if (!isUser) return reply(ptbr.user(pushname))
+                    if (!isQuotedAudio) return reply('Marque um áudio')
+                    reply(ptbr.wait())
+                    muk = isQuotedAudio ? info.message.extendedTextMessage.contextInfo.quotedMessage.audioMessage : info.message.audioMessage
+                    rane = getRandom('.'+await getExtension(muk, mimetype))
+                    buffimg = await getFileBuffer(muk, 'audio')
+                    fs.writeFileSync(rane, buffimg)
+                    gem = rane
+                    ran = getRandom('.mp3')
+                    exec(`ffmpeg -i ${gem} -filter:a "atempo=0.7,asetrate=65100" ${ran}`, (err, stderr, stdout) => {
+                    fs.unlinkSync(gem)
+                    if (err) return reply('Error!')
+                    hah = fs.readFileSync(ran)
+                    client.sendMessage(from, {audio: hah, mimetype: 'audio/mp4', ptt:true}, {quoted: info})
+                    fs.unlinkSync(ran)
+                    })
+                    break
+
                 case 'bass': 
                     if (!isQuotedAudio) return reply('Marque um áudio')
                     reply(ptbr.wait())
@@ -1458,7 +1460,8 @@ if (isApenasDono && isCmd && !isOwner) {
                     fs.unlinkSync(ran)
                     })
                     break
-
+                    /// fim dos modificadores de voz
+                    
                 case 'noticias':
                     if (!isGroup) return reply(ptbr.grupo())
                     if (!isUser) return reply(ptbr.user(prefix, pushname, nomeBot))
@@ -3783,10 +3786,11 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
             case 'casar':
                 if(!isGroup) return reply(ptbr.grupo())
                 if (info.message.extendedTextMessage === undefined || info.message.extendedTextMessage === null) return reply('marque a pessoa com quem você quer se casar')
+                reagir(from, '💍')
                 mentioned = args.join(" ").replace("@", "") + "@s.whatsapp.net"
                 tedtp = args.join(" ").replace("@", "")
                 susp = `Parabens, Agora Voce Pegou Prisão Perpétua, Digo, se Casou Com @${tedtp}` 
-                await client.sendMessage(from, {text: susp, mentions: [mentioned]}, {quoted: info})
+                await client.sendMessage(from, {video: {url: './images/weeding.mp4'}, gifPlayback: true, caption: susp, mentions: [mentioned]}, {quoted: info})
                 break
 
             case 'minerardima':
@@ -4154,7 +4158,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                     addFilter(from);
                 
                     try {
-                        picc = await zenitsu.profilePictureUrl(m.chat, "image");
+                        picc = await client.profilePictureUrl(from, "image");
                     } catch(e) {
                         picc = 'https://telegra.ph/file/2bf2e198407f9b8bfbcd0.jpg';
                     }
