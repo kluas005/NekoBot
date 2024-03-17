@@ -158,7 +158,7 @@ return `
 ╭─⊣〘 ${nomeBot} 〙
 ║
 ╠➽User: ${pushname}
-╠➽Versão: NekoBotV4
+╠➽Versão: ${nomeBot}
 ║
 ║╭─⊣〘 ADMS 〙
 ║
@@ -213,7 +213,7 @@ return `
 ╭─⊣〘 ${nomeBot} 〙
 ║
 ╠➽User: ${pushname}
-╠➽Versão: NekoBotV4
+╠➽Versão: ${nomeBot}
 ║
 ║╭─⊣〘 MENUS 〙
 ║
@@ -246,7 +246,7 @@ return `
 ╠➽User: ${pushname}
 ╠➽Versão: NekoBotV4
 ║
-║╭─⊣〘 MENUS 〙
+║╭─⊣〘 ANIME 〙
 ║
 ╠➽${prefix}cosplay
 ╠➽${prefix}waifu
@@ -318,7 +318,7 @@ function wallpaper(prefix, nomeBot, pushname) {
     ╠➽User: ${pushname}
     ╠➽Versão: NekoBotV4
     ║
-    ║╭─⊣〘 MENUS 〙
+    ║╭─⊣〘 WALLPAPER 〙
     ║
     ╠➽${prefix}wallpaper1
     ╠➽${prefix}wallpaper2
@@ -332,7 +332,7 @@ function wallpaper(prefix, nomeBot, pushname) {
     ║
     ╚════• 〘${nomeBot}〙•═════╝
     `
-    }
+}
 
 function lojarpg(prefix, pushname, nomeBot) {
 
@@ -380,9 +380,50 @@ function menurpg(prefix, pushname, nomeBot) {
     ║
     ╚════• 〘${nomeBot}〙•═════╝
     `
-    }
+}
 
+function downloader(prefix, pushname, nomeBot) {
+    return `╭─⊣〘 ${nomeBot} 〙
+║
+╠➽User: ${pushname}
+╠➽Versão: ${nomeBot}
+║
+║
+║╭─⊣〘 DOWNLOADER 〙
+║
+╠➽${prefix}Play (nome da musica)
+╠➽${prefix}play2 (nome do video)
+╠➽${prefix}ttk (link)
+╠➽${prefix}ttk2 apenas audio (link)
+║
+╚════• 〘 ${nomeBot} 〙•═════╝
+`
+}
 
+function modificadores(prefix, pushname, nomeBot) {
+    return `
+
+╭─⊣〘 ${nomeBot} 〙
+║
+╠➽User: ${pushname}
+╠➽Versão: ${nomeBot}
+║
+║╭─⊣〘 MODIFICADORES 〙
+║
+╠➽${prefix}audiolento (marca o audio)
+╠➽${prefix}audiorapido (marca o audio)
+╠➽${prefix}bass (marca o audio)
+╠➽${prefix}bass2 (marca o audio)
+╠➽${prefix}esquilo (marca o audio)
+╠➽${prefix}estourar (marca o audio)
+╠➽${prefix}fast (marca o audio)
+╠➽${prefix}grave (marca o audio)
+╠➽${prefix}grave2 (marca o audio)
+╠➽${prefix}vozmenino (marca o audio)
+║
+╚════• 〘 ${nomeBot} 〙•═════╝`
+
+}
 
 module.exports = {
 menu,
@@ -391,5 +432,7 @@ menuadm,
 menudono,
 wallpaper,
 menurpg,
-lojarpg
+lojarpg,
+downloader,
+modificadores
 }

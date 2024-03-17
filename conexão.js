@@ -31,7 +31,7 @@ try {
     const antisticker = JSON.parse(fs.readFileSync('./database/group/ativadores/antisticker.json'))
     const antivid = JSON.parse(fs.readFileSync('./database/group/ativadores/antivideo.json'))
     const autoreact = JSON.parse(fs.readFileSync('./database/group/ativadores/autoreact.json'))
-    const { menu, menuadm, menudono, menuanime, wallpaper, menurpg, lojarpg } = require('./menus/menu.js')
+    const { menu, menuadm, menudono, menuanime, wallpaper, menurpg, lojarpg, downloader, modificadores } = require('./menus/menu.js')
     const { runtime } = require("./functions/myfunc.js")
     const { convertSticker } = require("./functions/swm.js");
     const { isUrl } = require("./functions/lib/myfunc.js")
@@ -330,6 +330,25 @@ try {
                                 })
                             } break
 
+                            case prefix + "downloader": {
+                                const imagens = [
+                                    './menus/fotos/foto1.jpg',
+                                    './menus/fotos/foto2.jpg',
+                                    './menus/fotos/foto3.jpg',
+                                    './menus/fotos/foto4.jpg',
+                                    './menus/fotos/foto5.jpg',
+                                    './menus/fotos/foto6.jpg'
+                                ];
+                                const randomIndex = Math.floor(Math.random() * imagens.length);
+                                const randomFoto = imagens[randomIndex];
+                                const fotomenus = fs.readFileSync(randomFoto);
+                                client.sendMessage(from, { react: { text: '🕚', key: info.key } })
+                                client.sendMessage(from, {
+                                    image: fotomenus,
+                                    caption: downloader(prefix, pushname, nomeBot)
+                                })
+                            } break
+
                             case prefix + "dono":
                             case "menudono": {
                                 const imagens = [
@@ -347,8 +366,27 @@ try {
                                     image: fotomenus,
                                     caption: menudono(prefix, nomeBot, pushname)
                                 })
-                            }
-                                break
+                            } break
+
+                            case prefix + "modificadores": {
+                                const imagens = [
+                                    './menus/fotos/foto1.jpg',
+                                    './menus/fotos/foto2.jpg',
+                                    './menus/fotos/foto3.jpg',
+                                    './menus/fotos/foto4.jpg',
+                                    './menus/fotos/foto5.jpg',
+                                    './menus/fotos/foto6.jpg'
+                                ];
+                                const randomIndex = Math.floor(Math.random() * imagens.length);
+                                const randomFoto = imagens[randomIndex];
+                                const fotomenus = fs.readFileSync(randomFoto);
+                                client.sendMessage(from, { react: { text: '🕚', key: info.key } })
+                                client.sendMessage(from, {
+                                    image: fotomenus,
+                                    caption: modificadores(prefix, pushname, nomeBot)
+                                })
+                            } break
+                            
                             case prefix + "wallpaper": {
                                 const imagens = [
                                     './menus/fotos/foto1.jpg',
@@ -365,9 +403,7 @@ try {
                                     image: fotomenus,
                                     caption: wallpaper(prefix, nomeBot, pushname)
                                 })
-
-
-                            } break
+                                } break
 
                             default:
 

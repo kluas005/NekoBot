@@ -26,7 +26,7 @@ const { ptbr } = require('./mess/index.js')
 
 /// Arquivos da Lib
 ////
-const { addPremiumUser, dellprem, getPremiumExpired, checkOwner, expiredCheck, checkPremiumUser } = require("./lib/premium.js")
+const { addPremiumUser, dellprem, getPremiumExpired, checkOwner, expiredCheck, checkPremiumUser } = require("./funções/premium/premium.js")
 const { smsg, formatp, tanggal, formatDate, getTime, isUrl, sleep, clockString, runtime, fetchJson, getBuffer, jsonformat, format, parseMention, getRandom, getGroupAdmins } = require('./lib/functions.js')
 const { getRegisterNo, getRegisterName, getRegisterSerial, getRegisterAge, getRegisterTime, getRegisteredRandomId, addRegisteredUser, createSerial, checkRegisteredUser } = require('./lib/register.js')
 const { addBanned, unBanned, BannedExpired, cekBannedUser } = require("./lib/banned.js")
@@ -43,7 +43,7 @@ const data = moment.tz('America/Sao_Paulo').format('DD/MM/YYYY')
 const hr = moment.tz('America/Sao_Paulo').format('HH:mm:ss')
 const footerbot = ('© NekoBot')  //ubah di config biar ngk emror
 const ini_mark = `0@s.whatsapp.net`
-global.prem = require("./lib/premium.js")
+global.prem = require("./funções/premium/premium.js")
 
 /////
 

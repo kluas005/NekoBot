@@ -1,7 +1,7 @@
 const fs = require('fs')
 const crypto = require('crypto')
 
-const _registered = JSON.parse(fs.readFileSync('./database/user/registered.json'))
+const _registered = JSON.parse(fs.readFileSync('./database/user/registro/registro.json'))
 
 const getRegisterTime = (sender) => {
             let position = false
@@ -70,7 +70,7 @@ const getRegisteredRandomId = () => {
 const addRegisteredUser = (userid, sender, age, time, serials) => {
             const obj = { id: userid, name: sender, age: age, time: time, serial: serials }
             _registered.push(obj)
-            fs.writeFileSync('./database/user/registered.json', JSON.stringify(_registered))
+            fs.writeFileSync('./database/user/registro/registro.json', JSON.stringify(_registered))
         }
 
 const createSerial = (size) => {

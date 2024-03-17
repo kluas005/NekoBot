@@ -49,24 +49,33 @@ const { exec, spawn, execSync } = require("child_process")
 const sleep = async (ms) => { return new Promise(resolve => setTimeout(resolve, ms)) }
 const { fetchJson } = require("./functions/lib/fetcher.js")
 const { Error } = JSON.parse(fs.readFileSync('./functions/Erro.json'));
+
 const welcome_group = JSON.parse(fs.readFileSync('./functions/welcomegp.json'));
+
 const antipv = JSON.parse(fs.readFileSync('./database/group/ativadores/antipv.json'))
+
 const antilinkgp = JSON.parse(fs.readFileSync('./database/group/ativadores/antilinkgp.json'))
+const antiflood = JSON.parse(fs.readFileSync('database/group/ativadores/antiflood.json'))
 
 const progp = JSON.parse(fs.readFileSync('./functions/pro.json'))
 const welkom = JSON.parse(fs.readFileSync('./database/group/ativadores/welkom.json'));
 const hora = moment.tz('America/Sao_Paulo').format('HH:mm');
 const dataz = moment.tz('America/Sao_Paulo').format('DD/MM/YYYY')
 
+const anotar = JSON.parse(fs.readFileSync('./database/group/notas/notas.json'));
 
 const onlyadm = JSON.parse(fs.readFileSync('./database/group/ativadores/onlyadm.json'))
 const onlyowner = JSON.parse(fs.readFileSync('./database/group/ativadores/onlyowner.json'))
 
 /// database registro
-const _registered = JSON.parse(fs.readFileSync('./database/user/registered.json'));
+const _registered = JSON.parse(fs.readFileSync('./database/user/registro/registro.json'));
 
 /// registro 
 const { getRegisterNo, getRegisterName, getRegisterSerial, getRegisterAge, getRegisterTime, getRegisteredRandomId, addRegisteredUser, createSerial, checkRegisteredUser } = require('./funções/registro/register.js')
+
+/// Função de Premium
+
+const { addPremiumUser, dellprem, getPremiumExpired, checkOwner, expiredCheck, checkPremiumUser } = require("./funções/premium/premium.js")
 
 /// antispam
 const { isFiltered, addFilter } = require('./funções/lib/spam.js')
@@ -77,6 +86,9 @@ const webp_mp4 = require("./funções/lib/webp_mp4.js")
 /// importação atm
 
 const { checkATMuser, confirmATM, addKoinUser, addATM } = require('./funções/rpg/atm.js')
+
+/// count de mensagens
+
 const countMessage = JSON.parse(fs.readFileSync('./database/group/countmessage.json'));
 
 /// função rpg
@@ -97,8 +109,11 @@ const espada = JSON.parse(fs.readFileSync('./database/user/compras/espada.json')
 
 const { addLevelingXp, getLevelingXp, getLevelingLevel, getLevelingId, addLevelingLevel, addLevelingId } = require('./funções/rpg/level.js')
 
+/// Função de Antiflood
 
-const { init, askAI, Chat } = require("bard-ai")
+const limitefll = JSON.parse(fs.readFileSync('./database/user/flood.json'));
+
+const { init, askAI } = require("bard-ai")
 
 const token = {//SEU TOKEN IA
     bard: "AIzaSyBjYlS76GBkkzx0zR9qZkP-WmaMMHSh8Jk",
@@ -106,9 +121,12 @@ const token = {//SEU TOKEN IA
     bing : "",
    }
 
+
+
 /* Música **/ 
 const { play, play1, play2 } = require("./funções/música/scraper-play.js");
 const { NoticiasAoMinuto } = require('./funções/lib/scraper2.js')
+
 /* Respostas **/
 const { ptbr } = require('./mess/index.js');
 
@@ -231,6 +249,7 @@ const checkATM = checkATMuser(sender)
             } catch (err) {
                 console.error(err)
             }
+
         ///////////////////////////////////////////////
         //DEFINIÇÕES DO LEVELING
         ///////////////////////////////////////////////
@@ -389,6 +408,9 @@ const checkATM = checkATMuser(sender)
         } else if (levelRole <= 10000) {
             role = '⚡️ BRIGADEIRO ⚡️'
         }
+
+        /// Função de Adicionar Level se o Leveling Estiver Ativado
+
         if (isGroup && isLevelingOn) {
             const currentLevel = getLevelingLevel(sender)
             const checkId = getLevelingId(sender)
@@ -407,7 +429,8 @@ const checkATM = checkATMuser(sender)
             }
         }
         
-       
+       ///
+
         const getLevel = getLevelingLevel(sender)
         const tictactoe = JSON.parse(fs.readFileSync('./functions/database/tictactoe.json'));
 
@@ -418,6 +441,7 @@ const checkATM = checkATMuser(sender)
         const isAntilinkgp = isGroup ? antilinkgp.includes(from) : false
         const isApenasAdms = isGroup ? onlyadm.includes(from) : false
         const isApenasDono = isGroup ? onlyowner.includes(from) : false
+        const isAntiFlood = isGroup ? antiflood.includes(from) : false	
         const isPro = isGroup ? progp.includes(from) : false
         const Antidoc = isGroup ? antidoc.includes(from) : false
         const isAntiAudio = isGroup ? antiaudio.includes(from) : false
@@ -511,9 +535,6 @@ const checkATM = checkATMuser(sender)
         const isOwner = sender.includes(infoBot.owner)
         /////////////////////////////////////////////////
 
-
-       
-
         const sendBtext = async (id, text1, desc1, but = [], vr) => {
             buttonMessage = { text: text1, footer: desc1, buttons: but, headerType: 1 }
             client.sendMessage(id, buttonMessage, { quoted: vr })
@@ -534,8 +555,9 @@ const checkATM = checkATMuser(sender)
             client.sendMessage(id, buttonMessage, { quoted: vr })
         }
         //*******************************************//
+/// função de count message
 
-        const groupIdscount = []
+const groupIdscount = []
 const numbersIds = []
 for(let obj of countMessage) {
 groupIdscount.push(obj.groupId)
@@ -570,6 +592,7 @@ cmd_messages: isCmd ? 1 : 0
 fs.writeFileSync('./database/group/countmessage.json', JSON.stringify(countMessage, null, 2) + '\n')
 }
 
+//// limpa da contagem quem tiver saido do grupo
         async function LIMPARDOCNT_QUEMJASAIU() {
             var RD_CNT = countMessage[countMessage.map(i => i.groupId).indexOf(from)].numbers
             CNT1 = []; for ( i of groupMembers) {CNT1.push(i.id)} 
@@ -937,8 +960,8 @@ fs.writeFileSync('./database/group/countmessage.json', JSON.stringify(countMessa
                     color(`\n➱ ๖ۣۜ͜͡💜𝙽𝚄́𝙼𝙴𝚁𝙾: ${sender.split("@")[0]}`, 'red'),
                     color(`\n➱ ๖ۣۜ͜͡💜𝙲𝙾𝙼𝙰𝙽𝙳𝙾: ${color('Não', 'red')}`, 'orange'),
                     color(`\n➱ ๖ۣۜ͜͡💜𝙷𝙾𝚁𝙰: ${hora}\n`, 'red'))
+            } 
             }
-        }
 
     /// Mute de Usuario
 
@@ -955,6 +978,27 @@ setTimeout(async () => {
 }, 1000)
 return
 }
+
+/// antiflood
+if(fs.existsSync(`./database/group/limite-c_${from}.json`)) {
+    var limitecaracteres_on = JSON.parse(fs.readFileSync(`./database/group/limite-c_${from}.json`))
+    var limitefl = limitecaracteres_on.limite
+    } else {
+    var limitefl = limitefll.limitefl
+    }
+    if (body.client >= limitefl) {
+    if (isAntiFlood && !isBot && !isGroupAdmins && !isOwner)
+    var Kic = `${sender.split("@")[0]}@s.whatsapp.net`  
+    setTimeout( () => {
+    if(!info.key.fromMe && !isGroupAdmins && !isOwner) return reply('Muitas características enviadas, eu afirmo que pode ser trava, por precauções, eu irei remover.')
+    console.log(color('Spam','red'))
+    }, 100)
+    setTimeout( () => {
+    client.groupParticipantsUpdate(from, [sender], 'remove')
+    }, 1000)
+    setTimeout( () => {
+    }, 0)
+    }
 
 /// antispam de comandos
 
@@ -1435,6 +1479,75 @@ if (isApenasDono && isCmd && !isOwner) {
                     } catch (error) {
                         console.error('Erro ao obter notícias do Notícias ao Minuto:', error);
                         enviar(ptbr.erro());}
+                    break
+
+                case 'anotar':
+                case 'tirar_nota':
+                case 'rmnota':
+                    if(!isGroup) return reply(ptbr.grupo())
+                    if(!isGroupAdmins) return reply(ptbr.admin())
+                    reagir(from, "🗒️")
+                    await sleep(1000)
+                    if(command == "anotar") {
+                    var [q5, q10] = q.trim().split("/")
+                    if(!q5 || !q10 || !q.includes("/")) return reply(`*_❕Digite o título da anotação e o texto que deseja anotar..._*\n*_🥶 Exemplo:_* ${prefix}anotar Gatos/Gatinhos são fofos...`)
+                    if(JSON.stringify(anotar).includes(from)) {  
+                    var i2 = anotar.map(i => i.grupo).indexOf(from)  
+                    if(JSON.stringify(anotar[i2].puxar).includes(q5)) {
+                    var i3 = anotar[i2].puxar.map(i => i.nota).indexOf(q5)  
+                    if(anotar[i2].puxar[i3].nota == q5) return reply(`*_❕Esta anotação já está inclusa, utilize outro título..._*\n*_🥶 Ou você pode tirar com_* ${prefix}tirar_nota ${q5}`)
+                    }
+                    }
+                    if(!JSON.stringify(anotar).includes(from)) {
+                    anotar.push({grupo: from, puxar: [{nota: q5, anotacao: q10}]})
+                    fs.writeFileSync("./database/group/notas/notas.json", JSON.stringify(anotar))
+                    reply("Anotação registrada com sucesso...")
+                    } else {
+                    anotar[i2].puxar.push({nota: q5, anotacao: q10})
+                    fs.writeFileSync("./database/group/notas/notas.json", JSON.stringify(anotar))
+                    reply("Anotação registrada com sucesso...")  
+                    }
+                    } else {
+                    if(!q) return reply("Digite qual anotação deseja tirar pelo título..")
+                    if(JSON.stringify(anotar).includes(from)) {  
+                    var i2 = anotar.map(i => i.grupo).indexOf(from)  
+                    if(JSON.stringify(anotar[i2].puxar).includes(q)) {
+                    var i3 = anotar[i2].puxar.map(i => i.nota).indexOf(q)  
+                    }
+                    }
+                    if(0 > anotar[i2].puxar.map(i => i.nota).indexOf(q)) return reply("Esta nota não está inclusa, verifique com atenção...")
+                    anotar[i2].puxar.splice(i3, 1)
+                    fs.writeFileSync("./database/group/notas/notas.json", JSON.stringify(anotar))
+                    reply(`Anotação ${q} tirada com sucesso...`)
+                    }
+                    break
+                    
+                case 'anotação':
+                case 'anotações':  
+                case 'nota':
+                case 'notas':
+                    if(!isGroup) return reply(ptbr.grupo())
+                    reagir(from, "📝")
+                    await sleep(1000)
+                    if(command == "anotação" || command == "nota") {
+                    if(!q) return reply("Digite o título da anotação que deseja puxar..")
+                    if(!JSON.stringify(anotar).includes(from)) return reply("Este grupo não tem nenhuma anotação...")
+                    var i2 = anotar.map(i => i.grupo).indexOf(from)  
+                    if(!JSON.stringify(anotar[i2].puxar).includes(q)) return reply("Não contém nenhuma anotação com este título.")
+                    var i3 = anotar[i2].puxar.map(i => i.nota).indexOf(q)  
+                    mentions(`〈 ${anotar[i2].puxar[i3].anotacao} 〉`)
+                    } else {
+                    var i2 = anotar.map(i => i.grupo).indexOf(from)    
+                    if(anotar[i2].puxar.length == 0) return reply("Este grupo não tem nenhuma anotação...")    
+                    var i2 = anotar.map(i => i.grupo).indexOf(from) 
+                    var antr = anotar[i2].puxar 
+                    txtin = `*_🗒️ Aqui está todas as anotações registradas nesse grupo 🗒️_*\n`
+                    for ( i = 0; i < antr.length; i++) {
+                    txtin += `\n↝ *_📝 Anotação:_* ⟮ ${anotar[i2].puxar[i].nota} ⟯ - 〈 ${anotar[i2].puxar[i].anotacao} 〉\n`
+                    }
+                    txtin += ""
+                    mentions(txtin)
+                    }
                     break
                     
             case "cosplay":
@@ -1921,6 +2034,53 @@ if (isApenasDono && isCmd && !isOwner) {
                 }
                 break
 
+            case 'antifloodgp':
+            case 'antiflood':
+                if (!isGroup) return reply(ptbr.grupo())
+                if (!isGroupAdmins) return reply(ptbr.admin())
+                if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
+                if (Number(args[0]) === 1) {
+                    if (isAntiFlood) return reply('Ja esta ativo')
+                    antiflood.push(from)
+                    fs.writeFileSync('./database/group/ativadores/antiflood.json', JSON.stringify(antiflood))
+                    reply('Recurso ativado')
+                } else if (Number(args[0]) === 0) {
+                    if (!isAntiFlood) return reply('Ja esta Desativado')
+                    pesquisar = from
+                    processo = antiflood.indexOf(pesquisar)
+                    while (processo >= 0) {
+                        antiflood.splice(processo, 1)
+                        processo = antiflood.indexOf(pesquisar)
+                    }
+                    fs.writeFileSync('./database/group/ativadores/antiflood.json', JSON.stringify(antiflood))
+                    reply('Recurso Desativado')
+                } else {
+                    if (isAntiFlood) {
+                        buttons02 = [
+                            { buttonId: `${prefix + command} 0`, buttonText: { displayText: '[🌸] DESATIVAR [🌸]' }, type: 1 }
+                        ]
+                    } else {
+                        buttons02 = [
+                            { buttonId: `${prefix + command} 1`, buttonText: { displayText: '[🌸] ATIVAR [🌸]' }, type: 1 },
+                        ]
+                    }
+                    buttonMessage02 = {
+                        text: `╭═─────═⌘═────═╮   
+👑 ANTIFLOOD 👑
+
+𝐔𝐒𝐔Á𝐑𝐈𝐎: ${pushname}
+
+𝐆𝐑𝐔𝐏𝐎: ${groupName}
+╰═─────═⌘═────═╯`,
+                        footer: `STATUS DO ANTIFLOOD: ${isAntiFlood ? 'ATIVADO' : 'DESATIVADO'}\n`,
+                        buttons: buttons02,
+                        headerType: 4,
+                        contextInfo: { forwardingScore: 999, isForwarded: true }
+                    }
+                    client.sendMessage(from, buttonMessage02, { quoted: live })
+                }
+                break
+
                 case 'apenasadms': case 'soadms':
                 if (!isGroup) return reply(ptbr.grupo())
                 if (!isGroupAdmins) return reply(ptbr.admin())
@@ -2013,7 +2173,6 @@ if (isApenasDono && isCmd && !isOwner) {
                 break
 
                 case 'taon?': case 'funcionando':
-                if (!isOwner) return reply(ptbr.dono())
                 reply('sim')
                 await sleep(1000)
                 reagir(from, '✅')
@@ -2154,8 +2313,10 @@ if (isApenasDono && isCmd && !isOwner) {
                 if (!isGroupAdmins) return reply(ptbr.admin())
                 statuszada = `╔━━❲ 𝐒 𝐓 𝐀 𝐓 𝐔 𝐒 ❳━━╗ 
 ┃ Bem vindo = ${isWelkom ? 'ON' : 'OFF'}
-┃ Apenas Adms = ${isApenasAdms ? 'ON' : 'OFF'}            
-┃ Anti link grupo = ${isAntilinkgp ? 'ON' : 'OFF'}
+┃ Apenas Dono = ${isApenasDono ? 'ON' : 'OFF'}
+┃ Apenas Adms = ${isApenasAdms ? 'ON' : 'OFF'}
+┃ AntiFlood = ${isAntiFlood ? 'ON' : 'OFF'}            
+┃ Anti Link Grupo = ${isAntilinkgp ? 'ON' : 'OFF'}
 ┃ Anti img = ${isAntiImg ? 'ON' : 'OFF'}
 ┃ Anti video = ${isAntiVid ? 'ON' : 'OFF'}
 ┃ Anti áudios = ${isAntiAudio ? 'ON' : 'OFF'}
@@ -3619,6 +3780,15 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 reply('COMO VOCÊ É GAY: *' + rate + '*\n\nSUA PORCENTAGEM GAY : ' + kl + '%\n ESSE AÍ AMA DÁ O CU')
                 break
 
+            case 'casar':
+                if(!isGroup) return reply(ptbr.grupo())
+                if (info.message.extendedTextMessage === undefined || info.message.extendedTextMessage === null) return reply('marque a pessoa com quem você quer se casar')
+                mentioned = args.join(" ").replace("@", "") + "@s.whatsapp.net"
+                tedtp = args.join(" ").replace("@", "")
+                susp = `Parabens, Agora Voce Pegou Prisão Perpétua, Digo, se Casou Com @${tedtp}` 
+                await client.sendMessage(from, {text: susp, mentions: [mentioned]}, {quoted: info})
+                break
+
             case 'minerardima':
             case 'minerardiamante':
                 if (!isGroup) return reply(ptbr.grupo())
@@ -4052,6 +4222,8 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 reply(`*CASA COMPRADO COM SUCESSO* 😃\n\n*CUSTO 💰: ${quantidader}*`)
                 }
                 break
+
+            
                 
 /////
 
@@ -4212,7 +4384,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                     mention(bli)
                     break
 
-                case 'atividades':  
+                case 'atividades': case 'atividade':
                     try{
                     if (!isGroup) return reply(ptbr.grupo())
                     if (!isGroupAdmins) return reply(ptbr.admin())
@@ -4254,19 +4426,19 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                     }
                     break
 
-            case 'seradm': {
-                if (!isOwner) return reply(ptbr.dono())
-                reply(`Agora vc é adm do grupo.`)
-                kiceed = sender
-                client.groupParticipantsUpdate(from, [kiceed], 'promote')
-            }
-                break
+                case 'seradm': {
+                    if (!isOwner) return reply(ptbr.dono())
+                    reply(`Agora vc é adm do grupo.`)
+                    kiceed = sender
+                    client.groupParticipantsUpdate(from, [kiceed], 'promote')
+                    }
+                    break
 
             case 'serpremium': case 'servip': case 'virarpremium':
                 if (!isOwner) return reply(ptbr.dono())
                 premium.push(`${numeroDono}@s.whatsapp.net`)
                 fs.writeFileSync('./database/user/premium/premium.json', JSON.stringify(premium))
-                reply(`Pronto ${numeroDono} você foi adicionado na lista premium.`)
+                reply(`Pronto ${pushname} você foi adicionado na lista premium.`)
                 break
 
             case 'sermembro': {
@@ -4274,9 +4446,19 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 reply(`Agora vc não é mais adm do grupo.`)
                 kicee = sender
                 await client.groupParticipantsUpdate(from, [kicee], 'demote')
-            }
+                }
                 break
 
+            case 'donoctt':
+                client.sendMessage(from, { displayName: nomeDono, contacts: { contacts: [{ vcard: "BEGIN:VCARD\n" + "VERSION:3.0\n" + "FN:Klaus\n" + "ORG:teste\n" +
+                                "TEL;waid=5524999304661:+55 24 99940-4661\n" +
+                                "END:VCARD"                  
+                }]}})
+                await sleep(1000)
+                await client.sendMessage(from, {text: `Olá ${pushname}, Esta ai o contato do meu Dono.`}, {quoted: info})
+                await delay(2000)
+                reagir(from, '✅')
+                break
               //  case '000': {
                     if (!isGroup) return reply(ptbr.grupo())
                     if (isOwner) return reply('calma lá né paizão')
@@ -4707,10 +4889,10 @@ dica: ${dataAnagrama2.dica}
                  //   }
                     break
 
-            case "level":
-                if (!isLevelingOn) return reply("o leveling nao ta ativo, peca pra algum adm ativar!!!")
+            case 'level':
+                if (!isLevelingOn) return reply(ptbr.levelnoton(pushname))
                 reply(`
-Ola ${pushname} aqui esta suas informações
+Ola ${pushname} aqui estão suas informações
 
 Patente: ${role}
 Level: ${getLevel}
@@ -5061,7 +5243,7 @@ Solicitado por: ${pushname}`
 
             case 'bangp':
                 if (!isGroup) return reply(ptbr.grupo())
-                if (!isOwner && !isCmdy && !isnit && !issupre && !ischyt && !info.key.fromMe) return reply(ptbr.dono())
+                if (!isOwner) return reply(ptbr.dono())
                 if (isBanchat) return reply(`Este grupo ja está banido`)
                 bancht.push(from)
                 fs.writeFileSync('./functions/banchat.json', JSON.stringify(bancht))
