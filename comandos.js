@@ -14,6 +14,8 @@ const cheerio = require("cheerio");
 const readline = require("readline");
 const axios = require('axios');
 const ffmpeg = require('fluent-ffmpeg');
+const infoSystem = require('os')
+const { init, askAI } = require("bard-ai")
 
 ///
 
@@ -62,15 +64,18 @@ const welkom = JSON.parse(fs.readFileSync('./database/group/ativadores/welkom.js
 const hora = moment.tz('America/Sao_Paulo').format('HH:mm');
 const dataz = moment.tz('America/Sao_Paulo').format('DD/MM/YYYY')
 
+const { getBuffer, getRandom, getExtension } = require('./funções/lib/funções.js')
+
 const anotar = JSON.parse(fs.readFileSync('./database/group/notas/notas.json'));
 
 const onlyadm = JSON.parse(fs.readFileSync('./database/group/ativadores/onlyadm.json'))
 const onlyowner = JSON.parse(fs.readFileSync('./database/group/ativadores/onlyowner.json'))
 
-/// database registro
-const _registered = JSON.parse(fs.readFileSync('./database/user/registro/registro.json'));
+require('./images/images.js')
 
-/// registro 
+
+/// Função de registro 
+
 const { getRegisterNo, getRegisterName, getRegisterSerial, getRegisterAge, getRegisterTime, getRegisteredRandomId, addRegisteredUser, createSerial, checkRegisteredUser } = require('./funções/registro/register.js')
 
 /// Função de Premium
@@ -78,9 +83,11 @@ const { getRegisterNo, getRegisterName, getRegisterSerial, getRegisterAge, getRe
 const { addPremiumUser, dellprem, getPremiumExpired, checkOwner, expiredCheck, checkPremiumUser } = require("./funções/premium/premium.js")
 
 /// antispam
+
 const { isFiltered, addFilter } = require('./funções/lib/spam.js')
 
 /// transforma figurinha em gif
+
 const webp_mp4 = require("./funções/lib/webp_mp4.js")
 
 /// importação atm
@@ -90,6 +97,11 @@ const { checkATMuser, confirmATM, addKoinUser, addATM } = require('./funções/r
 /// count de mensagens
 
 const countMessage = JSON.parse(fs.readFileSync('./database/group/countmessage.json'));
+
+/// contador de comandos
+const { cmdadd } = require('./funções/lib/totalcmd.js')
+
+const totalcmd = JSON.parse(fs.readFileSync('./database/data/totalcmd.json'))[0].totalcmd
 
 /// função rpg
 
@@ -105,6 +117,23 @@ const palitor = JSON.parse(fs.readFileSync('./database/user/compras/palitor.json
 const espada = JSON.parse(fs.readFileSync('./database/user/compras/espada.json'));
 ////
 
+gayzin = gayzão
+fein = feião 
+matei = mateii
+cornin = cornão
+vesgin = vesgão
+bebin = bebão
+gadin = gadão
+gostosin = gostosão
+gostosinha = gostosona 
+hitler = nazista
+tapinha = tapão
+beijin = beijão
+chutin = chutão
+dancinha = dança 
+casalzin = casar
+soquin = socão 
+
 /// função level
 
 const { addLevelingXp, getLevelingXp, getLevelingLevel, getLevelingId, addLevelingLevel, addLevelingId } = require('./funções/rpg/level.js')
@@ -113,7 +142,6 @@ const { addLevelingXp, getLevelingXp, getLevelingLevel, getLevelingId, addLeveli
 
 const limitefll = JSON.parse(fs.readFileSync('./database/user/flood.json'));
 
-const { init, askAI } = require("bard-ai")
 
 const token = {//SEU TOKEN IA
     bard: "AIzaSyBjYlS76GBkkzx0zR9qZkP-WmaMMHSh8Jk",
@@ -121,9 +149,8 @@ const token = {//SEU TOKEN IA
     bing : "",
    }
 
-
-
 /* Música **/ 
+
 const { play, play1, play2 } = require("./funções/música/scraper-play.js");
 const { NoticiasAoMinuto } = require('./funções/lib/scraper2.js')
 
@@ -141,20 +168,7 @@ module.exports = client = async (client, info, connection, prefix, nomeBot, Nome
             }
             return admins
         }
-        const getRandom = (ext) => {
-            return `${Math.floor(Math.random() * 10000)}${ext}`
-        }
-        const getExtension = async (type) => {
-            return await mimetype.extension(type)
-        }
-        const getBuffer = (url, options) => new Promise(async (resolve, reject) => {
-            options ? options : {}
-            await axios({ method: "get", url, headers: { "DNT": 1, "Upgrade-Insecure-Request": 1 }, ...options, responseType: "arraybuffer" }).then((res) => {
-                resolve(res.data)
-            }).catch(reject)
-        })
-
-
+        
         const donoOficial = [`${numeroDono}@s.whatsapp.net`]
         const type = Object.keys(info.message)[0] == 'senderKeyDistributionMessage' ? Object.keys(info.message)[2] : (Object.keys(info.message)[0] == 'messageContextInfo') ? Object.keys(info.message)[1] : Object.keys(info.message)[0]
         const content = JSON.stringify(info.message);
@@ -924,6 +938,17 @@ fs.writeFileSync('./database/group/countmessage.json', JSON.stringify(countMessa
             }, 1000)
         }
         
+function kyun(seconds){
+    function pad(s){ return (s < 10 ? '0' : '') + s;}
+    var hours = Math.floor(seconds / (60*60));
+    var minutes = Math.floor(seconds % (60*60) / 60);
+    var seconds = Math.floor(seconds % 60);return `${pad(hours)} Horas ${pad(minutes)} Minutos ${pad(seconds)} Segundos` }
+    const convertBytes = function(bytes) {
+    const sizes = ["Bytes", "KB", "MB", "GB", "TB"]
+    if (bytes == 0) {
+    return "n/a"
+}
+}
 
         /** Console log de comandos */
         comando = command
@@ -1010,18 +1035,20 @@ if (isCmd && !isOwner && !isGroupAdmins && !isPremium) {
 }
 } 
 
-/// para deixar os comandos apenas para Adms
-
-if (isApenasAdms && isCmd && !isOwner && !isGroupAdmins) {
-    return
+/// para deixar os comandos apenas para dono ou adm
+if (isApenasDono && isGroup && isCmd && !isOwner) {
+    if (isGroupAdmins) {
+    return reply('apenas o dono pode usar comandos por agora')
+} else {
+    return reagir(from, '👺')
+}
+} if (isApenasAdms && isCmd && isGroup && !isOwner && !isGroupAdmins) {
+    return reagir(from, '👺')
 }
 
-/// deixa os comandos apenas para dono
+// contador de comandos
 
-if (isApenasDono && isCmd && !isOwner) {
-    return
-}
-            
+if (isCmd) cmdadd()
 
         switch (command) {
 
@@ -1231,8 +1258,8 @@ if (isApenasDono && isCmd && !isOwner) {
                     infomidia = `\n *Titulo: ${res.titulo}*\n *Canal: ${res.canal}*\n\ *Views: ${res.views}*\n\ *Publicado em: ${res.postado_em}*`;
                     client.sendMessage(from, {image: {url: res.thumb}, caption: infomidia }, {quoted: info});
                     client.sendMessage(from, {audio: {url: res.download}, mimetype: 'audio/mpeg', fileName: res.titulo}, {quoted: info});
-                    }).catch(() => {
-                    return reply(ptbr.restriçãodownload());
+                    }).catch((e) => {
+                    return reply(ptbr.restriçãodownload())
                     }); 
                     break
                     
@@ -1244,7 +1271,7 @@ if (isApenasDono && isCmd && !isOwner) {
                     play2(q).then(res => { 
                     infomidia2 = `\n *Titulo: ${res.titulo}*\n *Canal: ${res.canal}*\n\ *Views: ${res.views}*\n\ *Publicado em: ${res.publicado}*`;
                     client.sendMessage(from, {video: {url: res.download}, filename: res.titulo, caption: infomidia2}, {quoted: info})
-                    }).catch(() => {
+                    }).catch((e) => {
                     return reply(ptbr.restriçãodownload());
                     });
                     break
@@ -3330,12 +3357,12 @@ tem que ter a / e o id do grupo destinado senão não vai.`)
                 reply(ptbr.erro())
                 }
                 break
-
+                
             case 'toimg':
                 if (!isQuotedSticker) return reply('Marca uma Figurinha!!')
+                reagir(from, '⏱️')
                 buff = await getFileBuffer(info.message.extendedTextMessage.contextInfo.quotedMessage.stickerMessage, 'sticker')
-                try {
-                    
+                try {   
                 client.sendMessage(from, {image: buff}, {quoted: info})
                 } catch(e) {
                 console.log(e)
@@ -3773,7 +3800,6 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 reply(hasil)
                 break
 
-
             case 'gay1':
                 if (!isGroup) return reply(ptbr.grupo())
                 if (args.length < 1) return reply('marque o gay do gp!')
@@ -3785,12 +3811,17 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
 
             case 'casar':
                 if(!isGroup) return reply(ptbr.grupo())
-                if (info.message.extendedTextMessage === undefined || info.message.extendedTextMessage === null) return reply('marque a pessoa com quem você quer se casar')
+                if (!isUser) return reply(ptbr.user(prefix, pushname, nomeBot))
                 reagir(from, '💍')
-                mentioned = args.join(" ").replace("@", "") + "@s.whatsapp.net"
-                tedtp = args.join(" ").replace("@", "")
-                susp = `Parabens, Agora Voce Pegou Prisão Perpétua, Digo, se Casou Com @${tedtp}` 
-                await client.sendMessage(from, {video: {url: './images/weeding.mp4'}, gifPlayback: true, caption: susp, mentions: [mentioned]}, {quoted: info})
+                if (info.message.extendedTextMessage === undefined || info.message.extendedTextMessage === null) return reply('marque o alvo que você quer dá o tapa')
+                mentioned = info.message.extendedTextMessage.contextInfo.mentionedJid
+                pru = '.\n'
+                for (let _ of mentioned) {
+                pru += `@${_.split('@')[0]}\n`
+                }
+                susp = `Parabens, Agora Voce Pegou Prisão Perpétua, Digo, se Casou Com @${mentioned[0].split('@')[0]}` 
+                jrq = await getBuffer(`${casalzin}`)
+                await client.sendMessage(from, {video: jrq, gifPlayback: true, caption: susp, mentions: mentioned}, {quoted: info})
                 break
 
             case 'minerardima':
@@ -4227,9 +4258,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 }
                 break
 
-            
-                
-/////
+                /////
 
             case 'Fazernick': case 'fazernick': case 'gerarnick':
                 let { styletext } = require('./funções/lib/scraper.js')
@@ -4430,13 +4459,13 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                     }
                     break
 
-                case 'seradm': {
-                    if (!isOwner) return reply(ptbr.dono())
-                    reply(`Agora vc é adm do grupo.`)
-                    kiceed = sender
-                    client.groupParticipantsUpdate(from, [kiceed], 'promote')
-                    }
-                    break
+            case 'seradm': {
+                if (!isOwner) return reply(ptbr.dono())
+                reply(`Agora vc é adm do grupo.`)
+                kiceed = sender
+                client.groupParticipantsUpdate(from, [kiceed], 'promote')
+                }
+                break
 
             case 'serpremium': case 'servip': case 'virarpremium':
                 if (!isOwner) return reply(ptbr.dono())
@@ -4680,31 +4709,18 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 })
                 break
 
-
-
-            case 'speed':
-            case 'ping':
-                r = (Date.now() / 1000) - info.messageTimestamp;
-                uptime = process.uptime();
-                hora1 = moment.tz('America/Sao_Paulo').format('HH:mm:ss');
-                const data = moment.tz('America/Sao_Paulo').format('DD/MM/YY');
-                let girastamp = speed();
-                let latensi = speed() - girastamp;
-                reply(` 
-╔═════ °❀•°💖°•❀°═════╗
-╠➽𝙋𝙄𝙉𝙂: ${String(r.toFixed(3))}
-┃✰ 
-╠➽𝗛𝗢𝗥𝗔: ${hora1}
-┃✰  
-╠➽𝗗𝗔𝗧𝗔: ${data}
-┃✰ 
-╠➽𝗩𝗘𝗟𝗢𝗖𝗜𝗗𝗔𝗗𝗘:${latensi.toFixed(4)}
-┃✰ 
-╠➽𝗧𝗘𝗠𝗣𝗢 𝗢𝗡𝗟𝗜𝗡𝗘: ${runtime(uptime)}
-┃✰ 
-╠➽𝗕𝗢𝗧: ${nomeBot}
-╚═════ °❀•°💜°•❀°═════╝`)
-                break
+                case 'ping': case 'speed': {
+                    if (!isGroupAdmins) return reply(ptbr.admin())
+                    if (!isUser) return reply(ptbr.user())
+                    reagir(from, "🏃🏻")
+                    await sleep(1000)
+                    r = (Date.now() / 1000) - info.messageTimestamp
+                    uptime = process.uptime()
+                    hora1 = moment.tz('America/Sao_Paulo').format('HH:mm:ss');
+                    respon = `⏱️ *Velocidade de Resposta:* ${String(r.toFixed(3))} _segundos._\n🤖 *O bot se encontra online por:* ${kyun(uptime)}\n💻 *Sistema Operacional:* ${infoSystem.type()}\n📂 *Versão:* ${infoSystem.release()}\n💾 *Memoria RAM total:* ${(infoSystem.totalmem()/Math.pow(1024, 3)).toFixed(2)}GB\n💾 *Memoria RAM disponível:* ${(infoSystem.freemem()/Math.pow(1024, 3)).toFixed(2)}GB`.trim()
+                    await client.sendMessage(from, { image: { url: `https://eruakorl.sirv.com/Bot%20dudinha/ping.jpeg?text.0.text=VELOCIDADE%20DO%20BOT&text.0.position.gravity=north&text.0.position.y=15%25&text.0.size=40&text.0.font.family=Teko&text.0.font.weight=800&text.0.background.opacity=100&text.0.outline.blur=100&text.1.text=${String(r.toFixed(3))}&text.1.position.gravity=center&text.1.size=30&text.1.color=ffffff&text.1.font.family=Teko&text.1.font.weight=800&text.1.background.opacity=100&text.1.outline.blur=100` }, caption: respon, mentions: [sender]}, {quoted: info}) 
+                    }
+                    break     
 
             case 'convite':
                 if (!q) return reply("cadê o link do grupo?")

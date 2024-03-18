@@ -22,69 +22,76 @@ return `
 ║
 ║╭─⊣〘 ADICIONAIS 〙
 ║
-╠➽${prefix}anagrama
-╠➽${prefix}ppt
 ╠➽${prefix}adivinhação 
 ╠➽${prefix}alugar
+╠➽${prefix}anagrama
+╠➽${prefix}avalie
+╠➽${prefix}bard [pergunte]
+╠➽${prefix}bug
+╠➽${prefix}calcular
 ╠➽${prefix}comprabt
 ╠➽${prefix}convite [link do gp]
-╠➽${prefix}ping
+╠➽${prefix}ddd
+╠➽${prefix}encurtalink
+╠➽${prefix}gerarcpf
+╠➽${prefix}google
+╠➽${prefix}listabr
+╠➽${prefix}listafake
 ╠➽${prefix}metadinha
 ╠➽${prefix}metadinha2
 ╠➽${prefix}metadinha3
-╠➽${prefix}perfil
-╠➽${prefix}google
-╠➽${prefix}gerarcpf
-╠➽${prefix}encurtalink
-╠➽${prefix}ddd
-╠➽${prefix}listabr
-╠➽${prefix}listafake
-╠➽${prefix}bug
-╠➽${prefix}avalie
-╠➽${prefix}novocmd
-╠➽${prefix}calcular
 ╠➽${prefix}noticias
-╠➽${prefix}bard [pergunte]
+╠➽${prefix}novocmd
+╠➽${prefix}perfil
+╠➽${prefix}ping
+╠➽${prefix}ppt
 ║
-║╭─⊣〘 MENUS ADM 〙
+║╭─⊣〘 ADMS 〙
 ║
-╠➽${prefix}antilink 1/0
-╠➽${prefix}Bemvindo 1 / 0
-╠➽${prefix}antiaudio 1 / 0
-╠➽${prefix}antivideo 1 / 0
-╠➽${prefix}tagall (marcar todos) 
-╠➽${prefix}marcar (marcar todos) 
-╠➽${prefix}Antiimg 1 / 0
-╠➽${prefix}antisticker 1/0
-╠➽${prefix}autoreação
-╠➽${prefix}autofig 1/0
-╠➽${prefix}hidetag [marcar todos] 
-╠➽${prefix}descgp
-╠➽${prefix}nomegp
-╠➽${prefix}fotogp
-╠➽${prefix}limpar
-╠➽${prefix}delete
-╠➽${prefix}d
-╠➽${prefix}novolink
-╠➽${prefix}infogp
-╠➽${prefix}status
-╠➽${prefix}ban @numero
-╠➽${prefix}sairgp
-╠➽${prefix}reviver [marcar a msg]
-╠➽${prefix}kick @numero
 ╠➽${prefix}add @numero
+╠➽${prefix}addlista [adiciona na lista de autoban]
+╠➽${prefix}addlistanegra
+╠➽${prefix}atividades
+╠➽${prefix}autoban [modo de ban]
+╠➽${prefix}ban @numero
+╠➽${prefix}banfake [remove todos fake]
+╠➽${prefix}check @
+╠➽${prefix}clear
+╠➽${prefix}configp
+╠➽${prefix}d
+╠➽${prefix}delete
+╠➽${prefix}dellista [deleta da lista de autoban]
+╠➽${prefix}dellistanegra
+╠➽${prefix}descgp
+╠➽${prefix}fotogp
+╠➽${prefix}grupo a/f
+╠➽${prefix}hidetag [marcar todos] 
+╠➽${prefix}infogp
+╠➽${prefix}kickfake [remove todos fake]
+╠➽${prefix}limpar
 ╠➽${prefix}linkgp
+╠➽${prefix}listban
+╠➽${prefix}marcar (marcar todos) 
+╠➽${prefix}nomegp
+╠➽${prefix}novolink
 ╠➽${prefix}promover @numero
 ╠➽${prefix}rebaixar @numero
-╠➽${prefix}dellistanegra
-╠➽${prefix}addlistanegra
-╠➽${prefix}addlista [adiciona na lista de autoban]
-╠➽${prefix}dellista [deleta da lista de autoban]
-╠➽${prefix}listban
-╠➽${prefix}autoban [modo de ban]
-╠➽${prefix}kickfake [remove todos fake]
-╠➽${prefix}banfake [remove todos fake]
-╠➽${prefix}configp
+╠➽${prefix}reviver [marcar a msg]
+╠➽${prefix}sairgp
+╠➽${prefix}status
+╠➽${prefix}tagall (marcar todos) 
+║
+║╭─⊣〘 Ativadores 〙
+║
+╠➽${prefix}Bemvindo [0/1]
+╠➽${prefix}antiaudio [0/1]
+╠➽${prefix}Antiimg [0/1]
+╠➽${prefix}antilink [0/1]
+╠➽${prefix}antisticker [0/1]
+╠➽${prefix}antivideo [0/1]
+╠➽${prefix}apenasadms [0/1]
+╠➽${prefix}autofig [0/1]
+╠➽${prefix}autoreação [0/1]
 ║
 ║╭─⊣〘 MENU PREMIUM 〙
 ║
@@ -95,58 +102,59 @@ return `
 ║
 ║╭─⊣〘 LOJA RPG 〙
 ║
-╠➽${prefix}capacete
-╠➽${prefix}paleto
-╠➽${prefix}calça
-╠➽${prefix}sapato
-╠➽${prefix}espada
-╠➽${prefix}tagrico
-╠➽${prefix}casa
-╠➽${prefix}alugarcasa
 ╠➽${prefix}aguacoco
+╠➽${prefix}alugarcasa
+╠➽${prefix}calça
+╠➽${prefix}capacete
+╠➽${prefix}casa
+╠➽${prefix}espada
+╠➽${prefix}paleto
+╠➽${prefix}sapato
+╠➽${prefix}tagrico
 ║
 ║╭─⊣〘 MENU RPG 〙
 ║
-╠➽${prefix}Trabalhar
-╠➽${prefix}Minerar
-╠➽${prefix}Churrasco
-╠➽${prefix}Pescar
-╠➽${prefix}Pix (marca a pessoa) / valor
 ╠➽${prefix}Banco
-╠➽${prefix}Money
-╠➽${prefix}tomaraguacoco
+╠➽${prefix}Churrasco
 ╠➽${prefix}hero (para ver o inventário)
 ╠➽${prefix}level
+╠➽${prefix}Minerar
+╠➽${prefix}Money
+╠➽${prefix}Pescar
+╠➽${prefix}Pix (marca a pessoa) / valor
+╠➽${prefix}tomaraguacoco
+╠➽${prefix}Trabalhar
 ║
 ║╭─⊣〘 BRINCADEIRAS 〙
 ║
-┃➽${prefix}fazernick
-┃➽${prefix}Pau
-┃➽${prefix}ppt
-┃➽${prefix}Gadometro
-┃➽${prefix}Chance (Texto)
-┃➽${prefix}cassino 
-┃➽${prefix}casal
-┃➽${prefix}shipo
-┃➽${prefix}alma-gemeas
-┃➽${prefix}gay
-┃➽${prefix}feio
-┃➽${prefix}vesgo
-┃➽${prefix}bebado
-┃➽${prefix}gado
-┃➽${prefix}gostoso
-┃➽${prefix}gostosa
-┃➽${prefix}rankgay
-┃➽${prefix}rankgado
-┃➽${prefix}rankcorno
-┃➽${prefix}gtts pt (alguma coisa)
+╠➽${prefix}alma-gemeas
+╠➽${prefix}bebado
+╠➽${prefix}casal
+╠➽${prefix}casar @
+╠➽${prefix}cassino 
+╠➽${prefix}Chance (Texto)
+╠➽${prefix}fazernick
+╠➽${prefix}feio
+╠➽${prefix}gado
+╠➽${prefix}Gadometro
+╠➽${prefix}gay
+╠➽${prefix}gostosa
+╠➽${prefix}gostoso
+╠➽${prefix}gtts pt (alguma coisa)
+╠➽${prefix}Pau
+╠➽${prefix}ppt
+╠➽${prefix}rankcorno
+╠➽${prefix}rankgado
+╠➽${prefix}rankgay
+╠➽${prefix}shipo
+╠➽${prefix}vesgo
 ║
 ║╭─⊣〘 FIGURINHAS 〙
 ║
-╠➽${prefix}sticker
-╠➽${prefix}roubar [marcar a figu] 
 ╠➽${prefix}rename [marcar a figu]
+╠➽${prefix}roubar [marcar a figu] 
 ╠➽${prefix}sfundo 
+╠➽${prefix}sticker
 ║
 ╚════• 〘${nomeBot}〙•═════╝
 `
@@ -162,46 +170,50 @@ return `
 ║
 ║╭─⊣〘 ADMS 〙
 ║
-╠➽${prefix}antilink 1/0
-╠➽${prefix}Bemvindo 1 / 0
-╠➽${prefix}antiaudio 1 / 0
-╠➽${prefix}antivideo 1 / 0
-╠➽${prefix}tagall (marcar todos) 
-╠➽${prefix}marcar (marcar todos) 
-╠➽${prefix}Antiimg 1 / 0
-╠➽${prefix}antisticker 1/0
-╠➽${prefix}autoreação
-╠➽${prefix}autofig 1/0
-╠➽${prefix}hidetag [marcar todos] 
-╠➽${prefix}descgp
-╠➽${prefix}nomegp
-╠➽${prefix}fotogp
-╠➽${prefix}clear
-╠➽${prefix}limpar
-╠➽${prefix}delete
-╠➽${prefix}d
-╠➽${prefix}novolink
-╠➽${prefix}infogp
-╠➽${prefix}abrirgp
-╠➽${prefix}status
-╠➽${prefix}fechagp
-╠➽${prefix}ban @numero
-╠➽${prefix}sairgp
-╠➽${prefix}reviver [marcar a msg]
-╠➽${prefix}kick @numero
 ╠➽${prefix}add @numero
+╠➽${prefix}addlista [adiciona na lista de autoban]
+╠➽${prefix}addlistanegra
+╠➽${prefix}atividades
+╠➽${prefix}autoban [modo de ban]
+╠➽${prefix}ban @numero
+╠➽${prefix}banfake [remove todos fake]
+╠➽${prefix}check @
+╠➽${prefix}clear
+╠➽${prefix}configp
+╠➽${prefix}d
+╠➽${prefix}delete
+╠➽${prefix}dellista [deleta da lista de autoban]
+╠➽${prefix}dellistanegra
+╠➽${prefix}descgp
+╠➽${prefix}fotogp
+╠➽${prefix}grupo a/f
+╠➽${prefix}hidetag [marcar todos] 
+╠➽${prefix}infogp
+╠➽${prefix}kickfake [remove todos fake]
+╠➽${prefix}limpar
 ╠➽${prefix}linkgp
+╠➽${prefix}listban
+╠➽${prefix}marcar (marcar todos) 
+╠➽${prefix}nomegp
+╠➽${prefix}novolink
 ╠➽${prefix}promover @numero
 ╠➽${prefix}rebaixar @numero
-╠➽${prefix}dellistanegra
-╠➽${prefix}addlistanegra
-╠➽${prefix}addlista [adiciona na lista de autoban]
-╠➽${prefix}dellista [deleta da lista de autoban]
-╠➽${prefix}listban
-╠➽${prefix}autoban [modo de ban]
-╠➽${prefix}kickfake [remove todos fake]
-╠➽${prefix}banfake [remove todos fake]
-╠➽${prefix}configp
+╠➽${prefix}reviver [marcar a msg]
+╠➽${prefix}sairgp
+╠➽${prefix}status
+╠➽${prefix}tagall (marcar todos) 
+║
+║╭─⊣〘 Ativadores 〙
+║
+╠➽${prefix}antiaudio [0/1]
+╠➽${prefix}Antiimg [0/1]
+╠➽${prefix}antilink [0/1]
+╠➽${prefix}antisticker [0/1]
+╠➽${prefix}antivideo [0/1]
+╠➽${prefix}apenasadms [0/1]
+╠➽${prefix}autofig [0/1]
+╠➽${prefix}autoreação [0/1]
+╠➽${prefix}Bemvindo [0/1]
 ║
 ╚════• 〘${nomeBot}〙•═════╝
 `
@@ -217,22 +229,24 @@ return `
 ║
 ║╭─⊣〘 MENUS 〙
 ║
-╠➽${prefix}premiumlist
 ╠➽${prefix}addpremium @
-╠➽${prefix}delpremium @
-╠➽${prefix}bangp
-╠➽${prefix}transmitir 
-╠➽${prefix}unbangp
-╠➽${prefix}reviverqr
 ╠➽${prefix}arquivargp
-╠➽${prefix}nuke
+╠➽${prefix}delpremium @
 ╠➽${prefix}entrar [link do gp]
-╠➽${prefix}antipv 1
-╠➽${prefix}antipv 0
+╠➽${prefix}listagp 
+╠➽${prefix}mutargp / desmutargp
+╠➽${prefix}nuke
+╠➽${prefix}premiumlist
+╠➽${prefix}reviverqr
 ╠➽${prefix}seradm 
 ╠➽${prefix}sermembro 
-╠➽${prefix}listagp 
 ╠➽${prefix}serpremium
+╠➽${prefix}transmitir 
+║
+║╭─⊣〘 Ativadores 〙
+║
+╠➽${prefix}apenasdono [0/1]
+╠➽${prefix}antipv [0/1]
 ║
 ╚════• 〘${nomeBot}〙•═════╝
 `
@@ -248,36 +262,36 @@ return `
 ║
 ║╭─⊣〘 ANIME 〙
 ║
-╠➽${prefix}cosplay
-╠➽${prefix}waifu
-╠➽${prefix}waifu2
-╠➽${prefix}shota
-╠➽${prefix}loli
-╠➽${prefix}yotsuba
-╠➽${prefix}shinomiya
-╠➽${prefix}yumeko
-╠➽${prefix}tejina
-╠➽${prefix}chiho
-╠➽${prefix}shizuka
-╠➽${prefix}boruto
-╠➽${prefix}kagori
-╠➽${prefix}kaga
-╠➽${prefix}kotori
-╠➽${prefix}mikasa
 ╠➽${prefix}akiyama
+╠➽${prefix}boruto
+╠➽${prefix}chiho
+╠➽${prefix}cosplay
+╠➽${prefix}deidara
+╠➽${prefix}emilia
+╠➽${prefix}hestia
 ╠➽${prefix}hinata
+╠➽${prefix}itachi
+╠➽${prefix}kaga
+╠➽${prefix}kagori
+╠➽${prefix}kotori
+╠➽${prefix}loli
+╠➽${prefix}madara
+╠➽${prefix}mikasa
 ╠➽${prefix}minato
 ╠➽${prefix}naruto
 ╠➽${prefix}nezuko
-╠➽${prefix}yuki
-╠➽${prefix}hestia
-╠➽${prefix}emilia
-╠➽${prefix}itachi
-╠➽${prefix}madara
-╠➽${prefix}sasuke
-╠➽${prefix}deidara
 ╠➽${prefix}sakura
+╠➽${prefix}sasuke
+╠➽${prefix}shinomiya
+╠➽${prefix}shizuka
+╠➽${prefix}shota
+╠➽${prefix}tejina
 ╠➽${prefix}tsunade
+╠➽${prefix}waifu
+╠➽${prefix}waifu2
+╠➽${prefix}yotsuba
+╠➽${prefix}yuki
+╠➽${prefix}yumeko
 ┃
 ┝━〢 Hentai/+18 no pv
 ┃
@@ -288,19 +302,19 @@ return `
 ╠➽ ${prefix}cuckold
 ╠➽ ${prefix}cum
 ╠➽ ${prefix}ero
-╠➽ ${prefix}kasedaiki
 ╠➽ ${prefix}femdom
 ╠➽ ${prefix}foot
 ╠➽ ${prefix}gangbang
 ╠➽ ${prefix}glasses
 ╠➽ ${prefix}jahy
+╠➽ ${prefix}kasedaiki
 ╠➽ ${prefix}manga
 ╠➽ ${prefix}masturbation
 ╠➽ ${prefix}neko
+╠➽ ${prefix}neko2
 ╠➽ ${prefix}orgy
 ╠➽ ${prefix}panties
 ╠➽ ${prefix}pussy
-╠➽ ${prefix}neko2
 ╠➽ ${prefix}tentacles
 ╠➽ ${prefix}thighs
 ╠➽ ${prefix}yuri
@@ -344,15 +358,15 @@ function lojarpg(prefix, pushname, nomeBot) {
     ║
     ║╭─⊣〘 LOJA RPG 〙
     ║
-    ╠➽${prefix}capacete
-    ╠➽${prefix}paleto
-    ╠➽${prefix}calça
-    ╠➽${prefix}sapato
-    ╠➽${prefix}espada
-    ╠➽${prefix}tagrico
-    ╠➽${prefix}casa
-    ╠➽${prefix}alugarcasa
     ╠➽${prefix}aguacoco
+    ╠➽${prefix}alugarcasa
+    ╠➽${prefix}calça
+    ╠➽${prefix}casa
+    ╠➽${prefix}capacete
+    ╠➽${prefix}espada
+    ╠➽${prefix}paleto
+    ╠➽${prefix}sapato
+    ╠➽${prefix}tagrico
     ║
     ╚════• 〘${nomeBot}〙•═════╝
     `
@@ -367,16 +381,16 @@ function menurpg(prefix, pushname, nomeBot) {
     ║
     ║╭─⊣〘 MENU RPG 〙
     ║
-    ╠➽${prefix}Trabalhar
-    ╠➽${prefix}Minerar
-    ╠➽${prefix}Churrasco
-    ╠➽${prefix}Pescar
-    ╠➽${prefix}Pix (marca a pessoa) / valor
     ╠➽${prefix}Banco
-    ╠➽${prefix}Money
-    ╠➽${prefix}tomaraguacoco
+    ╠➽${prefix}Churrasco
     ╠➽${prefix}hero (para ver o inventário)
     ╠➽${prefix}level
+    ╠➽${prefix}Minerar
+    ╠➽${prefix}Money
+    ╠➽${prefix}Pescar
+    ╠➽${prefix}Pix (marca a pessoa) / valor
+    ╠➽${prefix}tomaraguacoco
+    ╠➽${prefix}Trabalhar
     ║
     ╚════• 〘${nomeBot}〙•═════╝
     `
