@@ -4,12 +4,17 @@
     "numbers": [
       {
         "id": "5524999304661@s.whatsapp.net",
+<<<<<<< HEAD
         "messages": 225,
         "cmd_messages": 146
+=======
+        "messages": 175,
+        "cmd_messages": 100
+>>>>>>> 851503edfda1cd881cff290323fb061f3ba25001
       },
       {
         "id": "554388146383@s.whatsapp.net",
-        "messages": 1,
+        "messages": 6,
         "cmd_messages": 0
       }
     ]
@@ -19,8 +24,13 @@
     "numbers": [
       {
         "id": "5524999304661@s.whatsapp.net",
+<<<<<<< HEAD
         "messages": 322,
         "cmd_messages": 280
+=======
+        "messages": 293,
+        "cmd_messages": 252
+>>>>>>> 851503edfda1cd881cff290323fb061f3ba25001
       }
     ]
   }
