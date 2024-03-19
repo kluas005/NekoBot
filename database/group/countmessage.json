@@ -1,26 +1,11 @@
 [
   {
-    "groupId": "120363235325237445@g.us",
-    "numbers": [
-      {
-        "id": "5524999304661@s.whatsapp.net",
-        "messages": 225,
-        "cmd_messages": 146
-      },
-      {
-        "id": "554388146383@s.whatsapp.net",
-        "messages": 1,
-        "cmd_messages": 0
-      }
-    ]
-  },
-  {
     "groupId": "120363225368093629@g.us",
     "numbers": [
       {
         "id": "5524999304661@s.whatsapp.net",
-        "messages": 325,
-        "cmd_messages": 281
+        "messages": 3,
+        "cmd_messages": 1
       }
     ]
   }
