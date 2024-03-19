@@ -28,22 +28,36 @@ const bye_group2 = JSON.parse(fs.readFileSync('./functions/byegp.json'));
 const { insert, response } = require('./functions/simi.js');
 const premium = JSON.parse(fs.readFileSync('./database/user/premium/premium.json'));
 const nivel = JSON.parse(fs.readFileSync("./database/user/nivel/nivel.json"));
-const antidoc = JSON.parse(fs.readFileSync('./database/group/ativadores/antidoc.json'))
-const antiimg = JSON.parse(fs.readFileSync('./database/group/ativadores/antiimg.json'))
 const lista = JSON.parse(fs.readFileSync('./functions/lista.json'))
 const sotoy = JSON.parse(fs.readFileSync('./functions/sotoy.json'))
+
+/// Ativadores
+
+const welkom = JSON.parse(fs.readFileSync('./database/group/ativadores/welkom.json'));
 const antiaudio = JSON.parse(fs.readFileSync('./database/group/ativadores/antiaudio.json'))
+const antidoc = JSON.parse(fs.readFileSync('./database/group/ativadores/antidoc.json'))
+const antiflood = JSON.parse(fs.readFileSync('database/group/ativadores/antiflood.json'))
+const antiimg = JSON.parse(fs.readFileSync('./database/group/ativadores/antiimg.json'))
+const antilinkgp = JSON.parse(fs.readFileSync('./database/group/ativadores/antilinkgp.json'))
+const antipv = JSON.parse(fs.readFileSync('./database/group/ativadores/antipv.json'))
 const antisticker = JSON.parse(fs.readFileSync('./database/group/ativadores/antisticker.json'))
 const antivid = JSON.parse(fs.readFileSync('./database/group/ativadores/antivideo.json'))
 const autoreact = JSON.parse(fs.readFileSync('./database/group/ativadores/autoreact.json'))
+const onlyadm = JSON.parse(fs.readFileSync('./database/group/ativadores/onlyadm.json'))
+const onlyowner = JSON.parse(fs.readFileSync('./database/group/ativadores/onlyowner.json'))
+const autofigu = JSON.parse(fs.readFileSync('./database/group/ativadores/autofigu.json'))
+let autosticker = JSON.parse(fs.readFileSync('./database/group/ativadores/autosticker.json'));
+const antifake = JSON.parse(fs.readFileSync('./database/group/ativadores/antifake.json'))
+
+/// fim da aba de ativadores
+
 const muted = JSON.parse(fs.readFileSync('./database/user/muted.json'))
 const { menu, menuadm, menudono, menuanime, wallpaperm, menurpg, lojarpg } = require('./menus/menu.js')
 const { runtime } = require("./functions/myfunc.js")
 const { convertSticker } = require("./functions/swm.js");
 const { isUrl } = require("./functions/lib/myfunc.js")
 const { EmojiAPI } = require("emoji-api")
-const autofigu = JSON.parse(fs.readFileSync('./database/group/ativadores/autofigu.json'))
-let autosticker = JSON.parse(fs.readFileSync('./database/group/ativadores/autosticker.json'));
+
 const { menuprem } = require("./functions/menuprem.js")
 const { palavrasANA, quizanime, quizanimais } = require('./functions/jogos.js');
 const speed = require("performance-now");
@@ -54,13 +68,8 @@ const { Error } = JSON.parse(fs.readFileSync('./functions/Erro.json'));
 
 const welcome_group = JSON.parse(fs.readFileSync('./functions/welcomegp.json'));
 
-const antipv = JSON.parse(fs.readFileSync('./database/group/ativadores/antipv.json'))
-
-const antilinkgp = JSON.parse(fs.readFileSync('./database/group/ativadores/antilinkgp.json'))
-const antiflood = JSON.parse(fs.readFileSync('database/group/ativadores/antiflood.json'))
 
 const progp = JSON.parse(fs.readFileSync('./functions/pro.json'))
-const welkom = JSON.parse(fs.readFileSync('./database/group/ativadores/welkom.json'));
 const hora = moment.tz('America/Sao_Paulo').format('HH:mm');
 const dataz = moment.tz('America/Sao_Paulo').format('DD/MM/YYYY')
 
@@ -68,8 +77,6 @@ const { getBuffer, getRandom, getExtension } = require('./funções/lib/funçõe
 
 const anotar = JSON.parse(fs.readFileSync('./database/group/notas/notas.json'));
 
-const onlyadm = JSON.parse(fs.readFileSync('./database/group/ativadores/onlyadm.json'))
-const onlyowner = JSON.parse(fs.readFileSync('./database/group/ativadores/onlyowner.json'))
 
 require('./images/images.js')
 
@@ -134,6 +141,16 @@ dancinha = dança
 casalzin = casar
 soquin = socão 
 
+const time2 = moment().tz('America/Sao_Paulo').format('HH:mm:ss')
+if(time2 > "00:00:00" && time2 < "05:00:00"){
+var tempo = 'ʙᴏᴀ ᴍᴀᴅʀᴜɢᴀᴅᴀ 🌒'
+} if(time2 > "05:00:00" && time2 < "12:00:00"){
+var tempo = 'ʙᴏᴀ ᴅɪᴀ 🌕'
+} if(time2 > "12:00:00" && time2 < "18:00:00"){
+var tempo = 'ʙᴏᴀ ᴛᴀʀᴅᴇ 🌗'
+} if(time2 > "18:00:00"){
+var tempo = 'ʙᴏᴀ ɴᴏɪᴛᴇ 🌑'
+}
 /// função level
 
 const { addLevelingXp, getLevelingXp, getLevelingLevel, getLevelingId, addLevelingLevel, addLevelingId } = require('./funções/rpg/level.js')
@@ -455,6 +472,7 @@ const checkATM = checkATMuser(sender)
         const isAntilinkgp = isGroup ? antilinkgp.includes(from) : false
         const isApenasAdms = isGroup ? onlyadm.includes(from) : false
         const isApenasDono = isGroup ? onlyowner.includes(from) : false
+        const isAntifake = isGroup ? antifake.includes(from) : false
         const isAntiFlood = isGroup ? antiflood.includes(from) : false	
         const isPro = isGroup ? progp.includes(from) : false
         const Antidoc = isGroup ? antidoc.includes(from) : false
@@ -1085,6 +1103,21 @@ if (isCmd) cmdadd()
             case 'registro': case 'verregistro': 
                 if (!isGroup) return reply(ptbr.grupo(pushname))
                 if (!isUser) return reply(ptbr.user(prefix, pushname, nomeBot))
+                if (q) {
+                mentioned = info.message.extendedTextMessage.contextInfo.mentionedJid[0] ? info.message.extendedTextMessage.contextInfo.mentionedJid[0] : info.message.extendedTextMessage.contextInfo.participant
+                var SeuNomeM = getRegisterName(mentioned)
+                var SuaIdadeM = getRegisterAge(mentioned)
+                var SeuSerialM = getRegisterSerial(mentioned)
+                var SeuTempoRegistroM = getRegisterTime(mentioned)
+                var SeuIdM = getRegisterNo(mentioned)
+                try {
+                    ppimg = await client.profilePictureUrl(from, 'image')
+                } catch {
+                    ppimg = 'https://telegra.ph/file/b5427ea4b8701bc47e751.jpg'
+                }
+                let text2 = `\n O Registro de: @${mentioned.split("@")[0]} \n╔════════════════\n╠≽️*Seu nome do Registro é: ${SeuNomeM}*\n╠≽️*Sua Idade é: ${SuaIdadeM}*\n╠≽️*Data de Registro: ${SeuTempoRegistroM}*\n╠≽️*Seu Serial: '${SeuSerialM}'*\n╠≽️*Seu Id: ${SeuIdM}*\n╚════════════════`
+                client.sendMessage(from, { image: { url: ppimg }, caption: text2, mentions: [mentioned]}, { quoted: live })
+                } else {
                 var SeuNome = getRegisterName(sender)
                 var SuaIdade = getRegisterAge(sender)
                 var SeuSerial = getRegisterSerial(sender)
@@ -1097,10 +1130,12 @@ if (isCmd) cmdadd()
                     ppimg = 'https://telegra.ph/file/b5427ea4b8701bc47e751.jpg'
                 }
                 client.sendMessage(from, { image: { url: ppimg }, caption: text1}, { quoted: live })
+                }
                 break
 
             case 'menu': {
                 if (!isUser) return reply(ptbr.user(prefix, pushname, nomeBot))
+                registername = getRegisterName(sender)
                 client.sendMessage(from, {
                     react: {
                         text: "🥁",
@@ -1128,11 +1163,11 @@ if (isCmd) cmdadd()
 ╭─⊣〘 ${nomeBot} 〙
 ║
 ║ Usuario: ${pushname}
-║ Versão: NekoBotV4
-║ Nome: ${pushname}
+║ Versão: ${nomeBot}
+║ Nome de Registro: ${registername}
+║ Total de Cmd's: ${totalcmd}
 ║
-║••➽ Ola @${pushname}
-║
+║••➽ ${tempo.toUpperCase()}
 ║
 ╚════• 〘${nomeBot}〙•═════╝
 `
@@ -1697,6 +1732,7 @@ if (isCmd) cmdadd()
                 client.sendMessage(sender, { image: { url: google.url } }, { quoted: info })
                 break
 
+                /// Comandos de Premium
 
             case 'wallpaper2':
                 if (!isPremium) return reply(ptbr.premium(prefix, pushname))
@@ -2065,6 +2101,28 @@ if (isCmd) cmdadd()
                 }
                 break
 
+            case 'antifake':
+                try {
+                if(!isGroup) return reply(ptbr.grupo())
+                if(!isGroupAdmins) return reply(ptbr.admin())
+                if (args.length < 1) return reply(' 1 Para ativar/ 0 para desativar')
+                if (Number(args[0]) === 1) {
+                if (isAntifake) return reply('Ja esta ativo')
+                antifake.push(from)
+                fs.writeFileSync('./database/group/ativadores/antifake.json', JSON.stringify(antifake))
+                reply('Ativou com sucesso o recurso de antifake neste grupo✔️')
+                } else if (Number(args[0]) === 0) {
+                antifake.splice(from, 1)
+                fs.writeFileSync('./database/group/ativadores/antifake.json', JSON.stringify(antifake))
+                reply('Desativou com sucesso o recurso de antifake neste grupo✔️')
+                } else {
+                reply('1 para ativar, 0 para desativar')
+                }
+                } catch {
+                reply('Deu erro, tente novamente :/')
+                }
+                break
+
             case 'antifloodgp':
             case 'antiflood':
                 if (!isGroup) return reply(ptbr.grupo())
@@ -2346,14 +2404,15 @@ if (isCmd) cmdadd()
 ┃ Bem vindo = ${isWelkom ? 'ON' : 'OFF'}
 ┃ Apenas Dono = ${isApenasDono ? 'ON' : 'OFF'}
 ┃ Apenas Adms = ${isApenasAdms ? 'ON' : 'OFF'}
-┃ AntiFlood = ${isAntiFlood ? 'ON' : 'OFF'}            
-┃ Anti Link Grupo = ${isAntilinkgp ? 'ON' : 'OFF'}
-┃ Anti img = ${isAntiImg ? 'ON' : 'OFF'}
-┃ Anti video = ${isAntiVid ? 'ON' : 'OFF'}
 ┃ Anti áudios = ${isAntiAudio ? 'ON' : 'OFF'}
-┃ Anti sticker = ${isAntiSticker ? 'ON' : 'OFF'}
-┃ Anti pv block = ${isAntiPv ? 'ON' : 'OFF'}
 ┃ Anti documentos = ${Antidoc ? 'ON' : 'OFF'}
+┃ Anti Fake = ${isAntifake ? 'ON' : 'OFF'} 
+┃ Anti img = ${isAntiImg ? 'ON' : 'OFF'}
+┃ Anti Link Grupo = ${isAntilinkgp ? 'ON' : 'OFF'}
+┃ Anti pv block = ${isAntiPv ? 'ON' : 'OFF'}
+┃ Anti sticker = ${isAntiSticker ? 'ON' : 'OFF'}
+┃ Anti video = ${isAntiVid ? 'ON' : 'OFF'}
+┃ AntiFlood = ${isAntiFlood ? 'ON' : 'OFF'}            
 ┃ Auto ban lista negra = ${islista ? 'ON' : 'OFF'}
 ╚━━━━━━━━━━━━╝`
                 client.sendMessage(from, { text: statuszada, thumbnail: null })
@@ -2809,7 +2868,6 @@ ${epa}`,
                 reply(teks)
                 break
 
-            case 'addlistanegra':
             case 'addlista':
                 if (!isGroupAdmins) return reply(ptbr.admin())
                 if (args.length < 1) return reply('Cade o número?')
@@ -2831,7 +2889,6 @@ ${epa}`,
                 reply(`🌸Número adicionado a lista de autoban com sucesso 🌸`)
                 break
 
-            case 'dellistanegra':
             case 'dellista':
                 if (!isGroup) return reply(ptbr.grupo())
                 if (!isGroupAdmins) return reply(ptbr.admin())

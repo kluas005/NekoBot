@@ -22,6 +22,7 @@ return `
 ║
 ║╭─⊣〘 ADICIONAIS 〙
 ║
+╠➽${prefix}registro / ou @
 ╠➽${prefix}adivinhação 
 ╠➽${prefix}alugar
 ╠➽${prefix}anagrama
@@ -177,7 +178,6 @@ return `
 ║
 ╠➽${prefix}add @numero
 ╠➽${prefix}addlista [adiciona na lista de autoban]
-╠➽${prefix}addlistanegra
 ╠➽${prefix}atividades
 ╠➽${prefix}autoban [modo de ban]
 ╠➽${prefix}ban @numero
@@ -188,10 +188,9 @@ return `
 ╠➽${prefix}d
 ╠➽${prefix}delete
 ╠➽${prefix}dellista [deleta da lista de autoban]
-╠➽${prefix}dellistanegra
 ╠➽${prefix}descgp
 ╠➽${prefix}fotogp
-╠➽${prefix}grupo a/f
+╠➽${prefix}grupo [a/f]
 ╠➽${prefix}hidetag [marcar todos] 
 ╠➽${prefix}infogp
 ╠➽${prefix}kickfake [remove todos fake]
@@ -217,6 +216,7 @@ return `
 ╠➽${prefix}antivideo [0/1]
 ╠➽${prefix}apenasadms [0/1]
 ╠➽${prefix}autofig [0/1]
+╠➽${prefix}antifake [0/1]
 ╠➽${prefix}autoreação [0/1]
 ╠➽${prefix}Bemvindo [0/1]
 ║

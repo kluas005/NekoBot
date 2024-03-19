@@ -31,6 +31,7 @@ try {
     const antisticker = JSON.parse(fs.readFileSync('./database/group/ativadores/antisticker.json'))
     const antivid = JSON.parse(fs.readFileSync('./database/group/ativadores/antivideo.json'))
     const autoreact = JSON.parse(fs.readFileSync('./database/group/ativadores/autoreact.json'))
+    const antifake = JSON.parse(fs.readFileSync('./database/group/ativadores/antifake.json'))
     const { menu, menuadm, menudono, menuanime, wallpaper, menurpg, lojarpg, downloader, modificadores } = require('./menus/menu.js')
     const { runtime } = require("./functions/myfunc.js")
     const { convertSticker } = require("./functions/swm.js");
@@ -432,21 +433,32 @@ try {
             const GroupMetadata_ = isGroup2 ? await client.groupMetadata(ale.id) : "";
             const mdata_ = isGroup2 ? await client.groupMetadata(ale.id) : "";
 
+                if(antifake.includes(ale.jid)) {
+                try {
+                if (ale.action == 'add'){
+                num = ale.participants[0]
+                if(!num.split('@')[0].startsWith(55)) {
+                client.sendMessage(mdata_.id, ' ⛹️⛹️numeros estrangeiros não sao Permitidos neste grupo, consulte um Administrador👋🏌️', MessageType.text)
+                setTimeout(async function () {
+                client.groupRemove(mdata_.id, [num])}, 1000)
+                } 
+            }
+            } catch {
+            reply('error')
+            }
+            }
 
             if (welkom2.includes(ale.id)) {
                 try {
                     let metadata = await client.groupMetadata(anu.id)
                     let participants = anu.participants
                     for (let num of participants) {
-
                         try {
                             ppimg = await client.profilePictureUrl(anu.participants[0])
                         } catch {
                             ppimg = 'https://telegra.ph/file/b5427ea4b8701bc47e751.jpg'
                         }
-
                         memb = metadata.participants.length
-
                         if (anu.action == 'add') {
                             num = anu.participants[0]
 
