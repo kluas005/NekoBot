@@ -4,8 +4,13 @@
     "numbers": [
       {
         "id": "5524999304661@s.whatsapp.net",
-        "messages": 154,
-        "cmd_messages": 88
+        "messages": 165,
+        "cmd_messages": 96
+      },
+      {
+        "id": "554388146383@s.whatsapp.net",
+        "messages": 1,
+        "cmd_messages": 0
       }
     ]
   },
@@ -14,8 +19,8 @@
     "numbers": [
       {
         "id": "5524999304661@s.whatsapp.net",
-        "messages": 259,
-        "cmd_messages": 218
+        "messages": 280,
+        "cmd_messages": 239
       }
     ]
   }

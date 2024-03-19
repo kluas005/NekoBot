@@ -129,11 +129,14 @@ return `
 ║
 ╠➽${prefix}alma-gemeas
 ╠➽${prefix}bebado
+╠➽${prefix}beijo @
 ╠➽${prefix}casal
 ╠➽${prefix}casar @
+╠➽${prefix}chutar @
 ╠➽${prefix}cassino 
 ╠➽${prefix}Chance (Texto)
-╠➽${prefix}fazernick
+╠➽${prefix}Dançar @
+╠➽${prefix}fazernick [nome]
 ╠➽${prefix}feio
 ╠➽${prefix}gado
 ╠➽${prefix}Gadometro
@@ -147,6 +150,8 @@ return `
 ╠➽${prefix}rankgado
 ╠➽${prefix}rankgay
 ╠➽${prefix}shipo
+╠➽${prefix}soco @
+╠➽${prefix}tapa @
 ╠➽${prefix}vesgo
 ║
 ║╭─⊣〘 FIGURINHAS 〙

@@ -488,6 +488,7 @@ const checkATM = checkATMuser(sender)
         q = args.join(" ")
         const menc_jid = args.join(" ").replace("@", "") + "@s.whatsapp.net"
         const menc_os2 = q.includes("@") ? menc_jid : menc_prt 
+        const sender_ou_n = q.includes("@") ? menc_jid : sender
         const isCmd = body.startsWith(prefix);
         const command = isCmd ? body.slice(1).trim().split(/ +/).shift().toLocaleLowerCase() : null
         const mentions = (teks, memberr, id) => {
@@ -3823,6 +3824,84 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 jrq = await getBuffer(`${casalzin}`)
                 await client.sendMessage(from, {video: jrq, gifPlayback: true, caption: susp, mentions: mentioned}, {quoted: info})
                 break
+
+          //  case 'dar':
+                if(!isGroup) return reply(ptbr.grupo())
+                if(!q) return reply('marque a pessoa que você quer dar, a mensagem ou o @')
+                client.sendMessage(from, {video: {url: "https://telegra.ph/file/8d6c8af967fad0fe77ba8.mp4"}, gifPlayback: true, caption: `Você deu com vontade na @${menc_os2.split('@')[0]} ela(e)  ate gozo` , mentions: [menc_os2]}, {quoted: info})
+                break
+
+            case 'tapa':
+                if(!isGroup) return reply(ptbr.grupo())
+                if (!isUser) return reply(ptbr.user(prefix, pushname, nomeBot))
+                if(!isGroup) return reply('Só pode ser utilizado este comando, em grupo.')
+                if (info.message.extendedTextMessage === undefined || info.message.extendedTextMessage === null) return reply('marque o alvo que você quer dá o tapa')
+                mentioned = info.message.extendedTextMessage.contextInfo.mentionedJid
+                pru = '.\n'
+                for (let _ of mentioned) {
+                pru += `@${_.split('@')[0]}\n`
+                }
+                susp = `Você Acabou de da um tapa na raba da😏 @${mentioned[0].split('@')[0]} 🔥` 
+                jrq = await getBuffer(`${tapinha}`)
+                await client.sendMessage(from, {video: jrq, gifPlayback: true, caption: susp, mentions: mentioned}, {quoted: info})
+                break
+
+            case 'beijo': case 'beijar':
+                if(!isGroup) return reply(ptbr.grupo())
+                if (!isUser) return reply(ptbr.user(prefix, pushname, nomeBot))
+                if (info.message.extendedTextMessage === undefined || info.message.extendedTextMessage === null) return reply('Marque alguém que vc quer da um beijo')
+                mentioned = info.message.extendedTextMessage.contextInfo.mentionedJid
+                pru = '.\n'
+                for (let _ of mentioned) {
+                pru += `@${_.split('@')[0]}\n`
+                }
+                susp = `Você deu um beijo gostoso na(o) @${mentioned[0].split('@')[0]} 😁👉👈❤` 
+                wew = await getBuffer(`${beijin}`)
+                await client.sendMessage(from, {video: wew, gifPlayback: true, caption: susp, mentions: mentioned}, {quoted: info})
+                break
+
+            case 'dança': case 'dançar':
+                if(!isGroup) return reply(ptbr.grupo())
+                if (!isUser) return reply(ptbr.user(prefix, pushname, nomeBot))
+                if (info.message.extendedTextMessage === undefined || info.message.extendedTextMessage === null) return reply('Marque alguém que vc quer da um beijo')
+                mentioned = info.message.extendedTextMessage.contextInfo.mentionedJid
+                pru = '.\n'
+                for (let _ of mentioned) {
+                pru += `@${_.split('@')[0]}\n`
+                }
+                susp = `Voce e o(a) @${mentioned[0].split('@')[0]} Estão Dançando pra o Tiktok?` 
+                jrq = await getBuffer(`${dancinha}`)
+                await client.sendMessage(from, {video: jrq, gifPlayback: true, caption: susp, mentions: mentioned}, {quoted: info})
+                break
+
+            case 'soco':
+                if(!isGroup) return reply(ptbr.grupo())
+                if (!isUser) return reply(ptbr.user(prefix, pushname, nomeBot))
+                if (info.message.extendedTextMessage === undefined || info.message.extendedTextMessage === null) return reply('Marque alguém que vc quer da um beijo')
+                mentioned = info.message.extendedTextMessage.contextInfo.mentionedJid
+                pru = '.\n'
+                for (let _ of mentioned) {
+                pru += `@${_.split('@')[0]}\n`
+                }
+                susp = `@${mentioned[0].split('@')[0]} Você Recebeu um Socão de ${pushname}` 
+                jrq = await getBuffer(`${soquin}`)
+                await client.sendMessage(from, {video: jrq, gifPlayback: true, caption: susp, mentions: mentioned}, {quoted: info})
+                break
+
+            case 'chute':
+            case 'chutar':  
+                if(!isGroup) return reply(ptbr.grupo())
+                if (!isUser) return reply(ptbr.user(prefix, pushname, nomeBot))
+                if (info.message.extendedTextMessage === undefined || info.message.extendedTextMessage === null) return reply('Marque alguém que vc quer da um beijo')
+                mentioned = info.message.extendedTextMessage.contextInfo.mentionedJid
+                pru = '.\n'
+                for (let _ of mentioned) {
+                pru += `@${_.split('@')[0]}\n`
+                }
+                susp = `Você Acabou de da um chute em @${mentioned[0].split('@')[0]} 🤡` 
+                jry = await getBuffer(`${chutin}`)
+                await client.sendMessage(from, {video: jry, gifPlayback: true, caption: susp, mentions: mentioned}, {quoted: info})
+                break 
 
             case 'minerardima':
             case 'minerardiamante':
