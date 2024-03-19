@@ -1257,9 +1257,9 @@ if (isCmd) cmdadd()
                     play1(q).then(res => { 
                     infomidia = `\n *Titulo: ${res.titulo}*\n *Canal: ${res.canal}*\n\ *Views: ${res.views}*\n\ *Publicado em: ${res.postado_em}*`;
                     client.sendMessage(from, {image: {url: res.thumb}, caption: infomidia }, {quoted: info});
-                    client.sendMessage(from, {audio: {url: res.download}, mimetype: 'audio/mpeg', fileName: res.titulo}, {quoted: info});
+                    client.sendMessage(from, {audio: {url: res.download}, mimetype: 'audio/mp4', fileName: res.titulo}, {quoted: info});
                     }).catch(() => {
-                    reply(ptbr.restriçãodownload())
+                    reply(ptbr.erro())
                     }); 
                     break
                     
