@@ -151,7 +151,7 @@ const token = {//SEU TOKEN IA
 
 /* Música **/ 
 
-const { play, play1, play2 } = require("./funções/música/scraper-play.js");
+const { play1, play2 } = require("./funções/música/scraper-play.js");
 const { NoticiasAoMinuto } = require('./funções/lib/scraper2.js')
 
 /* Respostas **/
@@ -1258,8 +1258,8 @@ if (isCmd) cmdadd()
                     infomidia = `\n *Titulo: ${res.titulo}*\n *Canal: ${res.canal}*\n\ *Views: ${res.views}*\n\ *Publicado em: ${res.postado_em}*`;
                     client.sendMessage(from, {image: {url: res.thumb}, caption: infomidia }, {quoted: info});
                     client.sendMessage(from, {audio: {url: res.download}, mimetype: 'audio/mpeg', fileName: res.titulo}, {quoted: info});
-                    }).catch((e) => {
-                    return reply(ptbr.restriçãodownload())
+                    }).catch(() => {
+                    reply(ptbr.restriçãodownload())
                     }); 
                     break
                     
@@ -1272,7 +1272,7 @@ if (isCmd) cmdadd()
                     infomidia2 = `\n *Titulo: ${res.titulo}*\n *Canal: ${res.canal}*\n\ *Views: ${res.views}*\n\ *Publicado em: ${res.publicado}*`;
                     client.sendMessage(from, {video: {url: res.download}, filename: res.titulo, caption: infomidia2}, {quoted: info})
                     }).catch((e) => {
-                    return reply(ptbr.restriçãodownload());
+                    reply(ptbr.restriçãodownload());
                     });
                     break
                     

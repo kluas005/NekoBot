@@ -1,5 +1,3 @@
-const fs = require('fs');
-
  
 exports.wait = () => {
 	return`𝗣𝗿𝗼𝗰𝗲𝘀𝘀𝗮𝗻𝗱𝗼⌛️`
