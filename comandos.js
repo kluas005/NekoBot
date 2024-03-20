@@ -1131,7 +1131,7 @@ if (isCmd) cmdadd()
                 } catch {
                     ppimg = 'https://telegra.ph/file/b5427ea4b8701bc47e751.jpg'
                 }
-                client.sendMessage(from, { image: { url: ppimg }, caption: text2, mentions: [mentioned, sender]}, { quoted: live })
+                client.sendMessage(from, { image: { url: ppimg }, caption: text2, mentions: [sender]}, { quoted: live })
                 }
                 break
 
