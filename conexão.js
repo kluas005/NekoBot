@@ -443,8 +443,8 @@ try {
                 client.groupRemove(mdata_.id, [num])}, 1000)
                 } 
             }
-            } catch {
-            reply('error')
+            } catch (err) {
+            console.log(err)
             }
             }
 

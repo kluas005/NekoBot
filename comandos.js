@@ -173,6 +173,7 @@ const { NoticiasAoMinuto } = require('./funções/lib/scraper2.js')
 
 /* Respostas **/
 const { ptbr } = require('./mess/index.js');
+const { registrationParams } = require('@whiskeysockets/baileys/lib/Socket/registration.js');
 
 module.exports = client = async (client, info, connection, prefix, nomeBot, NomeBot, NomeDoBot, nomeDono, numeroDono, color, DLT_FL) => {
     const cliente = client;
@@ -1065,6 +1066,7 @@ if (isApenasDono && isGroup && isCmd && !isOwner) {
     return reagir(from, '👺')
 }
 
+
 // contador de comandos
 
 if (isCmd) cmdadd()
@@ -1111,25 +1113,25 @@ if (isCmd) cmdadd()
                 var SeuTempoRegistroM = getRegisterTime(mentioned)
                 var SeuIdM = getRegisterNo(mentioned)
                 try {
-                    ppimg = await client.profilePictureUrl(from, 'image')
+                    ppimg = await client.profilePictureUrl(`${mentioned.split("@")[0]}@c.us`, "image")
                 } catch {
                     ppimg = 'https://telegra.ph/file/b5427ea4b8701bc47e751.jpg'
                 }
-                let text2 = `\n O Registro de: @${mentioned.split("@")[0]} \n╔════════════════\n╠≽️*Seu nome do Registro é: ${SeuNomeM}*\n╠≽️*Sua Idade é: ${SuaIdadeM}*\n╠≽️*Data de Registro: ${SeuTempoRegistroM}*\n╠≽️*Seu Serial: '${SeuSerialM}'*\n╠≽️*Seu Id: ${SeuIdM}*\n╚════════════════`
-                client.sendMessage(from, { image: { url: ppimg }, caption: text2, mentions: [mentioned]}, { quoted: live })
+                let text1 = `\nOlá ${pushname}\n╔════════════════\n╠≽️O Registro de: @${mentioned.split("@")[0]} \n╠≽️*Seu nome do Registro é: ${SeuNomeM}*\n╠≽️*Sua Idade é: ${SuaIdadeM}*\n╠≽️*Data de Registro: ${SeuTempoRegistroM}*\n╠≽️*Seu Serial: '${SeuSerialM}'*\n╠≽️*Seu Id: ${SeuIdM}*\n╚════════════════`
+                client.sendMessage(from, { image: { url: ppimg }, caption: text1, mentions: [mentioned]}, { quoted: live })
                 } else {
                 var SeuNome = getRegisterName(sender)
                 var SuaIdade = getRegisterAge(sender)
                 var SeuSerial = getRegisterSerial(sender)
                 var SeuTempoRegistro = getRegisterTime(sender)
                 var SeuId = getRegisterNo(sender)
-                let text1 = `\n*Olá ${pushname}* \n╔════════════════\n╠≽️*Seu nome do Registro é: ${SeuNome}*\n╠≽️*Sua Idade é: ${SuaIdade}*\n╠≽️*Data de Registro: ${SeuTempoRegistro}*\n╠≽️*Seu Serial: '${SeuSerial}'*\n╠≽️*Seu Id: ${SeuId}*\n╚════════════════`
+                let text2 = `\n*Olá ${pushname}* \n╔════════════════\n╠≽️*Seu nome do Registro é: ${SeuNome}*\n╠≽️*Sua Idade é: ${SuaIdade}*\n╠≽️*Data de Registro: ${SeuTempoRegistro}*\n╠≽️*Seu Serial: '${SeuSerial}'*\n╠≽️*Seu Id: ${SeuId}*\n╚════════════════`
                 try {
                     ppimg = await client.profilePictureUrl(sender, 'image')
                 } catch {
                     ppimg = 'https://telegra.ph/file/b5427ea4b8701bc47e751.jpg'
                 }
-                client.sendMessage(from, { image: { url: ppimg }, caption: text1}, { quoted: live })
+                client.sendMessage(from, { image: { url: ppimg }, caption: text2, mentions: [mentioned, sender]}, { quoted: live })
                 }
                 break
 
@@ -2404,6 +2406,7 @@ if (isCmd) cmdadd()
 ┃ Bem vindo = ${isWelkom ? 'ON' : 'OFF'}
 ┃ Apenas Dono = ${isApenasDono ? 'ON' : 'OFF'}
 ┃ Apenas Adms = ${isApenasAdms ? 'ON' : 'OFF'}
+┃ Level = ${isLevelingOn ? 'ON' : 'OFF'}
 ┃ Anti áudios = ${isAntiAudio ? 'ON' : 'OFF'}
 ┃ Anti documentos = ${Antidoc ? 'ON' : 'OFF'}
 ┃ Anti Fake = ${isAntifake ? 'ON' : 'OFF'} 
@@ -2413,7 +2416,7 @@ if (isCmd) cmdadd()
 ┃ Anti sticker = ${isAntiSticker ? 'ON' : 'OFF'}
 ┃ Anti video = ${isAntiVid ? 'ON' : 'OFF'}
 ┃ AntiFlood = ${isAntiFlood ? 'ON' : 'OFF'}            
-┃ Auto ban lista negra = ${islista ? 'ON' : 'OFF'}
+┃ Auto ban = ${islista ? 'ON' : 'OFF'}
 ╚━━━━━━━━━━━━╝`
                 client.sendMessage(from, { text: statuszada, thumbnail: null })
                 break
