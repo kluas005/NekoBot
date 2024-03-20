@@ -4,8 +4,18 @@
     "numbers": [
       {
         "id": "5524999304661@s.whatsapp.net",
+        "messages": 11,
+        "cmd_messages": 5
+      }
+    ]
+  },
+  {
+    "groupId": "120363235325237445@g.us",
+    "numbers": [
+      {
+        "id": "5524999304661@s.whatsapp.net",
         "messages": 3,
-        "cmd_messages": 1
+        "cmd_messages": 2
       }
     ]
   }
