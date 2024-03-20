@@ -24,13 +24,38 @@
     "numbers": [
       {
         "id": "553199426779@s.whatsapp.net",
-        "messages": 4,
+        "messages": 12,
         "cmd_messages": 0
       },
       {
         "id": "5524999304661@s.whatsapp.net",
+        "messages": 17,
+        "cmd_messages": 7
+      },
+      {
+        "id": "558486049184@s.whatsapp.net",
+        "messages": 7,
+        "cmd_messages": 0
+      },
+      {
+        "id": "5511913592242@s.whatsapp.net",
         "messages": 1,
-        "cmd_messages": 1
+        "cmd_messages": 0
+      },
+      {
+        "id": "558586790147@s.whatsapp.net",
+        "messages": 2,
+        "cmd_messages": 0
+      },
+      {
+        "id": "556399486021@s.whatsapp.net",
+        "messages": 2,
+        "cmd_messages": 0
+      },
+      {
+        "id": "5521966673704@s.whatsapp.net",
+        "messages": 2,
+        "cmd_messages": 0
       }
     ]
   }
