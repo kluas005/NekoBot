@@ -161,7 +161,7 @@ const limitefll = JSON.parse(fs.readFileSync('./database/user/flood.json'));
 
 
 const token = {//SEU TOKEN IA
-    bard: "AIzaSyBjYlS76GBkkzx0zR9qZkP-WmaMMHSh8Jk",
+    bard: "g.a000hgg8XaRDIr6VAH8_VDjmMMvwtoVikW3UhfGVUaJNq6O8gxIl8_oSkvowb-YaNpSGiD8W3wACgYKAcgSAQASFQHGX2MiICmIEYOLMd2yas9Nzd6eUhoVAUF8yKrPkKnSsaU3U5VNZ0f9xcNK0076",
     gpt : '',
     bing : "",
    }
@@ -1174,7 +1174,7 @@ if (isCmd) cmdadd()
 ╚════• 〘${nomeBot}〙•═════╝
 `
 
-                client.sendMessage(from, { poll: { name: menutxt, values: [`menu`, 'adms', 'dono', 'rpg', 'loja rpg', 'modificadores', 'downloader', 'premium', 'anime', 'wallpaper'], selectableCount: 1 } }, { quoted: info });
+                client.sendMessage(from, { poll: { name: menutxt, values: [`menu`, 'adms', 'dono', 'rpg', 'loja rpg', 'modificadores', 'figurinhas', 'downloader', 'premium', 'anime', 'wallpaper'], selectableCount: 1 } }, { quoted: info });
             } break
 
             case "Menu":
@@ -1283,7 +1283,7 @@ if (isCmd) cmdadd()
                     caption: wallpaper(prefix, nomeBot, pushname)
                 })
             } break
-
+            
             /////
                 
             /* Downloader */
@@ -1358,7 +1358,7 @@ if (isCmd) cmdadd()
                     }catch (erro) {
                     console.log(erro)}
                     break
-
+                    
                     /// modificadores de voz 
 
                 case 'audiolento': 
@@ -2399,6 +2399,15 @@ if (isCmd) cmdadd()
                 client.sendMessage(from, { image: { url: ppUrl }, caption: `𝐍𝐎𝐌𝐄 : ${groupName}\n𝐌𝐄𝐌𝐁𝐑𝐎𝐒 : ${groupMembers.length}\n𝐀𝐃𝐌𝐒 : ${groupAdmins.length}\n𝐃𝐄𝐒𝐂𝐑𝐈𝐂𝐀𝐎 : ${meetadata.desc}`, thumbnail: null }, { quoted: info })
                 break
 
+            case 'criargp':          //case by: Bielzinho-bot
+                if (!isOwner) return reply(ptbr.dono())
+                const gp = args.join(' ')
+                if (!gp) return reply('*Escreva o nome do grupo que vc quer criar....*')
+                var group = await client.groupCreate(`${gp}`, [sender])
+                reply(`*Grupo criado com sucesso*\n*Nome do grupo :* *${gp}*`)
+                client.sendMessage(group.gid, `Bem vindo ao grupo amigo(a)`, MessageType.text, {quoted: info})
+                break;
+
             case 'status':
                 if (!isGroup) return reply(ptbr.grupo())
                 if (!isGroupAdmins) return reply(ptbr.admin())
@@ -3115,16 +3124,6 @@ ${epa}`,
                 }
                 break;
 
-            case 'criargp':          //case by: Bielzinho-bot
-                if (!isOwner) return reply(ptbr.dono())
-                const gp = args.join(' ')
-                if (!gp) return reply('*Escreva o nome do grupo que vc quer criar....*')
-                var group = await client.groupCreate(`${gp}`, [sender])
-                reply(`*Grupo criado com sucesso*\n*Nome do grupo :* *${gp}*`)
-                client.sendMessage(group.gid, `Bem vindo ao grupo amigo(a)`, MessageType.text, {quoted: info})
-                break
-
-
             case 'autoreação':
             case 'autoreacao':
             case 'autoreact':
@@ -3317,7 +3316,8 @@ tem que ter a / e o id do grupo destinado senão não vai.`)
             }
                 break
 
-                /// sticker 
+                /// Area de figurinhas
+
             case 'fstiker':
             case 'fsticker':
             case 'f':
@@ -3352,7 +3352,7 @@ tem que ter a / e o id do grupo destinado senão não vai.`)
                                 var exif = Buffer.concat([exifAttr, jsonBuff])
                                 exif.writeUIntLE(jsonBuff.length, 14, 4)
                                 let nomemeta = Math.floor(Math.random() * (99999 - 11111 + 1) + 11111) + ".temp.exif"
-                                fs.writeFileSync(`./${nomemeta}`, exif)
+                                fs.writeFileSync(`./figurinhas/${nomemeta}`, exif)
                                 exec(`webpmux -set exif ${nomemeta} ${rano} -o ${rano}`, () => {
                                     client.sendMessage(from, { sticker: fs.readFileSync(rano) }, { quoted: info })
                                     fs.unlinkSync(nomemeta)
@@ -3378,7 +3378,7 @@ tem que ter a / e o id do grupo destinado senão não vai.`)
                                 let exif = Buffer.concat([exifAttr, jsonBuff])
                                 exif.writeUIntLE(jsonBuff.length, 14, 4)
                                 let nomemeta = "temp.exif"
-                                fs.writeFileSync(`./${nomemeta}`, exif)
+                                fs.writeFileSync(`./figurinhas/${nomemeta}`, exif)
                                 exec(`webpmux -set exif ${nomemeta} ${rano} -o ${rano}`, () => {
                                     client.sendMessage(from, { sticker: fs.readFileSync(rano) }, { quoted: info })
                                     fs.unlinkSync(nomemeta)
@@ -3399,6 +3399,69 @@ tem que ter a / e o id do grupo destinado senão não vai.`)
                     })
                 }
                 break
+
+            case 'figurinhas':
+                if(!Number(q)) return reply(`Digite a quantidade de figurinhas\nExemplo: ${prefix+command} 7`)
+                if(q >= 100) return reply("Coloque abaixo de 100...")
+                reply(ptbr.sendfig(pushname))
+                async function figuss() {
+                var rnd = Math.floor(Math.random() * 8051)
+                client.sendMessage(sender, { sticker: { url: `https://raw.githubusercontent.com/badDevelopper/Testfigu/main/fig (${rnd}).webp` } })}
+                for (i = 0; i < q; i++) {
+                await sleep(680)
+                figuss()
+                }
+                break
+
+            case 'figuraiva':
+                if (!q) return reply("Insira a quantidade de figurinhas que deseja que eu envie!")
+                if (!Number(args[0]) || Number(q.trim()) > 10) return reply("Digite a quantidade de figurinhas que deseja que eu envie.. não pode mais de 10..")
+                reply(ptbr.sendfig(pushname))
+                async function eitamundorm() {
+                client.sendMessage(sender, { sticker: { url: `http://kayserapis.tech:4197/sticker/figu_raiva?apikey=`+'apikey-do-flexa' } })}
+                for (i = 0; i < q; i++) {
+                await sleep(680)
+                eitamundorm()
+                }
+                break
+
+            case 'figubebe':
+                if (!q) return reply("Insira a quantidade de figurinhas que deseja que eu envie!")
+                if (!Number(args[0]) || Number(q.trim()) > 10) return reply("Digite a quantidade de figurinhas que deseja que eu envie.. não pode mais de 10..")
+                reply(ptbr.sendfig(pushname))
+                async function lovepartidolovepartido() {
+                client.sendMessage(sender, { sticker: { url: `http://kayserapis.tech:4197/sticker/figu_bebe?apikey=`+'apikey-do-flexa' } })}
+                for (i = 0; i < q; i++) {
+                await sleep(680)
+                lovepartidolovepartido()
+                }
+                break
+
+            case 'figucoreana':
+                if (!q) return reply("Insira a quantidade de figurinhas que deseja que eu envie!")
+                if (!Number(args[0]) || Number(q.trim()) > 10) return reply("Digite a quantidade de figurinhas que deseja que eu envie.. não pode mais de 10..")
+                reply(ptbr.sendfig(pushname))
+                async function lovepartidoee() {
+                client.sendMessage(from, { sticker: { url: `http://kayserapis.tech:4197/sticker/figu_coreana?apikey=`+'apikey-do-flexa' } })}
+                for (i = 0; i < q; i++) {
+                await sleep(680)
+                lovepartidoee()
+                }
+                break
+
+            case 'figumemes':
+                if (!q) return reply("Insira a quantidade de figurinhas que deseja que eu envie!")
+                if (!Number(args[0]) || Number(q.trim()) > 10) return reply("Digite a quantidade de figurinhas que deseja que eu envie.. não pode mais de 10..")
+                reply(ptbr.sendfig(pushname))
+                async function nometoque() {
+                client.sendMessage(sender, { sticker: { url: `http://kayserapis.tech:4197/sticker/figu_memes?apikey=`+'apikey-do-flexa' } })}
+                for (i = 0; i < q; i++) {
+                await sleep(680)
+                nometoque()
+                }
+                break
+
+                
 
             case 'togif':
                 if (!isGroup) return reply(ptbr.grupo(pushname))
@@ -4556,6 +4619,27 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                     mention(bli)
                     break
 
+                case 'rankinativo':
+                    case 'rankinativos':
+                    if(!isGroup) return reply(ptbr.grupo())
+                    if(!isGroupAdmins) return reply(ptbr.admin())
+                    await LIMPARDOCNT_QUEMJASAIU()
+                    bule = [];
+                    bule2 = []
+                    mentioned_jid = []
+                    for(cag of countMessage[ind].numbers){
+                    bule2.push(cag.id)
+                    if(cag.messages <= 1){bule.push(cag)}}
+                    bule.sort((a, b) => ((a.messages + a.cmd_messages) < (b.cmd_messages + b.messages)) ? 0 : -1)
+                    boardi = 'Rank dos mais Ghosts do Grupo:\n\n'
+                    if(bule.length == 0)boardi += 'Todos estão ativos'
+                    for ( i = 0; i < (bule.length < 5 ? bule.length : 5); i++) {
+                    if (i != null) boardi += `${i + 1}º : @${bule[i].id.split('@')[0]}\nMensagens: ${bule[i].messages}\nComandos dados: ${bule[i].cmd_messages}\nAparelho: ${info.key.id.length > 21 ? 'Android 🤣' : info.key.id.substring(0, 2) == '3A' ? 'IOS😂😂😅' : 'Zap zap web 😂😂☝🏼😅'}\n\n`
+                    mentioned_jid.push(bule[i].id)
+                    } 
+                    mentions(boardi, mentioned_jid, true)
+                    break
+
                 case 'atividades': case 'atividade':
                     try{
                     if (!isGroup) return reply(ptbr.grupo())
@@ -4600,7 +4684,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
 
             case 'seradm': {
                 if (!isOwner) return reply(ptbr.dono())
-                reply(`Agora vc é adm do grupo.`)
+                reply(`Agora você é adm do grupo ${pushname}`)
                 kiceed = sender
                 client.groupParticipantsUpdate(from, [kiceed], 'promote')
                 }

@@ -32,7 +32,7 @@ try {
     const antivid = JSON.parse(fs.readFileSync('./database/group/ativadores/antivideo.json'))
     const autoreact = JSON.parse(fs.readFileSync('./database/group/ativadores/autoreact.json'))
     const antifake = JSON.parse(fs.readFileSync('./database/group/ativadores/antifake.json'))
-    const { menu, menuadm, menudono, menuanime, wallpaper, menurpg, lojarpg, downloader, modificadores } = require('./menus/menu.js')
+    const { menu, menuadm, menudono, menuanime, wallpaper, menurpg, lojarpg, downloader, modificadores, figurinhas } = require('./menus/menu.js')
     const { runtime } = require("./functions/myfunc.js")
     const { convertSticker } = require("./functions/swm.js");
     const { isUrl } = require("./functions/lib/myfunc.js")
@@ -350,6 +350,25 @@ try {
                                 })
                             } break
 
+                            case prefix + "figurinhas": {
+                                const imagens = [
+                                    './menus/fotos/foto1.jpg',
+                                    './menus/fotos/foto2.jpg',
+                                    './menus/fotos/foto3.jpg',
+                                    './menus/fotos/foto4.jpg',
+                                    './menus/fotos/foto5.jpg',
+                                    './menus/fotos/foto6.jpg'
+                                ];
+                                const randomIndex = Math.floor(Math.random() * imagens.length);
+                                const randomFoto = imagens[randomIndex];
+                                const fotomenus = fs.readFileSync(randomFoto);
+                                client.sendMessage(from, { react: { text: '🕚', key: info.key } })
+                                client.sendMessage(from, {
+                                    image: fotomenus,
+                                    caption: figurinhas(prefix, pushname, nomeBot)
+                                })
+                            } break
+
                             case prefix + "dono":
                             case "menudono": {
                                 const imagens = [
@@ -465,7 +484,7 @@ try {
                             client.sendMessage(anu.id,
                                 {
                                     image: { url: 'https://telegra.ph/file/91734dc02ee089ecc883b.jpg' },
-                                    caption: `❤Bem♤vindo(a) 𝘢𝘰 𝘨𝘳𝘶𝘱𝘰: ${pushName}\n*${metadata.subject}*\nLEIA REGRAS E SEJA BEM VINDO(A)\n\n\n${NomeDoBot}`,
+                                    caption: `❤Bem♤vindo(a) 𝘢𝘰 𝘨𝘳𝘶𝘱𝘰: @${num.split('@')[0]}\n*${metadata.subject}*\nLEIA REGRAS E SEJA BEM VINDO(A)\n\n\n${NomeDoBot}`,
                                     headerType: 4
                                 })
 
@@ -478,7 +497,7 @@ try {
                             client.sendMessage(anu.id,
                                 {
                                     image: { url: 'https://telegra.ph/file/91734dc02ee089ecc883b.jpg' },
-                                    caption: `OLA POVO DO GRUPO:\n*${metadata.subject}*\n\nO Membro: ${pushName} @${num.split('@')[0]}\n\nSaiu do Grp ou foi Banido.`,
+                                    caption: `OLA POVO DO GRUPO:\n*${metadata.subject}*\n\n@${num.split('@')[0]}\n\nSaiu do Grp ou foi Banido.`,
                                     headerType: 4
                                 })
 

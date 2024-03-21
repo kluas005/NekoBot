@@ -19,6 +19,14 @@ exports.waitfig = () => {
 	return`⏳Aguarde alguns instantes...⏳\n\nA criação de stickers demora alguns segundos.`
 }
 
+exports.sendfig = (pushname) => {
+	return`⏳Aguarde alguns instantes... ${pushname}, as figurinhas estão sendo enviadas no seu privado`
+}
+
+exports.quantfig = (pushname) => {
+	return`digite a quantidade de figurinhas que você deseja ${pushname}`
+}
+
 exports.waitgif = () => {
 	return`⏳Aguarde alguns instantes...⏳\n\nA criação de stickers demora alguns segundos\nA criação de stickergif leva de 10 segundos á 1 minuto dependendo do tamanho do gif\nLimite de 10 segundos por gif.`
 }

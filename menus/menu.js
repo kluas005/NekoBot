@@ -51,7 +51,6 @@ return `
 ║
 ╠➽${prefix}add @numero
 ╠➽${prefix}addlista [adiciona na lista de autoban]
-╠➽${prefix}addlistanegra
 ╠➽${prefix}atividades
 ╠➽${prefix}autoban [modo de ban]
 ╠➽${prefix}ban @numero
@@ -62,10 +61,9 @@ return `
 ╠➽${prefix}d
 ╠➽${prefix}delete
 ╠➽${prefix}dellista [deleta da lista de autoban]
-╠➽${prefix}dellistanegra
 ╠➽${prefix}descgp
 ╠➽${prefix}fotogp
-╠➽${prefix}grupo a/f
+╠➽${prefix}grupo [a/f]
 ╠➽${prefix}hidetag [marcar todos] 
 ╠➽${prefix}infogp
 ╠➽${prefix}kickfake [remove todos fake]
@@ -76,6 +74,7 @@ return `
 ╠➽${prefix}nomegp
 ╠➽${prefix}novolink
 ╠➽${prefix}promover @numero
+╠➽${prefix}rankinativo
 ╠➽${prefix}rebaixar @numero
 ╠➽${prefix}reviver [marcar a msg]
 ╠➽${prefix}sairgp
@@ -157,6 +156,11 @@ return `
 ║
 ║╭─⊣〘 FIGURINHAS 〙
 ║
+╠➽${prefix}figubebe [quantidade]
+╠➽${prefix}figucoreana [quantidade]
+╠➽${prefix}figuraiva [quantidade]
+╠➽${prefix}figurinhas [quantidade]
+╠➽${prefix}figumemes [quantidade]
 ╠➽${prefix}rename [marcar a figu]
 ╠➽${prefix}roubar [marcar a figu] 
 ╠➽${prefix}sfundo 
@@ -201,6 +205,7 @@ return `
 ╠➽${prefix}nomegp
 ╠➽${prefix}novolink
 ╠➽${prefix}promover @numero
+╠➽${prefix}rankinativo
 ╠➽${prefix}rebaixar @numero
 ╠➽${prefix}reviver [marcar a msg]
 ╠➽${prefix}sairgp
@@ -236,6 +241,7 @@ return `
 ║
 ╠➽${prefix}addpremium @
 ╠➽${prefix}arquivargp
+╠➽${prefix}criargp [nome do grupo]
 ╠➽${prefix}delpremium @
 ╠➽${prefix}entrar [link do gp]
 ╠➽${prefix}listagp 
@@ -419,6 +425,29 @@ function downloader(prefix, pushname, nomeBot) {
 `
 }
 
+function figurinhas(prefix, pushname, nomeBot) {
+    return `╭─⊣〘 ${nomeBot} 〙
+║
+╠➽User: ${pushname}
+╠➽Versão: ${nomeBot}
+║
+║
+║╭─⊣〘 FIGURINHAS 〙
+║
+╠➽${prefix}figubebe [quantidade]
+╠➽${prefix}figucoreana [quantidade]
+╠➽${prefix}figuraiva [quantidade]
+╠➽${prefix}figurinhas [quantidade]
+╠➽${prefix}figumemes [quantidade]
+╠➽${prefix}rename [marcar a figu]
+╠➽${prefix}roubar [marcar a figu] 
+╠➽${prefix}sfundo 
+╠➽${prefix}sticker
+║
+╚════• 〘 ${nomeBot} 〙•═════╝
+`
+}
+
 function modificadores(prefix, pushname, nomeBot) {
     return `
 
@@ -453,5 +482,6 @@ wallpaper,
 menurpg,
 lojarpg,
 downloader,
-modificadores
+modificadores,
+figurinhas
 }
