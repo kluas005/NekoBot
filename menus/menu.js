@@ -49,7 +49,7 @@ return `
 ║
 ║╭─⊣〘 ADMS 〙
 ║
-╠➽${prefix}add @numero
+╠➽${prefix}add [numero/marca a msg]
 ╠➽${prefix}addlista [adiciona na lista de autoban]
 ╠➽${prefix}atividades
 ╠➽${prefix}autoban [modo de ban]
@@ -78,13 +78,14 @@ return `
 ╠➽${prefix}rebaixar @numero
 ╠➽${prefix}reviver [marcar a msg]
 ╠➽${prefix}sairgp
+╠➽${prefix}sorteio [premio]
 ╠➽${prefix}status
 ╠➽${prefix}tagall (marcar todos) 
 ║
 ║╭─⊣〘 Ativadores 〙
 ║
-╠➽${prefix}Bemvindo [0/1]
 ╠➽${prefix}antiaudio [0/1]
+╠➽${prefix}antifake [0/1]
 ╠➽${prefix}Antiimg [0/1]
 ╠➽${prefix}antilink [0/1]
 ╠➽${prefix}antisticker [0/1]
@@ -92,6 +93,8 @@ return `
 ╠➽${prefix}apenasadms [0/1]
 ╠➽${prefix}autofig [0/1]
 ╠➽${prefix}autoreação [0/1]
+╠➽${prefix}Bemvindo [0/1]
+╠➽${prefix}leveling [0/1]
 ║
 ║╭─⊣〘 MENU PREMIUM 〙
 ║
@@ -132,18 +135,20 @@ return `
 ╠➽${prefix}beijo @
 ╠➽${prefix}casal
 ╠➽${prefix}casar @
-╠➽${prefix}chutar @
 ╠➽${prefix}cassino 
 ╠➽${prefix}Chance (Texto)
+╠➽${prefix}chutar @
+╠➽${prefix}corno/a @
 ╠➽${prefix}Dançar @
 ╠➽${prefix}fazernick [nome]
 ╠➽${prefix}feio
 ╠➽${prefix}gado
 ╠➽${prefix}Gadometro
-╠➽${prefix}gay
-╠➽${prefix}gostosa
-╠➽${prefix}gostoso
+╠➽${prefix}gay @
+╠➽${prefix}gostoso/a
 ╠➽${prefix}gtts pt (alguma coisa)
+╠➽${prefix}infiel @
+╠➽${prefix}nazista @
 ╠➽${prefix}Pau
 ╠➽${prefix}ppt
 ╠➽${prefix}rankcorno
@@ -180,7 +185,7 @@ return `
 ║
 ║╭─⊣〘 ADMS 〙
 ║
-╠➽${prefix}add @numero
+╠➽${prefix}add [numero/marca a msg]
 ╠➽${prefix}addlista [adiciona na lista de autoban]
 ╠➽${prefix}atividades
 ╠➽${prefix}autoban [modo de ban]
@@ -209,21 +214,23 @@ return `
 ╠➽${prefix}rebaixar @numero
 ╠➽${prefix}reviver [marcar a msg]
 ╠➽${prefix}sairgp
+╠➽${prefix}sorteio [premio]
 ╠➽${prefix}status
 ╠➽${prefix}tagall (marcar todos) 
 ║
 ║╭─⊣〘 Ativadores 〙
 ║
 ╠➽${prefix}antiaudio [0/1]
+╠➽${prefix}antifake [0/1]
 ╠➽${prefix}Antiimg [0/1]
 ╠➽${prefix}antilink [0/1]
 ╠➽${prefix}antisticker [0/1]
 ╠➽${prefix}antivideo [0/1]
 ╠➽${prefix}apenasadms [0/1]
 ╠➽${prefix}autofig [0/1]
-╠➽${prefix}antifake [0/1]
 ╠➽${prefix}autoreação [0/1]
 ╠➽${prefix}Bemvindo [0/1]
+╠➽${prefix}leveling [0/1]
 ║
 ╚════• 〘${nomeBot}〙•═════╝
 `
@@ -261,6 +268,61 @@ return `
 ║
 ╚════• 〘${nomeBot}〙•═════╝
 `
+}
+
+function menupremium(prefix, pushname, nomeBot) {
+    return `
+
+╭─⊣〘 ${nomeBot} 〙
+║
+╠➽User: ${pushname}
+╠➽Versão: ${nomeBot}
+║
+║╭─⊣〘 PREMIUM 〙
+║
+╠➽${prefix}clima
+╠➽${prefix}ddd
+╠➽${prefix}gerarcpf
+╠➽${prefix}premiumlist
+║
+┝━〢 Hentai/+18 no pv
+║
+╠➽ ${prefix}ahegao
+╠➽ ${prefix}ass
+╠➽ ${prefix}bdsm
+╠➽ ${prefix}blowjob
+╠➽ ${prefix}cuckold
+╠➽ ${prefix}cum
+╠➽ ${prefix}ero
+╠➽ ${prefix}femdom
+╠➽ ${prefix}foot
+╠➽ ${prefix}gangbang
+╠➽ ${prefix}glasses
+╠➽ ${prefix}jahy
+╠➽ ${prefix}kasedaiki
+╠➽ ${prefix}manga
+╠➽ ${prefix}masturbation
+╠➽ ${prefix}neko
+╠➽ ${prefix}neko2
+╠➽ ${prefix}orgy
+╠➽ ${prefix}panties
+╠➽ ${prefix}pussy
+╠➽ ${prefix}tentacles
+╠➽ ${prefix}thighs
+╠➽ ${prefix}yuri
+╠➽ ${prefix}zettai
+╠➽${prefix}plaq "seu nome"
+╠➽${prefix}plaq2 "seu nome"
+╠➽${prefix}plaq3 "seu nome"
+╠➽${prefix}plaq4 "seu nome"
+╠➽${prefix}plaq5 "seu nome"
+╠➽${prefix}plaq6 "seu nome"
+╠➽${prefix}plaq7 "seu nome"
+╠➽${prefix}pornovid
+╠➽${prefix}vazados
+║
+╚════• 〘 ${nomeBot} 〙•═════╝`
+
 }
 
 function menuanime(prefix, nomeBot, pushname) {
@@ -303,33 +365,6 @@ return `
 ╠➽${prefix}yotsuba
 ╠➽${prefix}yuki
 ╠➽${prefix}yumeko
-┃
-┝━〢 Hentai/+18 no pv
-┃
-╠➽ ${prefix}ahegao
-╠➽ ${prefix}ass
-╠➽ ${prefix}bdsm
-╠➽ ${prefix}blowjob
-╠➽ ${prefix}cuckold
-╠➽ ${prefix}cum
-╠➽ ${prefix}ero
-╠➽ ${prefix}femdom
-╠➽ ${prefix}foot
-╠➽ ${prefix}gangbang
-╠➽ ${prefix}glasses
-╠➽ ${prefix}jahy
-╠➽ ${prefix}kasedaiki
-╠➽ ${prefix}manga
-╠➽ ${prefix}masturbation
-╠➽ ${prefix}neko
-╠➽ ${prefix}neko2
-╠➽ ${prefix}orgy
-╠➽ ${prefix}panties
-╠➽ ${prefix}pussy
-╠➽ ${prefix}tentacles
-╠➽ ${prefix}thighs
-╠➽ ${prefix}yuri
-╠➽ ${prefix}zettai
 ║
 ╚════• 〘${nomeBot}〙•═════╝
 `
@@ -473,15 +508,61 @@ function modificadores(prefix, pushname, nomeBot) {
 
 }
 
+function brincadeiras(prefix, pushname, nomeBot) {
+    return `
+
+╭─⊣〘 ${nomeBot} 〙
+║
+╠➽User: ${pushname}
+╠➽Versão: ${nomeBot}
+║
+║╭─⊣〘 BRINCADEIRAS 〙
+║
+╠➽${prefix}alma-gemeas
+╠➽${prefix}bebado
+╠➽${prefix}beijo @
+╠➽${prefix}casal
+╠➽${prefix}casar @
+╠➽${prefix}cassino 
+╠➽${prefix}Chance (Texto)
+╠➽${prefix}chutar @
+╠➽${prefix}corno/a @
+╠➽${prefix}Dançar @
+╠➽${prefix}fazernick [nome]
+╠➽${prefix}feio
+╠➽${prefix}gado
+╠➽${prefix}Gadometro
+╠➽${prefix}gay @
+╠➽${prefix}gostoso/a
+╠➽${prefix}gtts pt (alguma coisa)
+╠➽${prefix}infiel @
+╠➽${prefix}nazista @
+╠➽${prefix}Pau
+╠➽${prefix}ppt
+╠➽${prefix}rankcorno
+╠➽${prefix}rankgado
+╠➽${prefix}rankgay
+╠➽${prefix}shipo
+╠➽${prefix}soco @
+╠➽${prefix}tapa @
+╠➽${prefix}vesgo
+║
+╚════• 〘 ${nomeBot} 〙•═════╝`
+
+}
+
+
 module.exports = {
+menudono,
 menu,
 menuanime,
 menuadm,
-menudono,
+menupremium,
 wallpaper,
 menurpg,
 lojarpg,
 downloader,
 modificadores,
-figurinhas
+figurinhas,
+brincadeiras
 }

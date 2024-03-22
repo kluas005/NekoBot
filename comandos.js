@@ -77,6 +77,9 @@ const { getBuffer, getRandom, getExtension } = require('./funções/lib/funçõe
 
 const anotar = JSON.parse(fs.readFileSync('./database/group/notas/notas.json'));
 
+const { mensagens } = require('./arquivos/mensagens/aleatória.js');
+var enviarmen = mensagens[Math.floor(Math.random() * mensagens.length)] 
+
 
 require('./images/images.js')
 
@@ -174,6 +177,7 @@ const { NoticiasAoMinuto } = require('./funções/lib/scraper2.js')
 /* Respostas **/
 const { ptbr } = require('./mess/index.js');
 const { registrationParams } = require('@whiskeysockets/baileys/lib/Socket/registration.js');
+const { admin } = require('./mess/ptbr.js');
 
 module.exports = client = async (client, info, connection, prefix, nomeBot, NomeBot, NomeDoBot, nomeDono, numeroDono, color, DLT_FL) => {
     const cliente = client;
@@ -1174,7 +1178,7 @@ if (isCmd) cmdadd()
 ╚════• 〘${nomeBot}〙•═════╝
 `
 
-                client.sendMessage(from, { poll: { name: menutxt, values: [`menu`, 'adms', 'dono', 'rpg', 'loja rpg', 'modificadores', 'figurinhas', 'downloader', 'premium', 'anime', 'wallpaper'], selectableCount: 1 } }, { quoted: info });
+                client.sendMessage(from, { poll: { name: menutxt, values: [`menu`, 'adms', 'dono', 'rpg', 'loja rpg', 'brincadeiras', 'modificadores', 'figurinhas', 'downloader', 'premium', 'anime', 'wallpaper'], selectableCount: 1 } }, { quoted: info });
             } break
 
             case "Menu":
@@ -1481,7 +1485,7 @@ if (isCmd) cmdadd()
                     fs.writeFileSync(rane, buffimg)
                     gem = rane
                     ran = getRandom('.mp3')
-                    exec(`ffmpeg -i ${gem} -af equalizer=f=20:width_type=o:width=2:g=15 ${ran}`, (err, stderr, stdout) => {
+                    exec(`ffmpeg -i ${gem} -af equalizer=f=54:width_type=o:width=2:g=20 ${ran}`, (err, stderr, stdout) => {
                     fs.unlinkSync(gem)
                     if (err) return reply('Error!')
                     hah = fs.readFileSync(ran)
@@ -1672,31 +1676,180 @@ if (isCmd) cmdadd()
 
                 break
 
-                case 'ahegao':
-                case 'ass':
-                case 'bdsm':
-                case 'blowjob':
-                case 'cuckold':
-                case 'cum':
-                case 'ero':
-                case 'kasedaiki':
-                case 'femdom':
-                case 'foot':
-                case 'gangbang':
-                case 'glasses':
-                case 'jahy':
-                case 'manga':
-                case 'masturbation':
-                case 'neko':
-                case 'orgy':
-                case 'panties':
-                case 'pussy':
-                case 'neko2':
-                case "neko":
-                case 'tentacles':
-                case 'thighs':
-                case 'yuri':
-                case 'zettai':
+            case 'wallpaper1':
+                reply("「🐸」ja to enviando no teu pv")
+                google = await fetchJson(`https://clover-t-bot.onrender.com/wallpaper/satanic?key=Lady-Bot&username=Lady-Bot`)
+                client.sendMessage(sender, { image: { url: google.url } }, { quoted: info })
+                break
+
+            case 'wallpaper2':
+                reply("「🐸」ja to enviando no teu pv")
+                google = await fetchJson(`https://clover-t-bot.onrender.com/wallpaper/cyberspace?key=Lady-Bot&username=Lady-Bot`)
+                client.sendMessage(sender, { image: { url: google.url } }, { quoted: info })
+                break
+
+            case 'wallpaper3':
+                reply("「🐸」ja to enviando no teu pv")
+                google = await fetchJson(`https://clover-t-bot.onrender.com/wallpaper/gaming?key=Lady-Bot&username=Lady-Bot`)
+                client.sendMessage(sender, { image: { url: google.url } }, { quoted: info })
+                break
+
+            case 'wallpaper4':
+                reply("「🐸」ja to enviando no teu pv")
+                google = await fetchJson(`https://clover-t-bot.onrender.com/wallpaper/wallpapertec?key=Lady-Bot&username=Lady-Bot`)
+                client.sendMessage(sender, { image: { url: google.url } }, { quoted: info })
+                break
+
+            case 'wallpaper5':
+                reply("「🐸」ja to enviando no teu pv")
+                google = await fetchJson(`https://clover-t-bot.onrender.com/wallpaper/ppcouple?key=Lady-Bot&username=Lady-Bot`)
+                client.sendMessage(sender, { image: { url: google.url } }, { quoted: info })
+                break
+
+            case 'wallpaper6':
+                reply("「🐸」ja to enviando no teu pv")
+                google = await fetchJson(`https://clover-t-bot.onrender.com/wallpaper/pubg?key=Lady-Bot&username=Lady-Bot`)
+                client.sendMessage(sender, { image: { url: google.url } }, { quoted: info })
+                break
+
+            case 'wallpaper7':
+                reply("「🐸」ja to enviando no teu pv")
+                google = await fetchJson(`https://clover-t-bot.onrender.com/wallpaper/aesthetic?key=Lady-Bot&username=Lady-Bot`)
+                client.sendMessage(sender, { image: { url: google.url } }, { quoted: info })
+                break
+
+            case 'wallpaper8':
+                reply("「🐸」ja to enviando no teu pv")
+                google = await fetchJson(`https://clover-t-bot.onrender.com/wallpaper/aesthetic?key=Lady-Bot&username=Lady-Bot`)
+                client.sendMessage(sender, { image: { url: google.url } }, { quoted: info })
+                break
+
+            case 'wallpaper9':
+                reply("「🐸」ja to enviando no teu pv")
+                google = await fetchJson(`https://clover-t-bot.onrender.com/nime/anime?key=Lady-Bot&username=Lady-Bot`)
+                client.sendMessage(sender, { image: { url: google.url } }, { quoted: info })
+                break
+
+            case 'wallpaperanime':
+                {
+                    json = JSON.parse(fs.readFileSync('./functions/fotos/wall.json').toString())
+                    random = json[Math.floor(Math.random() * json.length)]
+                    let proximo = [
+                {buttonId: `${prefix + command}`, buttonText: {displayText: '🌸️PROXIMO🌸️'}, type: 1},
+                ]
+                    templateMassage = {
+                        image: {
+                            url: random,
+                            quoted: live
+                        },
+                        caption: `${command}`,
+                        footer: `${nomeBot}`,
+                    }
+                    client.sendMessage(from, templateMassage)
+                }
+                break
+
+            /// Area Premium
+
+            case 'getquoted':
+            case 'getinfo':
+            case 'get':
+                if (!isPremium) return reply(ptbr.premium(prefix, pushname))
+                reply(JSON.stringify(info.message.extendedTextMessage.contextInfo, null, 3))
+                break
+
+            case 'encurtalink':
+                if (!isPremium) return reply(ptbr.premium(prefix, pushname))
+                if (args.length < 1) return reply(`Exemplo:\n${prefix}encurtalink https://www.youtube.com/channel/UCgKrNnrbNPJIOjJOgIXe1vQ`)
+                try {
+                    link = args[0]
+                    anu = await axios.get(`https://tinyurl.com/api-create.php?url=${link}`)
+                    reply(`${anu.data}`)
+                } catch (e) {
+                    emror = String(e)
+                    reply(`${e}`)
+                }
+                break
+
+            case 'ddd':
+                if (!isPremium) return reply(ptbr.premium(prefix, pushname))
+                if (args.length < 1) return reply(`Use ${prefix + command} 21`)
+                ddd = body.slice(5)
+                ddds = await axios.get(`https://brasilapi.com.br/api/ddd/v1/${ddd}`)
+                dddlist = `Lista de Cidades de ${ddds.data.state} com este DDD ${q}>\n\n`
+                for (let i = 0; i < ddds.data.cities.length; i++) { dddlist += `${i + 1} ⪧ *${ddds.data.cities[i]}*\n` }
+                client.sendMessage(from, { text: dddlist }, { quoted: info })
+                break
+
+            case 'pornovid':{
+                if(!isPremium) return reply(ptbr.premium(prefix, pushname, nomeBot))
+                reply(`Já estou enviando no pv ${pushname}`)
+                await client.sendMessage(from, {react: { text: "🔞", key: info.key }})
+                    bla = JSON.parse(fs.readFileSync("./arquivos/sexv.json")) 
+                button = [
+                    {buttonId: `${prefix}pornovid`, buttonText: {displayText: '😈[suivant]😈'}, type: 1}
+                ]
+                buttonMessage2 = {
+                    video: {url: bla[Math.floor(Math.random() * bla.length)],
+                    quoted: info},
+                    caption: '🔞',
+                    footer: `@${pushname}`,
+                    button: button,
+                    headerType: 1
+                }
+                client.sendMessage(sender, buttonMessage2)
+                }
+                break
+
+            case 'vazados':
+                if(!isPremium) return reply(ptbr.premium(prefix, pushname, nomeBot))
+                reply(`${pushname} enviando no seu pv olha la`)
+                {
+                json = JSON.parse(fs.readFileSync('./arquivos/sex/sex.json').toString())
+                random = json[Math.floor(Math.random() * json.length)]
+                /*
+                let proximo = [
+                    {buttonId: `${prefix + command}`, buttonText: {displayText: '🍉PROXIMO🍉'}, type: 1},
+                    ]
+                    */
+                templateMassage = {
+                    video: {
+                    url: random,
+                    quoted: info
+                    },
+                    caption: `${command}`,
+                    footer: `${nomeBot}`,
+                }
+                client.sendMessage(sender, templateMassage)
+                }
+                break
+
+            case 'ahegao':
+            case 'ass':
+            case 'bdsm':
+            case 'blowjob':
+            case 'cuckold':
+            case 'cum':
+            case 'ero':
+            case 'kasedaiki':
+            case 'femdom':
+            case 'foot':
+            case 'gangbang':
+            case 'glasses':
+            case 'jahy':
+            case 'manga':
+            case 'masturbation':
+            case 'neko':
+            case 'orgy':
+            case 'panties':
+            case 'pussy':
+            case 'neko2':
+            case "neko":
+            case 'tentacles':
+            case 'thighs':
+            case 'yuri':
+            case 'zettai':
+                if (!isPremium) return reply(ptbr.premium(prefix, pushname, nomeBot))
                 try {
                     client.sendMessage(sender, { react: { text: '🕚', key: info.key } })
                     fetch(encodeURI(`https://clover-t-bot.onrender.com/nsfw/${command}?username=Lady-Bot&key=Lady-Bot`))
@@ -1721,81 +1874,91 @@ if (isCmd) cmdadd()
                     reply("não achei a foto, tente novamente mais tarde")
                 }
                 break
-            case 'meme': {
-                fetch('https://clover-t-bot.onrender.com/memes?username=SUPREMO&key=SER_SUPREMO').then(response => response.json()).then(data => {
-                client.sendMessage(from, { video: { url: `${data.url}` } }, { quoted: info })
-                })
-            } break
-
-            case 'wallpaper1':
-                if (!isPremium) return reply(ptbr.premium(prefix, pushname))
-                reply("「🐸」ja to enviando no teu pv")
-                google = await fetchJson(`https://clover-t-bot.onrender.com/wallpaper/satanic?key=Lady-Bot&username=Lady-Bot`)
-                client.sendMessage(sender, { image: { url: google.url } }, { quoted: info })
+    
+            case 'plaq':{
+                if(!isPremium) return reply(ptbr.premium(prefix, pushname, nomeBot))
+                if (args.length < 1) return reply(`${prefix}plaq e digite o seu nome`)
+                teks = body.slice(6)
+                if (teks.length > 15) return reply('O texto é longo, até 15 caracteres') //maximo de caracteres
+                buffer =(`https://raptibef.sirv.com/images%20(3).jpeg?text.0.text=${teks}&text.0.position.gravity=center&text.0.position.x=19%25&text.0.size=45&text.0.color=000000&text.0.opacity=55&text.0.font.family=Crimson%20Text&text.0.font.weight=300&text.0.font.style=italic&text.0.outline.opacity=21`)
+                client.sendMessage(sender, {image: {url: buffer }, caption: ' *Plaquinha feita*'})
+                await client.sendMessage(from, { react: { text: `🔞`, key: info.key }})
+                }
+                reply(`a plaquinha esta sendo enviado no seu privado...`)
+                break
+                
+            case 'plaq2':{
+                if(!isPremium) return reply(ptbr.premium(prefix, pushname, nomeBot))
+                if (args.length < 1) return reply(`${prefix}plaq e digite o seu nome`)
+                teks = body.slice(6)
+                if (teks.length > 15) return reply('O texto é longo, até 15 caracteres') //maximo de caracteres
+                buffer =(`https://umethroo.sirv.com/BUNDA1.jpg?text.0.text=${teks}&text.0.position.x=-20%25&text.0.position.y=-20%25&text.0.size=18&text.0.color=000000&text.0.font.family=Architects%20Daughter&text.0.font.weight=700&text.0.background.opacity=65`)
+                client.sendMessage(sender, {image: {url: buffer }, caption: ' *Plaquinha feita*'})
+                await client.sendMessage(from, { react: { text: `🔞`, key: info.key }})
+                }
+                reply(`a plaquinha esta sendo enviado no seu privado...`)
+                break
+            
+            case 'plaq3':{
+                if(!isPremium) return reply(ptbr.premium(prefix, pushname, nomeBot))
+                if (args.length < 1) return reply(`${prefix}plaq e digite o seu nome`)
+                teks = body.slice(6)
+                if (teks.length > 15) return reply('O texto é longo, até 15 caracteres') //maximo de caracteres
+                buffer =(`https://umethroo.sirv.com/bunda3.jpg?text.0.text=${teks}&text.0.position.gravity=center&text.0.position.x=-25%25&text.0.position.y=-17%25&text.0.size=17&text.0.color=000000&text.0.font.family=Architects%20Daughter&text.0.font.weight=700&text.0.font.style=italic`)
+                client.sendMessage(sender, {image: {url: buffer }, caption: ' *Plaquinha feita*'})
+                await client.sendMessage(from, { react: { text: `🔞`, key: info.key }})
+                }
+                reply(`a plaquinha esta sendo enviado no seu privado...`)
+                break
+            
+            case 'plaq4':{
+                if(!isPremium) return reply(ptbr.premium(prefix, pushname, nomeBot))
+                if (args.length < 1) return reply(`${prefix}plaq e digite o seu nome`)
+                teks = body.slice(6)
+                if (teks.length > 15) return reply('O texto é longo, até 15 caracteres') //maximo de caracteres
+                buffer =(`https://umethroo.sirv.com/peito1.jpg?text.0.text=${teks}&text.0.position.x=-48%25&text.0.position.y=-68%25&text.0.size=14&text.0.color=000000&text.0.font.family=Shadows%20Into%20Light&text.0.font.weight=700`)
+                client.sendMessage(sender, {image: {url: buffer }, caption: ' *Plaquinha feita*'})
+                await client.sendMessage(from, { react: { text: `🔞`, key: info.key }})
+                }
+                reply(`a plaquinha esta sendo enviado no seu privado...`)
+                break
+            
+            case 'plaq5':{
+                if(!isPremium) return reply(ptbr.premium(prefix, pushname, nomeBot))
+                if (args.length < 1) return reply(`${prefix}plaq e digite o seu nome`)
+                teks = body.slice(6)
+                if (teks.length > 15) return reply('O texto é longo, até 15 caracteres') //maximo de caracteres
+                buffer =(`https://umethroo.sirv.com/9152e7a9-7d49-48ef-b8ac-2e6149fda0b2.jpg?text.0.text=${teks}&text.0.position.x=-70%25&text.0.position.y=-23%25&text.0.size=17&text.0.color=000000&text.0.font.family=Architects%20Daughter&text.0.font.weight=300`)
+                client.sendMessage(sender, {image: {url: buffer }, caption: ' *Plaquinha feita*'})
+                await client.sendMessage(from, { react: { text: `🔞`, key: info.key }})
+                }
+                reply(`a plaquinha esta sendo enviado no seu privado...`)
+                break
+            
+            case 'plaq6':{
+                if(!isPremium) return reply(ptbr.premium(prefix, pushname, nomeBot))
+                if (args.length < 1) return reply(`${prefix}plaq e digite o seu nome`)
+                teks = body.slice(6)
+                if (teks.length > 15) return reply('O texto é longo, até 15 caracteres') //maximo de caracteres
+                buffer =(`https://clutamac.sirv.com/1011b781-bab1-49e3-89db-ee2c064868fa%20(1).jpg?text.0.text=${teks}&text.0.position.gravity=northwest&text.0.position.x=22%25&text.0.position.y=60%25&text.0.size=12&text.0.color=000000&text.0.opacity=47&text.0.font.family=Roboto%20Mono&text.0.font.style=italic`)
+                client.sendMessage(sender, {image: {url: buffer }, caption: ' *Plaquinha feita*'})
+                await client.sendMessage(from, { react: { text: `🔞`, key: info.key }})
+                }
+                reply(`a plaquinha esta sendo enviado no seu privado...`)
+                break
+            
+            case 'plaq7':{
+                if(!isPremium) return reply(ptbr.premium(prefix, pushname, nomeBot))
+                if (args.length < 1) return reply(`${prefix}plaq e digite o seu nome`)
+                teks = body.slice(6)
+                if (teks.length > 15) return reply('O texto é longo, até 15 caracteres') //maximo de caracteres
+                buffer =(`https://umethroo.sirv.com/Torcedora-da-sele%C3%A7%C3%A3o-brasileira-nua-mostrando-a-bunda-236x300.jpg?text.0.text=${teks}&text.0.position.x=-64%25&text.0.position.y=-39%25&text.0.size=25&text.0.color=1b1a1a&text.0.font.family=Architects%20Daughter`)
+                client.sendMessage(sender, {image: {url: buffer }, caption: ' *Plaquinha feita*'})
+                await client.sendMessage(from, { react: { text: `🔞`, key: info.key }})
+                }
+                reply(`a plaquinha esta sendo enviado no seu privado...`)
                 break
 
-                /// Comandos de Premium
-
-            case 'wallpaper2':
-                if (!isPremium) return reply(ptbr.premium(prefix, pushname))
-                reply("「🐸」ja to enviando no teu pv")
-                google = await fetchJson(`https://clover-t-bot.onrender.com/wallpaper/cyberspace?key=Lady-Bot&username=Lady-Bot`)
-                client.sendMessage(sender, { image: { url: google.url } }, { quoted: info })
-                break
-
-
-            case 'wallpaper3':
-                if (!isPremium) return reply(ptbr.premium(prefix, pushname))
-                reply("「🐸」ja to enviando no teu pv")
-                google = await fetchJson(`https://clover-t-bot.onrender.com/wallpaper/gaming?key=Lady-Bot&username=Lady-Bot`)
-                client.sendMessage(sender, { image: { url: google.url } }, { quoted: info })
-                break
-
-
-            case 'wallpaper4':
-                if (!isPremium) return reply(ptbr.premium(prefix, pushname))
-                reply("「🐸」ja to enviando no teu pv")
-                google = await fetchJson(`https://clover-t-bot.onrender.com/wallpaper/wallpapertec?key=Lady-Bot&username=Lady-Bot`)
-                client.sendMessage(sender, { image: { url: google.url } }, { quoted: info })
-                break
-
-
-            case 'wallpaper5':
-                if (!isPremium) return reply(ptbr.premium(prefix, pushname))
-                reply("「🐸」ja to enviando no teu pv")
-                google = await fetchJson(`https://clover-t-bot.onrender.com/wallpaper/ppcouple?key=Lady-Bot&username=Lady-Bot`)
-                client.sendMessage(sender, { image: { url: google.url } }, { quoted: info })
-                break
-
-
-            case 'wallpaper6':
-                if (!isPremium) return reply(ptbr.premium(prefix, pushname))
-                reply("「🐸」ja to enviando no teu pv")
-                google = await fetchJson(`https://clover-t-bot.onrender.com/wallpaper/pubg?key=Lady-Bot&username=Lady-Bot`)
-                client.sendMessage(sender, { image: { url: google.url } }, { quoted: info })
-                break
-
-            case 'wallpaper7':
-                if (!isPremium) return reply(ptbr.premium(prefix, pushname))
-                reply("「🐸」ja to enviando no teu pv")
-                google = await fetchJson(`https://clover-t-bot.onrender.com/wallpaper/aesthetic?key=Lady-Bot&username=Lady-Bot`)
-                client.sendMessage(sender, { image: { url: google.url } }, { quoted: info })
-                break
-
-
-            case 'wallpaper8':
-                if (!isPremium) return reply(ptbr.premium(prefix, pushname))
-                reply("「🐸」ja to enviando no teu pv")
-                google = await fetchJson(`https://clover-t-bot.onrender.com/wallpaper/aesthetic?key=Lady-Bot&username=Lady-Bot`)
-                client.sendMessage(sender, { image: { url: google.url } }, { quoted: info })
-                break
-
-            case 'wallpaper9':
-                if (!isPremium) return reply(ptbr.premium(prefix, pushname))
-                reply("「🐸」ja to enviando no teu pv")
-                google = await fetchJson(`https://clover-t-bot.onrender.com/nime/anime?key=Lady-Bot&username=Lady-Bot`)
-                client.sendMessage(sender, { image: { url: google.url } }, { quoted: info })
-                break
 
             //===========================\\
 
@@ -2935,9 +3098,9 @@ ${epa}`,
                 if (botNumber.includes(mentioned)) return reply("😑")
 
                 let responsedm = await client.groupParticipantsUpdate(from, [mentioned], 'promote')
-                if (responsedm[0].status === "200") client.sendMessage(from, { text: `@${mentioned.split("@")[0]} Agora é Adm.️`, mentions: [mentioned, sender], contextInfo: { forwardingScore: 999, isForwarded: true } })
-                else if (responsedm[0].status === "404") client.sendMessage(from, { text: `@${mentioned.split("@")[0]} não está no grupo️`, mentions: [mentioned, sender], contextInfo: { forwardingScore: 999, isForwarded: true } })
-                else client.sendMessage(from, { text: `😥Parece que deu erro😥️`, mentions: [sender], contextInfo: { forwardingScore: 999, isForwarded: true } })
+                if (responsedm[0].status === "200") client.sendMessage(from, { text: `@${mentioned.split("@")[0]} Agora é Adm.️`, mentions: [mentioned, sender]}, {quoted: info})
+                else if (responsedm[0].status === "404") client.sendMessage(from, { text: `@${mentioned.split("@")[0]} não está no grupo️`, mentions: [mentioned, sender]}, {quoted: info})
+                else client.sendMessage(from, { text: `😥Parece que deu erro😥️`, mentions: [sender]}, {quoted:info})
                 break
 
             case "rebaixar":
@@ -2965,38 +3128,45 @@ ${epa}`,
                         text: `@${mentioned.split("@")[0]
                             } criou esse grupo e não pode ser removido(a) da lista de admins.️`,
                         mentions: [mentioned, sender],
-                        contextInfo: { forwardingScore: 999, isForwarded: true },
-                    });
+                    }, {quoted: info});
                 else if (responsepm[0].status === "200")
                     client.sendMessage(from, {
                         text: `@${mentioned.split("@")[0]} 😥não e mais adm do grupo😥`,
                         mentions: [mentioned, sender],
-                        contextInfo: { forwardingScore: 999, isForwarded: true },
-                    });
+                    }, {quoted: info});
                 else if (responsepm[0].status === "404")
                     client.sendMessage(from, {
                         text: `@${mentioned.split("@")[0]} não está no grupo😑️`,
                         mentions: [mentioned, sender],
-                        contextInfo: { forwardingScore: 999, isForwarded: true },
-                    });
+                    }, {quoted: info});
                 else
                     client.sendMessage(from, {
                         text: `Parece que deu erro️`,
-                        mentions: [sender],
-                        contextInfo: { forwardingScore: 999, isForwarded: true },
-                    });
+                        mentions: [mentioned],
+                    }, {quoted: info});
                 break;
 
             case 'reviver':
             case 'add':
+            case 'adicionar':
                 if (!isGroup) return reply(ptbr.grupo())
-                if (!isOwner) return reply(ptbr.dono())
                 if (!isGroupAdmins) return reply(ptbr.admin())
                 if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
-                if (info.message.extendedTextMessage === undefined || info.message.extendedTextMessage === null) return reply('Marque o usuario para adicionar')
+                if (menc_prt) {
+                if (!menc_prt) return reply('marque a mensagem de alguém para adicionar')
                 response2 = await client.groupParticipantsUpdate(from, [menc_prt], "add")
-                reply('🌸USUÁRIO ADICIONADO COM SUCESSO 🌸')
-                break
+                if (response2[0].status === "404") return reply('erro')
+                client.sendMessage(from, {text: `Usuário: @${menc_prt.split("@")[0]} \nAdicionado com Sucesso as \n${dataz} \ne ${hora}.`, mentions: [menc_prt]}, {quoted: info})
+                }
+                else {
+                        if (!q) return reply('Mande o numero de alguém para adicionar')
+                        let txt = q.split("/")[0].replace(/\D/g, '');
+                        let [result] = await client.onWhatsApp(txt)
+                        if (!result) return reply(`Número inválido`)
+                        await client.groupParticipantsUpdate(from, [result.jid], 'add')
+                        client.sendMessage(from, {text: `\nUsuário: @${result.jid.split("@")[0]} \nAdicionado com Sucesso \nas ${dataz} \ne ${hora}.`, mentions: [result.jid]}, {quoted: info})
+                }
+                break;
 
             case 'sairgp':
                 if (isGroup && !isOwner && !info.key.fromMe) return reply(ptbr.dono())
@@ -3100,9 +3270,9 @@ ${epa}`,
                 reply('Obrigado pelo novo perfil vlw')
                 break
 
-
             case 'autofig-gp':
             case 'autofig':
+            case 'autosticker': 
                 if (!isGroup) return reply(ptbr.grupo());
                 if (!isGroupAdmins) return reply(ptbr.admin());
                 if (!isBotGroupAdmins) return reply(ptbr.Botadmin());
@@ -3403,7 +3573,7 @@ tem que ter a / e o id do grupo destinado senão não vai.`)
             case 'figurinhas':
                 if(!Number(q)) return reply(`Digite a quantidade de figurinhas\nExemplo: ${prefix+command} 7`)
                 if(q >= 100) return reply("Coloque abaixo de 100...")
-                reply(ptbr.sendfig(pushname))
+                if (isGroup) reply(ptbr.sendfig(pushname))
                 async function figuss() {
                 var rnd = Math.floor(Math.random() * 8051)
                 client.sendMessage(sender, { sticker: { url: `https://raw.githubusercontent.com/badDevelopper/Testfigu/main/fig (${rnd}).webp` } })}
@@ -3416,7 +3586,7 @@ tem que ter a / e o id do grupo destinado senão não vai.`)
             case 'figuraiva':
                 if (!q) return reply("Insira a quantidade de figurinhas que deseja que eu envie!")
                 if (!Number(args[0]) || Number(q.trim()) > 10) return reply("Digite a quantidade de figurinhas que deseja que eu envie.. não pode mais de 10..")
-                reply(ptbr.sendfig(pushname))
+                if (isGroup) reply(ptbr.sendfig(pushname))
                 async function eitamundorm() {
                 client.sendMessage(sender, { sticker: { url: `http://kayserapis.tech:4197/sticker/figu_raiva?apikey=`+'apikey-do-flexa' } })}
                 for (i = 0; i < q; i++) {
@@ -3428,7 +3598,7 @@ tem que ter a / e o id do grupo destinado senão não vai.`)
             case 'figubebe':
                 if (!q) return reply("Insira a quantidade de figurinhas que deseja que eu envie!")
                 if (!Number(args[0]) || Number(q.trim()) > 10) return reply("Digite a quantidade de figurinhas que deseja que eu envie.. não pode mais de 10..")
-                reply(ptbr.sendfig(pushname))
+                if (isGroup) reply(ptbr.sendfig(pushname))
                 async function lovepartidolovepartido() {
                 client.sendMessage(sender, { sticker: { url: `http://kayserapis.tech:4197/sticker/figu_bebe?apikey=`+'apikey-do-flexa' } })}
                 for (i = 0; i < q; i++) {
@@ -3440,7 +3610,7 @@ tem que ter a / e o id do grupo destinado senão não vai.`)
             case 'figucoreana':
                 if (!q) return reply("Insira a quantidade de figurinhas que deseja que eu envie!")
                 if (!Number(args[0]) || Number(q.trim()) > 10) return reply("Digite a quantidade de figurinhas que deseja que eu envie.. não pode mais de 10..")
-                reply(ptbr.sendfig(pushname))
+                if (isGroup) reply(ptbr.sendfig(pushname))
                 async function lovepartidoee() {
                 client.sendMessage(from, { sticker: { url: `http://kayserapis.tech:4197/sticker/figu_coreana?apikey=`+'apikey-do-flexa' } })}
                 for (i = 0; i < q; i++) {
@@ -3452,7 +3622,7 @@ tem que ter a / e o id do grupo destinado senão não vai.`)
             case 'figumemes':
                 if (!q) return reply("Insira a quantidade de figurinhas que deseja que eu envie!")
                 if (!Number(args[0]) || Number(q.trim()) > 10) return reply("Digite a quantidade de figurinhas que deseja que eu envie.. não pode mais de 10..")
-                reply(ptbr.sendfig(pushname))
+                if (isGroup) reply(ptbr.sendfig(pushname))
                 async function nometoque() {
                 client.sendMessage(sender, { sticker: { url: `http://kayserapis.tech:4197/sticker/figu_memes?apikey=`+'apikey-do-flexa' } })}
                 for (i = 0; i < q; i++) {
@@ -3460,8 +3630,6 @@ tem que ter a / e o id do grupo destinado senão não vai.`)
                 nometoque()
                 }
                 break
-
-                
 
             case 'togif':
                 if (!isGroup) return reply(ptbr.grupo(pushname))
@@ -3665,14 +3833,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 await delay(5000)
                 reply(`Sua Porcentagem De bebado é De : ${alettb}%`)
                 brea        
-            case 'feio': // Sem Fotos
-                if (!isGroup) return reply(ptbr.grupo())
-                const aletb = `${Math.floor(Math.random() * 105)}`
-                reply('Aguarde, confiscando sua porcentagem...')
-                await delay(5000)
-                reply(`Sua Porcentagem De Feio é De : ${aletb}%`)
-                break
-
+    
             case 'lindo':
                 if (!isGroup) return reply(ptbr.grupo())
                 const aletc = `${Math.floor(Math.random() * 105)}`
@@ -3680,24 +3841,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 await delay(5000)
                 reply(`Sua Porcentagem De Lindo(a) é De : ${aletc}%`)
                 break
-
-            case 'gostoso':
-                if (!isGroup) return reply(ptbr.grupo())
-                const aletd = `${Math.floor(Math.random() * 105)}`
-                reply('Aguarde, confiscando sua porcentagem...')
-                await delay(5000)
-                reply(`Sua Porcentagem De Gostoso(a) é De : ${aletd}%`)
-                break
-
-            case 'gostosa': {
-                if (!isGroup) return reply(ptbr.grupo())
-                const aletd1 = `${Math.floor(Math.random() * 105)}`
-                reply('Aguarde, confiscando sua porcentagem...')
-                await delay(5000)
-                reply(`Sua Porcentagem De Gostoso(a) é De : ${aletd1}%`)
-                }
-                break
-
+    
             case 'gado':
                 if (!isGroup) return reply(ptbr.grupo())
                 const alete = `${Math.floor(Math.random() * 105)}`
@@ -3714,14 +3858,201 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 reply(`Sua Porcentagem De punheteiro(a) é De : ${aletl}%`)
                 break
 
-
-            case 'gay':// Sem Fotos
-                if (!isGroup) return reply(ptbr.grupo())
-                const aleta = `${Math.floor(Math.random() * 105)}`
-                reply('Aguarde, confiscando sua porcentagem...')
-                await delay(5000)
-                reply(`Sua Porcentagem De Gay é De : ${aleta}%`)
+            case 'gay':
+                if(!isGroup) return reply(ptbr.grupo())
+                if(budy.includes("@")) {
+                mention_id = args.join(" ").replace("@", "") + "@s.whatsapp.net"
+                var blamention_id = mention_id
+                }
+                
+                if(!budy.includes("@")) {
+                var blamention_id = sender 
+                }
+                
+                client.sendMessage(from, {text: `❰ Pesquisando a sua ficha de gay : @${blamention_id.split("@")[0]} aguarde... ❱`, mentions: [blamention_id]})
+                setTimeout(async() => {
+                wew = await getBuffer(`${gayzin}`)
+                zxzz = 
+                random = `${Math.floor(Math.random() * 110)}`
+                feio = random
+                boiola = random
+                if (boiola < 20 ) {var bo = 'hmm... você é hetero😔'} else if (boiola == 21 ) {var bo = '+/- boiola'} else if (boiola == 23 ) {var bo = '+/- boiola'} else if (boiola == 24 ) {var bo = '+/- boiola'} else if (boiola == 25 ) {var bo = '+/- boiola'} else if (boiola == 26 ) {var bo = '+/- boiola'} else if (boiola == 27 ) {var bo = '+/- boiola'} else if (boiola == 2 ) {var bo = '+/- boiola'} else if (boiola == 29 ) {var bo = '+/- boiola'} else if (boiola == 30 ) {var bo = '+/- boiola'} else if (boiola == 31 ) {var bo = 'tenho minha desconfiança...😑'} else if (boiola == 32 ) {var bo = 'tenho minha desconfiança...😑'} else if (boiola == 33 ) {var bo = 'tenho minha desconfiança...😑'} else if (boiola == 34 ) {var bo = 'tenho minha desconfiança...😑'} else if (boiola == 35 ) {var bo = 'tenho minha desconfiança...😑'} else if (boiola == 36 ) {var bo = 'tenho minha desconfiança...😑'} else if (boiola == 37 ) {var bo = 'tenho minha desconfiança...😑'} else if (boiola == 3 ) {var bo = 'tenho minha desconfiança...😑'} else if (boiola == 39 ) {var bo = 'tenho minha desconfiança...😑'} else if (boiola == 40 ) {var bo = 'tenho minha desconfiança...😑'} else if (boiola == 41 ) {var bo = 'você é né?😏'} else if (boiola == 42 ) {var bo = 'você é né?😏'} else if (boiola == 43 ) {var bo = 'você é né?😏'} else if (boiola == 44 ) {var bo = 'você é né?😏'} else if (boiola == 45 ) {var bo = 'você é né?😏'} else if (boiola == 46 ) {var bo = 'você é né?😏'} else if (boiola == 47 ) {var bo = 'você é né?😏'} else if (boiola == 4 ) {var bo = 'você é né?😏'} else if (boiola == 49 ) {var bo = 'você é né?😏'} else if (boiola == 50 ) {var bo = 'você é ou não?🧐'} else if (boiola > 51) {var bo = 'você é gay🙈'
+                }
+                await client.sendMessage(from, {image: wew, caption: `  O quanto você é gay? \n\n 「 @${blamention_id.split("@")[0]} 」Você é: ❰ ${random}% ❱ gay 🏳️‍🌈\n\n${bo}`, mentions: [blamention_id], thumbnail:null}, {quoted: info})
+                }, 5000)
                 break
+
+            case 'amongus': 
+                if (info.message.extendedTextMessage === undefined || info.message.extendedTextMessage === null) return reply('Você precisa mencionar alguém')
+                mentioned = info.message.extendedTextMessage.contextInfo.mentionedJid
+                pro = '.\n'
+                for (let _ of mentioned) {
+                pro += `@${_.split('@')[0]}\n`
+                }
+                sus = 
+                `.      　。　　　　•　    　ﾟ　　。
+                　　.　　　.　　　  　　.　　　　　。　　   。　.
+                　.　　      。　        ඞ   。　    .    •
+                •            @${mentioned[0].split('@')[0]} was E j e c t e d
+                                1 impostor remain   。　.
+                　 　　。　　 　　　　ﾟ　　　.　      　　　.
+                ,　　　　.                  .`
+                mentions(`${sus}`, mentioned, true)
+                break           
+
+            case 'nazista':
+                if(!isGroup) return reply(ptbr.grupo())
+
+                if(budy.includes("@")) {
+                mention_id = args.join(" ").replace("@", "") + "@s.whatsapp.net"
+                var blamention_id = mention_id
+                }
+
+                if(!budy.includes("@")) {
+                var blamention_id = sender 
+                }
+                client.sendMessage(from, {text: ` ❰ Pesquisando a sua ficha de nazista : @${blamention_id.split("@")[0]} aguarde... ❱`, mentions: [blamention_id]})
+                setTimeout(async() => {
+                wew = await getBuffer(`${hitler}`)
+                random = `${Math.floor(Math.random() * 110)}`
+                await client.sendMessage(from, {image: wew, caption: `O quanto você é nazista? \n\n「 @${blamention_id.split("@")[0]} 」Você é: ❰ ${random}% ❱  nazista 卐`, mentions: [blamention_id]}, {quoted: info})
+                }, 5000)
+                break 
+
+            case 'infiel':
+                if(!isGroup) return reply(ptbr.grupo())
+                async function InfielMsg() {
+                random = `${Math.floor(Math.random() * 110)}`
+                traic = random
+                infiel = random
+                if(infiel <= 15 ) {var trai = 'Parabéns, você é fiel 👏👏'}
+                else if(infiel == 16 ) {var trai = 'tenho minha desconfiança 🤨'}
+                else if(infiel == 17 ) {var trai = 'tenho minha desconfiança 🤨'}
+                else if(infiel == 18 ) {var trai = 'tenho minha desconfiança 🤨'}
+                else if(infiel == 19 ) {var trai = 'tenho minha desconfiança 🤨'}
+                else if(infiel == 20 ) {var trai = 'tenho minha desconfiança 🤨'}
+                else if(infiel == 21 ) {var trai = 'tenho minha desconfiança 🤨'}
+                else if(infiel == 22 ) {var trai = 'tenho minha desconfiança 🤨'}
+                else if(infiel == 23 ) {var trai = 'tenho minha desconfiança 🤨'}
+                else if(infiel == 24 ) {var trai = 'tenho minha desconfiança 🤨'}
+                else if(infiel == 25 ) {var trai = 'tenho minha desconfiança 🤨'}
+                else if(infiel == 26 ) {var trai = 'tenho minha desconfiança 🤨'}
+                else if(infiel == 27 ) {var trai = 'tenho minha desconfiança 🤨'}
+                else if(infiel == 28 ) {var trai = 'tenho minha desconfiança 🤨'}
+                else if(infiel == 29 ) {var trai = 'tenho minha desconfiança 🤨'}
+                else if(infiel == 30 ) {var trai = 'você é infiel as vezes...😶'}
+                else if(infiel == 31 ) {var trai = 'você é infiel as vezes...😶'}
+                else if(infiel == 32 ) {var trai = 'você é infiel as vezes...😶'}
+                else if(infiel == 33 ) {var trai = 'você é infiel as vezes...😶'}
+                else if(infiel == 34 ) {var trai = 'você é infiel as vezes...😶'}
+                else if(infiel == 35 ) {var trai = 'você é infiel as vezes...😶'}
+                else if(infiel == 36 ) {var trai = 'você é infiel as vezes...😶'}
+                else if(infiel == 37 ) {var trai = 'você é infiel as vezes...😶'}
+                else if(infiel == 38 ) {var trai = 'você é infiel as vezes...😶'}
+                else if(infiel == 39 ) {var trai = 'você é infiel as vezes...😶'}
+                else if(infiel == 40 ) {var trai = 'você é viciado(a) em trair 🫣'}
+                else if(infiel == 41 ) {var trai = 'você é viciado(a) em trair 🫣'}
+                else if(infiel == 42 ) {var trai = 'você é viciado(a) em trair 🫣'}
+                else if(infiel == 43 ) {var trai = 'você é viciado(a) em trair 🫣'}
+                else if(infiel == 44 ) {var trai = 'você é viciado(a) em trair 🫣'}
+                else if(infiel == 45 ) {var trai = 'você é viciado(a) em trair 🫣'}
+                else if(infiel == 46 ) {var trai = 'você é viciado(a) em trair 🫣'}
+                else if(infiel == 47 ) {var trai = 'você é viciado(a) em trair 🫣'}
+                else if(infiel == 48 ) {var trai = 'você é viciado(a) em trair 🫣'}
+                else if(infiel == 49 ) {var trai = 'você é viciado(a) em trair 🫣'}
+                else if(infiel == 50 ) {var trai = 'você é viciado(a) em trair 🫣'}
+                else if(infiel == 51 ) {var trai = 'você é viciado(a) em trair 🫣'}
+                else if(infiel == 52 ) {var trai = 'você é viciado(a) em trair 🫣'}
+                else if(infiel == 53 ) {var trai = 'você é viciado(a) em trair 🫣'}
+                else if(infiel == 54 ) {var trai = 'você é viciado(a) em trair 🫣'}
+                else if(infiel == 55 ) {var trai = 'você é viciado(a) em trair 🫣'}
+                else if(infiel == 56 ) {var trai = 'você é viciado(a) em trair 🫣'}
+                else if(infiel == 57 ) {var trai = 'você é viciado(a) em trair 🫣'}
+                else if(infiel == 58 ) {var trai = 'você é viciado(a) em trair 🫣'}
+                else if(infiel == 59 ) {var trai = 'você é viciado(a) em trair 🫣'}
+                else if(infiel == 60 ) {var trai = 'que isso, quer bater o record de traição? 😳'}
+                else if(infiel == 61 ) {var trai = 'que isso, quer bater o record de traição? 😳'}
+                else if(infiel == 62 ) {var trai = 'que isso, quer bater o record de traição? 😳'}
+                else if(infiel == 63 ) {var trai = 'que isso, quer bater o record de traição? 😳'}
+                else if(infiel == 64 ) {var trai = 'que isso, quer bater o record de traição? 😳'}
+                else if(infiel == 65 ) {var trai = 'que isso, quer bater o record de traição? 😳'}
+                else if(infiel == 66 ) {var trai = 'que isso, quer bater o record de traição? 😳'}
+                else if(infiel == 67 ) {var trai = 'que isso, quer bater o record de traição? 😳'}     
+                else if(infiel == 68 ) {var trai = 'que isso, quer bater o record de traição? 😳'}     
+                else if(infiel == 69 ) {var trai = 'que isso, quer bater o record de traição? 😳'}     
+                else if(infiel == 70 ) {var trai = 'que isso, quer bater o record de traição? 😳'}    
+                else if(infiel == 71 ) {var trai = 'que isso, quer bater o record de traição? 😳'}    
+                else if(infiel == 72 ) {var trai = 'que isso, quer bater o record de traição? 😳'}     
+                else if(infiel == 73 ) {var trai = 'que isso, quer bater o record de traição? 😳'}     
+                else if(infiel == 74 ) {var trai = 'que isso, quer bater o record de traição? 😳'}     
+                else if(infiel == 75 ) {var trai = 'que isso, quer bater o record de traição? 😳'}
+                else if(infiel == 76 ) {var trai = 'que isso, quer bater o record de traição? 😳'}
+                else if(infiel == 77 ) {var trai = 'que isso, quer bater o record de traição? 😳'}
+                else if(infiel == 78 ) {var trai = 'que isso, quer bater o record de traição? 😳'}
+                else if(infiel == 79 ) {var trai = 'que isso, quer bater o record de traição? 😳'}
+                else if(infiel == 80 ) {var trai = 'que isso, quer bater o record de traição? 😳'}
+                else if(infiel == 81 ) {var trai = 'que isso, quer bater o record de traição? 😳'}
+                else if(infiel == 82 ) {var trai = 'que isso, quer bater o record de traição? 😳'}
+                else if(infiel == 83 ) {var trai = 'que isso, quer bater o record de traição? 😳'}
+                else if(infiel == 84 ) {var trai = 'que isso, quer bater o record de traição? 😳'}
+                else if(infiel >= 85 ) {var trai = 'vish... você é tão fiel quanto o neymar...'}
+                var text = [
+                `*𝚙𝚎𝚜𝚚𝚞𝚒𝚜𝚊𝚗𝚍𝚘...*\n*《 ▒▒▒▒▒▒▒▒▒▒》0%*`,
+                `*𝚙𝚎𝚜𝚚𝚞𝚒𝚜𝚊𝚗𝚍𝚘...*\n*《 █▒▒▒▒▒▒▒▒▒》10%*`,
+                `*𝚙𝚎𝚜𝚚𝚞𝚒𝚜𝚊𝚗𝚍𝚘...*\n*《 ██▒▒▒▒▒▒▒▒》20%*`,
+                `*𝚙𝚎𝚜𝚚𝚞𝚒𝚜𝚊𝚗𝚍𝚘...*\n*《 ███▒▒▒▒▒▒▒》30%*`,
+                `*𝚙𝚎𝚜𝚚𝚞𝚒𝚜𝚊𝚗𝚍𝚘...*\n*《 ████▒▒▒▒▒▒》40%*`,
+                `*𝚙𝚎𝚜𝚚𝚞𝚒𝚜𝚊𝚗𝚍𝚘...*\n*《 █████▒▒▒▒▒》50%*`,
+                `*𝚙𝚎𝚜𝚚𝚞𝚒𝚜𝚊𝚗𝚍𝚘...*\n*《 ██████▒▒▒▒》60%*`,
+                `*𝚙𝚎𝚜𝚚𝚞𝚒𝚜𝚊𝚗𝚍𝚘...*\n*《 ███████▒▒▒》70%*`,
+                `*𝚙𝚎𝚜𝚚𝚞𝚒𝚜𝚊𝚗𝚍𝚘...*\n*《 ████████▒▒》80%*`,
+                `*𝚙𝚎𝚜𝚚𝚞𝚒𝚜𝚊𝚗𝚍𝚘...*\n*《 █████████▒》90%*`,
+                `*𝚌𝚘𝚖𝚙𝚕𝚎𝚝𝚘*\n*《 ██████████》100%*`,
+                `*O quanto você é infiel?*\n\n*「 @${sender_ou_n.split("@")[0]} 」seu nível de infiel é: ❰ ${random}% ❱*\n\n*${trai}*`
+                ]
+                let { key } = await client.sendMessage(from, {text: `*❰Pesquisando a sua ficha de infiel: 「 @${sender_ou_n.split("@")[0]} 」 aguarde...  ❱*`, mentions: [sender_ou_n]}, {quoted: info})
+                setTimeout(async() => {
+                for (let i = 0; i < text.length; i++) 
+                await client.sendMessage(from, {text: text[i], mentions: [sender_ou_n], edit: key });
+                }, 1500)
+                }
+                InfielMsg()
+                break
+
+            case 'corno': case 'corna':
+                if (!isGroup) return reply(ptbr.grupo())
+                rate = body.slice(7)
+                if(budy.includes("@")) {
+                mention_id = args.join(" ").replace("@", "") + "@s.whatsapp.net"
+                var blamention_id = mention_id
+                }
+
+                if(!budy.includes("@")) {
+                var blamention_id = sender 
+                }
+
+                zxzz = 
+                random = `${Math.floor(Math.random() * 200)}`
+                random2 = `${Math.floor(Math.random() * 200)}`
+                client.sendMessage(from, {text: ` Pesquisando o quanto você é ${comando} :  @${blamention_id.split("@")[0]},\n\n _Você é: ❰ ${random},${random2}% ❱  ${comando}_ muito corno(a) kkkkkkkk🐂`, mentions: [blamention_id]})
+                break
+
+            case 'gostoso': case 'gostosa':
+                if (!isGroup) return reply(ptbr.grupo())
+                if(budy.includes("@")) {
+                mention_id = args.join(" ").replace("@", "") + "@s.whatsapp.net"
+                var blamention_id = mention_id
+                }
+                
+                if(!budy.includes("@")) {
+                var blamention_id = sender 
+                }
+                client.sendMessage(from, {text:` ❰ Pesquisando a sua ficha de ${command} : @${blamention_id.split("@")[0]} aguarde... ❱`, mentions: [blamention_id]})
+                    setTimeout(async() => {
+                random = `${Math.floor(Math.random() * 110)}`
+                await client.sendMessage(from, {text: `O quanto você é ${command}? 😏\n\n「 @${blamention_id.split("@")[0]} 」Você é: ❰ ${random}% ❱ ${command} ??`, mentions: [blamention_id]}, {quoted: info})
+                }, 5000)
+                break 
 
             case 'alma-gemeas':
                 if (!isGroup) return reply(ptbr.grupo())
@@ -3753,6 +4084,61 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 membrr.push(teupai211.id)
                 mentions(jet, membrr, true)
                 break
+
+            case 'sorteio':
+                if(!isGroupAdmins || !isOwner) return reply(ptbr.admin())
+                try{
+                if(!isGroup) return reply(ptbr.grupo())
+                if(!q) return reply(`Coloque algo, após o comando sorteio, por exemplo, ${prefix}sorteio de 100 R$`)
+                d = []
+                teks = `
+                ❯  ❒『${nomeBot}』❒  ❮
+
+
+                ║❯         〘 SORTEIO ALEATÓRIO 〙
+
+
+                ┠❯ ❒  Você Foi o Premiado 
+                ┠❯ ❒  Prêmio: ${q}
+                ┠❯ ❒  Doador: ${pushname}\n`
+                for(i = 0; i < 1; i++) {
+                r = Math.floor(Math.random() * groupMetadata.participants.length + 0)
+                teks += `┠❯ ❒  @${groupMembers[r].id.split('@')[0]}\n\n\n║❯         〘 MOTIVACIONAL 〙\n\n\n${enviarmen}`
+                d.push(groupMembers[r].id)
+                }
+                mentions(teks, d, true)
+                } catch (e) {
+                console.log(e)
+                reply('Deu erro, tente novamente :/')
+                }
+                break;
+
+                case 'listaadmins': case 'listaadm': // BY ALIZINDEV BY ALIZIN DEV 
+                if (!isGroup) return reply(ptbr.grupo())
+                teks = `Lista de administradores do grupo *${groupMetadata.subject}*\nTotal : ${groupAdmins.length}\n\n`
+                no = 0
+                for (let admon of groupAdmins) {
+                no += 1
+                teks += `[${no.toString()}] @${admon.split('@')[0]}\n`
+                }
+                mentions(teks, groupAdmins, true)
+                break;
+
+              //  case 'amongus1': 
+                        if (!isOwner) return reply('não')
+                        expurgo = Math.floor(Math.random() * groupMetadata.participants.length + 0)
+                        var resp = `${groupMembers[expurgo].id.split("@")[0]}`
+                        nmrbot = botNumber.split("@")[0]
+                        if (resp === numeroDono || resp === nmrbot || resp === isGroupAdmins) {
+                            return reply('não posso banir admins')
+                        } else {
+                    reply('positivo')
+                    setTimeout(() => {
+                    client.groupParticipantsUpdate(from, [resp + "@s.whatsapp.net"], 'remove')
+                    }, 5000);
+                    }
+                //    break
+
 
             case "Menudownload":
             case "menudownload":
@@ -3957,7 +4343,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
             case 'tapa':
                 if(!isGroup) return reply(ptbr.grupo())
                 if (!isUser) return reply(ptbr.user(prefix, pushname, nomeBot))
-                if(!isGroup) return reply('Só pode ser utilizado este comando, em grupo.')
+                if(!isGroup) return reply(ptbr.grupo())
                 if (info.message.extendedTextMessage === undefined || info.message.extendedTextMessage === null) return reply('marque o alvo que você quer dá o tapa')
                 mentioned = info.message.extendedTextMessage.contextInfo.mentionedJid
                 pru = '.\n'
@@ -3969,9 +4355,8 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 await client.sendMessage(from, {video: jrq, gifPlayback: true, caption: susp, mentions: mentioned}, {quoted: info})
                 break
 
-            case 'beijo': case 'beijar':
+            case 'beijo':
                 if(!isGroup) return reply(ptbr.grupo())
-                if (!isUser) return reply(ptbr.user(prefix, pushname, nomeBot))
                 if (info.message.extendedTextMessage === undefined || info.message.extendedTextMessage === null) return reply('Marque alguém que vc quer da um beijo')
                 mentioned = info.message.extendedTextMessage.contextInfo.mentionedJid
                 pru = '.\n'
@@ -3981,6 +4366,28 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 susp = `Você deu um beijo gostoso na(o) @${mentioned[0].split('@')[0]} 😁👉👈❤` 
                 wew = await getBuffer(`${beijin}`)
                 await client.sendMessage(from, {video: wew, gifPlayback: true, caption: susp, mentions: mentioned}, {quoted: info})
+                break
+                
+            case 'feio': case 'feia':
+                if(!isGroup) return reply(ptbr.grupo())
+                if(budy.includes("@")) {
+                mention_id = args.join(" ").replace("@", "") + "@s.whatsapp.net"
+                var blamention_id = mention_id
+                }
+                
+                if(!budy.includes("@")) {
+                var blamention_id = sender 
+                }
+                
+                client.sendMessage(from, {text: `Pesquisando a sua ficha de ${command} : @${blamention_id.split("@")[0]} aguarde...`, mentions: [blamention_id]})
+                    setTimeout(async() => {
+                wew = await getBuffer(`${fein}`)
+                random = `${Math.floor(Math.random() * 110)}`
+                feio = random
+                if (feio < 20 ) {var bo = 'É não é feio'} else if (feio == 21 ) {var bo = '+/- feio'} else if (feio == 23 ) {var bo = '+/- feio'} else if (feio == 24 ) {var bo = '+/- feio'} else if (feio == 25 ) {var bo = '+/- feio'} else if (feio == 26 ) {var bo = '+/- feio'} else if (feio == 27 ) {var bo = '+/- feio'} else if (feio == 2 ) {var bo = '+/- feio'} else if (feio == 29 ) {var bo = '+/- feio'} else if (feio == 30 ) {var bo = '+/- feio'} else if (feio == 31 ) {var bo = 'Ainda tá na média'} else if (feio == 32 ) {var bo = 'Da pra pegar umas(ns) novinha(o) ainda'} else if (feio == 33 ) {var bo = 'Da pra pegar umas(ns) novinha(o) ainda'} else if (feio == 34 ) {var bo = 'É fein, mas tem baum coração'} else if (feio == 35 ) {var bo = 'Tá na média, mas não deixa de ser feii'} else if (feio == 36 ) {var bo = 'Bonitin mas é feio com orgulho'} else if (feio == 37 ) {var bo = 'Feio e preguiçoso(a), vai se arrumar praga feia'} else if (feio == 3 ) {var bo = 'tenho '} else if (feio == 39 ) {var bo = 'Feio, mas um banho E se arrumar, deve resolver'} else if (feio == 40 ) {var bo = 'FeiN,  mas não existe gente feia, existe gente que não conhece os produtos jequity'} else if (feio == 41 ) {var bo = 'você é Feio, mas é legal, continue assim'} else if (feio == 42 ) {var bo = 'Nada que uma maquiagem e se arrumar, que não resolva 🥴'} else if (feio == 43 ) {var bo = 'Feio que dói de ver, compra uma máscara que melhora'} else if (feio == 44 ) {var bo = 'Feio mas nada que um saco na cabeça não resolva né!?'} else if (feio == 45 ) {var bo = 'você é feio, mas tem bom gosto'} else if (feio == 46 ) {var bo = 'Feio mas tem muitos amigos'} else if (feio == 47 ) {var bo = 'Feio mas tem lábia pra pegar várias novinha'} else if (feio == 4 ) {var bo = 'Feio e ainda não sabe se vestir, vixi'} else if (feio == 49 ) {var bo = 'Feiooo'} else if (feio == 50 ) {var bo = 'você é Feio, mas não se encherga 🧐'} else if (feio > 51) {var bo = 'você é Feio demais 🙈'} 
+                
+                await client.sendMessage(from, {image: wew, caption: `  O quanto você é ${command}? \n\n 「 @${blamention_id.split("@")[0]} 」Você é: ❰ ${random}% ❱ ${command} 🙉\n\n${bo}`, mentions: [blamention_id], thumbnail:null}, {quoted: info})
+                }, 5000)
                 break
 
             case 'dança': case 'dançar':
@@ -4231,7 +4638,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                         if (jumblah < 50 ) return reply(`transfrência mínima e de 50 Coins`)
                         if (checkATMuser(sender) < jumblah) return reply(`Você não tem Coins suficiente para fazer uma transferência, você precisa ter no minímo 1000 de Coins`)
                         const tujuantf = `${tujuan.replace("@", '')}@s.whatsapp.net`
-                        fee = 0.00 *  jumblah //IMPOSTO CADA 1 DE DINHERO, ALMENTA E CAI NA SUA CONTA, TODA VEZ QUÊ ALGUÉM FAZER TRANSFERENCIA
+                        fee = 30.00 *  jumblah //IMPOSTO CADA 1 DE DINHERO, ALMENTA E CAI NA SUA CONTA, TODA VEZ QUÊ ALGUÉM FAZER TRANSFERENCIA
                         hasiltf = jumblah - fee
                         addKoinUser(tujuantf, hasiltf)
                         confirmATM(sender, jumblah)
@@ -4473,36 +4880,6 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 reply(text)
                 break
 
-            case 'getquoted':
-            case 'getinfo':
-            case 'get':
-                if (!isPremium) return reply(ptbr.premium(prefix, pushname))
-                reply(JSON.stringify(info.message.extendedTextMessage.contextInfo, null, 3))
-                break
-
-            case 'encurtalink':
-                if (!isPremium) return reply(ptbr.premium(prefix, pushname))
-                if (args.length < 1) return reply(`Exemplo:\n${prefix}encurtalink https://www.youtube.com/channel/UCgKrNnrbNPJIOjJOgIXe1vQ`)
-                try {
-                    link = args[0]
-                    anu = await axios.get(`https://tinyurl.com/api-create.php?url=${link}`)
-                    reply(`${anu.data}`)
-                } catch (e) {
-                    emror = String(e)
-                    reply(`${e}`)
-                }
-                break
-
-            case 'ddd':
-                if (!isPremium) return reply(ptbr.premium(prefix, pushname))
-                if (args.length < 1) return reply(`Use ${prefix + command} 21`)
-                ddd = body.slice(5)
-                ddds = await axios.get(`https://brasilapi.com.br/api/ddd/v1/${ddd}`)
-                dddlist = `Lista de Cidades de ${ddds.data.state} com este DDD ${q}>\n\n`
-                for (let i = 0; i < ddds.data.cities.length; i++) { dddlist += `${i + 1} ⪧ *${ddds.data.cities[i]}*\n` }
-                client.sendMessage(from, { text: dddlist }, { quoted: info })
-                break
-
             case 'listagp':
                 try {
                     if (!isOwner) return reply(ptbr.dono())
@@ -4567,6 +4944,17 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                 } catch {
                     reply("Hmm deu erro")
                 }
+                break
+
+            case 'listaadmins': case 'listaadm': // BY ALIZINDEV BY ALIZIN DEV 
+                if (!isGroup) return reply(ptbr.grupo())
+                teks = `Lista de administradores do grupo *${groupMetadata.subject}*\nTotal : ${groupAdmins.length}\n\n`
+                no = 0
+                for (let admon of groupAdmins) {
+                no += 1
+                teks += `[${no.toString()}] @${admon.split('@')[0]}\n`
+                }
+                mentions(teks, groupAdmins, true)
                 break
 
             case 'banghost':
@@ -4787,7 +5175,7 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                         processo = premium.indexOf(pesquisar)
                     }
                     fs.writeFileSync('./database/user/premium/premium.json', JSON.stringify(premium))
-                    client.sendMessage(from, { text: ` ${num.split("@")[0]} foi tirado da lista premium com sucesso..` }, { quoted: info })
+                    client.sendMessage(from, { text: `${num.split("@")[0]} foi tirado da lista premium com sucesso..` }, { quoted: info })
                 } else {
                     mentioned = args.join(" ").replace("@", "") + "@s.whatsapp.net"
                     bla = premium.includes(mentioned)
@@ -5219,6 +5607,7 @@ ${conselho}`
 
             case 'ban':
             case 'kick':
+            case 'banir':
                 if (!isGroup) return reply(ptbr.grupo())
                 if (!isGroupAdmins) return reply(ptbr.admin())
                 if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
@@ -5232,9 +5621,9 @@ ${conselho}`
                     if (sender.includes(mentioned)) return reply("😑")
                     if (botNumber.includes(mentioned)) return reply('Não sou besta de remover eu mesmo né, mas estou decepcionado com você')
                     let responseb = await client.groupParticipantsUpdate(from, [mentioned], 'remove')
-                    if (responseb[0].status === "200") client.sendMessage(from, { text: `@${mentioned.split("@")[0]} ${clover}`, mentions: [mentioned, sender], contextInfo: { forwardingScore: 999, isForwarded: true } })
-                    else if (responseb[0].status === "406") client.sendMessage(from, { text: `@${mentioned.split("@")[0]} criou esse grupo e não pode ser removido(a) do grupo️`, mentions: [mentioned, sender], contextInfo: { forwardingScore: 999, isForwarded: true } })
-                    else if (responseb[0].status === "404") client.sendMessage(from, { text: `@${mentioned.split("@")[0]} já foi removido(a) ou saiu do grupo`, mentions: [mentioned, sender], contextInfo: { forwardingScore: 999, isForwarded: true } })
+                    if (responseb[0].status === "200") client.sendMessage(from, { text: `@${mentioned.split("@")[0]}`, mentions: [mentioned, sender]}, {quoted: info})
+                    else if (responseb[0].status === "406") client.sendMessage(from, { text: `@${mentioned.split("@")[0]} criou esse grupo e não pode ser removido(a) do grupo️`, mentions: [mentioned, sender]}, {quoted: info})
+                    else if (responseb[0].status === "404") client.sendMessage(from, { text: `@${mentioned.split("@")[0]} já foi removido(a) ou saiu do grupo`, mentions: [mentioned, sender]}, {quoted: info})
                     else client.ontextInfoe(from, { text: `Hmm parece que deu erro️`, mentions: [sender], contextInfo: { forwardingScore: 999, isForwarded: true } })
                 } else if (info.message.extendedTextMessage.contextInfo.mentionedJid != null && info.message.extendedTextMessage.contextInfo.mentionedJid != undefined) {
                     mentioned = info.message.extendedTextMessage.contextInfo.mentionedJid
@@ -5247,36 +5636,17 @@ ${conselho}`
                             let responseb2 = await client.groupParticipantsUpdate(from, [banned], 'remove')
                             if (responseb2[0].status === "200") sexocomrato = sexocomrato + 1
                         }
-                        client.sendMessage(from, { text: `${sexocomrato} participantes removido do grupo`, mentions: [sender], contextInfo: { forwardingScore: 999, isForwarded: true } })
+                        client.sendMessage(from, { text: `${sexocomrato} participantes removido do grupo`, mentions: [sender]}, {quoted: info})
                     } else {
                         let responseb3 = await client.groupParticipantsUpdate(from, [mentioned[0]], 'remove')
-                        if (responseb3[0].status === "200") client.sendMessage(from, { text: `@${mentioned[0].split("@")[0]} ${clover}`, mentions: [mentioned[0], sender], contextInfo: { forwardingScore: 999, isForwarded: true } })
-                        else if (responseb3[0].status === "406") client.sendMessage(from, { text: `@${mentioned[0].split("@")[0]} criou esse grupo e não pode ser removido(a) do grupo️`, mentions: [mentioned[0], sender], contextInfo: { forwardingScore: 999, isForwarded: true } })
-                        else if (responseb3[0].status === "404") client.sendMessage(from, { text: `@${mentioned[0].split("@")[0]} já foi removido(a) ou saiu do grupo`, mentions: [mentioned[0], sender], contextInfo: { forwardingScore: 999, isForwarded: true } })
-                        else client.sendMessage(from, { text: `Hmm parece que deu erro️`, mentions: [sender], contextInfo: { forwardingScore: 999, isForwarded: true } })
+                        if (responseb3[0].status === "200") client.sendMessage(from, { text: `@${mentioned[0].split("@")[0]} ${clover}`, mentions: [mentioned[0], sender]}, {quoted: info})
+                        else if (responseb3[0].status === "406") client.sendMessage(from, { text: `@${mentioned[0].split("@")[0]} criou esse grupo e não pode ser removido(a) do grupo️`, mentions: [mentioned[0], sender]}, {quoted: info})
+                        else if (responseb3[0].status === "404") client.sendMessage(from, { text: `@${mentioned[0].split("@")[0]} já foi removido(a) ou saiu do grupo`, mentions: [mentioned[0], sender]}, {quoted: info})
+                        else client.sendMessage(from, { text: `Hmm parece que deu erro️`, mentions: [sender]}, {quoted: info})
                     }
                 }
                 break
-                case 'add': {
-                    if(!isGroup) return reply(ptbr.grupo())
-                    if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
-                    if (!isAdmins) return reply(ptbr.admin())
-                   let users = quoted ? quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
-                   await client.groupParticipantsUpdate(from, [users], 'add').then((res) => reply(jsonformat(res))).catch((err) => reply(jsonformat(err)))
-               }
-               break
-            case 'ia':
-                try {
-                    let openai = await ia(q)
-                    let response = openai[0].resposta
-                    delay(1000)
-                    enviar(response)
-                } catch (e) {
-                    console.log(e)
-                    reply('Erro')
-                }
-                break
-
+                
             case 'tiktok':
                 if (!q.includes("tiktok")) return reply(`Ops, insira o link, só baixo vídeos / audios do ${command} com link`)
                 sendBtext(from, "𝐃𝐨𝐰𝐧𝐥𝐨𝐚𝐝 𝐃𝐞 𝐕𝐢́𝐝𝐞𝐨 / 𝐀𝐮𝐝𝐢𝐨 [ 𝐓𝐈𝐊𝐓𝐎𝐊 ]\n𝐄𝐬𝐜𝐨𝐥𝐡𝐚 𝐮𝐦𝐚 𝐝𝐚𝐬 𝐨𝐩𝐜̧𝐨̃𝐞𝐬 𝐪𝐮𝐞 𝐝𝐞𝐬𝐞𝐣𝐚", `✨`, [
@@ -5284,7 +5654,6 @@ ${conselho}`
                     { buttonId: `${prefix}ttk2 ${q}`, buttonText: { displayText: `𝐕𝐈𝐃𝐄𝐎` }, type: 100 }
                 ], live)
                 break;
-
 
             case "ppt":
                 if (!isGroup) return reply(ptbr.grupo())
@@ -5506,26 +5875,6 @@ Solicitado por: ${pushname}`
                 if (!isGroup) return reply(ptbr.grupo())
                 if (!isGroupAdmins) return reply('comando apenas para admins')
                 reply(`L I M P A N D U 😎🤙\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n ${nomeBot}`)
-                break
-
-            case 'wallpaperanime':
-                if (!isPremium) return reply(ptbr.premium(prefix, pushname))
-                {
-                    json = JSON.parse(fs.readFileSync('./functions/fotos/wall.json').toString())
-                    random = json[Math.floor(Math.random() * json.length)]
-                    let proximo = [
-                {buttonId: `${prefix + command}`, buttonText: {displayText: '🌸️PROXIMO🌸️'}, type: 1},
-                ]
-                    templateMassage = {
-                        image: {
-                            url: random,
-                            quoted: live
-                        },
-                        caption: `${command}`,
-                        footer: `${nomeBot}`,
-                    }
-                    client.sendMessage(from, templateMassage)
-                }
                 break
 
             case 'deletar': case 'delete': case 'del':  case 'd': case 'apagar':
