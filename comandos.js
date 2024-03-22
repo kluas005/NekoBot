@@ -3522,7 +3522,7 @@ tem que ter a / e o id do grupo destinado senão não vai.`)
                                 var exif = Buffer.concat([exifAttr, jsonBuff])
                                 exif.writeUIntLE(jsonBuff.length, 14, 4)
                                 let nomemeta = Math.floor(Math.random() * (99999 - 11111 + 1) + 11111) + ".temp.exif"
-                                fs.writeFileSync(`./figurinhas/${nomemeta}`, exif)
+                                fs.writeFileSync(`./${nomemeta}`, exif)
                                 exec(`webpmux -set exif ${nomemeta} ${rano} -o ${rano}`, () => {
                                     client.sendMessage(from, { sticker: fs.readFileSync(rano) }, { quoted: info })
                                     fs.unlinkSync(nomemeta)
@@ -3548,7 +3548,7 @@ tem que ter a / e o id do grupo destinado senão não vai.`)
                                 let exif = Buffer.concat([exifAttr, jsonBuff])
                                 exif.writeUIntLE(jsonBuff.length, 14, 4)
                                 let nomemeta = "temp.exif"
-                                fs.writeFileSync(`./figurinhas/${nomemeta}`, exif)
+                                fs.writeFileSync(`./${nomemeta}`, exif)
                                 exec(`webpmux -set exif ${nomemeta} ${rano} -o ${rano}`, () => {
                                     client.sendMessage(from, { sticker: fs.readFileSync(rano) }, { quoted: info })
                                     fs.unlinkSync(nomemeta)
