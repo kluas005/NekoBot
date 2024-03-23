@@ -2797,47 +2797,6 @@ ${epa}`,
                 }
                 break
 
-            case 'antiimg':
-                if (!isGroup) return reply(ptbr.grupo())
-                if (!isGroupAdmins) return reply(ptbr.admin())
-                if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
-                if (Number(args[0]) === 1) {
-                    if (isAntiImg) return reply('Já Esta ativo')
-                    antiimg.push(from)
-                    fs.writeFileSync('./database/group/ativadores/antiimg.json', JSON.stringify(antiimg))
-                    reply('🌸ativou com sucesso o recurso de anti imagem nesse grupo🌸')
-                } else if (Number(args[0]) === 0) {
-                    if (!isAntiImg) return reply('Ja esta Desativado.')
-                    antiimg.splice(from, 1)
-                    fs.writeFileSync('./database/group/ativadores/antiimg.json', JSON.stringify(antiimg))
-                    reply('🌸Desativou com sucesso o recurso de anti imagem nesse grupo🌸')
-                } else {
-                    if (isAntiImg) {
-                        buttons002 = [
-                            { buttonId: `${prefix + command} 0`, buttonText: { displayText: '[🌸] DESATIVAR [🌸]' }, type: 1 }
-                        ]
-                    } else {
-                        buttons002 = [
-                            { buttonId: `${prefix + command} 1`, buttonText: { displayText: '[🌸] ATIVAR [🌸]' }, type: 1 }
-                        ]
-                    }
-                    buttonMessage02 = {
-                        text: `╭═─────═⌘═────═╮   
-👑 𝐀𝐍𝐓𝐈 𝐈𝐌𝐀𝐆𝐄𝐌 👑
-
-𝐔𝐒𝐔Á𝐑𝐈𝐎: ${pushname}
-
-𝐆𝐑𝐔𝐏𝐎: ${groupName}
-╰═─────═⌘═────═╯`,
-                        footer: `STATUS DO ANTI-IMG AGORA:${isAntiImg ? 'ATIVADO' : 'DESATIVADO'}\n`,
-                        //buttons: buttons002,
-                        headerType: 4,
-                        contextInfo: { forwardingScore: 999, isForwarded: true }
-                    }
-                    client.sendMessage(from, buttonMessage02, { quoted: info })
-                }
-                break
-
                 case 'antivideo':
                 if (!isGroup) return reply(ptbr.grupo())
                 if (!isGroupAdmins) return reply(ptbr.admin())
@@ -3154,17 +3113,18 @@ ${epa}`,
                 if (!isBotGroupAdmins) return reply(ptbr.Botadmin())
                 if (menc_prt) {
                 if (!menc_prt) return reply('marque a mensagem de alguém para adicionar')
-                response2 = await client.groupParticipantsUpdate(from, [menc_prt], "add")
-                if (response2[0].status === "404") return reply('erro')
+                let response = await client.groupParticipantsUpdate(from, [menc_prt], "add")
+                if (response[0].status === "404") return reply('erro')
                 client.sendMessage(from, {text: `Usuário: @${menc_prt.split("@")[0]} \nAdicionado com Sucesso as \n${dataz} \ne ${hora}.`, mentions: [menc_prt]}, {quoted: info})
-                }
-                else {
-                        if (!q) return reply('Mande o numero de alguém para adicionar')
-                        let txt = q.split("/")[0].replace(/\D/g, '');
-                        let [result] = await client.onWhatsApp(txt)
-                        if (!result) return reply(`Número inválido`)
-                        await client.groupParticipantsUpdate(from, [result.jid], 'add')
-                        client.sendMessage(from, {text: `\nUsuário: @${result.jid.split("@")[0]} \nAdicionado com Sucesso \nas ${dataz} \ne ${hora}.`, mentions: [result.jid]}, {quoted: info})
+                } else {
+                if (q.length < 13) return reply('Mande o numero de alguém para adicionar')
+                let txt = q.split("/")[0].replace(/\D/g, '');
+                let [result] = await client.onWhatsApp(txt)
+                if (!result) return reply(`Número inválido`)
+                let response01 = await client.groupParticipantsUpdate(from, [result.jid], 'add')
+                if (response01[0].status === "404") return reply('erro')
+                else if (response01[0].status === "406") return reply('erro')
+                client.sendMessage(from, {text: `\nUsuário: @${result.jid.split("@")[0]} \nAdicionado com Sucesso \nas ${dataz} \ne ${hora}.`, mentions: [result.jid]}, {quoted: info})
                 }
                 break;
 
@@ -3477,13 +3437,13 @@ tem que ter a / e o id do grupo destinado senão não vai.`)
                 if (!isGroupAdmins) return reply(ptbr.admin())
                 let metadata = await client.groupMetadata(from)
                 let teks = `
-\n ${metadata.participants.length ? metadata.participants.length : "undefined"} participantes do grupo
-\n ${args.join(" ") ? args.join(" ") : 'kosong'}*\n\n`
+                \n ${metadata.participants.length ? metadata.participants.length : "undefined"} participantes do grupo
+                \n ${args.join(" ") ? args.join(" ") : 'membros'}:\n\n`
                 for (let mem of participants) {
                     teks += `┃❖┃@${mem.id.split('@')[0]}\n`
                 }
                 client.sendMessage(from, { text: teks, mentions: participants.map(a => a.id) }, { quoted: live })
-            }
+                }
                 break
 
                 /// Area de figurinhas
@@ -5624,7 +5584,7 @@ ${conselho}`
                     if (responseb[0].status === "200") client.sendMessage(from, { text: `@${mentioned.split("@")[0]}`, mentions: [mentioned, sender]}, {quoted: info})
                     else if (responseb[0].status === "406") client.sendMessage(from, { text: `@${mentioned.split("@")[0]} criou esse grupo e não pode ser removido(a) do grupo️`, mentions: [mentioned, sender]}, {quoted: info})
                     else if (responseb[0].status === "404") client.sendMessage(from, { text: `@${mentioned.split("@")[0]} já foi removido(a) ou saiu do grupo`, mentions: [mentioned, sender]}, {quoted: info})
-                    else client.ontextInfoe(from, { text: `Hmm parece que deu erro️`, mentions: [sender], contextInfo: { forwardingScore: 999, isForwarded: true } })
+                    else client.sendMessage(from, { text: `Hmm parece que deu erro️`, mentions: [sender], contextInfo: { forwardingScore: 999, isForwarded: true } })
                 } else if (info.message.extendedTextMessage.contextInfo.mentionedJid != null && info.message.extendedTextMessage.contextInfo.mentionedJid != undefined) {
                     mentioned = info.message.extendedTextMessage.contextInfo.mentionedJid
                     if (mentioned.includes(sender)) return reply("😑")
