@@ -23,7 +23,7 @@ const toMs = require('ms')
     }
     
     _data.push(obj)
-    fs.writeFileSync('./database/user/premium.json', JSON.stringify(_data))
+    fs.writeFileSync('./database/user/premium/premium.json', JSON.stringify(_data))
 }
 
 const dellprem = (userId, _data) => {
@@ -35,7 +35,7 @@ const dellprem = (userId, _data) => {
     })
     if (position !== null) {
         _data.splice(position, 1)
-        fs.writeFileSync('./database/user/premium.json', JSON.stringify(_data))
+        fs.writeFileSync('./database/user/premium/premium.json', JSON.stringify(_data))
     }
     return true
 }
@@ -87,9 +87,9 @@ const expiredCheck = (_dir) => {
             }
         })
         if (position !== null) {
-            console.log(`Premium expired: ${_dir[position].id}`)
+            console.log(`Premium expirou: ${_dir[position].id}`)
             _dir.splice(position, 1)
-            fs.writeFileSync('./database/user/premium.json', JSON.stringify(_dir))
+            fs.writeFileSync('./database/user/premium/premium.json', JSON.stringify(_dir))
         }
     }, 1000)
 }

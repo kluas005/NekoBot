@@ -491,6 +491,7 @@ const checkATM = checkATMuser(sender)
         const isWelkom = isGroup ? welkom.includes(from) : false
         const emoji = new EmojiAPI()
         const isPremium = premium.includes(sender)
+        
 
         ///////////////////////////////////////////////
         //functions PARA COMANDO DE GRUPO
@@ -571,6 +572,10 @@ const checkATM = checkATMuser(sender)
         //FUNÇÃO DE DONO 
         ///////////////////////////////////////////////
         const isOwner = sender.includes(infoBot.owner)
+
+
+        /// trabalhando nisso
+      //  const isPremium = isOwner || isOwner || prem.checkPremiumUser(sender, premium);
         /////////////////////////////////////////////////
 
         const sendBtext = async (id, text1, desc1, but = [], vr) => {
@@ -1074,6 +1079,10 @@ if (isApenasDono && isGroup && isCmd && !isOwner) {
 // contador de comandos
 
 if (isCmd) cmdadd()
+
+
+// prem.expiredCheck(sender, from, premium);
+
 
         switch (command) {
 
@@ -5150,6 +5159,65 @@ Parados!🤚🤚\n\n1=🤚🤭@${o01.id.split('@')[0]}🤚🤭\n\n\n2=🤚🤭@$
                     client.sendMessage(from, { text: ` @${mentioned.split("@")[0]} foi tirado da lista premium com sucesso..` }, { quoted: info })
                 }
                 break
+
+
+
+                /// premium com data não funciona por enquanto
+          //  case 'addprem': case 'addpremium': case 'addvip':
+				if (!isOwner) return reply(ptbr.dono())
+				{ q, args } {
+				if (args.length < 2)
+				return reply(
+				`Uso:\n*#addprem* @time tag\n*#addprem* número de hora\n\nExemplo: #addprem @tag 30d`
+				);
+                mentioned = info.message.extendedTextMessage.contextInfo.mentionedJid[0]
+                    ? info.message.extendedTextMessage.contextInfo.mentionedJid
+                    : info.message.extendedTextMessage.contextInfo.participant;
+				if (mentioned.length !== 0) {
+				for (let i = 0; i < mentioned.length; i++) {
+				prem.addPremiumUser(mentioned[0], args[1], premium);
+						}
+				client.sendMessage(from, { text: "adicionado com sucesso" }, { quoted: info });
+					} else {
+				prem.addPremiumUser(args[0] + "@s.whatsapp.net", args[1], premium);
+				client.sendMessage(from, { text: "sucesso pelo numero" }, { quoted: info });
+						}
+					}
+				break
+
+		//	case 'delprem':
+				if (!isOwner) return m.reply(ptbr.ownerG())
+				{ q, args } {
+				if (args.length < 1) return reply(`Uso:\n*#delprem* @tag\n*#delprem* número`);
+                mentioned = info.message.extendedTextMessage.contextInfo.mentionedJid[0]
+                    ? info.message.extendedTextMessage.contextInfo.mentionedJid
+                    : info.message.extendedTextMessage.contextInfo.participant;
+				if (mentioned.length !== 0) {
+					for (let i = 0; i < mentioned.length; i++) {
+						premium.splice(prem.getPremiumPosition(mentioned[i], premium), 1);
+						fs.writeFileSync("./database/user/premium/premium.json", JSON.stringify(premium));
+					}
+					client.sendMessage(from, { text: "deletado com sucesso" }, { quoted: info });
+				} else {
+				premium.splice(prem.getPremiumPosition(args[0] + "@s.whatsapp.net", premium), 1);
+				fs.writeFileSync("./database/user/premium/premium.json", JSON.stringify(premium));
+				client.sendMessage(from, { text: "Sucesso através do número" }, { quoted: info });
+				}
+				}
+				break
+
+              //  case 'listprem': case 'listapremium': {
+                    if (!isOwner) return reply(ptbr.dono())
+                    let data = require("./database/user/premium/premium.json")
+                    let txt = `*------「 LISTA DE USUARIOS PREMIUM 」------*\n\n`
+                            for (let i of data) {
+                        txt += `*Nome : ${i.id}*\n*Expira : ${i.expired} Segundos*\n\n`
+                        }
+                    reply(txt)
+                  //  }
+                    break
+
+                    ////
 
             case 'gerarcpf':
                 if (!isPremium) return reply(ptbr.premium(prefix, pushname))
