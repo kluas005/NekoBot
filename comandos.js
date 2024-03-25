@@ -1310,7 +1310,7 @@ if (isCmd) cmdadd()
                     client.sendMessage(from, {image: {url: res.thumb}, caption: infomidia }, {quoted: info});
                     client.sendMessage(from, {audio: {url: res.download}, mimetype: 'audio/mp4', fileName: res.titulo}, {quoted: info});
                     }).catch(() => {
-                    reply(ptbr.erro())
+                    reply(ptbr.restriçãodownload())
                     }); 
                     break
                     
@@ -3601,20 +3601,13 @@ tem que ter a / e o id do grupo destinado senão não vai.`)
                 break
 
             case 'togif':
-                if (!isGroup) return reply(ptbr.grupo(pushname))
-                if (!isUser) return reply(ptbr.user(pushname))
-                if(!isQuotedSticker) return reply('Marque a figurinha animada!')
-                try {
-                if((isMedia && !info.message.videoMessage || isQuotedSticker) && !q.length <= 1) {
-                buff = await getFileBuffer(info.message.extendedTextMessage.contextInfo.quotedMessage.stickerMessage, 'sticker')
-                reply('Aguarde, estou convertendo a figurinha para o formato gif.')
-                a = await webp_mp4(buff)
-                client.sendMessage(from, {video: {url: a}, gifPlayback: true, fileName: `stick.gif`}, {quoted: live}).catch(e => {
-                reply("Erro ao realizar o envio do sticker!") 
-                })
-                DLT_FL(buff)
-                }
-                } catch {
+                if (!isQuotedSticker) return reply('Marca uma Figurinha!!')
+                reagir(from, '⏱️')
+                buff = await getFileBuffer(info.message.extendedTextMessage.contextInfo.quotedMessage.stickerMessage)
+                try {   
+                client.sendMessage(from, {video: {url: buff}, gifPlayback: true, filename: 'teste.sticker'}, {quoted: info})
+                } catch(e) {
+                console.log(e)
                 reply(ptbr.erro())
                 }
                 break
@@ -3622,7 +3615,7 @@ tem que ter a / e o id do grupo destinado senão não vai.`)
             case 'toimg':
                 if (!isQuotedSticker) return reply('Marca uma Figurinha!!')
                 reagir(from, '⏱️')
-                buff = await getFileBuffer(info.message.extendedTextMessage.contextInfo.quotedMessage.stickerMessage, 'sticker')
+                buff = await getFileBuffer(info.message.extendedTextMessage.contextInfo.quotedMessage.stickerMessage)
                 try {   
                 client.sendMessage(from, {image: buff}, {quoted: info})
                 } catch(e) {
