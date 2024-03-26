@@ -1081,6 +1081,14 @@ if (isApenasDono && isGroup && isCmd && !isOwner) {
 if (isCmd) cmdadd()
 
 
+// if (isCmd) {
+    if (!isUser) {
+        return reply('sem registro')
+} 
+// } else if (!isUser && isCmd && command === `registrar ${q.length >= 10}`) {
+    reply('teste')
+// }
+
 // prem.expiredCheck(sender, from, premium);
 
 
@@ -1092,7 +1100,6 @@ if (isCmd) cmdadd()
 
             case 'registrar':
                 if(!isGroup) return reply(ptbr.grupo())
-                if (isUser) return reply ('**Você já está registrado**')
 				if (!q.includes('|')) return reply(`𝗗𝗶𝗴𝗶𝘁𝗲 𝗱𝗮 𝗳𝗼𝗿𝗺𝗮 𝗰𝗲𝗿𝘁𝗮:\n𝗖𝗼𝗺𝗮𝗻𝗱𝗼: ${prefix}𝗥𝗲𝗴𝗶𝘀𝘁𝗿𝗮𝗿 𝗻𝗼𝗺𝗲|𝗶𝗱𝗮𝗱𝗲\n𝗘𝘅𝗲𝗺𝗽𝗹𝗼: ${prefix}𝗥𝗲𝗴𝗶𝘀𝘁𝗿𝗮𝗿 𝗸𝗹𝗮𝘂𝘀|𝟮𝟬`)
 				const namaUser = q.substring(0, q.indexOf('|') - 0)
 				const umurUser = q.substring(q.lastIndexOf('|') + 1)
@@ -1149,7 +1156,6 @@ if (isCmd) cmdadd()
                 break
 
             case 'menu': {
-                if (!isUser) return reply(ptbr.user(prefix, pushname, nomeBot))
                 registername = getRegisterName(sender)
                 client.sendMessage(from, {
                     react: {
